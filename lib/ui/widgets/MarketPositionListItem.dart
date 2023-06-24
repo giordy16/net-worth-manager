@@ -28,13 +28,13 @@ class MarketPositionListItem extends StatelessWidget {
                 Expanded(
                   child: Text(
                     position.product.name,
-                    style: normalTextTextStyle(),
+                    style: normalTextTS(),
                     overflow: TextOverflow.ellipsis,
                     maxLines: 2,
                   ),
                 ),
                 SizedBox(width: 4),
-                Text(position.getCurrentValue().formatted(), style: subTitleTextStyle())
+                Text(position.getCurrentValue().formatted(), style: subTitleTS())
               ],
             ),
             SizedBox(height: 4),
@@ -42,10 +42,10 @@ class MarketPositionListItem extends StatelessWidget {
                 mainAxisSize: MainAxisSize.max,
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  Text(position.product.ticker, style: smallTextTextStyle()),
+                  Text(position.product.ticker, style: smallTextTS()),
                   Text(
                       ("${position.getDeltaPerc().formattedPerc()}%"),
-                      style: smallTextTextStyle()),
+                      style: smallTextTS()),
                 ]),
             Visibility(
                 visible: !isLast,

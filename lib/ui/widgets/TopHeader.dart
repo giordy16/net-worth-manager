@@ -7,6 +7,6 @@ AppBar TopHeader(String title) {
     backgroundColor: Colors.white24,
     elevation: 0,
     iconTheme: IconThemeData(color: Colors.black),
-    title: Text(title, style: subTitleTextStyle()),
+    title: Text(title, style: subTitleTS()),
   );
 }

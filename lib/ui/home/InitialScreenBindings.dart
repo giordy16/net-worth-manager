@@ -11,6 +11,5 @@ class InitialScreenBindings implements Bindings {
     Get.lazyPut(() => InvestmentsController());
     Get.lazyPut(() => TransactionRepoImpl());
     Get.lazyPut(() => ProductRepoImpl());
-
   }
 }

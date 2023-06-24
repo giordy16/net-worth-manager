@@ -87,9 +87,9 @@ class _$AppDatabase extends AppDatabase {
       },
       onCreate: (database, version) async {
         await database.execute(
-            'CREATE TABLE IF NOT EXISTS `TransactionEntity` (`id` INTEGER PRIMARY KEY AUTOINCREMENT, `product` TEXT NOT NULL, `date` TEXT NOT NULL, `price` REAL NOT NULL, `qt` REAL NOT NULL, `priceChange` REAL NOT NULL, FOREIGN KEY (`product`) REFERENCES `ProductEntity` (`ticker`) ON UPDATE NO ACTION ON DELETE NO ACTION)');
+            'CREATE TABLE IF NOT EXISTS `TransactionEntity` (`id` INTEGER PRIMARY KEY AUTOINCREMENT, `product` TEXT NOT NULL, `date` TEXT NOT NULL, `price` REAL NOT NULL, `qt` REAL NOT NULL, `currencyTransaction` TEXT NOT NULL, FOREIGN KEY (`product`) REFERENCES `ProductEntity` (`ticker`) ON UPDATE NO ACTION ON DELETE NO ACTION)');
         await database.execute(
-            'CREATE TABLE IF NOT EXISTS `ProductEntity` (`ticker` TEXT NOT NULL, `name` TEXT NOT NULL, `type` TEXT NOT NULL, `currency` TEXT NOT NULL, `lastPrice` REAL NOT NULL, `isin` TEXT, `annualTer` REAL, PRIMARY KEY (`ticker`))');
+            'CREATE TABLE IF NOT EXISTS `ProductEntity` (`ticker` TEXT NOT NULL, `name` TEXT NOT NULL, `type` TEXT NOT NULL, `currency` TEXT NOT NULL, `lastPrice` REAL NOT NULL, `lastPriceOnMainCurrency` REAL NOT NULL, `isin` TEXT, `annualTer` REAL, PRIMARY KEY (`ticker`))');
 
         await callback?.onCreate?.call(database, version);
       },
@@ -123,7 +123,7 @@ class _$TransactionDAO extends TransactionDAO {
                   'date': item.date,
                   'price': item.price,
                   'qt': item.qt,
-                  'priceChange': item.priceChange
+                  'currencyTransaction': item.currencyTransaction
                 });
 
   final sqflite.DatabaseExecutor database;
@@ -141,7 +141,7 @@ class _$TransactionDAO extends TransactionDAO {
             row['date'] as String,
             row['price'] as double,
             row['qt'] as double,
-            row['priceChange'] as double,
+            row['currencyTransaction'] as String,
             row['product'] as String));
   }
 
@@ -154,7 +154,7 @@ class _$TransactionDAO extends TransactionDAO {
             row['date'] as String,
             row['price'] as double,
             row['qt'] as double,
-            row['priceChange'] as double,
+            row['currencyTransaction'] as String,
             row['product'] as String),
         arguments: [product]);
   }
@@ -180,6 +180,7 @@ class _$ProductDAO extends ProductDAO {
                   'type': item.type,
                   'currency': item.currency,
                   'lastPrice': item.lastPrice,
+                  'lastPriceOnMainCurrency': item.lastPriceOnMainCurrency,
                   'isin': item.isin,
                   'annualTer': item.annualTer
                 }),
@@ -193,6 +194,7 @@ class _$ProductDAO extends ProductDAO {
                   'type': item.type,
                   'currency': item.currency,
                   'lastPrice': item.lastPrice,
+                  'lastPriceOnMainCurrency': item.lastPriceOnMainCurrency,
                   'isin': item.isin,
                   'annualTer': item.annualTer
                 });
@@ -216,6 +218,7 @@ class _$ProductDAO extends ProductDAO {
             row['type'] as String,
             row['currency'] as String,
             row['lastPrice'] as double,
+            row['lastPriceOnMainCurrency'] as double,
             isin: row['isin'] as String?,
             annualTer: row['annualTer'] as double?));
   }
@@ -229,6 +232,7 @@ class _$ProductDAO extends ProductDAO {
             row['type'] as String,
             row['currency'] as String,
             row['lastPrice'] as double,
+            row['lastPriceOnMainCurrency'] as double,
             isin: row['isin'] as String?,
             annualTer: row['annualTer'] as double?),
         arguments: [ticker]);

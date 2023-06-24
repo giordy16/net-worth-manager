@@ -1,21 +1,25 @@
 import 'package:flutter/material.dart';
 
-TextStyle subTitleTextStyle() {
+TextStyle subTitleTS() {
   return TextStyle(fontSize: 18, fontWeight: FontWeight.bold, color: Colors.black);
 }
 
-TextStyle normalTextTextStyle() {
+TextStyle normalTextTS() {
   return TextStyle(fontSize: 16, color: Colors.black);
 }
 
-TextStyle normalBoldTextTextStyle() {
+TextStyle normalBoldTextTS() {
   return TextStyle(fontSize: 16, fontWeight: FontWeight.bold, color: Colors.black);
 }
 
-TextStyle smallTextTextStyle() {
+TextStyle normalBlueBoldTextTS() {
+  return TextStyle(fontSize: 16, fontWeight: FontWeight.bold, color: Colors.blue);
+}
+
+TextStyle smallTextTS() {
   return TextStyle(fontSize: 14, color: Colors.black);
 }
 
-TextStyle smallWhiteTextTextStyle() {
+TextStyle smallWhiteTextTS() {
   return TextStyle(fontSize: 14, color: Colors.white);
 }

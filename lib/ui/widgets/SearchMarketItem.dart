@@ -31,17 +31,17 @@ class SearchMarketWidget extends StatelessWidget {
                 Expanded(
                   child: Text(
                     product.name,
-                    style: normalTextTextStyle(),
+                    style: normalTextTS(),
                     overflow: TextOverflow.ellipsis,
                     maxLines: 1,
                   ),
                 ),
                 SizedBox(width: 4),
-                Text(product.ticker, style: subTitleTextStyle())
+                Text(product.ticker, style: subTitleTS())
               ],
             ),
             SizedBox(height: 4),
-            Text(product.type, style: smallTextTextStyle()),
+            Text(product.type, style: smallTextTS()),
             SizedBox(height: 16),
             Container(height: 1, width: double.infinity, color: Colors.grey)
           ],

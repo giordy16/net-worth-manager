@@ -18,7 +18,7 @@ class InvestmentsPage extends StatelessWidget {
     return Obx(() => Scaffold(
           floatingActionButton: FloatingActionButton(
             onPressed: () {
-              Get.to(SearchTickerPage());
+              Get.to(() => SearchTickerPage());
             },
             child: Icon(Icons.add),
           ),
@@ -41,11 +41,11 @@ class InvestmentsPage extends StatelessWidget {
                           children: [
                             Text(
                               'Valore attuale',
-                              style: subTitleTextStyle(),
+                              style: subTitleTS(),
                             ),
                             Text(
-                              '€15.232,00',
-                              style: normalTextTextStyle(),
+                              controller.getTotalInvestmentsValue(),
+                              style: normalTextTS(),
                             ),
                           ],
                         ),
@@ -66,11 +66,11 @@ class InvestmentsPage extends StatelessWidget {
                           children: [
                             Text(
                               'Rendimento',
-                              style: subTitleTextStyle(),
+                              style: subTitleTS(),
                             ),
                             Text(
-                              '+€154,00',
-                              style: normalTextTextStyle(),
+                              '?',
+                              style: normalTextTS(),
                             ),
                           ],
                         ),
@@ -107,7 +107,7 @@ class InvestmentsPage extends StatelessWidget {
       children: [
         Text(
           'Posizioni',
-          style: subTitleTextStyle(),
+          style: subTitleTS(),
         ),
         IconButton(onPressed: () {
           controller.refreshAllPrices();

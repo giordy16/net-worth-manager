@@ -26,7 +26,7 @@ class AlphaVantageRepImp extends GetConnect implements AlphaVantageRep {
       print(response.request?.url);
       return TickerSearchList.fromJson(response.body)
           .bestMatches
-          .map((e) => ProductEntity(e.name, e.symbol, e.type, e.currency, 0))
+          .map((e) => ProductEntity(e.name, e.symbol, e.type, e.currency, 0, 0))
           .toList();
     } catch (e) {
       print("searchTicker error: $e");

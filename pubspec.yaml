@@ -39,6 +39,7 @@ dependencies:
   get: ^4.6.5
   floor: ^1.4.2
   intl: ^0.18.1
+  forex_conversion: ^0.2.5+1
 
 dev_dependencies:
   flutter_test:

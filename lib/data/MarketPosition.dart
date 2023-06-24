@@ -10,7 +10,7 @@ class MarketPosition {
   MarketPosition(this.product, this.transactionsList);
 
   double getCurrentValue() {
-    return getTotQt() * product.lastPrice;
+    return getTotQt() * product.lastPriceOnMainCurrency;
   }
 
   double getTotQt() {
@@ -43,7 +43,7 @@ class MarketPosition {
   }
 
   double getDelta() {
-    return (product.lastPrice - getAvgPrice()) * getTotQt();
+    return (product.lastPriceOnMainCurrency - getAvgPrice()) * getTotQt();
   }
 
   double getDeltaPerc() {

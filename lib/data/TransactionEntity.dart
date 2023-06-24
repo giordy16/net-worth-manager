@@ -12,7 +12,7 @@ class TransactionEntity {
   final String date;
   final double price;
   final double qt;
-  final double priceChange;
+  final String currencyTransaction;
 
-  TransactionEntity(this.date, this.price, this.qt, this.priceChange, this.product);
+  TransactionEntity(this.date, this.price, this.qt, this.currencyTransaction, this.product);
 }
