@@ -4,6 +4,7 @@ import '../../../data/ProductEntity.dart';
 
 abstract class TransactionRepo {
   Future<void> addTransaction(TransactionEntity transaction, ProductEntity product);
+  Future<void> updateTransaction(TransactionEntity transaction);
   Future<List<TransactionEntity>?> getTransactions();
   Future<List<TransactionEntity>?> getTransactionsByProduct(String product);
 }

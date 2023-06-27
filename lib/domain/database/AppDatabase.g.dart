@@ -87,7 +87,7 @@ class _$AppDatabase extends AppDatabase {
       },
       onCreate: (database, version) async {
         await database.execute(
-            'CREATE TABLE IF NOT EXISTS `TransactionEntity` (`id` INTEGER PRIMARY KEY AUTOINCREMENT, `product` TEXT NOT NULL, `date` TEXT NOT NULL, `price` REAL NOT NULL, `qt` REAL NOT NULL, `currencyTransaction` TEXT NOT NULL, FOREIGN KEY (`product`) REFERENCES `ProductEntity` (`ticker`) ON UPDATE NO ACTION ON DELETE NO ACTION)');
+            'CREATE TABLE IF NOT EXISTS `TransactionEntity` (`id` INTEGER PRIMARY KEY AUTOINCREMENT, `product` TEXT NOT NULL, `date` TEXT NOT NULL, `price` REAL NOT NULL, `qt` REAL NOT NULL, `currencyChange` REAL NOT NULL, `type` INTEGER NOT NULL, FOREIGN KEY (`product`) REFERENCES `ProductEntity` (`ticker`) ON UPDATE NO ACTION ON DELETE NO ACTION)');
         await database.execute(
             'CREATE TABLE IF NOT EXISTS `ProductEntity` (`ticker` TEXT NOT NULL, `name` TEXT NOT NULL, `type` TEXT NOT NULL, `currency` TEXT NOT NULL, `lastPrice` REAL NOT NULL, `lastPriceOnMainCurrency` REAL NOT NULL, `isin` TEXT, `annualTer` REAL, PRIMARY KEY (`ticker`))');
 
@@ -123,7 +123,21 @@ class _$TransactionDAO extends TransactionDAO {
                   'date': item.date,
                   'price': item.price,
                   'qt': item.qt,
-                  'currencyTransaction': item.currencyTransaction
+                  'currencyChange': item.currencyChange,
+                  'type': item.type.index
+                }),
+        _transactionEntityUpdateAdapter = UpdateAdapter(
+            database,
+            'TransactionEntity',
+            ['id'],
+            (TransactionEntity item) => <String, Object?>{
+                  'id': item.id,
+                  'product': item.product,
+                  'date': item.date,
+                  'price': item.price,
+                  'qt': item.qt,
+                  'currencyChange': item.currencyChange,
+                  'type': item.type.index
                 });
 
   final sqflite.DatabaseExecutor database;
@@ -134,6 +148,8 @@ class _$TransactionDAO extends TransactionDAO {
 
   final InsertionAdapter<TransactionEntity> _transactionEntityInsertionAdapter;
 
+  final UpdateAdapter<TransactionEntity> _transactionEntityUpdateAdapter;
+
   @override
   Future<List<TransactionEntity>> findAllTransactions() async {
     return _queryAdapter.queryList('SELECT * FROM TransactionEntity',
@@ -141,8 +157,10 @@ class _$TransactionDAO extends TransactionDAO {
             row['date'] as String,
             row['price'] as double,
             row['qt'] as double,
-            row['currencyTransaction'] as String,
-            row['product'] as String));
+            row['currencyChange'] as double,
+            row['product'] as String,
+            TransactionTypeEnum.values[row['type'] as int],
+            id: row['id'] as int?));
   }
 
   @override
@@ -154,14 +172,22 @@ class _$TransactionDAO extends TransactionDAO {
             row['date'] as String,
             row['price'] as double,
             row['qt'] as double,
-            row['currencyTransaction'] as String,
-            row['product'] as String),
+            row['currencyChange'] as double,
+            row['product'] as String,
+            TransactionTypeEnum.values[row['type'] as int],
+            id: row['id'] as int?),
         arguments: [product]);
   }
 
   @override
   Future<void> insertTransaction(TransactionEntity transaction) async {
     await _transactionEntityInsertionAdapter.insert(
+        transaction, OnConflictStrategy.abort);
+  }
+
+  @override
+  Future<void> updateTransaction(TransactionEntity transaction) async {
+    await _transactionEntityUpdateAdapter.update(
         transaction, OnConflictStrategy.abort);
   }
 }
@@ -180,7 +206,7 @@ class _$ProductDAO extends ProductDAO {
                   'type': item.type,
                   'currency': item.currency,
                   'lastPrice': item.lastPrice,
-                  'lastPriceOnMainCurrency': item.lastPriceOnMainCurrency,
+                  'lastPriceOnMainCurrency': item.lastPriceOnUserCurrency,
                   'isin': item.isin,
                   'annualTer': item.annualTer
                 }),
@@ -194,7 +220,7 @@ class _$ProductDAO extends ProductDAO {
                   'type': item.type,
                   'currency': item.currency,
                   'lastPrice': item.lastPrice,
-                  'lastPriceOnMainCurrency': item.lastPriceOnMainCurrency,
+                  'lastPriceOnMainCurrency': item.lastPriceOnUserCurrency,
                   'isin': item.isin,
                   'annualTer': item.annualTer
                 });

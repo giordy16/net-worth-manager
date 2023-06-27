@@ -17,7 +17,7 @@ class HomePage extends StatefulWidget {
 class HomePageState extends State <HomePage> {
 
   int _selectedIndex = 0;
-  List<Widget> _homeWidgets = [OverviewPage(), InvestmentsPage(), OverviewPage()];
+  List<Widget> _homeWidgets = [OverviewPage(),InvestmentsPage()];
 
   @override
   void initState() {
@@ -54,11 +54,11 @@ class HomePageState extends State <HomePage> {
           icon: Icon(Icons.attach_money_outlined),
           label: 'Investimenti',
         ),
-        NavigationDestination(
-          selectedIcon: Icon(Icons.settings),
-          icon: Icon(Icons.settings_outlined),
-          label: 'Impostazioni',
-        ),
+        // NavigationDestination(
+        //   selectedIcon: Icon(Icons.settings),
+        //   icon: Icon(Icons.settings_outlined),
+        //   label: 'Impostazioni',
+        // ),
       ],
     );
   }

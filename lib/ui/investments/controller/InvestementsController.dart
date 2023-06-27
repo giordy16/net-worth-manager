@@ -40,7 +40,11 @@ class InvestmentsController extends GetxController {
     await _productRepo.updateProduct(product);
   }
 
-  Future<void> getAllPositions() async {
+  Future<void> updateTransaction(TransactionEntity transaction) async {
+    await _transactionRepo.updateTransaction(transaction);
+  }
+
+  Future<void> fetchAllPositions() async {
     List<MarketPosition> marketPosition = [];
     List<ProductEntity>? products = await _productRepo.getProducts();
     if (products != null) {
@@ -78,8 +82,14 @@ class InvestmentsController extends GetxController {
   String getTotalInvestmentsValue() {
     double total = 0;
     marketPositionList.forEach((element) {
-      total += element.getCurrentValue();
+      total += element.getCurrentValueOnUserCurrency();
     });
     return total.formatted();
+  }
+
+  Future<List<TransactionEntity>> getAllTransactionByProduct(
+      ProductEntity product) async {
+    return await _transactionRepo.getTransactionsByProduct(product.ticker) ??
+        [];
   }
 }

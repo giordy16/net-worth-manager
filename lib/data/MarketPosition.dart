@@ -1,16 +1,18 @@
-import 'package:intl/intl.dart';
+import 'package:forex_conversion/forex_conversion.dart';
 
 import 'ProductEntity.dart';
 import 'TransactionEntity.dart';
 
 class MarketPosition {
   final ProductEntity product;
-  final List<TransactionEntity> transactionsList;
+  List<TransactionEntity> transactionsList;
 
   MarketPosition(this.product, this.transactionsList);
 
-  double getCurrentValue() {
-    return getTotQt() * product.lastPriceOnMainCurrency;
+  final fx = Forex();
+
+  double getCurrentValueOnUserCurrency() {
+    return getTotQt() * product.lastPriceOnUserCurrency;
   }
 
   double getTotQt() {
@@ -21,32 +23,55 @@ class MarketPosition {
     return qt;
   }
 
-  double getAvgPrice() {
+  double getAvgPriceOnAssetCurrency() {
     if (transactionsList.isEmpty) return 0;
 
     double num = 0;
     double div = 0;
 
     transactionsList.forEach((element) {
-      num += (element.price * element.qt);
+      num += element.getTotalCostOnAssetCurrency();
       div += element.qt;
     });
     return num / div;
   }
 
-  double getTotalCost() {
+  double getTotalCostOnAssetCurrency() {
     double cost = 0;
     transactionsList.forEach((element) {
-      cost += (element.price * element.qt);
+      cost += element.getTotalCostOnAssetCurrency();
     });
     return cost;
   }
 
   double getDelta() {
-    return (product.lastPriceOnMainCurrency - getAvgPrice()) * getTotQt();
+    return (product.lastPrice - getAvgPriceOnAssetCurrency()) * getTotQt();
   }
 
-  double getDeltaPerc() {
-    return getDelta() / getTotalCost() * 100;
+  Future<double> getAvgPriceOnUserCurrency() async {
+    return await fx.getCurrencyConverted(
+        sourceCurrency: product.currency,
+        destinationCurrency: "EUR", // todo change with main currency
+        sourceAmount: getAvgPriceOnAssetCurrency());
+  }
+
+  Future<double> getPerformanceOnUserCurrency() async {
+    return (product.lastPriceOnUserCurrency -
+            await getAvgPriceOnUserCurrency()) *
+        getTotQt();
+  }
+
+  double getPerformancePerc() {
+    return getDelta() / getTotalCostOnAssetCurrency() * 100;
+  }
+
+  double getPerformanceOfTransaction(TransactionEntity transaction) {
+    return (product.lastPrice - transaction.getPriceOnAssetCurrency()) /
+        transaction.getPriceOnAssetCurrency() *
+        100;
+  }
+
+  void updateTransactionList(List<TransactionEntity> list) {
+    transactionsList = list.toList();
   }
 }

@@ -33,6 +33,15 @@ class TransactionRepoImpl extends GetxController implements TransactionRepo {
   }
 
   @override
+  Future<void> updateTransaction(TransactionEntity transaction) async {
+    try {
+      await transactionDAO.updateTransaction(transaction);
+    } catch(e) {
+      print(e);
+    }
+  }
+
+  @override
   Future<List<TransactionEntity>?> getTransactions() async {
     try {
       return await transactionDAO.findAllTransactions();

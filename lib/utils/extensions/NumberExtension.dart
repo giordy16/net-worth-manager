@@ -9,7 +9,11 @@ extension NumberExtension on double {
 
   String formattedPerc() {
     var nf = NumberFormat("0.0#");
-    return nf.format(this);
+    if (this > 0) {
+      return "+${nf.format(this)}%";
+    } else {
+      return "${nf.format(this)}%";
+    }
   }
 
 }

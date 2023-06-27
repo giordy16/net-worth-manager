@@ -11,4 +11,7 @@ abstract class TransactionDAO {
 
   @insert
   Future<void> insertTransaction(TransactionEntity transaction);
+
+  @update
+  Future<void> updateTransaction(TransactionEntity transaction);
 }

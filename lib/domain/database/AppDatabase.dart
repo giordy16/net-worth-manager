@@ -7,6 +7,8 @@ import 'package:net_worth_manager/data/TransactionEntity.dart';
 import 'package:net_worth_manager/domain/database/dao/ProductDAO.dart';
 import 'package:net_worth_manager/domain/database/dao/TransactionDAO.dart';
 
+import '../../data/enum/TransactionTypeEnum.dart';
+
 part 'AppDatabase.g.dart';
 
 @Database(version: 2, entities: [TransactionEntity, ProductEntity])

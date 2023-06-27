@@ -9,19 +9,19 @@ class ProductEntity {
   final String type;
   final String currency;
   double lastPrice;
-  double lastPriceOnMainCurrency;
+  double lastPriceOnUserCurrency;
   final String? isin;
   final double? annualTer;
 
   ProductEntity(this.name, this.ticker, this.type, this.currency,
-      this.lastPrice, this.lastPriceOnMainCurrency,
+      this.lastPrice, this.lastPriceOnUserCurrency,
       {this.isin, this.annualTer});
 
   Future<void> updateLastPrice(double price) async {
     final fx = Forex();
 
     lastPrice = price;
-    lastPriceOnMainCurrency = await fx.getCurrencyConverted(
+    lastPriceOnUserCurrency = await fx.getCurrencyConverted(
         sourceCurrency: currency,
         destinationCurrency: "EUR", // todo change with main currency
         sourceAmount: lastPrice);
