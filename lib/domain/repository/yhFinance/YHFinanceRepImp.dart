@@ -1,33 +1,39 @@
 import 'package:get/get_connect/connect.dart';
 import 'package:net_worth_manager/data/alphavantage/quote/AVQuoteModel.dart';
-import 'package:net_worth_manager/data/alphavantage/tickerSearch/AVTickerSearchModel.dart';
+import 'package:net_worth_manager/data/yhfinance/tickerSearch/YHAutoCompleteResponse.dart';
 import 'package:net_worth_manager/domain/repository/stock/StockApi.dart';
 
 import '../../../data/ProductEntity.dart';
 import '../../../utils/Constants.dart';
 
-class AlphaVantageRepImp extends GetConnect implements StockApi {
+class YHFinanceRepImp extends GetConnect implements StockApi {
   @override
   void onInit() {
-    httpClient.baseUrl = Constants.ALPHA_VANTAGE_BASE_URL;
+    httpClient.baseUrl = Constants.YH_FINANCE_BASE_URL;
     super.onInit();
   }
 
   @override
   Future<List<ProductEntity>?> searchTicker(String text) async {
     try {
-      dynamic queryData = {
-        "function": "SYMBOL_SEARCH",
-        "keywords": Uri.encodeFull(text),
-        "apikey": Constants.ALPHA_VANTAGE_KEY
+      dynamic queryData = {"symbol": text};
+
+      dynamic header = {
+        "X-RapidAPI-Key": Constants.YH_FINANCE_KEY,
+        'X-RapidAPI-Host': 'twelve-data1.p.rapidapi.com'
       };
 
-      var response = await get("query", query: queryData);
+      var response =
+          await get("symbol_search", query: queryData, headers: header);
+
       print(response.request?.url);
-      return AVTickerSearchList.fromJson(response.body)
-          .bestMatches
-          .map((e) => ProductEntity(e.name, e.symbol, e.type, 0, 0,
-              currency: e.currency))
+      print(response.body);
+
+      return YHAutoCompleteResponse.fromJson(response.body)
+          .data
+          .map((e) => ProductEntity(
+              e.instrument_name, e.symbol, e.instrument_type, 0, 0,
+              currency: e.currency, country: e.country, exchange: e.exchange))
           .toList();
     } catch (e) {
       print("searchTicker error: $e");

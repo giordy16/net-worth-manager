@@ -1,10 +1,10 @@
 import 'package:get/get.dart';
 import 'package:net_worth_manager/data/MarketPosition.dart';
-import 'package:net_worth_manager/domain/repository/alphaVantage/AlphaVantageRep.dart';
 import 'package:net_worth_manager/domain/repository/alphaVantage/AlphaVantageRepImp.dart';
 import 'package:net_worth_manager/domain/repository/products/ProductRepo.dart';
 import 'package:net_worth_manager/domain/repository/products/ProductRepoImpl.dart';
 import 'package:net_worth_manager/domain/repository/transaction/TransactionRepoImpl.dart';
+import 'package:net_worth_manager/domain/repository/yhFinance/YHFinanceRepImp.dart';
 import 'package:net_worth_manager/utils/extensions/NumberExtension.dart';
 
 import '../../../data/ProductEntity.dart';
@@ -12,7 +12,8 @@ import '../../../data/TransactionEntity.dart';
 import '../../../domain/repository/transaction/TransactionRepo.dart';
 
 class InvestmentsController extends GetxController {
-  final AlphaVantageRep _avRepo = Get.put(AlphaVantageRepImp());
+  final AlphaVantageRepImp _avRepo = Get.put(AlphaVantageRepImp());
+  final YHFinanceRepImp _yfRepo = Get.put(YHFinanceRepImp());
   final TransactionRepo _transactionRepo = Get.put(TransactionRepoImpl());
   final ProductRepo _productRepo = Get.put(ProductRepoImpl());
 
@@ -20,7 +21,7 @@ class InvestmentsController extends GetxController {
   RxList<MarketPosition> marketPositionList = <MarketPosition>[].obs;
 
   Future<void> tickerSearch(String text) async {
-    _avRepo
+    _yfRepo
         .searchTicker(text)
         .then((value) => _setSearchList(value ?? []))
         .onError((error, stackTrace) => _setSearchList([]));

@@ -40,7 +40,7 @@ class AddTransactionPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     tickerController.text = product.ticker;
-    currencyController.text = product.currency;
+    currencyController.text = product.currency ?? "";
     dateController.text = transaction?.date ?? "";
     priceController.text = transaction?.price.toString() ?? "";
     quantityController.text = transaction?.qt.toString() ?? "";

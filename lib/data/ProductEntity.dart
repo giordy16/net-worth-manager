@@ -7,15 +7,17 @@ class ProductEntity {
   final String ticker;
   final String name;
   final String type;
-  final String currency;
   double lastPrice;
   double lastPriceOnUserCurrency;
+  final String? currency;
   final String? isin;
   final double? annualTer;
+  final String? exchange;
+  final String? country;
 
-  ProductEntity(this.name, this.ticker, this.type, this.currency,
-      this.lastPrice, this.lastPriceOnUserCurrency,
-      {this.isin, this.annualTer});
+  ProductEntity(this.name, this.ticker, this.type, this.lastPrice,
+      this.lastPriceOnUserCurrency,
+      {this.currency, this.isin, this.annualTer, this.exchange, this.country});
 
   Future<void> updateLastPrice(double price) async {
     final fx = Forex();

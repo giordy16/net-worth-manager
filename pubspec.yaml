@@ -40,6 +40,8 @@ dependencies:
   floor: ^1.4.2
   intl: ^0.18.1
   forex_conversion: ^0.2.5+1
+  json_serializable: ^6.7.0
+  json_annotation: ^4.8.1
 
 dev_dependencies:
   flutter_test:

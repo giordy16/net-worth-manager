@@ -7,7 +7,6 @@ import '../../data/ProductEntity.dart';
 import '../../utils/TextStyles.dart';
 
 class SearchMarketWidget extends StatelessWidget {
-
   ProductEntity product;
 
   SearchMarketWidget(this.product);
@@ -41,7 +40,18 @@ class SearchMarketWidget extends StatelessWidget {
               ],
             ),
             SizedBox(height: 4),
-            Text(product.type, style: smallTextTS()),
+            Row(
+              mainAxisSize: MainAxisSize.max,
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Expanded(
+                  child: Text(product.type, style: smallTextTS()),
+                ),
+                SizedBox(width: 4),
+                Text("${product.exchange ?? " "} - ${product.country ?? " "}",
+                    style: smallTextTS())
+              ],
+            ),
             SizedBox(height: 16),
             Container(height: 1, width: double.infinity, color: Colors.grey)
           ],
