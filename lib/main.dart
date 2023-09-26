@@ -13,7 +13,7 @@ class App extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return GetMaterialApp(
-      title: 'Flutter Demo',
+      title: 'Net Worth Manager',
       theme: ThemeData(fontFamily: GoogleFonts.openSans().fontFamily, primarySwatch: Colors.blue),
       home: HomePage(),
       debugShowCheckedModeBanner: false,

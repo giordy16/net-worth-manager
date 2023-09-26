@@ -17,8 +17,7 @@ class AddTransactionPage extends StatelessWidget {
   TransactionEntity? transaction;
   bool? showTransactionType;
 
-  AddTransactionPage(this.product,
-      {this.transaction = null, this.showTransactionType = false});
+  AddTransactionPage(this.product, {this.transaction = null, this.showTransactionType = false});
 
   InvestmentsController controller = Get.put(InvestmentsController());
 
@@ -34,28 +33,17 @@ class AddTransactionPage extends StatelessWidget {
   RxBool sameCurrency = true.obs;
 
   int lastDateControllerLength = 0;
+  bool doInit = true;
 
   final _formKey = GlobalKey<FormState>();
 
   @override
   Widget build(BuildContext context) {
-    tickerController.text = product.ticker;
-    currencyController.text = product.currency ?? "";
-    dateController.text = transaction?.date ?? "";
-    priceController.text = transaction?.price.toString() ?? "";
-    quantityController.text = transaction?.qt.toString() ?? "";
-    currencyChangeController.text =
-        transaction?.currencyChange.toString() ?? "";
-    transactionTypeController.text = transactionType.name.capitalizeFirst!;
-    sameCurrency.value =
-        transaction == null || transaction?.currencyChange == 1;
-
-    dateController.addListener(onDateTextEdit);
+    initForm();
 
     return Obx(() => Scaffold(
         appBar: TopHeader(product.name, actions: [
-          IconButton(onPressed: () {}, icon: Icon(CupertinoIcons.delete))
-        ]),
+          if (transaction != null) IconButton(onPressed: () {}, icon: Icon(CupertinoIcons.delete))]),
         floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
         floatingActionButton: Visibility(
           visible: MediaQuery.of(context).viewInsets.bottom == 0.0,
@@ -64,9 +52,7 @@ class AddTransactionPage extends StatelessWidget {
             margin: const EdgeInsets.all(16),
             child: FilledButton(
               style: ButtonStyle(
-                  shape: MaterialStateProperty.all<RoundedRectangleBorder>(
-                      RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(8)))),
+                  shape: MaterialStateProperty.all<RoundedRectangleBorder>(RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)))),
               onPressed: () {
                 if (_formKey.currentState?.validate() == true) {
                   addTransaction();
@@ -166,9 +152,7 @@ class AddTransactionPage extends StatelessWidget {
                                       labelText: 'Tasso di cambio',
                                     ),
                                     controller: currencyChangeController,
-                                    keyboardType:
-                                        TextInputType.numberWithOptions(
-                                            decimal: true),
+                                    keyboardType: TextInputType.numberWithOptions(decimal: true),
                                     validator: (value) {
                                       return fieldValidator(value);
                                     }),
@@ -204,9 +188,7 @@ class AddTransactionPage extends StatelessWidget {
                               ],
                             )),
                         TextFormField(
-                          inputFormatters: [
-                            LengthLimitingTextInputFormatter(10)
-                          ],
+                          inputFormatters: [LengthLimitingTextInputFormatter(10)],
                           decoration: InputDecoration(
                             border: InputBorder.none,
                             labelText: 'Data',
@@ -231,8 +213,7 @@ class AddTransactionPage extends StatelessWidget {
                             validator: (value) {
                               return fieldValidator(value);
                             },
-                            keyboardType:
-                                TextInputType.numberWithOptions(decimal: true)),
+                            keyboardType: TextInputType.numberWithOptions(decimal: true)),
                         Container(
                           height: 1,
                           width: double.infinity,
@@ -247,8 +228,7 @@ class AddTransactionPage extends StatelessWidget {
                             validator: (value) {
                               return fieldValidator(value);
                             },
-                            keyboardType:
-                                TextInputType.numberWithOptions(decimal: true)),
+                            keyboardType: TextInputType.numberWithOptions(decimal: true)),
                         Container(
                           height: 1,
                           width: double.infinity,
@@ -262,6 +242,24 @@ class AddTransactionPage extends StatelessWidget {
         )));
   }
 
+  void initForm() {
+
+    if (doInit) {
+      doInit = false;
+
+      tickerController.text = product.ticker;
+      currencyController.text = product.currency ?? "";
+      dateController.text = transaction?.date ?? "";
+      priceController.text = transaction?.price.toString() ?? "";
+      quantityController.text = transaction?.qt.toString() ?? "";
+      currencyChangeController.text = transaction?.currencyChange.toString() ?? "";
+      transactionTypeController.text = transactionType.name.capitalizeFirst!;
+      sameCurrency.value = transaction == null || transaction?.currencyChange == 1;
+
+      dateController.addListener(onDateTextEdit);
+    }
+  }
+
   Future<void> addTransaction() async {
     if (transaction != null) {
       await controller.updateTransaction(TransactionEntity(
@@ -269,22 +267,13 @@ class AddTransactionPage extends StatelessWidget {
           dateController.text,
           double.parse(priceController.text),
           double.parse(quantityController.text),
-          sameCurrency.value
-              ? 1.0
-              : double.parse(currencyChangeController.text),
+          sameCurrency.value ? 1.0 : double.parse(currencyChangeController.text),
           product.ticker,
           transactionType));
     } else {
       await controller.addTransaction(
-          TransactionEntity(
-              dateController.text,
-              double.parse(priceController.text),
-              double.parse(quantityController.text),
-              sameCurrency.value
-                  ? 1.0
-                  : double.parse(currencyChangeController.text),
-              product.ticker,
-              transactionType),
+          TransactionEntity(dateController.text, double.parse(priceController.text), double.parse(quantityController.text),
+              sameCurrency.value ? 1.0 : double.parse(currencyChangeController.text), product.ticker, transactionType),
           product);
     }
 
@@ -303,21 +292,17 @@ class AddTransactionPage extends StatelessWidget {
     if (lastDateControllerLength < dateController.text.length) {
       if (dateController.text.length == 2) {
         dateController.text = "${dateController.text}/";
-        dateController.selection =
-            TextSelection.collapsed(offset: dateController.text.length);
+        dateController.selection = TextSelection.collapsed(offset: dateController.text.length);
       } else if (dateController.text.length == 5) {
         dateController.text = "${dateController.text}/";
-        dateController.selection =
-            TextSelection.collapsed(offset: dateController.text.length);
+        dateController.selection = TextSelection.collapsed(offset: dateController.text.length);
       }
     }
     lastDateControllerLength = dateController.text.length;
   }
 
   void showTransactionTypeChooser(BuildContext context) {
-    showCupertinoBottomSelection(context, "Seleziona la tipologia",
-        TransactionTypeEnum.values.map((e) => e.name.capitalizeFirst!).toList(),
-        (value) {
+    showCupertinoBottomSelection(context, "Seleziona la tipologia", TransactionTypeEnum.values.map((e) => e.name.capitalizeFirst!).toList(), (value) {
       transactionTypeController.text = value;
       transactionType = TransactionTypeEnum.values.byName(value.toUpperCase());
     });
