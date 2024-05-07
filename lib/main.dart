@@ -1,10 +1,23 @@
 import 'package:flutter/material.dart';
-import 'package:get/get_navigation/src/root/get_material_app.dart';
-import 'package:google_fonts/google_fonts.dart';
-import 'package:net_worth_manager/ui/home/HomePage.dart';
+import 'package:net_worth_manager/app_theme.dart';
+import 'package:net_worth_manager/utils/extensions/objectbox_extension.dart';
+import 'app_routes.dart';
+import 'domain/database/objectbox.dart';
 
-void main() {
+late ObjectBox objectbox;
+
+Future<void> main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+
+  objectbox = await ObjectBox.create();
+
+  initApp();
+
   runApp(const App());
+}
+
+initApp() {
+  objectbox.initIfEmpty();
 }
 
 class App extends StatelessWidget {
@@ -12,11 +25,13 @@ class App extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return GetMaterialApp(
-      title: 'Net Worth Manager',
-      theme: ThemeData(fontFamily: GoogleFonts.openSans().fontFamily, primarySwatch: Colors.blue),
-      home: HomePage(),
-      debugShowCheckedModeBanner: false,
-    );
+
+    var theme = MaterialTheme(Theme.of(context).textTheme);
+
+    return MaterialApp.router(
+        theme: theme.dark(),
+        title: 'Net Worth Manager',
+        debugShowCheckedModeBanner: false,
+        routerConfig: appRoutes);
   }
 }

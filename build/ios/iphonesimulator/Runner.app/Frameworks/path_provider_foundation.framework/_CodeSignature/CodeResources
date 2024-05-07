@@ -8,9 +8,32 @@
 		<data>
 		TeyGbcik9ABsFODDoZy2xO4vEl4=
 		</data>
+		<key>path_provider_foundation_privacy.bundle/Info.plist</key>
+		<data>
+		yrp9G9COmmF1e4fWI1UU46lUinc=
+		</data>
+		<key>path_provider_foundation_privacy.bundle/PrivacyInfo.xcprivacy</key>
+		<data>
+		/LX0ZlwxwIAIhjZaDB8EiH5KpXA=
+		</data>
 	</dict>
 	<key>files2</key>
-	<dict/>
+	<dict>
+		<key>path_provider_foundation_privacy.bundle/Info.plist</key>
+		<dict>
+			<key>hash2</key>
+			<data>
+			RRBBZXEU2fGOCDY+hZeyxSIqBJHZ/+K7h5m7WZCO5Vw=
+			</data>
+		</dict>
+		<key>path_provider_foundation_privacy.bundle/PrivacyInfo.xcprivacy</key>
+		<dict>
+			<key>hash2</key>
+			<data>
+			bS2g2NkwIn1CjB2TY7CtbjoS4sm2jFzilxWKdBL8jDE=
+			</data>
+		</dict>
+	</dict>
 	<key>rules</key>
 	<dict>
 		<key>^.*</key>

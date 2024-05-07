@@ -1,33 +1,51 @@
 import 'package:flutter/material.dart';
 
 TextStyle subTitleTS() {
-  return TextStyle(fontSize: 18, fontWeight: FontWeight.bold, color: Colors.black);
+  return const TextStyle(
+    fontSize: 18,
+    fontWeight: FontWeight.bold,
+  );
 }
 
 TextStyle normalTextTS() {
-  return TextStyle(fontSize: 16, color: Colors.black);
+  return const TextStyle(
+    fontSize: 16,
+  );
 }
 
 TextStyle normalTextColoredTS(double num) {
-  return TextStyle(fontSize: 16, color: num < 0 ? Colors.red : Colors.green);
+  return TextStyle(
+    fontSize: 16,
+  );
 }
 
 TextStyle normalBoldTextTS() {
-  return TextStyle(fontSize: 16, fontWeight: FontWeight.bold, color: Colors.black);
+  return const TextStyle(
+    fontSize: 16,
+    fontWeight: FontWeight.bold,
+  );
 }
 
 TextStyle smallTextTS() {
-  return TextStyle(fontSize: 14, color: Colors.black);
+  return const TextStyle(
+    fontSize: 14,
+  );
 }
 
 TextStyle smallGreyTextTS() {
-  return TextStyle(fontSize: 14, color: Colors.grey);
+  return const TextStyle(
+    fontSize: 14,
+  );
 }
 
 TextStyle smallTextColoredTS(double num) {
-  return TextStyle(fontSize: 14, color: num < 0 ? Colors.red : Colors.green);
+  return TextStyle(
+    fontSize: 14,
+  );
 }
 
 TextStyle smallWhiteTextTS() {
-  return TextStyle(fontSize: 14, color: Colors.white);
+  return const TextStyle(
+    fontSize: 14,
+  );
 }
