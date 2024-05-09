@@ -9,9 +9,6 @@ import 'package:net_worth_manager/ui/screens/currency_selection/currency_selecti
 import 'package:net_worth_manager/ui/screens/currency_selection/currency_selection_state.dart';
 import 'package:net_worth_manager/ui/widgets/base_components/app_text_field.dart';
 
-import '../../../main.dart';
-import '../../../models/obox/settings_obox.dart';
-
 class CurrencySelectionScreen extends StatelessWidget {
   static const route = "/CurrencySelectionScreen";
 

@@ -1,7 +1,6 @@
 import 'package:net_worth_manager/main.dart';
 import 'package:net_worth_manager/models/obox/asset_category_obox.dart';
 import 'package:net_worth_manager/models/obox/asset_time_value_obox.dart';
-import 'package:net_worth_manager/objectbox.g.dart';
 
 import '../../../models/obox/asset_obox.dart';
 import 'asset_repo.dart';

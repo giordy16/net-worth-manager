@@ -1,16 +1,11 @@
-import 'package:fl_chart/fl_chart.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-import 'package:intl/intl.dart';
 import 'package:net_worth_manager/app_dimensions.dart';
 import 'package:net_worth_manager/ui/screens/add_asset_position/add_asset_position_screen.dart';
 import 'package:net_worth_manager/ui/screens/asset_detail/components/asset_detail_history_item.dart';
 
 import '../../../models/obox/asset_obox.dart';
-import '../../widgets/graph/asset_line_graph.dart';
 import '../../widgets/graph/asset_line_graphNEW.dart';
-import '../BUG_GRAPH/chart_question.dart';
 
 class AssetDetailScreen extends StatelessWidget {
   static const route = "/AssetDetailScreen";
@@ -36,15 +31,10 @@ class AssetDetailScreen extends StatelessWidget {
               mainAxisSize: MainAxisSize.min,
               children: [
                 Text("Current value:"),
-                GestureDetector(
-                  onTap: (){
-                    context.push(NewGraphWidget.route);
-                  },
-                  child: Text(
-                    asset.getLastValueWithCurrency(),
-                    style: theme.textTheme.titleLarge
-                        ?.copyWith(fontWeight: FontWeight.bold),
-                  ),
+                Text(
+                  asset.getLastValueWithCurrency(),
+                  style: theme.textTheme.titleLarge
+                      ?.copyWith(fontWeight: FontWeight.bold),
                 ),
                 const SizedBox(height: Dimensions.l),
                 AssetLineGraph(

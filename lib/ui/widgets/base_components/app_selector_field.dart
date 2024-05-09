@@ -62,7 +62,7 @@ class AppSelectorField<T> extends StatelessWidget {
             mainAxisSize: MainAxisSize.min,
             children: <Widget>[
               Text(
-                initialValue.toString(),
+                (initialValue ?? "").toString(),
                 style: TextStyle(color: Colors.white),
               ),
               Icon(Icons.arrow_drop_down, color: Colors.white),

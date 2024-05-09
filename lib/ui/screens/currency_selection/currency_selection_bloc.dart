@@ -6,7 +6,6 @@ import 'package:net_worth_manager/ui/screens/currency_selection/currency_selecti
 import 'package:net_worth_manager/ui/screens/currency_selection/currency_selection_state.dart';
 
 import '../../../domain/repository/settings/settings_repo.dart';
-import '../../../models/obox/settings_obox.dart';
 
 class CurrencySelectionBloc
     extends Bloc<CurrencySelectionEvent, CurrencySelectionState> {
