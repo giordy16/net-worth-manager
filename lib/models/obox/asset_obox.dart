@@ -5,6 +5,7 @@ import 'package:objectbox/objectbox.dart';
 
 import '../../main.dart';
 import '../../ui/widgets/graph/asset_line_graph.dart';
+import '../../ui/widgets/graph/asset_line_graphNEW.dart';
 import 'asset_category_obox.dart';
 
 @Entity()
@@ -62,7 +63,7 @@ class Asset {
     DateTime endDate = gap.getEndDate();
     DateTime startDate = gap.getStartDate(this);
 
-    return timeValues
+    return getTimeValuesChronologicalOrder()
         .where((value) =>
             (value.date.isAfter(startDate) ||
                 value.date.isAtSameMomentAs(startDate)) &&

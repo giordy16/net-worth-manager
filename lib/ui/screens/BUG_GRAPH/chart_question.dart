@@ -95,14 +95,7 @@ class _NewGraphWidgetState extends State<NewGraphWidget> {
         interval: 5,
         showTitles: true,
         getTitlesWidget: (value, meta) {
-          String text = '';
-          // if (value == _maxX) {
-          //   text = getDate(data.first.x);
-          // } else if (double.parse(value.toStringAsFixed(0)) == _minX) {
-          //   text = getDate(data.last.x);
-          // } else if (value == middle) {
-          //   text = getDate(middle);
-          // }
+
           if (meta.axisPosition == 0 ||
               meta.axisPosition == meta.parentAxisSize) {
             // don't show first and last values
@@ -112,7 +105,8 @@ class _NewGraphWidgetState extends State<NewGraphWidget> {
             angle: -45,
               axisSide: meta.axisSide,
               child: Text(
-                getDate(value),
+                "!"
+                // getDate(value),
               ));
         },
       ),

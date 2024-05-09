@@ -9,6 +9,7 @@ import 'package:net_worth_manager/ui/screens/asset_detail/components/asset_detai
 
 import '../../../models/obox/asset_obox.dart';
 import '../../widgets/graph/asset_line_graph.dart';
+import '../../widgets/graph/asset_line_graphNEW.dart';
 import '../BUG_GRAPH/chart_question.dart';
 
 class AssetDetailScreen extends StatelessWidget {
