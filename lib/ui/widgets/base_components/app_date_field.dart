@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
-import 'package:net_worth_manager/app_dimensions.dart';
 
 import '../../../utils/form_component_border.dart';
 import '../../../utils/form_validators.dart';

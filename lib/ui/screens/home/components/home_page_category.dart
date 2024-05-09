@@ -1,10 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:intl/intl.dart';
 import 'package:net_worth_manager/app_dimensions.dart';
 import 'package:net_worth_manager/models/obox/asset_category_obox.dart';
 import 'package:net_worth_manager/ui/screens/home/components/home_page_asset.dart';
-
-import '../../../../main.dart';
 import '../../../../models/obox/asset_obox.dart';
 
 class HomePageCategory extends StatelessWidget {

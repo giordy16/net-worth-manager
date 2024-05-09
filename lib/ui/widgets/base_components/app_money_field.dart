@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:go_router/go_router.dart';
-import 'package:net_worth_manager/app_dimensions.dart';
 import 'package:net_worth_manager/ui/screens/currency_selection/currency_selection_screen.dart';
 
 import '../../../main.dart';

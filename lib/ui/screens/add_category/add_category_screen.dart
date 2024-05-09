@@ -1,16 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:net_worth_manager/app_dimensions.dart';
-import 'package:net_worth_manager/domain/repository/asset/asset_repo_impl.dart';
 import 'package:net_worth_manager/main.dart';
 import 'package:net_worth_manager/models/obox/asset_category_obox.dart';
-import 'package:net_worth_manager/ui/screens/add_asset/add_asset_bloc.dart';
-import 'package:net_worth_manager/ui/screens/add_asset/add_asset_events.dart';
-import 'package:net_worth_manager/ui/screens/add_asset/add_asset_state.dart';
 import 'package:net_worth_manager/ui/widgets/base_components/app_bottom_fab.dart';
-import 'package:net_worth_manager/ui/widgets/base_components/app_selector_field.dart';
-import 'package:path/path.dart';
 
 import '../../widgets/base_components/app_text_field.dart';
 
