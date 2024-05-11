@@ -6,13 +6,14 @@ import '../../../utils/form_component_border.dart';
 import '../../../utils/form_validators.dart';
 
 class AppTextField extends StatelessWidget {
-  String initialValue;
+  String? initialValue;
   String title;
   Function(String)? onTextChange;
   TextInputType? keyboardType;
   IconData? prefixIcon;
   bool isMandatory;
   bool readOnly;
+  TextEditingController controller;
 
   AppTextField({
     super.key,
@@ -23,14 +24,16 @@ class AppTextField extends StatelessWidget {
     this.prefixIcon,
     this.isMandatory = false,
     this.readOnly = false,
-  });
+  }) : controller = TextEditingController(text: initialValue);
 
   @override
   Widget build(BuildContext context) {
     ThemeData theme = Theme.of(context);
+    controller.selection = TextSelection.fromPosition(
+        TextPosition(offset: controller.text.length));
 
     return TextFormField(
-      initialValue: initialValue,
+      controller: controller,
       readOnly: readOnly,
       onTapOutside: (_) => FocusScope.of(context).unfocus(),
       keyboardType: keyboardType,

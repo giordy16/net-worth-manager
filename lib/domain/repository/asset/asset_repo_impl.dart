@@ -3,6 +3,7 @@ import 'package:net_worth_manager/models/obox/asset_category_obox.dart';
 import 'package:net_worth_manager/models/obox/asset_time_value_obox.dart';
 
 import '../../../models/obox/asset_obox.dart';
+import '../../../objectbox.g.dart';
 import 'asset_repo.dart';
 
 class AssetRepoImpl implements AssetRepo {
@@ -37,5 +38,43 @@ class AssetRepoImpl implements AssetRepo {
     objectbox.store.box<AssetTimeValue>().put(position);
     asset.timeValues.add(position);
     saveNewAsset(asset);
+  }
+
+  @override
+  void deleteAsset(Asset asset) {
+    for (var timeValue in asset.timeValues.toList()) {
+      deletePosition(asset, timeValue);
+    }
+    objectbox.store.box<Asset>().remove(asset.id);
+  }
+
+  @override
+  void deletePosition(Asset asset, AssetTimeValue timeValue) {
+    objectbox.store.box<AssetTimeValue>().remove(timeValue.id);
+    asset.timeValues.remove(timeValue);
+  }
+
+  @override
+  void deleteCategory(AssetCategory category) {
+    var assets = getAssetFromCategory(category);
+    for (var asset in assets) {
+      deleteAsset(asset);
+    }
+
+    objectbox.store.box<AssetCategory>().remove(category.id);
+  }
+
+  @override
+  void updatePosition(AssetTimeValue position, Asset asset) {
+    objectbox.store.box<AssetTimeValue>().put(position);
+  }
+
+  @override
+  List<Asset> getAssetFromCategory(AssetCategory category) {
+    return objectbox.store
+        .box<Asset>()
+        .query(Asset_.category.equals(category.id))
+        .build()
+        .find();
   }
 }

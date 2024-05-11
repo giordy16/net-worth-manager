@@ -4,7 +4,7 @@ import 'package:net_worth_manager/models/obox/settings_obox.dart';
 import 'package:objectbox/objectbox.dart';
 
 import '../../main.dart';
-import '../../ui/widgets/graph/asset_line_graphNEW.dart';
+import '../../ui/widgets/graph/asset_line_graph.dart';
 import 'asset_category_obox.dart';
 
 @Entity()

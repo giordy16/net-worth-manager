@@ -1,7 +1,12 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:net_worth_manager/app_dimensions.dart';
+
+Future<bool?> showDeleteConfirmSheet(
+    BuildContext context, [String? message]) async {
+  return await showYesNoBottomSheet(
+      context, message ?? "Are you sure you want to delete this?");
+}
 
 Future<bool?> showYesNoBottomSheet(BuildContext context, String message) async {
   ThemeData theme = Theme.of(context);
@@ -12,7 +17,7 @@ Future<bool?> showYesNoBottomSheet(BuildContext context, String message) async {
           padding: EdgeInsets.all(Dimensions.l),
           width: double.infinity,
           child: Column(mainAxisSize: MainAxisSize.min, children: [
-            Text(message),
+            Text(message, textAlign: TextAlign.center,),
             SizedBox(height: Dimensions.xl),
             Row(
               children: [
@@ -69,6 +74,34 @@ Future<bool?> showYesNoBottomSheet(BuildContext context, String message) async {
               ],
             ),
             SizedBox(height: Dimensions.xl)
+          ]),
+        );
+      });
+}
+
+Future<Widget?> showSelectionSheet(
+    BuildContext context, List<Widget> widgets) async {
+  return await showModalBottomSheet(
+      context: context,
+      builder: (context) {
+        return Container(
+          padding: const EdgeInsets.symmetric(
+              vertical: Dimensions.l, horizontal: Dimensions.s),
+          width: double.infinity,
+          child: Column(mainAxisSize: MainAxisSize.min, children: [
+            Text("Choose an option"),
+            SizedBox(height: Dimensions.s),
+            ...widgets.map((e) => Material(
+                  color: Colors.transparent,
+                  child: InkWell(
+                    onTap: () => context.pop(e),
+                    child: Padding(
+                      padding: EdgeInsets.symmetric(vertical: 8),
+                      child: e,
+                    ),
+                  ),
+                )),
+            SizedBox(height: Dimensions.l)
           ]),
         );
       });

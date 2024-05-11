@@ -1,5 +1,6 @@
 import 'package:equatable/equatable.dart';
 import '../../../models/obox/asset_category_obox.dart';
+import '../../../models/obox/asset_obox.dart';
 
 class AddAssetState extends Equatable {
   final String assetName;

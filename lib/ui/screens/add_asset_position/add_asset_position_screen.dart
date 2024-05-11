@@ -9,18 +9,31 @@ import 'package:net_worth_manager/ui/widgets/base_components/app_money_field.dar
 
 import '../../../app_dimensions.dart';
 import '../../../domain/repository/asset/asset_repo_impl.dart';
+import '../../../models/obox/asset_time_value_obox.dart';
 import '../../widgets/base_components/app_bottom_fab.dart';
 import '../../widgets/base_components/app_text_field.dart';
+import '../../widgets/modal/bottom_sheet.dart';
+import 'add_asset_position_screen_params.dart';
 import 'add_position_state.dart';
 
 class AddAssetPositionScreen extends StatelessWidget {
   static const route = "/AddAssetPositionScreen";
 
-  Asset asset;
+  AddAssetPositionScreenParams params;
 
-  AddAssetPositionScreen({super.key, required this.asset});
+  AddAssetPositionScreen({super.key, required this.params});
 
   final _formKey = GlobalKey<FormState>();
+
+  Future<void> onDelete(BuildContext context) async {
+    var yes = await showDeleteConfirmSheet(context);
+    if (yes == true) {
+      context
+          .read<AddPositionBloc>()
+          .add(DeletePositionEvent(params.asset, params.timeValue!));
+      context.pop();
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -29,12 +42,22 @@ class AddAssetPositionScreen extends StatelessWidget {
         child: BlocProvider(
             create: (context) => AddPositionBloc(
                   assetRepo: context.read<AssetRepoImpl>(),
-                ),
+                )..add(InitState(params.timeValue)),
             child: BlocBuilder<AddPositionBloc, AddPositionState>(
                 builder: (context, state) {
               return Scaffold(
                   appBar: AppBar(
-                    title: Text("Add position"),
+                    title: Text("Position"),
+                    actions: [
+                      if (params.timeValue != null)
+                        IconButton(
+                          onPressed: () => onDelete(context),
+                          icon: const Icon(
+                            Icons.delete_outlined,
+                            color: Colors.white,
+                          ),
+                        )
+                    ],
                   ),
                   floatingActionButtonLocation:
                       FloatingActionButtonLocation.centerFloat,
@@ -44,7 +67,7 @@ class AddAssetPositionScreen extends StatelessWidget {
                       if (_formKey.currentState!.validate()) {
                         context
                             .read<AddPositionBloc>()
-                            .add(SavePositionEvent(asset));
+                            .add(SavePositionEvent(params));
                         context.pop();
                       }
                     },
@@ -60,7 +83,7 @@ class AddAssetPositionScreen extends StatelessWidget {
                             Padding(
                               padding: const EdgeInsets.only(top: Dimensions.m),
                               child: AppTextField(
-                                initialValue: asset.name,
+                                initialValue: params.asset.name,
                                 title: "Asset",
                                 readOnly: true,
                                 isMandatory: true,
@@ -69,6 +92,7 @@ class AddAssetPositionScreen extends StatelessWidget {
                             Padding(
                               padding: const EdgeInsets.only(top: Dimensions.m),
                               child: AppDateField(
+                                initialValue: state.dateTime,
                                 title: "Date",
                                 isMandatory: true,
                                 onDatePicked: (date) {
@@ -82,10 +106,11 @@ class AddAssetPositionScreen extends StatelessWidget {
                               padding: const EdgeInsets.only(top: Dimensions.m),
                               child: AppMoneyField(
                                 title: "Value",
+                                initialValue: state.cost,
                                 isMandatory: true,
                                 onTextChange: (value) {
                                   context.read<AddPositionBloc>().add(
-                                      ChangeCostEvent(double.parse(value)));
+                                      ChangeCostEvent(double.tryParse(value)));
                                 },
                               ),
                             ),

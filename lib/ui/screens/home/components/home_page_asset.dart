@@ -7,8 +7,9 @@ import '../../../../models/obox/settings_obox.dart';
 class HomePageAsset extends StatelessWidget {
   Asset asset;
   Function(Asset) onItemClick;
+  Function(Asset) onLongPress;
 
-  HomePageAsset(this.asset, this.onItemClick);
+  HomePageAsset(this.asset, this.onItemClick, this.onLongPress);
 
   @override
   Widget build(BuildContext context) {
@@ -19,6 +20,7 @@ class HomePageAsset extends StatelessWidget {
     return Material(
       child: InkWell(
         onTap: () => onItemClick(asset),
+        onLongPress: () => onLongPress(asset),
         child: Row(
           children: [
             Column(

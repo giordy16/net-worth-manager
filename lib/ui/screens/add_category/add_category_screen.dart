@@ -8,14 +8,23 @@ import 'package:net_worth_manager/ui/widgets/base_components/app_bottom_fab.dart
 import '../../widgets/base_components/app_text_field.dart';
 
 class AddAssetCategory extends StatelessWidget {
-  AddAssetCategory({super.key});
+  AddAssetCategory({super.key, this.category});
 
   static const route = "/AddAssetCategory";
+
+  AssetCategory? category;
 
   String categoryName = "";
 
   void saveCategory(BuildContext context) {
-    objectbox.store.box<AssetCategory>().put(AssetCategory(categoryName));
+    if (category != null) {
+      // edit category
+      category?.name = categoryName;
+      objectbox.store.box<AssetCategory>().put(category!);
+    } else {
+      // new category
+      objectbox.store.box<AssetCategory>().put(AssetCategory(categoryName));
+    }
     context.pop();
   }
 
@@ -37,12 +46,13 @@ class AddAssetCategory extends StatelessWidget {
             child: Column(
               children: [
                 Padding(
-                  padding: const EdgeInsets.only(top: Dimensions.xs),
-                  child: Text("Create a new category for your assets, for example \"Liquidity\", \"Passivity\", ...")
-                ),
+                    padding: const EdgeInsets.only(top: Dimensions.xs),
+                    child: Text(
+                        "Create a new category for your assets, for example \"Liquidity\", \"Passivity\", ...")),
                 Padding(
                   padding: const EdgeInsets.only(top: Dimensions.m),
                   child: AppTextField(
+                    initialValue: category?.name,
                     title: "Name",
                     onTextChange: (value) {
                       categoryName = value;

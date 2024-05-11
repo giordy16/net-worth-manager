@@ -20,13 +20,34 @@ class AddPositionBloc extends Bloc<AddPositionEvent, AddPositionState> {
     });
 
     on<SavePositionEvent>((event, emit) {
-      assetRepo.saveNewAssetPosition(
-        AssetTimeValue(
-          state.dateTime!,
-          state.cost!,
-        ),
-        event.asset,
-      );
+      if (event.params.timeValue != null) {
+        // edit
+        event.params.timeValue!.value = state.cost!;
+        event.params.timeValue!.date = state.dateTime!;
+
+        assetRepo.updatePosition(event.params.timeValue!, event.params.asset);
+      } else {
+        assetRepo.saveNewAssetPosition(
+          AssetTimeValue(
+            state.dateTime!,
+            state.cost!,
+          ),
+          event.params.asset,
+        );
+      }
+    });
+
+    on<DeletePositionEvent>((event, emit) {
+      assetRepo.deletePosition(event.asset, event.position);
+    });
+
+    on<InitState>((event, emit) {
+      if (event.value != null) {
+        emit(state.copyWith(
+          dateTime: event.value!.date,
+          cost: event.value!.value,
+        ));
+      }
     });
   }
 }

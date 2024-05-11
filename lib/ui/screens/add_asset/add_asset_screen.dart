@@ -7,19 +7,24 @@ import 'package:net_worth_manager/models/obox/asset_category_obox.dart';
 import 'package:net_worth_manager/ui/screens/add_asset/add_asset_bloc.dart';
 import 'package:net_worth_manager/ui/screens/add_asset/add_asset_events.dart';
 import 'package:net_worth_manager/ui/screens/add_asset/add_asset_state.dart';
+import 'package:net_worth_manager/ui/screens/add_asset_position/add_asset_position_screen.dart';
+import 'package:net_worth_manager/ui/screens/add_asset_position/add_asset_position_screen_params.dart';
 import 'package:net_worth_manager/ui/screens/add_category/add_category_screen.dart';
 import 'package:net_worth_manager/ui/widgets/base_components/app_bottom_fab.dart';
 import 'package:net_worth_manager/ui/widgets/base_components/app_selector_field.dart';
 import 'package:net_worth_manager/ui/widgets/modal/bottom_sheet.dart';
 
+import '../../../models/obox/asset_obox.dart';
 import '../../widgets/base_components/app_text_field.dart';
 
 class AddAssetScreen extends StatelessWidget {
-  AddAssetScreen({super.key});
+  AddAssetScreen({super.key, this.asset});
 
   static const route = "/AddAssetScreen";
 
   final _formKey = GlobalKey<FormState>();
+
+  Asset? asset;
 
   Future<void> onCategorySelected(
     BuildContext context,
@@ -34,14 +39,20 @@ class AddAssetScreen extends StatelessWidget {
   }
 
   Future<void> saveAsset(BuildContext context) async {
+    if (asset != null) {
+      // edit asset
+      context.read<AddAssetBloc>().add(SaveAssetEvent(asset: asset));
+      context.pop();
+      return;
+    }
+
     bool? yes = await showYesNoBottomSheet(
         context, "Do you want to add a position for this asset?");
 
     if (yes == null) return;
 
     if (yes) {
-      // todo open add position
-      print("YES");
+      context.read<AddAssetBloc>().add(SaveAssetAndOpenPositionEvent());
     } else {
       context.read<AddAssetBloc>().add(SaveAssetEvent());
       context.pop();
@@ -55,7 +66,10 @@ class AddAssetScreen extends StatelessWidget {
       child: BlocProvider(
           create: (context) => AddAssetBloc(
                 assetRepo: context.read<AssetRepoImpl>(),
-              )..add(FetchAddAssetData()),
+                context: context,
+              )
+                ..add(FetchAddAssetData())
+                ..add(SetInitialValue(asset)),
           child: BlocBuilder<AddAssetBloc, AddAssetState>(
               builder: (context, state) {
             return Scaffold(
@@ -112,23 +126,6 @@ class AddAssetScreen extends StatelessWidget {
                               isMandatory: true,
                             ),
                           ),
-                          // Padding(
-                          //   padding: const EdgeInsets.only(top: Dimensions.m),
-                          //   child: AppMoneyField(
-                          //     title: "Value",
-                          //     onTextChange: (value) {
-                          //       context.read<AddAssetBloc>().add(ChangeValueEvent(
-                          //           double.tryParse(value) ?? 0.0));
-                          //     },
-                          //   ),
-                          // ),
-                          // Padding(
-                          //   padding: const EdgeInsets.only(top: Dimensions.m),
-                          //   child: AppDateField(
-                          //     title: "Purchase date",
-                          //     onDatePicked: (value) {},
-                          //   ),
-                          // ),
                         ],
                       ),
                     ),

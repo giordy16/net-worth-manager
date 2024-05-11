@@ -29,7 +29,16 @@ class _AppDateFieldState extends State<AppDateField> {
   @override
   void initState() {
     super.initState();
+    initController();
+  }
 
+  @override
+  void didUpdateWidget(AppDateField oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    initController();
+  }
+
+  void initController() {
     controller = TextEditingController(
         text: widget.initialValue != null
             ? dateFormat.format(widget.initialValue!)
@@ -43,7 +52,6 @@ class _AppDateFieldState extends State<AppDateField> {
     return TextFormField(
       controller: controller,
       onTapOutside: (_) => FocusScope.of(context).unfocus(),
-      keyboardType: TextInputType.number,
       textCapitalization: TextCapitalization.sentences,
       readOnly: true,
       onTap: () async {

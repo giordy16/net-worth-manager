@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:intl/intl.dart';
 import 'package:net_worth_manager/ui/screens/currency_selection/currency_selection_screen.dart';
 
 import '../../../main.dart';
@@ -8,14 +9,14 @@ import '../../../utils/form_component_border.dart';
 import '../../../utils/form_validators.dart';
 
 class AppMoneyField extends StatefulWidget {
-  String initialValue;
+  double? initialValue;
   String title;
   Function(String)? onTextChange;
   bool isMandatory;
 
   AppMoneyField({
     super.key,
-    this.initialValue = "",
+    this.initialValue,
     this.title = "",
     this.onTextChange,
     this.isMandatory = false,
@@ -26,7 +27,7 @@ class AppMoneyField extends StatefulWidget {
 }
 
 class _AppMoneyFieldState extends State<AppMoneyField> {
-  late final TextEditingController controller;
+  late TextEditingController controller;
   final allowedSymbols = [
     "0",
     "1",
@@ -43,17 +44,40 @@ class _AppMoneyFieldState extends State<AppMoneyField> {
   ];
 
   String oldText = "";
+  Settings settings = objectbox.store.box<Settings>().getAll().first;
+
+  void initController() {
+    controller = TextEditingController(
+        text: widget.initialValue != null
+            ? NumberFormat("#.##", "it_IT").format(widget.initialValue)
+            : "");
+  }
 
   @override
   void initState() {
-    controller = TextEditingController(text: widget.initialValue);
     super.initState();
+    initController();
+  }
+
+  @override
+  void didUpdateWidget(AppMoneyField oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    initController();
   }
 
   bool isTextOk(String text) {
+    if (text.isEmpty) return true;
+
+    // the - can be only in first position
     if (text.contains("-") && text.characters.first != "-") return false;
+
+    // only one "," is allowed
     if (text.characters.where((c) => c == ",").length > 1) return false;
+
+    // only allowedSymbols are allowed
     if (!allowedSymbols.contains(text.characters.last)) return false;
+
+    // only 2 digits after "," are allowed
     if (text.contains(",") && text.split(",")[1].length > 2) return false;
 
     return true;
@@ -62,7 +86,9 @@ class _AppMoneyFieldState extends State<AppMoneyField> {
   @override
   Widget build(BuildContext context) {
     ThemeData theme = Theme.of(context);
-    Settings settings = objectbox.store.box<Settings>().getAll().first;
+    controller.selection = TextSelection.fromPosition(
+        TextPosition(offset: controller.text.length));
+
     return TextFormField(
       controller: controller,
       onTapOutside: (_) => FocusScope.of(context).unfocus(),

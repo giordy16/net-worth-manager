@@ -5,7 +5,8 @@ import 'package:net_worth_manager/ui/screens/add_asset_position/add_asset_positi
 import 'package:net_worth_manager/ui/screens/asset_detail/components/asset_detail_history_item.dart';
 
 import '../../../models/obox/asset_obox.dart';
-import '../../widgets/graph/asset_line_graphNEW.dart';
+import '../../widgets/graph/asset_line_graph.dart';
+import '../add_asset_position/add_asset_position_screen_params.dart';
 
 class AssetDetailScreen extends StatelessWidget {
   static const route = "/AssetDetailScreen";
@@ -51,8 +52,10 @@ class AssetDetailScreen extends StatelessWidget {
                     const Expanded(child: SizedBox()),
                     IconButton(
                         onPressed: () {
-                          context.push(AddAssetPositionScreen.route,
-                              extra: asset);
+                          context.push(
+                            AddAssetPositionScreen.route,
+                            extra: AddAssetPositionScreenParams(asset: asset),
+                          );
                         },
                         icon: const Icon(Icons.add))
                   ],
@@ -64,7 +67,10 @@ class AssetDetailScreen extends StatelessWidget {
                     itemBuilder: (context, index) {
                       var timeValue = asset.getTimeValuesChronologicalOrder(
                           latestFirst: true)[index];
-                      return AssetDetailHistoryItem(timeValue: timeValue);
+                      return AssetDetailHistoryItem(
+                        asset: asset,
+                        timeValue: timeValue,
+                      );
                     },
                     separatorBuilder: (context, index) {
                       return const Divider();
