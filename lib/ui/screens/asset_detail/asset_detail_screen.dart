@@ -31,17 +31,16 @@ class AssetDetailScreen extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               mainAxisSize: MainAxisSize.min,
               children: [
-                Text("Current value:"),
+                Text("Current value"),
                 Text(
                   asset.getLastValueWithCurrency(),
                   style: theme.textTheme.titleLarge
                       ?.copyWith(fontWeight: FontWeight.bold),
                 ),
-                const SizedBox(height: Dimensions.l),
                 AssetLineGraph(
                   asset: asset,
                 ),
-                const SizedBox(height: Dimensions.l),
+                const SizedBox(height: Dimensions.m),
                 Row(
                   children: [
                     Text(
@@ -60,7 +59,6 @@ class AssetDetailScreen extends StatelessWidget {
                         icon: const Icon(Icons.add))
                   ],
                 ),
-                const SizedBox(height: Dimensions.m),
                 ListView.separated(
                     shrinkWrap: true,
                     physics: const NeverScrollableScrollPhysics(),
