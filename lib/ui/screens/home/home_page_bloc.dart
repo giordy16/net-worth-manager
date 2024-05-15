@@ -17,7 +17,7 @@ class HomePageBloc extends Bloc<HomePageEvent, HomePageState> {
 
       emit(state.copyWith(
         assets: assets,
-        netWorthValue: assetRepo.getCurrentNetWorth(),
+        netWorthValue: assetRepo.getNetWorth(),
       ));
     });
 

@@ -33,18 +33,16 @@ class AssetDetailScreen extends StatelessWidget {
               children: [
                 Text("Current value"),
                 Text(
-                  asset.getLastValueWithCurrency(),
+                  asset.getCurrentValueWithCurrency(),
                   style: theme.textTheme.titleLarge
                       ?.copyWith(fontWeight: FontWeight.bold),
                 ),
-                AssetLineGraph(
-                  asset: asset,
-                ),
+                AssetLineGraph(asset: asset),
                 const SizedBox(height: Dimensions.m),
                 Row(
                   children: [
                     Text(
-                      "History",
+                      "Value history",
                       style: theme.textTheme.titleMedium
                           ?.copyWith(fontWeight: FontWeight.bold),
                     ),

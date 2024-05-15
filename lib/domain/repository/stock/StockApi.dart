@@ -1,8 +1,7 @@
-import '../../../data/ProductEntity.dart';
-import '../../../data/alphavantage/quote/AVQuoteModel.dart';
+import '../../../models/obox/market_info_obox.dart';
 
 abstract class StockApi {
 
-  Future<List<ProductEntity>?> searchTicker(String text);
-  Future<AVQuoteModel?> getLastPriceBySymbol(String symbol);
+  Future<List<MarketInfo>> searchTicker(String text);
+  Future<double?> getLastPriceBySymbol(String symbol);
 }

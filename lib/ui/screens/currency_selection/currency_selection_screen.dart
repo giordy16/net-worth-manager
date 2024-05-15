@@ -35,6 +35,7 @@ class CurrencySelectionScreen extends StatelessWidget {
                     padding: const EdgeInsets.all(Dimensions.screenMargin),
                     child: AppTextField(
                       title: "Search",
+                      initialValue: state.search,
                       prefixIcon: Icons.search,
                       onTextChange: (value) {
                         context
@@ -49,10 +50,7 @@ class CurrencySelectionScreen extends StatelessWidget {
                           return Material(
                             child: InkWell(
                               onTap: () {
-                                context.read<CurrencySelectionBloc>().add(
-                                    CurrencySelected(
-                                        state.currenciesList[index]));
-                                context.pop();
+                                context.pop(state.currenciesList[index]);
                               },
                               child: ListTile(
                                   trailing: (selectedCurrency != null &&

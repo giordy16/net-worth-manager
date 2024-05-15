@@ -1,6 +1,7 @@
-import 'package:fl_chart/fl_chart.dart';
 import 'package:net_worth_manager/models/obox/asset_time_value_obox.dart';
+import 'package:net_worth_manager/models/obox/market_info_obox.dart';
 import 'package:net_worth_manager/models/obox/settings_obox.dart';
+import 'package:net_worth_manager/utils/extensions/number_extension.dart';
 import 'package:objectbox/objectbox.dart';
 
 import '../../main.dart';
@@ -18,29 +19,45 @@ class Asset {
 
   ToOne<AssetCategory> category = ToOne<AssetCategory>();
 
+  ToOne<MarketInfo> marketInfo = ToOne<MarketInfo>();
+
   Asset(this.name);
 
   DateTime? getLastUpdateDate() {
     return getTimeValuesChronologicalOrder().lastOrNull?.date;
   }
 
-  double? getLastValue() {
-    return getTimeValuesChronologicalOrder().lastOrNull?.value;
+  /// for simple asset (marketInfo == null) the current value is just
+  /// the last value inserted by the user.
+  /// for market asset (marketInfo != null) the current value is the current
+  /// market value multiplied by the total quantity.
+  double getCurrentValue() {
+    if (marketInfo.target == null) {
+      // simple asset, just look the last value inserted by the user
+      return getTimeValuesChronologicalOrder().lastOrNull?.value ?? 0;
+    } else {
+      // market asset, need to look to market value
+      return double.parse((marketInfo.target!.value * getTotalQuantity()).toStringAsFixed(2));
+    }
+  }
+
+  double getTotalQuantity() {
+    double q = 0;
+    for (var element in timeValues) {
+      q = q + element.quantity;
+    }
+    return q;
   }
 
   DateTime? getFirstTimeValueDate() {
     return getTimeValuesChronologicalOrder().firstOrNull?.date;
   }
 
-  String getLastValueWithCurrency() {
-    var lastValue = getLastValue();
+  String getCurrentValueWithCurrency() {
+    var lastValue = getCurrentValue();
     Settings settings = objectbox.store.box<Settings>().getAll().first;
 
-    if (lastValue == null) {
-      return "${settings.defaultCurrency.target?.symbol} -";
-    } else {
-      return "${settings.defaultCurrency.target?.symbol} $lastValue";
-    }
+    return "${settings.defaultCurrency.target?.symbol} ${lastValue.toStringFormatted()}";
   }
 
   List<AssetTimeValue> getTimeValuesChronologicalOrder({
@@ -52,11 +69,11 @@ class Asset {
     return values;
   }
 
-  List<FlSpot> getGraphData() {
-    return getTimeValuesChronologicalOrder()
-        .map((e) => FlSpot(e.date.millisecondsSinceEpoch.toDouble(), e.value))
-        .toList();
-  }
+  // List<FlSpot> getGraphData() {
+  //   return getTimeValuesChronologicalOrder()
+  //       .map((e) => FlSpot(e.date.millisecondsSinceEpoch.toDouble(), e.value))
+  //       .toList();
+  // }
 
   List<AssetTimeValue> getTimeValuesByDate(DataGap gap) {
     DateTime endDate = gap.getEndDate();

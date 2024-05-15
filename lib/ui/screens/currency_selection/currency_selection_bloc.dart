@@ -13,6 +13,7 @@ class CurrencySelectionBloc
   SettingsRepo settingsRepo;
 
   CurrencySelectionBloc(this.settingsRepo) : super(const CurrencySelectionState()) {
+
     on<FetchCurrencies>((event, emit) {
       List<Currency> list = [];
       if (event.searchText.isEmpty) {
@@ -24,10 +25,7 @@ class CurrencySelectionBloc
             .build()
             .find();
       }
-      emit(state.copyWith(currenciesList: list));
-    });
-    on<CurrencySelected>((event, emit) {
-      settingsRepo.setCurrency(event.selectedCurrency);
+      emit(state.copyWith(currenciesList: list, search: event.searchText));
     });
   }
 }

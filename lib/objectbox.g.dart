@@ -19,84 +19,121 @@ import 'models/obox/asset_category_obox.dart';
 import 'models/obox/asset_obox.dart';
 import 'models/obox/asset_time_value_obox.dart';
 import 'models/obox/currency_obox.dart';
+import 'models/obox/market_info_obox.dart';
 import 'models/obox/settings_obox.dart';
 
 export 'package:objectbox/objectbox.dart'; // so that callers only have to import this file
 
 final _entities = <obx_int.ModelEntity>[
   obx_int.ModelEntity(
-      id: const obx_int.IdUid(1, 5752538443591479641),
+      id: const obx_int.IdUid(1, 1818913365485819735),
       name: 'Asset',
-      lastPropertyId: const obx_int.IdUid(4, 2895973193217761142),
+      lastPropertyId: const obx_int.IdUid(4, 633051065447076762),
       flags: 0,
       properties: <obx_int.ModelProperty>[
         obx_int.ModelProperty(
-            id: const obx_int.IdUid(1, 686168950868258357),
+            id: const obx_int.IdUid(1, 5307316892656884516),
             name: 'id',
             type: 6,
             flags: 1),
         obx_int.ModelProperty(
-            id: const obx_int.IdUid(2, 4717379943827412629),
+            id: const obx_int.IdUid(2, 3596191412182231493),
             name: 'name',
             type: 9,
             flags: 0),
         obx_int.ModelProperty(
-            id: const obx_int.IdUid(4, 2895973193217761142),
+            id: const obx_int.IdUid(3, 7426140264771789943),
             name: 'categoryId',
             type: 11,
             flags: 520,
-            indexId: const obx_int.IdUid(3, 3614055108786807235),
-            relationTarget: 'AssetCategory')
+            indexId: const obx_int.IdUid(1, 6281323168732556384),
+            relationTarget: 'AssetCategory'),
+        obx_int.ModelProperty(
+            id: const obx_int.IdUid(4, 633051065447076762),
+            name: 'marketInfoId',
+            type: 11,
+            flags: 520,
+            indexId: const obx_int.IdUid(2, 5195916543361874140),
+            relationTarget: 'MarketInfo')
       ],
       relations: <obx_int.ModelRelation>[
         obx_int.ModelRelation(
-            id: const obx_int.IdUid(1, 5025912373576431052),
+            id: const obx_int.IdUid(1, 5888901543308030772),
             name: 'timeValues',
-            targetId: const obx_int.IdUid(2, 5774523459121135065))
+            targetId: const obx_int.IdUid(3, 1310094772467892797))
       ],
       backlinks: <obx_int.ModelBacklink>[]),
   obx_int.ModelEntity(
-      id: const obx_int.IdUid(2, 5774523459121135065),
-      name: 'AssetTimeValue',
-      lastPropertyId: const obx_int.IdUid(4, 361863719230552945),
+      id: const obx_int.IdUid(2, 4698624914262505470),
+      name: 'AssetCategory',
+      lastPropertyId: const obx_int.IdUid(3, 1481975311493388480),
       flags: 0,
       properties: <obx_int.ModelProperty>[
         obx_int.ModelProperty(
-            id: const obx_int.IdUid(1, 1953156713904020152),
+            id: const obx_int.IdUid(1, 3847787241977257517),
             name: 'id',
             type: 6,
             flags: 1),
         obx_int.ModelProperty(
-            id: const obx_int.IdUid(2, 5079446069413038468),
+            id: const obx_int.IdUid(2, 1767101139129790305),
+            name: 'name',
+            type: 9,
+            flags: 0),
+        obx_int.ModelProperty(
+            id: const obx_int.IdUid(3, 1481975311493388480),
+            name: 'userCanSelect',
+            type: 1,
+            flags: 0)
+      ],
+      relations: <obx_int.ModelRelation>[],
+      backlinks: <obx_int.ModelBacklink>[]),
+  obx_int.ModelEntity(
+      id: const obx_int.IdUid(3, 1310094772467892797),
+      name: 'AssetTimeValue',
+      lastPropertyId: const obx_int.IdUid(4, 8729528574984440007),
+      flags: 0,
+      properties: <obx_int.ModelProperty>[
+        obx_int.ModelProperty(
+            id: const obx_int.IdUid(1, 865135241090715348),
+            name: 'id',
+            type: 6,
+            flags: 1),
+        obx_int.ModelProperty(
+            id: const obx_int.IdUid(2, 8471838922893245555),
             name: 'date',
             type: 10,
             flags: 0),
         obx_int.ModelProperty(
-            id: const obx_int.IdUid(3, 8208308989681609768),
+            id: const obx_int.IdUid(3, 5413860551275972220),
             name: 'value',
+            type: 8,
+            flags: 0),
+        obx_int.ModelProperty(
+            id: const obx_int.IdUid(4, 8729528574984440007),
+            name: 'quantity',
             type: 8,
             flags: 0)
       ],
       relations: <obx_int.ModelRelation>[],
       backlinks: <obx_int.ModelBacklink>[]),
   obx_int.ModelEntity(
-      id: const obx_int.IdUid(3, 5063528831981583014),
+      id: const obx_int.IdUid(4, 7344502799727715203),
       name: 'Currency',
-      lastPropertyId: const obx_int.IdUid(3, 2624238715781977762),
+      lastPropertyId: const obx_int.IdUid(3, 5520729220967382353),
       flags: 0,
       properties: <obx_int.ModelProperty>[
         obx_int.ModelProperty(
-            id: const obx_int.IdUid(1, 1195285227236435395),
+            id: const obx_int.IdUid(1, 9107060263226612733),
             name: 'id',
             type: 6,
             flags: 1),
         obx_int.ModelProperty(
-            id: const obx_int.IdUid(2, 2401489970416036806),
+            id: const obx_int.IdUid(2, 4768579693216962491),
             name: 'symbol',
             type: 9,
             flags: 0),
         obx_int.ModelProperty(
-            id: const obx_int.IdUid(3, 2624238715781977762),
+            id: const obx_int.IdUid(3, 5520729220967382353),
             name: 'name',
             type: 9,
             flags: 0)
@@ -104,41 +141,66 @@ final _entities = <obx_int.ModelEntity>[
       relations: <obx_int.ModelRelation>[],
       backlinks: <obx_int.ModelBacklink>[]),
   obx_int.ModelEntity(
-      id: const obx_int.IdUid(4, 2570730951224252477),
+      id: const obx_int.IdUid(6, 2549230891191389848),
       name: 'Settings',
-      lastPropertyId: const obx_int.IdUid(2, 5480335002937288467),
+      lastPropertyId: const obx_int.IdUid(2, 6578063487016878583),
       flags: 0,
       properties: <obx_int.ModelProperty>[
         obx_int.ModelProperty(
-            id: const obx_int.IdUid(1, 2222159246792824370),
+            id: const obx_int.IdUid(1, 4383666370127515872),
             name: 'id',
             type: 6,
             flags: 1),
         obx_int.ModelProperty(
-            id: const obx_int.IdUid(2, 5480335002937288467),
+            id: const obx_int.IdUid(2, 6578063487016878583),
             name: 'defaultCurrencyId',
             type: 11,
             flags: 520,
-            indexId: const obx_int.IdUid(2, 1017344453847331655),
+            indexId: const obx_int.IdUid(3, 5774481709415715408),
             relationTarget: 'Currency')
       ],
       relations: <obx_int.ModelRelation>[],
       backlinks: <obx_int.ModelBacklink>[]),
   obx_int.ModelEntity(
-      id: const obx_int.IdUid(5, 2023862010308675343),
-      name: 'AssetCategory',
-      lastPropertyId: const obx_int.IdUid(2, 1593285745965078837),
+      id: const obx_int.IdUid(7, 8021363571026158853),
+      name: 'MarketInfo',
+      lastPropertyId: const obx_int.IdUid(7, 5451300475036688041),
       flags: 0,
       properties: <obx_int.ModelProperty>[
         obx_int.ModelProperty(
-            id: const obx_int.IdUid(1, 2470572836724285790),
+            id: const obx_int.IdUid(1, 5450897663482903483),
             name: 'id',
             type: 6,
             flags: 1),
         obx_int.ModelProperty(
-            id: const obx_int.IdUid(2, 1593285745965078837),
+            id: const obx_int.IdUid(2, 9140830800705593354),
+            name: 'symbol',
+            type: 9,
+            flags: 0),
+        obx_int.ModelProperty(
+            id: const obx_int.IdUid(3, 9093576918626851731),
             name: 'name',
             type: 9,
+            flags: 0),
+        obx_int.ModelProperty(
+            id: const obx_int.IdUid(4, 3300257355063995305),
+            name: 'type',
+            type: 9,
+            flags: 0),
+        obx_int.ModelProperty(
+            id: const obx_int.IdUid(5, 5272922002615589220),
+            name: 'currency',
+            type: 9,
+            flags: 0),
+        obx_int.ModelProperty(
+            id: const obx_int.IdUid(6, 8463851427896342938),
+            name: 'region',
+            type: 9,
+            flags: 0),
+        obx_int.ModelProperty(
+            id: const obx_int.IdUid(7, 5451300475036688041),
+            name: 'value',
+            type: 8,
             flags: 0)
       ],
       relations: <obx_int.ModelRelation>[],
@@ -180,13 +242,20 @@ Future<obx.Store> openStore(
 obx_int.ModelDefinition getObjectBoxModel() {
   final model = obx_int.ModelInfo(
       entities: _entities,
-      lastEntityId: const obx_int.IdUid(5, 2023862010308675343),
-      lastIndexId: const obx_int.IdUid(3, 3614055108786807235),
-      lastRelationId: const obx_int.IdUid(1, 5025912373576431052),
+      lastEntityId: const obx_int.IdUid(7, 8021363571026158853),
+      lastIndexId: const obx_int.IdUid(3, 5774481709415715408),
+      lastRelationId: const obx_int.IdUid(1, 5888901543308030772),
       lastSequenceId: const obx_int.IdUid(0, 0),
-      retiredEntityUids: const [],
-      retiredIndexUids: const [2499048142769230001],
-      retiredPropertyUids: const [4756937149803909478, 361863719230552945],
+      retiredEntityUids: const [2599935032832553010],
+      retiredIndexUids: const [],
+      retiredPropertyUids: const [
+        6464543030038332834,
+        7104168504643419610,
+        6233702783877267062,
+        3847910549491861168,
+        7984061082260616687,
+        1873420031035488607
+      ],
       retiredRelationUids: const [],
       modelVersion: 5,
       modelVersionParserMinimum: 5,
@@ -195,7 +264,7 @@ obx_int.ModelDefinition getObjectBoxModel() {
   final bindings = <Type, obx_int.EntityDefinition>{
     Asset: obx_int.EntityDefinition<Asset>(
         model: _entities[0],
-        toOneRelations: (Asset object) => [object.category],
+        toOneRelations: (Asset object) => [object.category, object.marketInfo],
         toManyRelations: (Asset object) =>
             {obx_int.RelInfo<Asset>.toMany(1, object.id): object.timeValues},
         getId: (Asset object) => object.id,
@@ -207,7 +276,8 @@ obx_int.ModelDefinition getObjectBoxModel() {
           fbb.startTable(5);
           fbb.addInt64(0, object.id);
           fbb.addOffset(1, nameOffset);
-          fbb.addInt64(3, object.category.targetId);
+          fbb.addInt64(2, object.category.targetId);
+          fbb.addInt64(3, object.marketInfo.targetId);
           fbb.finish(fbb.endTable());
           return object.id;
         },
@@ -219,14 +289,47 @@ obx_int.ModelDefinition getObjectBoxModel() {
           final object = Asset(nameParam)
             ..id = const fb.Int64Reader().vTableGet(buffer, rootOffset, 4, 0);
           object.category.targetId =
-              const fb.Int64Reader().vTableGet(buffer, rootOffset, 10, 0);
+              const fb.Int64Reader().vTableGet(buffer, rootOffset, 8, 0);
           object.category.attach(store);
+          object.marketInfo.targetId =
+              const fb.Int64Reader().vTableGet(buffer, rootOffset, 10, 0);
+          object.marketInfo.attach(store);
           obx_int.InternalToManyAccess.setRelInfo<Asset>(object.timeValues,
               store, obx_int.RelInfo<Asset>.toMany(1, object.id));
           return object;
         }),
-    AssetTimeValue: obx_int.EntityDefinition<AssetTimeValue>(
+    AssetCategory: obx_int.EntityDefinition<AssetCategory>(
         model: _entities[1],
+        toOneRelations: (AssetCategory object) => [],
+        toManyRelations: (AssetCategory object) => {},
+        getId: (AssetCategory object) => object.id,
+        setId: (AssetCategory object, int id) {
+          object.id = id;
+        },
+        objectToFB: (AssetCategory object, fb.Builder fbb) {
+          final nameOffset = fbb.writeString(object.name);
+          fbb.startTable(4);
+          fbb.addInt64(0, object.id);
+          fbb.addOffset(1, nameOffset);
+          fbb.addBool(2, object.userCanSelect);
+          fbb.finish(fbb.endTable());
+          return object.id;
+        },
+        objectFromFB: (obx.Store store, ByteData fbData) {
+          final buffer = fb.BufferContext(fbData);
+          final rootOffset = buffer.derefObject(0);
+          final nameParam = const fb.StringReader(asciiOptimization: true)
+              .vTableGet(buffer, rootOffset, 6, '');
+          final userCanSelectParam =
+              const fb.BoolReader().vTableGet(buffer, rootOffset, 8, false);
+          final object = AssetCategory(nameParam,
+              userCanSelect: userCanSelectParam)
+            ..id = const fb.Int64Reader().vTableGet(buffer, rootOffset, 4, 0);
+
+          return object;
+        }),
+    AssetTimeValue: obx_int.EntityDefinition<AssetTimeValue>(
+        model: _entities[2],
         toOneRelations: (AssetTimeValue object) => [],
         toManyRelations: (AssetTimeValue object) => {},
         getId: (AssetTimeValue object) => object.id,
@@ -238,6 +341,7 @@ obx_int.ModelDefinition getObjectBoxModel() {
           fbb.addInt64(0, object.id);
           fbb.addInt64(1, object.date.millisecondsSinceEpoch);
           fbb.addFloat64(2, object.value);
+          fbb.addFloat64(3, object.quantity);
           fbb.finish(fbb.endTable());
           return object.id;
         },
@@ -248,13 +352,15 @@ obx_int.ModelDefinition getObjectBoxModel() {
               const fb.Int64Reader().vTableGet(buffer, rootOffset, 6, 0));
           final valueParam =
               const fb.Float64Reader().vTableGet(buffer, rootOffset, 8, 0);
-          final object = AssetTimeValue(dateParam, valueParam)
+          final quantityParam =
+              const fb.Float64Reader().vTableGet(buffer, rootOffset, 10, 0);
+          final object = AssetTimeValue(dateParam, valueParam, quantityParam)
             ..id = const fb.Int64Reader().vTableGet(buffer, rootOffset, 4, 0);
 
           return object;
         }),
     Currency: obx_int.EntityDefinition<Currency>(
-        model: _entities[2],
+        model: _entities[3],
         toOneRelations: (Currency object) => [],
         toManyRelations: (Currency object) => {},
         getId: (Currency object) => object.id,
@@ -284,7 +390,7 @@ obx_int.ModelDefinition getObjectBoxModel() {
           return object;
         }),
     Settings: obx_int.EntityDefinition<Settings>(
-        model: _entities[3],
+        model: _entities[4],
         toOneRelations: (Settings object) => [object.defaultCurrency],
         toManyRelations: (Settings object) => {},
         getId: (Settings object) => object.id,
@@ -309,29 +415,51 @@ obx_int.ModelDefinition getObjectBoxModel() {
           object.defaultCurrency.attach(store);
           return object;
         }),
-    AssetCategory: obx_int.EntityDefinition<AssetCategory>(
-        model: _entities[4],
-        toOneRelations: (AssetCategory object) => [],
-        toManyRelations: (AssetCategory object) => {},
-        getId: (AssetCategory object) => object.id,
-        setId: (AssetCategory object, int id) {
+    MarketInfo: obx_int.EntityDefinition<MarketInfo>(
+        model: _entities[5],
+        toOneRelations: (MarketInfo object) => [],
+        toManyRelations: (MarketInfo object) => {},
+        getId: (MarketInfo object) => object.id,
+        setId: (MarketInfo object, int id) {
           object.id = id;
         },
-        objectToFB: (AssetCategory object, fb.Builder fbb) {
+        objectToFB: (MarketInfo object, fb.Builder fbb) {
+          final symbolOffset = fbb.writeString(object.symbol);
           final nameOffset = fbb.writeString(object.name);
-          fbb.startTable(3);
-          fbb.addInt64(0, object.id);
-          fbb.addOffset(1, nameOffset);
+          final typeOffset = fbb.writeString(object.type);
+          final currencyOffset = fbb.writeString(object.currency);
+          final regionOffset = fbb.writeString(object.region);
+          fbb.startTable(8);
+          fbb.addInt64(0, object.id ?? 0);
+          fbb.addOffset(1, symbolOffset);
+          fbb.addOffset(2, nameOffset);
+          fbb.addOffset(3, typeOffset);
+          fbb.addOffset(4, currencyOffset);
+          fbb.addOffset(5, regionOffset);
+          fbb.addFloat64(6, object.value);
           fbb.finish(fbb.endTable());
-          return object.id;
+          return object.id ?? 0;
         },
         objectFromFB: (obx.Store store, ByteData fbData) {
           final buffer = fb.BufferContext(fbData);
           final rootOffset = buffer.derefObject(0);
-          final nameParam = const fb.StringReader(asciiOptimization: true)
+          final symbolParam = const fb.StringReader(asciiOptimization: true)
               .vTableGet(buffer, rootOffset, 6, '');
-          final object = AssetCategory(nameParam)
-            ..id = const fb.Int64Reader().vTableGet(buffer, rootOffset, 4, 0);
+          final nameParam = const fb.StringReader(asciiOptimization: true)
+              .vTableGet(buffer, rootOffset, 8, '');
+          final typeParam = const fb.StringReader(asciiOptimization: true)
+              .vTableGet(buffer, rootOffset, 10, '');
+          final currencyParam = const fb.StringReader(asciiOptimization: true)
+              .vTableGet(buffer, rootOffset, 12, '');
+          final regionParam = const fb.StringReader(asciiOptimization: true)
+              .vTableGet(buffer, rootOffset, 14, '');
+          final valueParam =
+              const fb.Float64Reader().vTableGet(buffer, rootOffset, 16, 0);
+          final object = MarketInfo(
+              symbolParam, nameParam, typeParam, currencyParam, regionParam,
+              value: valueParam)
+            ..id =
+                const fb.Int64Reader().vTableGetNullable(buffer, rootOffset, 4);
 
           return object;
         })
@@ -353,59 +481,102 @@ class Asset_ {
   static final category =
       obx.QueryRelationToOne<Asset, AssetCategory>(_entities[0].properties[2]);
 
+  /// see [Asset.marketInfo]
+  static final marketInfo =
+      obx.QueryRelationToOne<Asset, MarketInfo>(_entities[0].properties[3]);
+
   /// see [Asset.timeValues]
   static final timeValues =
       obx.QueryRelationToMany<Asset, AssetTimeValue>(_entities[0].relations[0]);
-}
-
-/// [AssetTimeValue] entity fields to define ObjectBox queries.
-class AssetTimeValue_ {
-  /// see [AssetTimeValue.id]
-  static final id =
-      obx.QueryIntegerProperty<AssetTimeValue>(_entities[1].properties[0]);
-
-  /// see [AssetTimeValue.date]
-  static final date =
-      obx.QueryDateProperty<AssetTimeValue>(_entities[1].properties[1]);
-
-  /// see [AssetTimeValue.value]
-  static final value =
-      obx.QueryDoubleProperty<AssetTimeValue>(_entities[1].properties[2]);
-}
-
-/// [Currency] entity fields to define ObjectBox queries.
-class Currency_ {
-  /// see [Currency.id]
-  static final id =
-      obx.QueryIntegerProperty<Currency>(_entities[2].properties[0]);
-
-  /// see [Currency.symbol]
-  static final symbol =
-      obx.QueryStringProperty<Currency>(_entities[2].properties[1]);
-
-  /// see [Currency.name]
-  static final name =
-      obx.QueryStringProperty<Currency>(_entities[2].properties[2]);
-}
-
-/// [Settings] entity fields to define ObjectBox queries.
-class Settings_ {
-  /// see [Settings.id]
-  static final id =
-      obx.QueryIntegerProperty<Settings>(_entities[3].properties[0]);
-
-  /// see [Settings.defaultCurrency]
-  static final defaultCurrency =
-      obx.QueryRelationToOne<Settings, Currency>(_entities[3].properties[1]);
 }
 
 /// [AssetCategory] entity fields to define ObjectBox queries.
 class AssetCategory_ {
   /// see [AssetCategory.id]
   static final id =
-      obx.QueryIntegerProperty<AssetCategory>(_entities[4].properties[0]);
+      obx.QueryIntegerProperty<AssetCategory>(_entities[1].properties[0]);
 
   /// see [AssetCategory.name]
   static final name =
-      obx.QueryStringProperty<AssetCategory>(_entities[4].properties[1]);
+      obx.QueryStringProperty<AssetCategory>(_entities[1].properties[1]);
+
+  /// see [AssetCategory.userCanSelect]
+  static final userCanSelect =
+      obx.QueryBooleanProperty<AssetCategory>(_entities[1].properties[2]);
+}
+
+/// [AssetTimeValue] entity fields to define ObjectBox queries.
+class AssetTimeValue_ {
+  /// see [AssetTimeValue.id]
+  static final id =
+      obx.QueryIntegerProperty<AssetTimeValue>(_entities[2].properties[0]);
+
+  /// see [AssetTimeValue.date]
+  static final date =
+      obx.QueryDateProperty<AssetTimeValue>(_entities[2].properties[1]);
+
+  /// see [AssetTimeValue.value]
+  static final value =
+      obx.QueryDoubleProperty<AssetTimeValue>(_entities[2].properties[2]);
+
+  /// see [AssetTimeValue.quantity]
+  static final quantity =
+      obx.QueryDoubleProperty<AssetTimeValue>(_entities[2].properties[3]);
+}
+
+/// [Currency] entity fields to define ObjectBox queries.
+class Currency_ {
+  /// see [Currency.id]
+  static final id =
+      obx.QueryIntegerProperty<Currency>(_entities[3].properties[0]);
+
+  /// see [Currency.symbol]
+  static final symbol =
+      obx.QueryStringProperty<Currency>(_entities[3].properties[1]);
+
+  /// see [Currency.name]
+  static final name =
+      obx.QueryStringProperty<Currency>(_entities[3].properties[2]);
+}
+
+/// [Settings] entity fields to define ObjectBox queries.
+class Settings_ {
+  /// see [Settings.id]
+  static final id =
+      obx.QueryIntegerProperty<Settings>(_entities[4].properties[0]);
+
+  /// see [Settings.defaultCurrency]
+  static final defaultCurrency =
+      obx.QueryRelationToOne<Settings, Currency>(_entities[4].properties[1]);
+}
+
+/// [MarketInfo] entity fields to define ObjectBox queries.
+class MarketInfo_ {
+  /// see [MarketInfo.id]
+  static final id =
+      obx.QueryIntegerProperty<MarketInfo>(_entities[5].properties[0]);
+
+  /// see [MarketInfo.symbol]
+  static final symbol =
+      obx.QueryStringProperty<MarketInfo>(_entities[5].properties[1]);
+
+  /// see [MarketInfo.name]
+  static final name =
+      obx.QueryStringProperty<MarketInfo>(_entities[5].properties[2]);
+
+  /// see [MarketInfo.type]
+  static final type =
+      obx.QueryStringProperty<MarketInfo>(_entities[5].properties[3]);
+
+  /// see [MarketInfo.currency]
+  static final currency =
+      obx.QueryStringProperty<MarketInfo>(_entities[5].properties[4]);
+
+  /// see [MarketInfo.region]
+  static final region =
+      obx.QueryStringProperty<MarketInfo>(_entities[5].properties[5]);
+
+  /// see [MarketInfo.value]
+  static final value =
+      obx.QueryDoubleProperty<MarketInfo>(_entities[5].properties[6]);
 }

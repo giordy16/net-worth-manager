@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
+import 'package:intl/intl.dart';
 import 'package:net_worth_manager/app_dimensions.dart';
 import 'package:net_worth_manager/domain/repository/asset/asset_repo_impl.dart';
 import 'package:net_worth_manager/models/obox/asset_category_obox.dart';
@@ -10,6 +11,7 @@ import 'package:net_worth_manager/ui/screens/asset_detail/asset_detail_screen.da
 import 'package:net_worth_manager/ui/screens/home/home_page_bloc.dart';
 import 'package:net_worth_manager/ui/screens/home/home_page_event.dart';
 import 'package:net_worth_manager/ui/widgets/modal/bottom_sheet.dart';
+import 'package:net_worth_manager/utils/extensions/number_extension.dart';
 
 import '../../../main.dart';
 import '../../../models/obox/asset_obox.dart';
@@ -171,7 +173,7 @@ class HomePage extends StatelessWidget {
                                     color: theme.colorScheme.onSecondary),
                               ),
                               Text(
-                                "${settings.defaultCurrency.target?.symbol} ${state.netWorthValue ?? "-"}",
+                                "${settings.defaultCurrency.target?.symbol} ${(state.netWorthValue ?? 0).toStringFormatted()}",
                                 style: normalTextTS().copyWith(
                                     color: theme.colorScheme.onSecondary),
                               ),

@@ -7,7 +7,9 @@ class AssetCategory {
 
   String name;
 
-  AssetCategory(this.name);
+  bool userCanSelect;
+
+  AssetCategory(this.name, {this.userCanSelect = true});
 
   @override
   String toString() {

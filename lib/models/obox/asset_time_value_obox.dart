@@ -1,4 +1,6 @@
+import 'package:intl/intl.dart';
 import 'package:net_worth_manager/models/obox/settings_obox.dart';
+import 'package:net_worth_manager/utils/extensions/number_extension.dart';
 import 'package:objectbox/objectbox.dart';
 
 import '../../main.dart';
@@ -13,10 +15,17 @@ class AssetTimeValue {
 
   double value;
 
-  AssetTimeValue(this.date, this.value);
+  double quantity;
 
-  String getLastValueWithCurrency() {
+  AssetTimeValue(this.date, this.value, [this.quantity = 1]);
+
+  AssetTimeValue.empty()
+      : date = DateTime.now(),
+        value = 0,
+        quantity = 0;
+
+  String getValueWithCurrency() {
     Settings settings = objectbox.store.box<Settings>().getAll().first;
-    return "${settings.defaultCurrency.target?.symbol} $value";
+    return "${settings.defaultCurrency.target?.symbol} ${value.toStringFormatted()}";
   }
 }

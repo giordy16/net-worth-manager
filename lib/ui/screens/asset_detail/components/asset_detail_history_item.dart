@@ -29,7 +29,7 @@ class AssetDetailHistoryItem extends StatelessWidget {
           children: [
             Text(df.format(timeValue.date)),
             const Expanded(child: SizedBox()),
-            Text(timeValue.getLastValueWithCurrency()),
+            Text(timeValue.getValueWithCurrency()),
           ],
         ),
       ),

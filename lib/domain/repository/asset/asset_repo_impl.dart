@@ -1,6 +1,7 @@
 import 'package:net_worth_manager/main.dart';
 import 'package:net_worth_manager/models/obox/asset_category_obox.dart';
 import 'package:net_worth_manager/models/obox/asset_time_value_obox.dart';
+import 'package:net_worth_manager/models/obox/market_info_obox.dart';
 
 import '../../../models/obox/asset_obox.dart';
 import '../../../objectbox.g.dart';
@@ -8,11 +9,11 @@ import 'asset_repo.dart';
 
 class AssetRepoImpl implements AssetRepo {
   @override
-  double getCurrentNetWorth() {
+  double getNetWorth() {
     var value = 0.0;
     var allAssets = objectbox.store.box<Asset>().getAll();
     for (var asset in allAssets) {
-      value = value + (asset.getLastValue() ?? 0);
+      value = value + asset.getCurrentValue();
     }
 
     return value;
@@ -25,7 +26,11 @@ class AssetRepoImpl implements AssetRepo {
 
   @override
   List<AssetCategory> getAssetCategories() {
-    return objectbox.store.box<AssetCategory>().getAll();
+    return objectbox.store
+        .box<AssetCategory>()
+        .query(AssetCategory_.userCanSelect.equals(true))
+        .build()
+        .find();
   }
 
   @override
@@ -77,4 +82,10 @@ class AssetRepoImpl implements AssetRepo {
         .build()
         .find();
   }
+
+  @override
+  void saveMarketValue(MarketInfo info) {
+    objectbox.store.box<MarketInfo>().put(info);
+  }
+
 }

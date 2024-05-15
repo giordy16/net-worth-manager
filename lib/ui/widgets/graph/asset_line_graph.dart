@@ -1,11 +1,9 @@
 import 'package:custom_sliding_segmented_control/custom_sliding_segmented_control.dart';
-import 'package:fl_chart/fl_chart.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:net_worth_manager/app_dimensions.dart';
 import 'package:net_worth_manager/models/obox/asset_time_value_obox.dart';
-import 'package:net_worth_manager/utils/extensions/date_time_extension.dart';
+import 'package:net_worth_manager/utils/extensions/number_extension.dart';
 import 'package:syncfusion_flutter_charts/charts.dart';
 
 import '../../../models/obox/asset_obox.dart';
@@ -83,7 +81,7 @@ class AssetLineGraph extends StatefulWidget {
 class _AssetLineGraph extends State<AssetLineGraph> {
   DataGap currentGap = DataGap.all;
   List<AssetTimeValue> assetValuesOfGap = [];
-  late AxisTitles bottomAxis;
+  List<GraphData> graphData = [];
 
   @override
   void initState() {
@@ -97,12 +95,31 @@ class _AssetLineGraph extends State<AssetLineGraph> {
 
   void initValuesOfGap() {
     assetValuesOfGap = widget.asset.getTimeValuesChronologicalOrder();
+    graphData =
+        assetValuesOfGap.map((e) => GraphData(e.date, e.value)).toList();
+
+    // add a new point so the graph is plotted until the right border
+    if (graphData.isNotEmpty) {
+      graphData.add(GraphData(DateTime.now(), graphData.last.y));
+    }
   }
 
   @override
   Widget build(BuildContext context) {
     ThemeData theme = Theme.of(context);
     initPage();
+
+    if (widget.asset.timeValues.isEmpty) {
+      return const Padding(
+        padding: EdgeInsets.fromLTRB(
+            Dimensions.screenMargin, Dimensions.l, Dimensions.screenMargin, 0),
+        child: Center(
+            child: Text(
+          "Not enough data to plot the chart",
+          textAlign: TextAlign.center,
+        )),
+      );
+    }
 
     return Column(
       children: [
@@ -140,15 +157,37 @@ class _AssetLineGraph extends State<AssetLineGraph> {
         SfCartesianChart(
           zoomPanBehavior:
               ZoomPanBehavior(enablePinching: true, enablePanning: true),
-          // crosshairBehavior: CrosshairBehavior(
-          //   enable: true,
-          //   lineDashArray: [5],
-          //
-          // ),
           trackballBehavior: TrackballBehavior(
-            enable: true,
-          ),
-          tooltipBehavior: TooltipBehavior(enable: true),
+              enable: true,
+              activationMode: ActivationMode.singleTap,
+              builder: (context, trackballDetails) {
+                return Container(
+                    width: 100,
+                    height: 50,
+                    decoration: const BoxDecoration(
+                        borderRadius: BorderRadius.all(Radius.circular(8)),
+                        color: Colors.white),
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Text(
+                          (trackballDetails.point!.y as double).toStringFormatted(),
+                          style: TextStyle(
+                            color: theme.colorScheme.onSecondary,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                        Text(
+                          DateFormat("dd/MM/yy").format(
+                              DateTime.fromMillisecondsSinceEpoch(
+                                  trackballDetails.point!.x)),
+                          style: TextStyle(
+                            color: theme.colorScheme.onSecondary,
+                          ),
+                        ),
+                      ],
+                    ));
+              }),
           primaryXAxis: NumericAxis(
             minimum: currentGap
                 .getStartDate(widget.asset)
@@ -163,13 +202,20 @@ class _AssetLineGraph extends State<AssetLineGraph> {
                     details.textStyle),
           ),
           series: [
-            StepLineSeries<GraphData, int>(
+            SplineSeries<GraphData, int>(
               color: theme.colorScheme.secondary,
+              splineType: SplineType.monotonic,
               animationDuration: 100,
               enableTooltip: true,
-              dataSource: assetValuesOfGap
-                  .map((e) => GraphData(e.date, e.value))
-                  .toList(),
+              markerSettings: const MarkerSettings(isVisible: true),
+              dataSource: graphData,
+              // trendlines: [
+              //   Trendline(
+              //     type: TrendlineType.linear,
+              //     color: Colors.white,
+              //     opacity: 0.2,
+              //   )
+              // ],
               xValueMapper: (GraphData data, _) =>
                   data.x.millisecondsSinceEpoch,
               yValueMapper: (GraphData data, _) => data.y,

@@ -11,13 +11,14 @@ Future<void> main() async {
 
   objectbox = await ObjectBox.create();
 
-  initApp();
+  await initApp();
 
   runApp(const App());
 }
 
-initApp() {
-  objectbox.initIfEmpty();
+Future<void> initApp() async {
+   objectbox.initIfEmpty();
+   await objectbox.syncPrices();
 }
 
 class App extends StatelessWidget {
@@ -25,7 +26,6 @@ class App extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-
     var theme = MaterialTheme(Theme.of(context).textTheme);
 
     return MaterialApp.router(

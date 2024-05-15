@@ -5,7 +5,7 @@
 // import 'package:net_worth_manager/domain/repository/products/ProductRepoImpl.dart';
 // import 'package:net_worth_manager/domain/repository/transaction/TransactionRepoImpl.dart';
 // import 'package:net_worth_manager/domain/repository/yhFinance/YHFinanceRepImp.dart';
-// import 'package:net_worth_manager/utils/extensions/NumberExtension.dart';
+// import 'package:net_worth_manager/utils/extensions/number_extension.dart';
 //
 // import '../../../data/ProductEntity.dart';
 // import '../../../data/TransactionEntity.dart';

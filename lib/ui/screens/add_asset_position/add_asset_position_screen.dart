@@ -1,11 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
+import 'package:intl/intl.dart';
 import 'package:net_worth_manager/models/obox/asset_obox.dart';
 import 'package:net_worth_manager/ui/screens/add_asset_position/add_position_bloc.dart';
 import 'package:net_worth_manager/ui/screens/add_asset_position/add_position_event.dart';
 import 'package:net_worth_manager/ui/widgets/base_components/app_date_field.dart';
-import 'package:net_worth_manager/ui/widgets/base_components/app_money_field.dart';
+import 'package:net_worth_manager/ui/widgets/base_components/app_numeric_text_field.dart';
+import 'package:net_worth_manager/utils/extensions/string_extension.dart';
 
 import '../../../app_dimensions.dart';
 import '../../../domain/repository/asset/asset_repo_impl.dart';
@@ -104,13 +106,14 @@ class AddAssetPositionScreen extends StatelessWidget {
                             ),
                             Padding(
                               padding: const EdgeInsets.only(top: Dimensions.m),
-                              child: AppMoneyField(
+                              child: AppNumericTextField(
+                                moneyBehavior: true,
                                 title: "Value",
                                 initialValue: state.cost,
                                 isMandatory: true,
                                 onTextChange: (value) {
                                   context.read<AddPositionBloc>().add(
-                                      ChangeCostEvent(double.tryParse(value)));
+                                      ChangeCostEvent(value.convertToDouble()));
                                 },
                               ),
                             ),

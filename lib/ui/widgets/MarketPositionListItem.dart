@@ -2,7 +2,7 @@
 // import 'package:flutter/material.dart';
 // import 'package:get/get.dart';
 // import 'package:net_worth_manager/data/MarketPosition.dart';
-// import 'package:net_worth_manager/utils/extensions/NumberExtension.dart';
+// import 'package:net_worth_manager/utils/extensions/number_extension.dart';
 //
 // import '../../utils/TextStyles.dart';
 // import '../investments/MarketPositionPage.dart';

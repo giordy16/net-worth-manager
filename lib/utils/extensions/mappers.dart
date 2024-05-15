@@ -1,0 +1,26 @@
+import 'package:net_worth_manager/models/obox/market_info_obox.dart';
+import 'package:net_worth_manager/objectbox.g.dart';
+
+import '../../main.dart';
+import '../../models/obox/asset_category_obox.dart';
+import '../../models/obox/asset_obox.dart';
+
+extension MarketInfoMapper on MarketInfo {
+  Asset convertToAsset() {
+    Asset? asset;
+
+    // check if there is already this asset
+    QueryBuilder<Asset> builder = objectbox.store.box<Asset>().query(Asset_.marketInfo.notNull());
+    builder.link(Asset_.marketInfo, MarketInfo_.symbol.equals(symbol));
+    asset = builder.build().findFirst();
+    if (asset != null) {
+      return asset;
+    }
+
+    asset = Asset(name);
+    asset.marketInfo.target = this;
+    asset.category.target = objectbox.store.box<AssetCategory>().getAll().first;
+
+    return asset;
+  }
+}

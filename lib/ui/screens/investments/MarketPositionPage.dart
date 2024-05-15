@@ -4,7 +4,7 @@
 // import 'package:net_worth_manager/data/TransactionEntity.dart';
 // import 'package:net_worth_manager/data/enum/TransactionTypeEnum.dart';
 // import 'package:net_worth_manager/ui/investments/component/ProductHistoryItem.dart';
-// import 'package:net_worth_manager/utils/extensions/NumberExtension.dart';
+// import 'package:net_worth_manager/utils/extensions/number_extension.dart';
 //
 // import '../../data/MarketPosition.dart';
 // import '../../utils/TextStyles.dart';

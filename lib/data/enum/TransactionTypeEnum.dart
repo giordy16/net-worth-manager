@@ -1,3 +1,0 @@
-enum TransactionTypeEnum {
-  SELL, BUY
-}

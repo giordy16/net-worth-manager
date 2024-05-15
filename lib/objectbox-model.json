@@ -4,80 +4,117 @@
   "_note3": "If you have VCS merge conflicts, you must resolve them according to ObjectBox docs.",
   "entities": [
     {
-      "id": "1:5752538443591479641",
-      "lastPropertyId": "4:2895973193217761142",
+      "id": "1:1818913365485819735",
+      "lastPropertyId": "4:633051065447076762",
       "name": "Asset",
       "properties": [
         {
-          "id": "1:686168950868258357",
+          "id": "1:5307316892656884516",
           "name": "id",
           "type": 6,
           "flags": 1
         },
         {
-          "id": "2:4717379943827412629",
+          "id": "2:3596191412182231493",
           "name": "name",
           "type": 9
         },
         {
-          "id": "4:2895973193217761142",
+          "id": "3:7426140264771789943",
           "name": "categoryId",
           "type": 11,
           "flags": 520,
-          "indexId": "3:3614055108786807235",
+          "indexId": "1:6281323168732556384",
           "relationTarget": "AssetCategory"
+        },
+        {
+          "id": "4:633051065447076762",
+          "name": "marketInfoId",
+          "type": 11,
+          "flags": 520,
+          "indexId": "2:5195916543361874140",
+          "relationTarget": "MarketInfo"
         }
       ],
       "relations": [
         {
-          "id": "1:5025912373576431052",
+          "id": "1:5888901543308030772",
           "name": "timeValues",
-          "targetId": "2:5774523459121135065"
+          "targetId": "3:1310094772467892797"
         }
       ]
     },
     {
-      "id": "2:5774523459121135065",
-      "lastPropertyId": "4:361863719230552945",
-      "name": "AssetTimeValue",
+      "id": "2:4698624914262505470",
+      "lastPropertyId": "3:1481975311493388480",
+      "name": "AssetCategory",
       "properties": [
         {
-          "id": "1:1953156713904020152",
+          "id": "1:3847787241977257517",
           "name": "id",
           "type": 6,
           "flags": 1
         },
         {
-          "id": "2:5079446069413038468",
+          "id": "2:1767101139129790305",
+          "name": "name",
+          "type": 9
+        },
+        {
+          "id": "3:1481975311493388480",
+          "name": "userCanSelect",
+          "type": 1
+        }
+      ],
+      "relations": []
+    },
+    {
+      "id": "3:1310094772467892797",
+      "lastPropertyId": "4:8729528574984440007",
+      "name": "AssetTimeValue",
+      "properties": [
+        {
+          "id": "1:865135241090715348",
+          "name": "id",
+          "type": 6,
+          "flags": 1
+        },
+        {
+          "id": "2:8471838922893245555",
           "name": "date",
           "type": 10
         },
         {
-          "id": "3:8208308989681609768",
+          "id": "3:5413860551275972220",
           "name": "value",
+          "type": 8
+        },
+        {
+          "id": "4:8729528574984440007",
+          "name": "quantity",
           "type": 8
         }
       ],
       "relations": []
     },
     {
-      "id": "3:5063528831981583014",
-      "lastPropertyId": "3:2624238715781977762",
+      "id": "4:7344502799727715203",
+      "lastPropertyId": "3:5520729220967382353",
       "name": "Currency",
       "properties": [
         {
-          "id": "1:1195285227236435395",
+          "id": "1:9107060263226612733",
           "name": "id",
           "type": 6,
           "flags": 1
         },
         {
-          "id": "2:2401489970416036806",
+          "id": "2:4768579693216962491",
           "name": "symbol",
           "type": 9
         },
         {
-          "id": "3:2624238715781977762",
+          "id": "3:5520729220967382353",
           "name": "name",
           "type": 9
         }
@@ -85,60 +122,89 @@
       "relations": []
     },
     {
-      "id": "4:2570730951224252477",
-      "lastPropertyId": "2:5480335002937288467",
+      "id": "6:2549230891191389848",
+      "lastPropertyId": "2:6578063487016878583",
       "name": "Settings",
       "properties": [
         {
-          "id": "1:2222159246792824370",
+          "id": "1:4383666370127515872",
           "name": "id",
           "type": 6,
           "flags": 1
         },
         {
-          "id": "2:5480335002937288467",
+          "id": "2:6578063487016878583",
           "name": "defaultCurrencyId",
           "type": 11,
           "flags": 520,
-          "indexId": "2:1017344453847331655",
+          "indexId": "3:5774481709415715408",
           "relationTarget": "Currency"
         }
       ],
       "relations": []
     },
     {
-      "id": "5:2023862010308675343",
-      "lastPropertyId": "2:1593285745965078837",
-      "name": "AssetCategory",
+      "id": "7:8021363571026158853",
+      "lastPropertyId": "7:5451300475036688041",
+      "name": "MarketInfo",
       "properties": [
         {
-          "id": "1:2470572836724285790",
+          "id": "1:5450897663482903483",
           "name": "id",
           "type": 6,
           "flags": 1
         },
         {
-          "id": "2:1593285745965078837",
+          "id": "2:9140830800705593354",
+          "name": "symbol",
+          "type": 9
+        },
+        {
+          "id": "3:9093576918626851731",
           "name": "name",
           "type": 9
+        },
+        {
+          "id": "4:3300257355063995305",
+          "name": "type",
+          "type": 9
+        },
+        {
+          "id": "5:5272922002615589220",
+          "name": "currency",
+          "type": 9
+        },
+        {
+          "id": "6:8463851427896342938",
+          "name": "region",
+          "type": 9
+        },
+        {
+          "id": "7:5451300475036688041",
+          "name": "value",
+          "type": 8
         }
       ],
       "relations": []
     }
   ],
-  "lastEntityId": "5:2023862010308675343",
-  "lastIndexId": "3:3614055108786807235",
-  "lastRelationId": "1:5025912373576431052",
+  "lastEntityId": "7:8021363571026158853",
+  "lastIndexId": "3:5774481709415715408",
+  "lastRelationId": "1:5888901543308030772",
   "lastSequenceId": "0:0",
   "modelVersion": 5,
   "modelVersionParserMinimum": 5,
-  "retiredEntityUids": [],
-  "retiredIndexUids": [
-    2499048142769230001
+  "retiredEntityUids": [
+    2599935032832553010
   ],
+  "retiredIndexUids": [],
   "retiredPropertyUids": [
-    4756937149803909478,
-    361863719230552945
+    6464543030038332834,
+    7104168504643419610,
+    6233702783877267062,
+    3847910549491861168,
+    7984061082260616687,
+    1873420031035488607
   ],
   "retiredRelationUids": [],
   "version": 1

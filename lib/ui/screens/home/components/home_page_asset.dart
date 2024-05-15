@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:net_worth_manager/utils/extensions/number_extension.dart';
 import '../../../../main.dart';
 import '../../../../models/obox/asset_obox.dart';
 import '../../../../models/obox/settings_obox.dart';
@@ -34,7 +35,7 @@ class HomePageAsset extends StatelessWidget {
             ),
             const Expanded(child: SizedBox()),
             Text(
-              "${settings.defaultCurrency.target?.symbol} ${asset.getLastValue() ?? "-"}",
+              "${settings.defaultCurrency.target?.symbol} ${asset.getCurrentValue().toStringFormatted()}",
               style: theme.textTheme.bodyLarge,
             ),
           ],

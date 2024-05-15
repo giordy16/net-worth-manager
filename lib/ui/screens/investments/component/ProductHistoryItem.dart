@@ -2,7 +2,7 @@
 // import 'package:flutter/material.dart';
 // import 'package:get/get.dart';
 // import 'package:net_worth_manager/data/TransactionEntity.dart';
-// import 'package:net_worth_manager/utils/extensions/NumberExtension.dart';
+// import 'package:net_worth_manager/utils/extensions/number_extension.dart';
 //
 // import '../../../utils/TextStyles.dart';
 //
