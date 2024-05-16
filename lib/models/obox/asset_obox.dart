@@ -5,8 +5,6 @@ import 'package:net_worth_manager/utils/extensions/number_extension.dart';
 import 'package:objectbox/objectbox.dart';
 
 import '../../main.dart';
-import '../../ui/widgets/graph/simple_asset_line_graph.dart';
-import '../../utils/enum/graph_data_gap_enum.dart';
 import 'asset_category_obox.dart';
 
 @Entity()
@@ -35,11 +33,14 @@ class Asset {
   double getCurrentValue() {
     if (marketInfo.target == null) {
       // simple asset, just look the last value inserted by the user
-      return getTimeValuesChronologicalOrder().lastOrNull?.value ?? 0;
+      return getTimeValuesChronologicalOrder()
+              .lastOrNull
+              ?.getValueAtMainCurrency() ??
+          0;
     } else {
       // market asset, need to look to market value
       return double.parse(
-          (marketInfo.target!.value * getTotalQuantity()).toStringAsFixed(2));
+          (marketInfo.target!.getValueAtMainCurrency() * getTotalQuantity()).toStringAsFixed(2));
     }
   }
 
@@ -88,18 +89,18 @@ class Asset {
     if (marketInfo.target == null) {
       // simple asset
       return getTimeValuesChronologicalOrder()
-              .where((element) => element.date
-                  .isBefore(dateTime.add(const Duration(days: 1))))
+              .where((element) =>
+                  element.date.isBefore(dateTime.add(const Duration(days: 1))))
               .lastOrNull
-              ?.value ??
+              ?.getValueAtMainCurrency() ??
           0;
     } else {
       // market asset
       var marketValueAtTime = marketInfo.target!.historyValue
-              .where((element) => element.date
-                  .isBefore(dateTime.add(const Duration(days: 1))))
+              .where((element) =>
+                  element.date.isBefore(dateTime.add(const Duration(days: 1))))
               .lastOrNull
-              ?.value ??
+              ?.value.convertToMainCurrency(marketInfo.target!.currency) ??
           0;
 
       return double.parse((marketValueAtTime * getQuantityAtDateTime(dateTime))

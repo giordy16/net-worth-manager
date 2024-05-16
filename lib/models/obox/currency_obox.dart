@@ -6,8 +6,8 @@ class Currency {
   @Id()
   int id = 0;
 
-  String symbol;
-  String name;
+  String symbol; // €
+  String name;   // EUR
 
   Currency(this.symbol, this.name);
 

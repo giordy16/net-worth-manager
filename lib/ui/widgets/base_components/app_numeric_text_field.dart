@@ -17,8 +17,9 @@ class AppNumericTextField extends StatefulWidget {
   double? initialValue;
   String title;
   bool isMandatory;
-  String? currencySymbol;
+  String? currencyName;
   bool moneyBehavior;
+  bool userCanChangeCurrency;
   Function(String)? onTextChange;
   Function(Currency)? onCurrencyChange;
 
@@ -28,8 +29,10 @@ class AppNumericTextField extends StatefulWidget {
     this.initialValue,
     this.title = "",
     this.onTextChange,
+    this.onCurrencyChange,
     this.isMandatory = false,
-    this.currencySymbol,
+    this.currencyName,
+    this.userCanChangeCurrency = true,
   });
 
   @override
@@ -71,10 +74,10 @@ class _AppNumericTextFieldState extends State<AppNumericTextField> {
 
     allowedSymbols.add(numberFormatSymbols[Platform.localeName.split("_").first]?.DECIMAL_SEP);
 
-    if (widget.currencySymbol != null) {
+    if (widget.currencyName != null) {
       currency = objectbox.store
           .box<Currency>()
-          .query(Currency_.symbol.equals(widget.currencySymbol!))
+          .query(Currency_.name.equals(widget.currencyName!))
           .build()
           .find()
           .first;
@@ -133,13 +136,13 @@ class _AppNumericTextFieldState extends State<AppNumericTextField> {
               style: theme.textTheme.bodyLarge
                   ?.copyWith(color: theme.colorScheme.primary),
             ),
-            onPressed: () async {
+            onPressed: widget.userCanChangeCurrency ? () async {
               Currency? c = await context.push(CurrencySelectionScreen.route)
                   as Currency?;
               if (c != null && widget.onCurrencyChange != null) {
                 widget.onCurrencyChange!(c);
               }
-            },
+            } : null,
           ),
         ),
         labelStyle: TextStyle(color: theme.colorScheme.secondary),

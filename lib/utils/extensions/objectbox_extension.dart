@@ -49,7 +49,7 @@ extension ObjectBoxExtension on ObjectBox {
     }
   }
 
-  Future<void> syncPrices() async {
+  Future<void> syncAssetPrices() async {
     final repo = AlphaVantageRepImp();
     var marketInfos = objectbox.store.box<MarketInfo>().getAll();
     for (var info in marketInfos) {
@@ -60,5 +60,4 @@ extension ObjectBoxExtension on ObjectBox {
       }
     }
   }
-
 }

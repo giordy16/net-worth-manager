@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
+import 'package:net_worth_manager/main.dart';
 import 'package:net_worth_manager/ui/screens/add_asset_position/add_position_bloc.dart';
 import 'package:net_worth_manager/ui/screens/add_asset_position/add_position_event.dart';
 import 'package:net_worth_manager/ui/widgets/base_components/app_date_field.dart';
@@ -37,8 +38,10 @@ class AddAssetPositionScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     AssetTimeValue position = params.timeValue == null
-        ? AssetTimeValue.empty()
+        ? AssetTimeValue.empty(params.asset.marketInfo.target)
         : params.timeValue!.duplicate();
+
+
 
     return RepositoryProvider(
         create: (_) => AssetRepoImpl(),
@@ -109,9 +112,16 @@ class AddAssetPositionScreen extends StatelessWidget {
                                 moneyBehavior: true,
                                 title: "Value",
                                 initialValue: params.timeValue?.value,
+                                currencyName:
+                                    params.asset.marketInfo.target?.currency,
+                                userCanChangeCurrency:
+                                    params.asset.marketInfo.target == null,
                                 isMandatory: true,
                                 onTextChange: (value) {
                                   position.value = value.convertToDouble();
+                                },
+                                onCurrencyChange: (currency) {
+                                  position.currency.target = currency;
                                 },
                               ),
                             ),

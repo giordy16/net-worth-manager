@@ -91,7 +91,7 @@ final _entities = <obx_int.ModelEntity>[
   obx_int.ModelEntity(
       id: const obx_int.IdUid(3, 1310094772467892797),
       name: 'AssetTimeValue',
-      lastPropertyId: const obx_int.IdUid(4, 8729528574984440007),
+      lastPropertyId: const obx_int.IdUid(5, 3193434996408047750),
       flags: 0,
       properties: <obx_int.ModelProperty>[
         obx_int.ModelProperty(
@@ -113,7 +113,14 @@ final _entities = <obx_int.ModelEntity>[
             id: const obx_int.IdUid(4, 8729528574984440007),
             name: 'quantity',
             type: 8,
-            flags: 0)
+            flags: 0),
+        obx_int.ModelProperty(
+            id: const obx_int.IdUid(5, 3193434996408047750),
+            name: 'currencyId',
+            type: 11,
+            flags: 520,
+            indexId: const obx_int.IdUid(4, 2434188033820685796),
+            relationTarget: 'Currency')
       ],
       relations: <obx_int.ModelRelation>[],
       backlinks: <obx_int.ModelBacklink>[]),
@@ -273,7 +280,7 @@ obx_int.ModelDefinition getObjectBoxModel() {
   final model = obx_int.ModelInfo(
       entities: _entities,
       lastEntityId: const obx_int.IdUid(8, 7487394912198200723),
-      lastIndexId: const obx_int.IdUid(3, 5774481709415715408),
+      lastIndexId: const obx_int.IdUid(4, 2434188033820685796),
       lastRelationId: const obx_int.IdUid(2, 4132757054122527006),
       lastSequenceId: const obx_int.IdUid(0, 0),
       retiredEntityUids: const [2599935032832553010],
@@ -360,18 +367,19 @@ obx_int.ModelDefinition getObjectBoxModel() {
         }),
     AssetTimeValue: obx_int.EntityDefinition<AssetTimeValue>(
         model: _entities[2],
-        toOneRelations: (AssetTimeValue object) => [],
+        toOneRelations: (AssetTimeValue object) => [object.currency],
         toManyRelations: (AssetTimeValue object) => {},
         getId: (AssetTimeValue object) => object.id,
         setId: (AssetTimeValue object, int id) {
           object.id = id;
         },
         objectToFB: (AssetTimeValue object, fb.Builder fbb) {
-          fbb.startTable(5);
+          fbb.startTable(6);
           fbb.addInt64(0, object.id);
           fbb.addInt64(1, object.date.millisecondsSinceEpoch);
           fbb.addFloat64(2, object.value);
           fbb.addFloat64(3, object.quantity);
+          fbb.addInt64(4, object.currency.targetId);
           fbb.finish(fbb.endTable());
           return object.id;
         },
@@ -391,7 +399,9 @@ obx_int.ModelDefinition getObjectBoxModel() {
               date: dateParam,
               value: valueParam,
               quantity: quantityParam);
-
+          object.currency.targetId =
+              const fb.Int64Reader().vTableGet(buffer, rootOffset, 12, 0);
+          object.currency.attach(store);
           return object;
         }),
     Currency: obx_int.EntityDefinition<Currency>(
@@ -592,6 +602,10 @@ class AssetTimeValue_ {
   /// see [AssetTimeValue.quantity]
   static final quantity =
       obx.QueryDoubleProperty<AssetTimeValue>(_entities[2].properties[3]);
+
+  /// see [AssetTimeValue.currency]
+  static final currency = obx.QueryRelationToOne<AssetTimeValue, Currency>(
+      _entities[2].properties[4]);
 }
 
 /// [Currency] entity fields to define ObjectBox queries.

@@ -70,7 +70,7 @@
     },
     {
       "id": "3:1310094772467892797",
-      "lastPropertyId": "4:8729528574984440007",
+      "lastPropertyId": "5:3193434996408047750",
       "name": "AssetTimeValue",
       "properties": [
         {
@@ -93,6 +93,14 @@
           "id": "4:8729528574984440007",
           "name": "quantity",
           "type": 8
+        },
+        {
+          "id": "5:3193434996408047750",
+          "name": "currencyId",
+          "type": 11,
+          "flags": 520,
+          "indexId": "4:2434188033820685796",
+          "relationTarget": "Currency"
         }
       ],
       "relations": []
@@ -219,7 +227,7 @@
     }
   ],
   "lastEntityId": "8:7487394912198200723",
-  "lastIndexId": "3:5774481709415715408",
+  "lastIndexId": "4:2434188033820685796",
   "lastRelationId": "2:4132757054122527006",
   "lastSequenceId": "0:0",
   "modelVersion": 5,

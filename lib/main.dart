@@ -1,10 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:net_worth_manager/app_theme.dart';
 import 'package:net_worth_manager/utils/extensions/objectbox_extension.dart';
+import 'package:net_worth_manager/utils/forex.dart';
 import 'app_routes.dart';
 import 'domain/database/objectbox.dart';
 
 late ObjectBox objectbox;
+
+Map<String, double> currencyChange = {};
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -17,8 +20,9 @@ Future<void> main() async {
 }
 
 Future<void> initApp() async {
-   objectbox.initIfEmpty();
-   // await objectbox.syncPrices();
+  objectbox.initIfEmpty();
+  await objectbox.syncAssetPrices();
+  await fetchForexExchange();
 }
 
 class App extends StatelessWidget {
