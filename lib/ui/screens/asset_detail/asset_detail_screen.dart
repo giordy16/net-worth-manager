@@ -104,8 +104,8 @@ class AssetDetailScreen extends StatelessWidget {
                                     .getTimeValuesChronologicalOrder(
                                         latestFirst: true)[index];
                                 return AssetDetailHistoryItem(
-                                  asset: state.asset,
-                                  timeValue: timeValue,
+                                  state.asset,
+                                  timeValue,
                                 );
                               },
                               separatorBuilder: (context, index) {

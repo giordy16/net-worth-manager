@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:net_worth_manager/utils/extensions/number_extension.dart';
@@ -28,9 +29,12 @@ class HomePageAsset extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(asset.name, style: theme.textTheme.bodyLarge),
-                Text(
-                    "Last update: ${asset.getLastUpdateDate() != null ? df.format(asset.getLastUpdateDate()!) : "-"}",
-                    style: theme.textTheme.bodySmall),
+                Visibility(
+                  visible: asset.marketInfo.target == null,
+                  child: Text(
+                      "Last update: ${asset.getLastUpdateDate() != null ? df.format(asset.getLastUpdateDate()!) : "-"}",
+                      style: theme.textTheme.bodySmall),
+                ),
               ],
             ),
             const Expanded(child: SizedBox()),

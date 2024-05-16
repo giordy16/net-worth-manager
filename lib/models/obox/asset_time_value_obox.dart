@@ -21,10 +21,11 @@ class AssetTimeValue {
 
   ToOne<Currency> currency = ToOne<Currency>();
 
-  AssetTimeValue({this.id = 0,
-    required this.date,
-    required this.value,
-    this.quantity = 1});
+  AssetTimeValue(
+      {this.id = 0,
+      required this.date,
+      required this.value,
+      this.quantity = 1});
 
   AssetTimeValue.empty(MarketInfo? info)
       : id = 0,
@@ -37,12 +38,8 @@ class AssetTimeValue {
   }
 
   String getCurrentValueWithMainCurrency() {
-    Settings settings = objectbox.store
-        .box<Settings>()
-        .getAll()
-        .first;
-    return "${settings.defaultCurrency.target!
-        .symbol} ${getValueAtMainCurrency().toStringFormatted()}";
+    Settings settings = objectbox.store.box<Settings>().getAll().first;
+    return "${settings.defaultCurrency.target!.symbol} ${getValueAtMainCurrency().toStringFormatted()}";
   }
 
   double getValueAtMainCurrency() {
@@ -57,6 +54,15 @@ class AssetTimeValue {
     double change =
         currencyChange["${currency.target!.name}$mainCurrency"] ?? 0;
     return double.parse((change * value * quantity).toStringAsFixed(2));
+  }
+
+  double getPerformance(double currentValue) {
+    return double.parse(((currentValue - value) * quantity).toStringAsFixed(2));
+  }
+
+  double getPerformancePerc(double currentValue) {
+    return double.parse(
+        ((currentValue - value) / value * 100).toStringAsFixed(2));
   }
 }
 

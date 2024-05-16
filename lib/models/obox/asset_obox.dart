@@ -40,7 +40,7 @@ class Asset {
     } else {
       // market asset, need to look to market value
       return double.parse(
-          (marketInfo.target!.getValueAtMainCurrency() * getTotalQuantity()).toStringAsFixed(2));
+          (marketInfo.target!.getCurrentValueAtMainCurrency() * getTotalQuantity()).toStringAsFixed(2));
     }
   }
 

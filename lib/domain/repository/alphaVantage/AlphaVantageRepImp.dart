@@ -74,16 +74,18 @@ class AlphaVantageRepImp implements StockApi {
 
     try {
       // first look on the db
-      var lastHistoryValue = marketInfo.historyValue.firstOrNull;
-      var firstHistoryValue = marketInfo.historyValue.lastOrNull;
-      if ((lastHistoryValue != null &&
-              df.format(lastHistoryValue.date) == df.format(yesterday)) &&
-          (firstHistoryValue != null &&
-              df.format(lastHistoryValue.date) == df.format(startDate))) {
+      List<AssetHistoryTimeValue> historyDB =
+          marketInfo.getHistoryChronologicalOrder();
+      var latestHistoryValue = historyDB.lastOrNull;
+      var oldestHistoryValue = historyDB.firstOrNull;
+      if ((latestHistoryValue != null &&
+              df.format(latestHistoryValue.date) == df.format(yesterday)) &&
+          (oldestHistoryValue != null &&
+              df.format(oldestHistoryValue.date) == df.format(startDate))) {
         // db contains the 2 extremities, so it's up to date
         return marketInfo.historyValue
-            .where((element) =>
-                element.date.isAfter(startDate.subtract(const Duration(days: 1))))
+            .where((element) => element.date
+                .isAfter(startDate.subtract(const Duration(days: 1))))
             .toList();
       }
 
@@ -96,7 +98,7 @@ class AlphaVantageRepImp implements StockApi {
       };
 
       List<AssetHistoryTimeValue> history = [];
-      var daysToLoop = yesterday.difference(startDate).inDays;
+      var daysToLoop = yesterday.difference(startDate).inDays + 1;
 
       Map<String, dynamic> response =
           (await _client.get("query", queryParameters: queryData)).data;
