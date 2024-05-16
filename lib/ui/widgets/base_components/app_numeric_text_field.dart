@@ -59,7 +59,7 @@ class _AppNumericTextFieldState extends State<AppNumericTextField> {
   void initController() {
     controller = TextEditingController(
         text: widget.initialValue != null
-            ? widget.initialValue!.toStringFormatted()
+            ? widget.initialValue!.toStringFormatted(removeGroupSeparator: true)
             : "");
     oldText = controller.text;
   }

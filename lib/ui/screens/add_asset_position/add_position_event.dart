@@ -5,22 +5,11 @@ import '../../../models/obox/asset_obox.dart';
 
 abstract class AddPositionEvent {}
 
-class ChangeDateEvent extends AddPositionEvent {
-  DateTime dateTime;
-
-  ChangeDateEvent(this.dateTime);
-}
-
-class ChangeCostEvent extends AddPositionEvent {
-  double? cost;
-
-  ChangeCostEvent(this.cost);
-}
-
 class SavePositionEvent extends AddPositionEvent {
-  AddAssetPositionScreenParams params;
+  Asset asset;
+  AssetTimeValue position;
 
-  SavePositionEvent(this.params);
+  SavePositionEvent(this.asset, this.position);
 }
 
 class DeletePositionEvent extends AddPositionEvent {
@@ -28,10 +17,4 @@ class DeletePositionEvent extends AddPositionEvent {
   AssetTimeValue position;
 
   DeletePositionEvent(this.asset, this.position);
-}
-
-class InitState extends AddPositionEvent {
-  AssetTimeValue? value;
-
-  InitState(this.value);
 }

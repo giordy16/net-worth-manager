@@ -20,7 +20,7 @@ class AssetRepoImpl implements AssetRepo {
   }
 
   @override
-  void saveNewAsset(Asset asset) {
+  void saveAsset(Asset asset) {
     objectbox.store.box<Asset>().put(asset);
   }
 
@@ -39,10 +39,9 @@ class AssetRepoImpl implements AssetRepo {
   }
 
   @override
-  void saveNewAssetPosition(AssetTimeValue position, Asset asset) {
+  void saveAssetPosition(AssetTimeValue position, Asset asset) {
     objectbox.store.box<AssetTimeValue>().put(position);
-    asset.timeValues.add(position);
-    saveNewAsset(asset);
+    saveAsset(asset);
   }
 
   @override
@@ -66,7 +65,9 @@ class AssetRepoImpl implements AssetRepo {
       deleteAsset(asset);
     }
 
-    objectbox.store.box<AssetCategory>().remove(category.id);
+    if(category.userCanSelect) {
+      objectbox.store.box<AssetCategory>().remove(category.id);
+    }
   }
 
   @override

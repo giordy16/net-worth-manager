@@ -1,14 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
-import 'package:intl/intl.dart';
-import 'package:net_worth_manager/models/obox/asset_obox.dart';
 import 'package:net_worth_manager/ui/screens/add_asset_position/add_position_bloc.dart';
 import 'package:net_worth_manager/ui/screens/add_asset_position/add_position_event.dart';
 import 'package:net_worth_manager/ui/widgets/base_components/app_date_field.dart';
 import 'package:net_worth_manager/ui/widgets/base_components/app_numeric_text_field.dart';
 import 'package:net_worth_manager/utils/extensions/string_extension.dart';
-
 import '../../../app_dimensions.dart';
 import '../../../domain/repository/asset/asset_repo_impl.dart';
 import '../../../models/obox/asset_time_value_obox.dart';
@@ -39,12 +36,17 @@ class AddAssetPositionScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    AssetTimeValue position = params.timeValue == null
+        ? AssetTimeValue.empty()
+        : params.timeValue!.duplicate();
+
     return RepositoryProvider(
         create: (_) => AssetRepoImpl(),
         child: BlocProvider(
             create: (context) => AddPositionBloc(
+                  context: context,
                   assetRepo: context.read<AssetRepoImpl>(),
-                )..add(InitState(params.timeValue)),
+                ),
             child: BlocBuilder<AddPositionBloc, AddPositionState>(
                 builder: (context, state) {
               return Scaffold(
@@ -69,8 +71,7 @@ class AddAssetPositionScreen extends StatelessWidget {
                       if (_formKey.currentState!.validate()) {
                         context
                             .read<AddPositionBloc>()
-                            .add(SavePositionEvent(params));
-                        context.pop();
+                            .add(SavePositionEvent(params.asset, position));
                       }
                     },
                   ),
@@ -94,13 +95,11 @@ class AddAssetPositionScreen extends StatelessWidget {
                             Padding(
                               padding: const EdgeInsets.only(top: Dimensions.m),
                               child: AppDateField(
-                                initialValue: state.dateTime,
+                                initialValue: params.timeValue?.date,
                                 title: "Date",
                                 isMandatory: true,
                                 onDatePicked: (date) {
-                                  context
-                                      .read<AddPositionBloc>()
-                                      .add(ChangeDateEvent(date));
+                                  position.date = date;
                                 },
                               ),
                             ),
@@ -109,12 +108,28 @@ class AddAssetPositionScreen extends StatelessWidget {
                               child: AppNumericTextField(
                                 moneyBehavior: true,
                                 title: "Value",
-                                initialValue: state.cost,
+                                initialValue: params.timeValue?.value,
                                 isMandatory: true,
                                 onTextChange: (value) {
-                                  context.read<AddPositionBloc>().add(
-                                      ChangeCostEvent(value.convertToDouble()));
+                                  position.value = value.convertToDouble();
                                 },
+                              ),
+                            ),
+                            Visibility(
+                              // visible only for market asset
+                              visible: params.asset.marketInfo.target != null,
+                              child: Padding(
+                                padding:
+                                    const EdgeInsets.only(top: Dimensions.m),
+                                child: AppNumericTextField(
+                                  title: "Quantity",
+                                  initialValue: params.timeValue?.quantity,
+                                  isMandatory: true,
+                                  onTextChange: (value) {
+                                    position.quantity = value.convertToDouble();
+                                  },
+                                  moneyBehavior: false,
+                                ),
                               ),
                             ),
                           ],

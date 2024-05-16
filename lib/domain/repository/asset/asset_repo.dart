@@ -8,9 +8,8 @@ abstract class AssetRepo {
 
   double getNetWorth();
 
-  void saveNewAsset(Asset asset);
-  void saveNewAssetPosition(AssetTimeValue position, Asset asset);
-  void updatePosition(AssetTimeValue position, Asset asset);
+  void saveAsset(Asset asset);
+  void saveAssetPosition(AssetTimeValue position, Asset asset);
 
   void deleteAsset(Asset asset);
   void deleteCategory(AssetCategory category);

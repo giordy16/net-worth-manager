@@ -1,3 +1,4 @@
+import 'package:net_worth_manager/models/obox/asset_history_time_value.dart';
 import 'package:objectbox/objectbox.dart';
 
 @Entity()
@@ -11,6 +12,8 @@ class MarketInfo {
   String currency;
   String region;
   double value;
+
+  ToMany<AssetHistoryTimeValue> historyValue = ToMany<AssetHistoryTimeValue>();
 
   MarketInfo(
     this.symbol,

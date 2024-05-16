@@ -1,24 +1,19 @@
 import 'package:equatable/equatable.dart';
+import 'package:net_worth_manager/models/obox/asset_time_value_obox.dart';
 
 class AddPositionState extends Equatable {
-  final DateTime? dateTime;
-  final double? cost;
+  final AssetTimeValue? value;
 
-  const AddPositionState({
-    this.dateTime,
-    this.cost,
-  });
+  const AddPositionState({this.value});
 
   AddPositionState copyWith({
-    DateTime? dateTime,
-    double? cost,
+    AssetTimeValue? value,
   }) {
     return AddPositionState(
-      dateTime: dateTime ?? this.dateTime,
-      cost: cost ?? this.cost,
+      value: value ?? this.value,
     );
   }
 
   @override
-  List<Object?> get props => [dateTime, cost];
+  List<Object?> get props => [value];
 }

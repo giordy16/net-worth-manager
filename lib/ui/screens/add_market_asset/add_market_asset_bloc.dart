@@ -29,7 +29,7 @@ class AddMarketAssetBloc
 
       marketInfo.value = price;
       assetRepo.saveMarketValue(marketInfo);
-      assetRepo.saveNewAsset(asset);
+      assetRepo.saveAsset(asset);
     });
   }
 }

@@ -1,0 +1,147 @@
+import 'package:custom_sliding_segmented_control/custom_sliding_segmented_control.dart';
+import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
+import 'package:net_worth_manager/app_dimensions.dart';
+import 'package:net_worth_manager/models/obox/asset_time_value_obox.dart';
+import 'package:net_worth_manager/utils/extensions/number_extension.dart';
+import 'package:syncfusion_flutter_charts/charts.dart';
+
+import '../../../models/obox/asset_obox.dart';
+import '../../../models/ui/graph_data.dart';
+import '../../../utils/enum/graph_data_gap_enum.dart';
+
+
+class LineGraph extends StatefulWidget {
+  static DateTime today = DateTime.now();
+
+  Asset asset;
+  bool showGapSelection;
+  List<GraphData> graphData;
+
+  LineGraph({
+    super.key,
+    required this.asset,
+    required this.graphData,
+    this.showGapSelection = false,
+  });
+
+  @override
+  State<StatefulWidget> createState() => _MarketAssetLineGraph();
+}
+
+class _MarketAssetLineGraph extends State<LineGraph> {
+  DataGap currentGap = DataGap.all;
+  List<AssetTimeValue> assetValuesOfGap = [];
+
+  @override
+  Widget build(BuildContext context) {
+    ThemeData theme = Theme.of(context);
+
+    if (widget.asset.timeValues.isEmpty) {
+      return const Padding(
+        padding: EdgeInsets.fromLTRB(
+            Dimensions.screenMargin, Dimensions.l, Dimensions.screenMargin, 0),
+        child: Center(
+            child: Text(
+          "Not enough data to plot the chart",
+          textAlign: TextAlign.center,
+        )),
+      );
+    }
+
+    return Column(
+      children: [
+        Visibility(
+          visible: widget.showGapSelection,
+          child: CustomSlidingSegmentedControl(
+            isStretch: true,
+            initialValue: DataGap.values.indexOf(currentGap),
+            innerPadding: const EdgeInsets.all(Dimensions.xxs),
+            children: {
+              0: Text(DataGap.all.getName()),
+              1: Text(DataGap.ytd.getName()),
+              2: Text(DataGap.g60.getName()),
+              3: Text(DataGap.g30.getName()),
+            },
+            decoration: BoxDecoration(
+              color: theme.colorScheme.onPrimary,
+              borderRadius: BorderRadius.circular(50),
+            ),
+            thumbDecoration: BoxDecoration(
+              color: theme.colorScheme.tertiaryContainer,
+              borderRadius: BorderRadius.circular(50),
+            ),
+            duration: const Duration(milliseconds: 300),
+            curve: Curves.easeInToLinear,
+            onValueChanged: (v) {
+              setState(() {
+                currentGap = DataGap.values[v];
+              });
+            },
+          ),
+        ),
+        const SizedBox(height: Dimensions.m),
+        SfCartesianChart(
+          zoomPanBehavior:
+              ZoomPanBehavior(enablePinching: true, enablePanning: true),
+          trackballBehavior: TrackballBehavior(
+              enable: true,
+              activationMode: ActivationMode.singleTap,
+              builder: (context, trackballDetails) {
+                return Container(
+                    width: 100,
+                    height: 50,
+                    decoration: const BoxDecoration(
+                        borderRadius: BorderRadius.all(Radius.circular(8)),
+                        color: Colors.white),
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Text(
+                          (trackballDetails.point!.y as double).toStringFormatted(),
+                          style: TextStyle(
+                            color: theme.colorScheme.onSecondary,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                        Text(
+                          DateFormat("dd/MM/yy").format(
+                              DateTime.fromMillisecondsSinceEpoch(
+                                  trackballDetails.point!.x)),
+                          style: TextStyle(
+                            color: theme.colorScheme.onSecondary,
+                          ),
+                        ),
+                      ],
+                    ));
+              }),
+          primaryXAxis: NumericAxis(
+            minimum: currentGap
+                .getStartDate(widget.asset)
+                .millisecondsSinceEpoch
+                .toDouble(),
+            maximum: currentGap.getEndDate().millisecondsSinceEpoch.toDouble(),
+            axisLabelFormatter: (AxisLabelRenderDetails details) =>
+                ChartAxisLabel(
+                    currentGap.getDateFormat().format(
+                        DateTime.fromMillisecondsSinceEpoch(
+                            (details.value as double).toInt())),
+                    details.textStyle),
+          ),
+          series: [
+            SplineSeries<GraphData, int>(
+              color: theme.colorScheme.secondary,
+              splineType: SplineType.monotonic,
+              animationDuration: 100,
+              enableTooltip: true,
+              dataSource: widget.graphData,
+              xValueMapper: (GraphData data, _) =>
+                  data.x.millisecondsSinceEpoch,
+              yValueMapper: (GraphData data, _) => data.y,
+            )
+          ],
+        ),
+      ],
+    );
+  }
+}

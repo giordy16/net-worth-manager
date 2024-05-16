@@ -34,14 +34,14 @@ class AddAssetBloc extends Bloc<AddAssetEvent, AddAssetState> {
         asset = Asset(state.assetName);
         asset.category.target = state.assetCategory;
       }
-      assetRepo.saveNewAsset(asset);
+      assetRepo.saveAsset(asset);
     });
 
     on<SaveAssetAndOpenPositionEvent>((event, emit) {
       Asset asset = Asset(state.assetName);
       asset.category.target = state.assetCategory;
 
-      assetRepo.saveNewAsset(asset);
+      assetRepo.saveAsset(asset);
       context.pushReplacement(AddAssetPositionScreen.route,
           extra: AddAssetPositionScreenParams(asset: asset));
     });

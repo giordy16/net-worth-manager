@@ -33,7 +33,7 @@ class AddSelectionScreen extends StatelessWidget {
                 "Market investment",
                 "Add your market investments so they are automatically tracked over time (currently supported: stocks, bonds, ETFs, crypto)",
                 () {
-                  if (false) {
+                  if (kDebugMode) {
                     context.push(AddMarketAssetScreen.route,
                         extra: AddMarketAssetScreenParams(
                             asset: MarketInfo("AAPL", "Apple Inc.", "Equity",

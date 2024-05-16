@@ -185,12 +185,42 @@
           "type": 8
         }
       ],
+      "relations": [
+        {
+          "id": "2:4132757054122527006",
+          "name": "historyValue",
+          "targetId": "8:7487394912198200723"
+        }
+      ]
+    },
+    {
+      "id": "8:7487394912198200723",
+      "lastPropertyId": "3:7780162268411866185",
+      "name": "AssetHistoryTimeValue",
+      "properties": [
+        {
+          "id": "1:5024789284389560285",
+          "name": "id",
+          "type": 6,
+          "flags": 1
+        },
+        {
+          "id": "2:358327693471256779",
+          "name": "date",
+          "type": 10
+        },
+        {
+          "id": "3:7780162268411866185",
+          "name": "value",
+          "type": 8
+        }
+      ],
       "relations": []
     }
   ],
-  "lastEntityId": "7:8021363571026158853",
+  "lastEntityId": "8:7487394912198200723",
   "lastIndexId": "3:5774481709415715408",
-  "lastRelationId": "1:5888901543308030772",
+  "lastRelationId": "2:4132757054122527006",
   "lastSequenceId": "0:0",
   "modelVersion": 5,
   "modelVersionParserMinimum": 5,

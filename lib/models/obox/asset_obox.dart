@@ -5,7 +5,8 @@ import 'package:net_worth_manager/utils/extensions/number_extension.dart';
 import 'package:objectbox/objectbox.dart';
 
 import '../../main.dart';
-import '../../ui/widgets/graph/asset_line_graph.dart';
+import '../../ui/widgets/graph/simple_asset_line_graph.dart';
+import '../../utils/enum/graph_data_gap_enum.dart';
 import 'asset_category_obox.dart';
 
 @Entity()
@@ -37,7 +38,8 @@ class Asset {
       return getTimeValuesChronologicalOrder().lastOrNull?.value ?? 0;
     } else {
       // market asset, need to look to market value
-      return double.parse((marketInfo.target!.value * getTotalQuantity()).toStringAsFixed(2));
+      return double.parse(
+          (marketInfo.target!.value * getTotalQuantity()).toStringAsFixed(2));
     }
   }
 
@@ -60,6 +62,7 @@ class Asset {
     return "${settings.defaultCurrency.target?.symbol} ${lastValue.toStringFormatted()}";
   }
 
+  /// if @latestFirst is false, the oldest value is the first of the list, otherwise the last
   List<AssetTimeValue> getTimeValuesChronologicalOrder({
     bool latestFirst = false,
   }) {
@@ -69,22 +72,38 @@ class Asset {
     return values;
   }
 
-  // List<FlSpot> getGraphData() {
-  //   return getTimeValuesChronologicalOrder()
-  //       .map((e) => FlSpot(e.date.millisecondsSinceEpoch.toDouble(), e.value))
-  //       .toList();
-  // }
-
-  List<AssetTimeValue> getTimeValuesByDate(DataGap gap) {
-    DateTime endDate = gap.getEndDate();
-    DateTime startDate = gap.getStartDate(this);
-
-    return getTimeValuesChronologicalOrder()
-        .where((value) =>
-            (value.date.isAfter(startDate) ||
-                value.date.isAtSameMomentAs(startDate)) &&
-            (value.date.isBefore(endDate) ||
-                value.date.isAtSameMomentAs(endDate)))
+  double getQuantityAtDateTime(DateTime dateTime) {
+    var subList = getTimeValuesChronologicalOrder()
+        .where((element) =>
+            element.date.isBefore(dateTime.add(const Duration(days: 1))))
         .toList();
+    double q = 0;
+    for (var element in subList) {
+      q = q + element.quantity;
+    }
+    return q;
+  }
+
+  double getValueAtDateTime(DateTime dateTime) {
+    if (marketInfo.target == null) {
+      // simple asset
+      return getTimeValuesChronologicalOrder()
+              .where((element) => element.date
+                  .isBefore(dateTime.add(const Duration(days: 1))))
+              .lastOrNull
+              ?.value ??
+          0;
+    } else {
+      // market asset
+      var marketValueAtTime = marketInfo.target!.historyValue
+              .where((element) => element.date
+                  .isBefore(dateTime.add(const Duration(days: 1))))
+              .lastOrNull
+              ?.value ??
+          0;
+
+      return double.parse((marketValueAtTime * getQuantityAtDateTime(dateTime))
+          .toStringAsFixed(2));
+    }
   }
 }

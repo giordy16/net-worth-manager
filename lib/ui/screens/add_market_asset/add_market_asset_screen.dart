@@ -7,13 +7,13 @@ import 'package:net_worth_manager/domain/repository/alphaVantage/AlphaVantageRep
 import 'package:net_worth_manager/ui/screens/add_market_asset/add_market_asset_bloc.dart';
 import 'package:net_worth_manager/ui/screens/add_market_asset/add_market_asset_event.dart';
 import 'package:net_worth_manager/ui/screens/add_market_asset/add_market_asset_state.dart';
-import 'package:net_worth_manager/ui/screens/add_market_asset_position/add_market_asset_position_screen.dart';
 import 'package:net_worth_manager/ui/widgets/base_components/app_text_field.dart';
 import 'package:net_worth_manager/ui/widgets/modal/bottom_sheet.dart';
 import 'package:net_worth_manager/utils/extensions/number_extension.dart';
 import '../../../domain/repository/asset/asset_repo_impl.dart';
 import '../../../models/obox/asset_time_value_obox.dart';
 import '../../widgets/base_components/app_bottom_fab.dart';
+import '../add_asset_position/add_asset_position_screen.dart';
 import '../add_asset_position/add_asset_position_screen_params.dart';
 import 'add_market_asset_screen_params.dart';
 
@@ -87,15 +87,16 @@ class _AddMarketAssetScreenState extends State<AddMarketAssetScreen> {
                           shrinkWrap: true,
                           physics: const ClampingScrollPhysics(),
                           itemBuilder: (context, index) {
-                            if (index <= lastIndexToHide)
+                            if (index <= lastIndexToHide) {
                               return const SizedBox();
+                            }
                             var position =
                                 widget.params.asset.timeValues[index];
                             return Material(
                               child: InkWell(
                                 onTap: () async {
                                   AssetTimeValue? newPosition = await context
-                                      .push(AddMarketAssetPositionScreen.route,
+                                      .push(AddAssetPositionScreen.route,
                                           extra: AddAssetPositionScreenParams(
                                               asset: widget.params.asset,
                                               timeValue: widget.params.asset
@@ -135,15 +136,16 @@ class _AddMarketAssetScreenState extends State<AddMarketAssetScreen> {
                                             setState(() {});
                                           }
                                         },
-                                        icon: Icon(Icons.delete_outlined))
+                                        icon: const Icon(Icons.delete_outlined))
                                   ],
                                 ),
                               ),
                             );
                           },
                           separatorBuilder: (context, index) {
-                            if (index <= lastIndexToHide)
+                            if (index <= lastIndexToHide) {
                               return const SizedBox();
+                            }
                             return const Divider();
                           },
                           itemCount: widget.params.asset.timeValues.length,
@@ -154,7 +156,7 @@ class _AddMarketAssetScreenState extends State<AddMarketAssetScreen> {
                         IconButton(
                           onPressed: () async {
                             AssetTimeValue? position = await context.push(
-                                AddMarketAssetPositionScreen.route,
+                                AddAssetPositionScreen.route,
                                 extra: AddAssetPositionScreenParams(
                                     asset: widget.params.asset));
                             if (position != null) {

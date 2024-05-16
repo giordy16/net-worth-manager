@@ -57,7 +57,7 @@ class _AppDateFieldState extends State<AppDateField> {
       onTap: () async {
         final DateTime? picked = await showDatePicker(
             context: context,
-            initialDate: null,
+            initialDate: widget.initialValue ?? DateTime.now(),
             firstDate: DateTime(1990),
             lastDate: DateTime.now());
         if (picked != null) {

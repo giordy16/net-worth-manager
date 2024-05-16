@@ -18,7 +18,7 @@ Future<void> main() async {
 
 Future<void> initApp() async {
    objectbox.initIfEmpty();
-   await objectbox.syncPrices();
+   // await objectbox.syncPrices();
 }
 
 class App extends StatelessWidget {
