@@ -12,13 +12,21 @@ import '../../../utils/Constants.dart';
 class AlphaVantageRepImp implements StockApi {
   final _client = Dio(BaseOptions(baseUrl: Constants.ALPHA_VANTAGE_BASE_URL))
     ..interceptors.add(InterceptorsWrapper(onRequest: (options, handler) {
-      print("${options.baseUrl}${options.path}/${options.queryParameters}/");
+      print("= DioRequest ===================================================");
+      print("URI: ${options.uri}");
+      print("Headers: ${options.headers}");
+      print("================================================================");
       return handler.next(options);
     }, onResponse: (response, handler) {
-      print(response.data);
+      print("= DioResponse ==================================================");
+      print("Code: ${response.statusCode}");
+      print("Data: ${response.data}");
+      print("================================================================");
       return handler.next(response);
     }, onError: (DioException e, handler) {
+      print("= DioException =================================================");
       print(e);
+      print("================================================================");
       return handler.next(e);
     }));
 

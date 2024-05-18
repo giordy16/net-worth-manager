@@ -41,8 +41,6 @@ class AddAssetPositionScreen extends StatelessWidget {
         ? AssetTimeValue.empty(params.asset.marketInfo.target)
         : params.timeValue!.duplicate();
 
-
-
     return RepositoryProvider(
         create: (_) => AssetRepoImpl(),
         child: BlocProvider(
@@ -53,6 +51,7 @@ class AddAssetPositionScreen extends StatelessWidget {
             child: BlocBuilder<AddPositionBloc, AddPositionState>(
                 builder: (context, state) {
               return Scaffold(
+                  resizeToAvoidBottomInset: false,
                   appBar: AppBar(
                     title: Text("Position"),
                     actions: [

@@ -15,99 +15,61 @@ import '../../../../models/obox/settings_obox.dart';
 import '../asset_detail_bloc.dart';
 import '../asset_detail_event.dart';
 
-class AssetDetailHistoryItem extends StatefulWidget {
+class AssetDetailHistoryItem extends StatelessWidget {
   Asset asset;
   AssetTimeValue timeValue;
 
   AssetDetailHistoryItem(this.asset, this.timeValue);
 
-  @override
-  State<StatefulWidget> createState() => _AssetDetailHistoryItemState();
-}
-
-class _AssetDetailHistoryItemState extends State<AssetDetailHistoryItem> {
   DateFormat df = DateFormat("dd/MM/yyyy");
-
-  bool expanded = false;
 
   @override
   Widget build(BuildContext context) {
-    return Material(
-      child: InkWell(
-          onTap: () async {
-            await context.push(AddAssetPositionScreen.route,
-                extra: AddAssetPositionScreenParams(
-                  asset: widget.asset,
-                  timeValue: widget.timeValue,
-                ));
-            context.read<AssetDetailBloc>().add(FetchGraphDataEvent());
-          },
-          child: widget.asset.marketInfo.target == null
-              ? buildSimpleAssetItem()
-              : buildMarketAssetItem(context)),
-    );
+    return asset.marketInfo.target == null
+        ? buildSimpleAssetItem()
+        : buildMarketAssetItem(context);
   }
 
   Widget buildSimpleAssetItem() {
     return Row(
       children: [
-        Text(df.format(widget.timeValue.date)),
+        Text(df.format(timeValue.date)),
         const Expanded(child: SizedBox()),
-        Text(widget.timeValue.getCurrentValueWithMainCurrency()),
+        Text(timeValue.getCurrentValueWithMainCurrency()),
       ],
     );
   }
 
   Widget buildMarketAssetItem(BuildContext context) {
+    ThemeData theme = Theme.of(context);
+
     Currency mainCurrency =
-        objectbox.store.box<Settings>().getAll().first.defaultCurrency.target!;
+    objectbox.store.box<Settings>().getAll().first.defaultCurrency.target!;
 
-    Currency assetCurrency = widget.asset.marketInfo.target!.getCurrency();
+    Currency assetCurrency = asset.marketInfo.target!.getCurrency();
 
-    double value = double.parse((widget.timeValue.quantity *
-            widget.asset.marketInfo.target!.getCurrentValueAtMainCurrency())
+    double value = double.parse((timeValue.quantity *
+        asset.marketInfo.target!.getCurrentValueAtMainCurrency())
         .toStringAsFixed(2));
 
     double performance =
-        widget.timeValue.getPerformance(widget.asset.marketInfo.target!.value);
-    double performancePerc = widget.timeValue
-        .getPerformancePerc(widget.asset.marketInfo.target!.value);
+    timeValue.getPerformance(asset.marketInfo.target!.value);
+    double performancePerc = timeValue
+        .getPerformancePerc(asset.marketInfo.target!.value);
     String performanceWithSign = performance >= 0
         ? "+${performance.toStringFormatted()}"
         : performance.toStringFormatted();
 
-    return AnimatedContainer(
-      duration: Duration(milliseconds: 1500),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Row(
-            children: [
-              Text(df.format(widget.timeValue.date)),
-              const Expanded(child: SizedBox()),
-              Text(
-                "${mainCurrency.symbol} ${value.toStringFormatted()}",
-                style: Theme.of(context)
-                    .textTheme
-                    .bodyMedium
-                    ?.copyWith(fontWeight: FontWeight.bold),
-              ),
-              IconButton(
-                  onPressed: () {
-                    setState(() {
-                      expanded = !expanded;
-                    });
-                  },
-                  icon: expanded
-                      ? Icon(Icons.expand_less)
-                      : Icon(Icons.expand_more))
-            ],
-          ),
-          Visibility(
-            visible: expanded,
-            child: Column(
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Row(
+          children: [
+            Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
+                Text(df.format(timeValue.date)),
+                SizedBox(height: Dimensions.xs,),
                 Row(
                   children: [
                     Text("Utili: "),
@@ -127,17 +89,30 @@ class _AssetDetailHistoryItemState extends State<AssetDetailHistoryItem> {
                 Text(
                     "Valore attuale: ${mainCurrency.symbol} ${value.toStringFormatted()}"),
                 Text(
-                    "Quantità: ${widget.timeValue.quantity.toStringFormatted()}"),
+                    "Quantità: ${timeValue.quantity.toStringFormatted()}"),
                 Text(
-                    "Prezzo di acquisto: ${widget.timeValue.getPurchaseValueWithPurchaseCurrency()}"),
-                const SizedBox(
-                  height: Dimensions.m,
-                )
+                    "Prezzo di acquisto: ${timeValue.getPurchaseValueWithPurchaseCurrency()}"),
               ],
             ),
-          )
-        ],
-      ),
+            const Expanded(child: SizedBox()),
+            IconButton(
+                onPressed: () async {
+                  await context.push(AddAssetPositionScreen.route,
+                      extra: AddAssetPositionScreenParams(
+                        asset: asset,
+                        timeValue: timeValue,
+                      ));
+                  context.read<AssetDetailBloc>().add(FetchGraphDataEvent());
+
+                },
+                icon: Icon(
+                  Icons.edit,
+                  color: theme.colorScheme.secondary,
+                )),
+          ],
+        ),
+      ],
     );
   }
+  
 }

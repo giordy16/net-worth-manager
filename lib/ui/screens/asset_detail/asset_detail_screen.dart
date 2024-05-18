@@ -109,7 +109,7 @@ class AssetDetailScreen extends StatelessWidget {
                                 );
                               },
                               separatorBuilder: (context, index) {
-                                return const Divider();
+                                return const Divider(height: 32,);
                               },
                               itemCount: state.asset.timeValues.length)
                         ],
