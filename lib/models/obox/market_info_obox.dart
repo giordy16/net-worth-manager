@@ -2,6 +2,7 @@ import 'package:net_worth_manager/models/obox/asset_history_time_value.dart';
 import 'package:net_worth_manager/models/obox/currency_obox.dart';
 import 'package:net_worth_manager/models/obox/settings_obox.dart';
 import 'package:net_worth_manager/utils/extensions/number_extension.dart';
+import 'package:net_worth_manager/utils/forex.dart';
 import 'package:objectbox/objectbox.dart';
 
 import '../../main.dart';
@@ -18,6 +19,7 @@ class MarketInfo {
   String currency;
   String region;
   double value;
+  double valueAtMainCurrency;
 
   ToMany<AssetHistoryTimeValue> historyValue = ToMany<AssetHistoryTimeValue>();
 
@@ -28,6 +30,7 @@ class MarketInfo {
     this.currency,
     this.region, {
     this.value = 0,
+    this.valueAtMainCurrency = 0,
   });
 
   /// if @latestFirst is false, the oldest value is the first of the list, otherwise the last
@@ -49,16 +52,18 @@ class MarketInfo {
         .first;
   }
 
-  double getCurrentValueAtMainCurrency() {
+  String getCurrentValueWithAssetCurrency() {
+    return "${getCurrency().symbol} ${value.toStringFormatted()}";
+  }
+
+  String getCurrentValueWithMainCurrency() {
     String mainCurrency = objectbox.store
         .box<Settings>()
         .getAll()
         .first
         .defaultCurrency
         .target!
-        .name;
-
-    double change = currencyChange["$currency$mainCurrency"] ?? 0;
-    return double.parse((change * value).toStringAsFixed(2));
+        .symbol;
+    return "$mainCurrency ${valueAtMainCurrency.toStringFormatted()}";
   }
 }

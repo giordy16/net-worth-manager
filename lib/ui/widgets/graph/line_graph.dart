@@ -30,7 +30,7 @@ class LineGraph extends StatefulWidget {
 }
 
 class _MarketAssetLineGraph extends State<LineGraph> {
-  DataGap currentGap = DataGap.all;
+  GraphTime currentGap = GraphTime.all;
   List<AssetTimeValue> assetValuesOfGap = [];
 
   @override
@@ -55,13 +55,15 @@ class _MarketAssetLineGraph extends State<LineGraph> {
           visible: widget.showGapSelection,
           child: CustomSlidingSegmentedControl(
             isStretch: true,
-            initialValue: DataGap.values.indexOf(currentGap),
+            initialValue: GraphTime.values.indexOf(currentGap),
             innerPadding: const EdgeInsets.all(Dimensions.xxs),
             children: {
-              0: Text(DataGap.all.getName()),
-              1: Text(DataGap.ytd.getName()),
-              2: Text(DataGap.g60.getName()),
-              3: Text(DataGap.g30.getName()),
+              0: Text(GraphTime.all.getName()),
+              1: Text(GraphTime.fiveYears.getName()),
+              2: Text(GraphTime.oneYear.getName()),
+              3: Text(GraphTime.ytd.getName()),
+              4: Text(GraphTime.threeMonths.getName()),
+              5: Text(GraphTime.oneMonth.getName()),
             },
             decoration: BoxDecoration(
               color: theme.colorScheme.onPrimary,
@@ -75,7 +77,7 @@ class _MarketAssetLineGraph extends State<LineGraph> {
             curve: Curves.easeInToLinear,
             onValueChanged: (v) {
               setState(() {
-                currentGap = DataGap.values[v];
+                currentGap = GraphTime.values[v];
               });
             },
           ),

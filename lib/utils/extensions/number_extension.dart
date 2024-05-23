@@ -24,16 +24,4 @@ extension DoubleHelper on double {
 
     return string;
   }
-
-  double convertToMainCurrency(String assetCurrency) {
-    String mainCurrency = objectbox.store
-        .box<Settings>()
-        .getAll()
-        .first
-        .defaultCurrency
-        .target!
-        .name;
-    double change = currencyChange["$assetCurrency$mainCurrency"] ?? 0;
-    return double.parse((change * this).toStringAsFixed(2));
-  }
 }

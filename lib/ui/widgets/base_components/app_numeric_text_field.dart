@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
+import 'package:get_it/get_it.dart';
 import 'package:go_router/go_router.dart';
 import 'package:intl/number_symbols_data.dart';
 import 'package:net_worth_manager/ui/screens/currency_selection/currency_selection_screen.dart';
@@ -17,7 +18,7 @@ class AppNumericTextField extends StatefulWidget {
   double? initialValue;
   String title;
   bool isMandatory;
-  String? currencyName;
+  Currency? currency;
   bool moneyBehavior;
   bool userCanChangeCurrency;
   Function(String)? onTextChange;
@@ -31,7 +32,7 @@ class AppNumericTextField extends StatefulWidget {
     this.onTextChange,
     this.onCurrencyChange,
     this.isMandatory = false,
-    this.currencyName,
+    this.currency,
     this.userCanChangeCurrency = true,
   });
 
@@ -57,7 +58,7 @@ class _AppNumericTextFieldState extends State<AppNumericTextField> {
   ];
 
   String oldText = "";
-  Settings settings = objectbox.store.box<Settings>().getAll().first;
+  Settings settings = GetIt.instance<Settings>();
 
   void initController() {
     controller = TextEditingController(
@@ -65,22 +66,24 @@ class _AppNumericTextFieldState extends State<AppNumericTextField> {
             ? widget.initialValue!.toStringFormatted(removeGroupSeparator: true)
             : "");
     oldText = controller.text;
+
+    controller.selection = TextSelection.fromPosition(
+        TextPosition(offset: controller.text.length));
   }
 
   @override
   void initState() {
     super.initState();
     initController();
+    initCurrency();
 
-    allowedSymbols.add(numberFormatSymbols[Platform.localeName.split("_").first]?.DECIMAL_SEP);
+    allowedSymbols.add(
+        numberFormatSymbols[Platform.localeName.split("_").first]?.DECIMAL_SEP);
+  }
 
-    if (widget.currencyName != null) {
-      currency = objectbox.store
-          .box<Currency>()
-          .query(Currency_.name.equals(widget.currencyName!))
-          .build()
-          .find()
-          .first;
+  void initCurrency() {
+    if (widget.currency != null) {
+      currency = widget.currency!;
     } else {
       currency = settings.defaultCurrency.target!;
     }
@@ -90,6 +93,7 @@ class _AppNumericTextFieldState extends State<AppNumericTextField> {
   void didUpdateWidget(AppNumericTextField oldWidget) {
     super.didUpdateWidget(oldWidget);
     initController();
+    initCurrency();
   }
 
   bool isTextOk(String text) {
@@ -115,8 +119,6 @@ class _AppNumericTextFieldState extends State<AppNumericTextField> {
   @override
   Widget build(BuildContext context) {
     ThemeData theme = Theme.of(context);
-    controller.selection = TextSelection.fromPosition(
-        TextPosition(offset: controller.text.length));
 
     return TextFormField(
       controller: controller,
@@ -136,13 +138,17 @@ class _AppNumericTextFieldState extends State<AppNumericTextField> {
               style: theme.textTheme.bodyLarge
                   ?.copyWith(color: theme.colorScheme.primary),
             ),
-            onPressed: widget.userCanChangeCurrency ? () async {
-              Currency? c = await context.push(CurrencySelectionScreen.route)
-                  as Currency?;
-              if (c != null && widget.onCurrencyChange != null) {
-                widget.onCurrencyChange!(c);
-              }
-            } : null,
+            onPressed: widget.userCanChangeCurrency
+                ? () async {
+                    Currency? c = await context
+                        .push(CurrencySelectionScreen.route, extra: currency) as Currency?;
+                    if (c == null) return;
+                    if (widget.onCurrencyChange != null) {
+                      widget.onCurrencyChange!(c);
+                    }
+                    if (context.mounted) setState(() {});
+                  }
+                : null,
           ),
         ),
         labelStyle: TextStyle(color: theme.colorScheme.secondary),

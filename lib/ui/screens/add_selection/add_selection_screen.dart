@@ -31,7 +31,7 @@ class AddSelectionScreen extends StatelessWidget {
               const SizedBox(height: Dimensions.m),
               AddSelectionItem(
                 "Market investment",
-                "Add your market investments so they are automatically tracked over time (currently supported: stocks, bonds, ETFs, crypto)",
+                "Add your investments in the stock market.\nTheir value will be automatically calculated day by day",
                 () {
                   if (kDebugMode) {
                     context.push(AddMarketAssetScreen.route,
@@ -48,7 +48,7 @@ class AddSelectionScreen extends StatelessWidget {
               const SizedBox(height: Dimensions.m),
               AddSelectionItem(
                 "Normal asset",
-                "Add all your assets that you want to be part of your net worth. For example: house, car, pension fund, credits/debts, valuable collections, watches, ...",
+                "Add your assets that are part of the net worth.\nExample of assets are house, car, pension fund, credits/debts, valuable collections, watches, ...\nThe value of a normal asset is based on the last position added",
                 () {
                   context.push(AddAssetScreen.route);
                 },

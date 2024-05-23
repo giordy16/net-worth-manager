@@ -16,14 +16,36 @@ import '../../widgets/modal/bottom_sheet.dart';
 import 'add_asset_position_screen_params.dart';
 import 'add_position_state.dart';
 
-class AddAssetPositionScreen extends StatelessWidget {
+class AddAssetPositionScreen extends StatefulWidget {
   static const route = "/AddAssetPositionScreen";
 
   AddAssetPositionScreenParams params;
 
   AddAssetPositionScreen({super.key, required this.params});
 
+  @override
+  State<StatefulWidget> createState() => _AddAssetPositionScreenState();
+
+}
+
+class _AddAssetPositionScreenState extends State<AddAssetPositionScreen> {
+
   final _formKey = GlobalKey<FormState>();
+
+  late AddAssetPositionScreenParams params;
+  late AssetTimeValue position;
+
+  @override
+  void initState(){
+
+    params = widget.params;
+
+    position = params.timeValue == null
+        ? AssetTimeValue.empty(params.asset.marketInfo.target)
+        : params.timeValue!.duplicate();
+
+    super.initState();
+  }
 
   Future<void> onDelete(BuildContext context) async {
     var yes = await showDeleteConfirmSheet(context);
@@ -37,9 +59,6 @@ class AddAssetPositionScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    AssetTimeValue position = params.timeValue == null
-        ? AssetTimeValue.empty(params.asset.marketInfo.target)
-        : params.timeValue!.duplicate();
 
     return RepositoryProvider(
         create: (_) => AssetRepoImpl(),
@@ -97,7 +116,7 @@ class AddAssetPositionScreen extends StatelessWidget {
                             Padding(
                               padding: const EdgeInsets.only(top: Dimensions.m),
                               child: AppDateField(
-                                initialValue: params.timeValue?.date,
+                                initialValue: position.date,
                                 title: "Date",
                                 isMandatory: true,
                                 onDatePicked: (date) {
@@ -110,9 +129,8 @@ class AddAssetPositionScreen extends StatelessWidget {
                               child: AppNumericTextField(
                                 moneyBehavior: true,
                                 title: "Value",
-                                initialValue: params.timeValue?.value,
-                                currencyName:
-                                    params.asset.marketInfo.target?.currency,
+                                initialValue: position.value,
+                                currency: position.currency.target,
                                 userCanChangeCurrency:
                                     params.asset.marketInfo.target == null,
                                 isMandatory: true,
@@ -132,7 +150,7 @@ class AddAssetPositionScreen extends StatelessWidget {
                                     const EdgeInsets.only(top: Dimensions.m),
                                 child: AppNumericTextField(
                                   title: "Quantity",
-                                  initialValue: params.timeValue?.quantity,
+                                  initialValue: position.quantity,
                                   isMandatory: true,
                                   onTextChange: (value) {
                                     position.quantity = value.convertToDouble();

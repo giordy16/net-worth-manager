@@ -1,31 +1,33 @@
+import 'package:get_it/get_it.dart';
+import 'package:intl/intl.dart';
 import 'package:net_worth_manager/main.dart';
+import 'package:net_worth_manager/models/obox/main_currency_forex_change.dart';
+import 'package:net_worth_manager/models/obox/settings_obox.dart';
+import 'package:net_worth_manager/objectbox.g.dart';
+import 'package:net_worth_manager/utils/extensions/date_time_extension.dart';
 
-import '../models/obox/currency_obox.dart';
-import '../models/obox/market_info_obox.dart';
-import '../models/obox/settings_obox.dart';
-import 'package:forex_conversion/forex_conversion.dart';
+class Forex {
+  static double getCurrencyChange(String fromCurrency, {DateTime? date}) {
+    String toCurrency =
+        GetIt.instance<Settings>().defaultCurrency.target!.name;
 
-Future<void> fetchForexExchange() async {
-  Currency defaultCurrency =
-      objectbox.store.box<Settings>().getAll().first.defaultCurrency.target!;
+    if (toCurrency == fromCurrency) return 1;
 
-  List<String> assetCurrencies = objectbox.store
-      .box<MarketInfo>()
-      .getAll()
-      .map((e) => e.currency)
-      .toSet()
-      .toList();
+    date ??= DateTime.now().keepOnlyYMT();
 
-  currencyChange.clear();
+    double? change = GetIt.instance<Store>()
+        .box<CurrencyForexChange>()
+        .query(CurrencyForexChange_.date.equalsDate(date) &
+            CurrencyForexChange_.name.equals("$fromCurrency$toCurrency"))
+        .build()
+        .findFirst()
+        ?.change;
 
-  final fx = Forex();
-  for (var currency in assetCurrencies) {
-    double change = await fx.getCurrencyConverted(
-      sourceCurrency: currency,
-      destinationCurrency: defaultCurrency.name,
-      sourceAmount: 1,
-    );
-    currencyChange.addAll({"$currency${defaultCurrency.name}": change});
+    if (change != null) {
+      return change;
+    } else {
+      return getCurrencyChange(fromCurrency,
+          date: date.subtract(const Duration(days: 1)));
+    }
   }
-  print(currencyChange);
 }

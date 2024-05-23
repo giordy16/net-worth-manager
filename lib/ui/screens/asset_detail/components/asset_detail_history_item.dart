@@ -26,16 +26,33 @@ class AssetDetailHistoryItem extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return asset.marketInfo.target == null
-        ? buildSimpleAssetItem()
+        ? buildSimpleAssetItem(context)
         : buildMarketAssetItem(context);
   }
 
-  Widget buildSimpleAssetItem() {
+  Widget buildSimpleAssetItem(BuildContext context) {
+    ThemeData theme = Theme.of(context);
+
     return Row(
       children: [
         Text(df.format(timeValue.date)),
         const Expanded(child: SizedBox()),
-        Text(timeValue.getCurrentValueWithMainCurrency()),
+        Text(timeValue.getValueWithCurrency()),
+        IconButton(
+          padding: EdgeInsets.all(0),
+            onPressed: () async {
+              await context.push(AddAssetPositionScreen.route,
+                  extra: AddAssetPositionScreenParams(
+                    asset: asset,
+                    timeValue: timeValue,
+                  ));
+              context.read<AssetDetailBloc>().add(FetchGraphDataEvent());
+            },
+            icon: Icon(
+              size: 18,
+              Icons.edit,
+              color: theme.colorScheme.secondary,
+            )),
       ],
     );
   }
@@ -44,18 +61,18 @@ class AssetDetailHistoryItem extends StatelessWidget {
     ThemeData theme = Theme.of(context);
 
     Currency mainCurrency =
-    objectbox.store.box<Settings>().getAll().first.defaultCurrency.target!;
+        objectbox.store.box<Settings>().getAll().first.defaultCurrency.target!;
 
     Currency assetCurrency = asset.marketInfo.target!.getCurrency();
 
     double value = double.parse((timeValue.quantity *
-        asset.marketInfo.target!.getCurrentValueAtMainCurrency())
+            asset.marketInfo.target!.valueAtMainCurrency)
         .toStringAsFixed(2));
 
     double performance =
-    timeValue.getPerformance(asset.marketInfo.target!.value);
-    double performancePerc = timeValue
-        .getPerformancePerc(asset.marketInfo.target!.value);
+        timeValue.getPerformance(asset.marketInfo.target!.value);
+    double performancePerc =
+        timeValue.getPerformancePerc(asset.marketInfo.target!.value);
     String performanceWithSign = performance >= 0
         ? "+${performance.toStringFormatted()}"
         : performance.toStringFormatted();
@@ -69,10 +86,12 @@ class AssetDetailHistoryItem extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(df.format(timeValue.date)),
-                SizedBox(height: Dimensions.xs,),
+                SizedBox(
+                  height: Dimensions.xs,
+                ),
                 Row(
                   children: [
-                    Text("Utili: "),
+                    Text("Net return: "),
                     Text(
                       "$performanceWithSign${assetCurrency.symbol}",
                       style: Theme.of(context).textTheme.bodyMedium?.copyWith(
@@ -80,18 +99,17 @@ class AssetDetailHistoryItem extends StatelessWidget {
                     ),
                     const SizedBox(width: 8),
                     Text(
-                      "$performancePerc%",
+                      "($performancePerc%)",
                       style: Theme.of(context).textTheme.bodyMedium?.copyWith(
                           color: performance >= 0 ? Colors.green : Colors.red),
                     )
                   ],
                 ),
                 Text(
-                    "Valore attuale: ${mainCurrency.symbol} ${value.toStringFormatted()}"),
+                    "Current value: ${mainCurrency.symbol} ${value.toStringFormatted()}"),
+                Text("Shares: ${timeValue.quantity.toStringFormatted()}"),
                 Text(
-                    "Quantità: ${timeValue.quantity.toStringFormatted()}"),
-                Text(
-                    "Prezzo di acquisto: ${timeValue.getPurchaseValueWithPurchaseCurrency()}"),
+                    "Purchase price: ${timeValue.getValueWithCurrency()}"),
               ],
             ),
             const Expanded(child: SizedBox()),
@@ -103,7 +121,6 @@ class AssetDetailHistoryItem extends StatelessWidget {
                         timeValue: timeValue,
                       ));
                   context.read<AssetDetailBloc>().add(FetchGraphDataEvent());
-
                 },
                 icon: Icon(
                   Icons.edit,
@@ -114,5 +131,4 @@ class AssetDetailHistoryItem extends StatelessWidget {
       ],
     );
   }
-  
 }

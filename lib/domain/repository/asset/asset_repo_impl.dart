@@ -2,6 +2,7 @@ import 'package:net_worth_manager/main.dart';
 import 'package:net_worth_manager/models/obox/asset_category_obox.dart';
 import 'package:net_worth_manager/models/obox/asset_time_value_obox.dart';
 import 'package:net_worth_manager/models/obox/market_info_obox.dart';
+import 'package:net_worth_manager/utils/extensions/objectbox_extension.dart';
 
 import '../../../models/obox/asset_obox.dart';
 import '../../../objectbox.g.dart';
@@ -40,8 +41,14 @@ class AssetRepoImpl implements AssetRepo {
 
   @override
   void saveAssetPosition(AssetTimeValue position, Asset asset) {
-    objectbox.store.box<AssetTimeValue>().put(position);
-    saveAsset(asset);
+    if (position.id == 0) {
+      // new position
+      asset.timeValues.add(position);
+      saveAsset(asset);
+    } else {
+      // update position
+      updatePosition(position);
+    }
   }
 
   @override
@@ -71,7 +78,7 @@ class AssetRepoImpl implements AssetRepo {
   }
 
   @override
-  void updatePosition(AssetTimeValue position, Asset asset) {
+  void updatePosition(AssetTimeValue position) {
     objectbox.store.box<AssetTimeValue>().put(position);
   }
 
@@ -85,8 +92,9 @@ class AssetRepoImpl implements AssetRepo {
   }
 
   @override
-  void saveMarketValue(MarketInfo info) {
+  Future<void> saveMarketValue(MarketInfo info) async {
     objectbox.store.box<MarketInfo>().put(info);
+    await objectbox.syncForexPrices();
   }
 
 }

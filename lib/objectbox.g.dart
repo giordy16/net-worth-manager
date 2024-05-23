@@ -20,6 +20,7 @@ import 'models/obox/asset_history_time_value.dart';
 import 'models/obox/asset_obox.dart';
 import 'models/obox/asset_time_value_obox.dart';
 import 'models/obox/currency_obox.dart';
+import 'models/obox/main_currency_forex_change.dart';
 import 'models/obox/market_info_obox.dart';
 import 'models/obox/settings_obox.dart';
 
@@ -172,7 +173,7 @@ final _entities = <obx_int.ModelEntity>[
   obx_int.ModelEntity(
       id: const obx_int.IdUid(7, 8021363571026158853),
       name: 'MarketInfo',
-      lastPropertyId: const obx_int.IdUid(7, 5451300475036688041),
+      lastPropertyId: const obx_int.IdUid(8, 8954571008166053623),
       flags: 0,
       properties: <obx_int.ModelProperty>[
         obx_int.ModelProperty(
@@ -209,6 +210,11 @@ final _entities = <obx_int.ModelEntity>[
             id: const obx_int.IdUid(7, 5451300475036688041),
             name: 'value',
             type: 8,
+            flags: 0),
+        obx_int.ModelProperty(
+            id: const obx_int.IdUid(8, 8954571008166053623),
+            name: 'valueAtMainCurrency',
+            type: 8,
             flags: 0)
       ],
       relations: <obx_int.ModelRelation>[
@@ -237,6 +243,35 @@ final _entities = <obx_int.ModelEntity>[
         obx_int.ModelProperty(
             id: const obx_int.IdUid(3, 7780162268411866185),
             name: 'value',
+            type: 8,
+            flags: 0)
+      ],
+      relations: <obx_int.ModelRelation>[],
+      backlinks: <obx_int.ModelBacklink>[]),
+  obx_int.ModelEntity(
+      id: const obx_int.IdUid(10, 5867538031110432434),
+      name: 'CurrencyForexChange',
+      lastPropertyId: const obx_int.IdUid(4, 5781970473616038762),
+      flags: 0,
+      properties: <obx_int.ModelProperty>[
+        obx_int.ModelProperty(
+            id: const obx_int.IdUid(1, 4740523890644035246),
+            name: 'id',
+            type: 6,
+            flags: 1),
+        obx_int.ModelProperty(
+            id: const obx_int.IdUid(2, 1266780386572025578),
+            name: 'name',
+            type: 9,
+            flags: 0),
+        obx_int.ModelProperty(
+            id: const obx_int.IdUid(3, 887083226809787831),
+            name: 'date',
+            type: 10,
+            flags: 0),
+        obx_int.ModelProperty(
+            id: const obx_int.IdUid(4, 5781970473616038762),
+            name: 'change',
             type: 8,
             flags: 0)
       ],
@@ -279,11 +314,11 @@ Future<obx.Store> openStore(
 obx_int.ModelDefinition getObjectBoxModel() {
   final model = obx_int.ModelInfo(
       entities: _entities,
-      lastEntityId: const obx_int.IdUid(8, 7487394912198200723),
+      lastEntityId: const obx_int.IdUid(10, 5867538031110432434),
       lastIndexId: const obx_int.IdUid(4, 2434188033820685796),
       lastRelationId: const obx_int.IdUid(2, 4132757054122527006),
       lastSequenceId: const obx_int.IdUid(0, 0),
-      retiredEntityUids: const [2599935032832553010],
+      retiredEntityUids: const [2599935032832553010, 5400605241944609287],
       retiredIndexUids: const [],
       retiredPropertyUids: const [
         6464543030038332834,
@@ -291,7 +326,11 @@ obx_int.ModelDefinition getObjectBoxModel() {
         6233702783877267062,
         3847910549491861168,
         7984061082260616687,
-        1873420031035488607
+        1873420031035488607,
+        5560563163274612759,
+        7494022986936963048,
+        8125039645251255593,
+        3509591852082565968
       ],
       retiredRelationUids: const [],
       modelVersion: 5,
@@ -477,7 +516,7 @@ obx_int.ModelDefinition getObjectBoxModel() {
           final typeOffset = fbb.writeString(object.type);
           final currencyOffset = fbb.writeString(object.currency);
           final regionOffset = fbb.writeString(object.region);
-          fbb.startTable(8);
+          fbb.startTable(9);
           fbb.addInt64(0, object.id ?? 0);
           fbb.addOffset(1, symbolOffset);
           fbb.addOffset(2, nameOffset);
@@ -485,6 +524,7 @@ obx_int.ModelDefinition getObjectBoxModel() {
           fbb.addOffset(4, currencyOffset);
           fbb.addOffset(5, regionOffset);
           fbb.addFloat64(6, object.value);
+          fbb.addFloat64(7, object.valueAtMainCurrency);
           fbb.finish(fbb.endTable());
           return object.id ?? 0;
         },
@@ -503,9 +543,11 @@ obx_int.ModelDefinition getObjectBoxModel() {
               .vTableGet(buffer, rootOffset, 14, '');
           final valueParam =
               const fb.Float64Reader().vTableGet(buffer, rootOffset, 16, 0);
+          final valueAtMainCurrencyParam =
+              const fb.Float64Reader().vTableGet(buffer, rootOffset, 18, 0);
           final object = MarketInfo(
               symbolParam, nameParam, typeParam, currencyParam, regionParam,
-              value: valueParam)
+              value: valueParam, valueAtMainCurrency: valueAtMainCurrencyParam)
             ..id =
                 const fb.Int64Reader().vTableGetNullable(buffer, rootOffset, 4);
           obx_int.InternalToManyAccess.setRelInfo<MarketInfo>(
@@ -540,6 +582,38 @@ obx_int.ModelDefinition getObjectBoxModel() {
           final object = AssetHistoryTimeValue(dateParam, valueParam)
             ..id =
                 const fb.Int64Reader().vTableGetNullable(buffer, rootOffset, 4);
+
+          return object;
+        }),
+    CurrencyForexChange: obx_int.EntityDefinition<CurrencyForexChange>(
+        model: _entities[7],
+        toOneRelations: (CurrencyForexChange object) => [],
+        toManyRelations: (CurrencyForexChange object) => {},
+        getId: (CurrencyForexChange object) => object.id,
+        setId: (CurrencyForexChange object, int id) {
+          object.id = id;
+        },
+        objectToFB: (CurrencyForexChange object, fb.Builder fbb) {
+          final nameOffset = fbb.writeString(object.name);
+          fbb.startTable(5);
+          fbb.addInt64(0, object.id);
+          fbb.addOffset(1, nameOffset);
+          fbb.addInt64(2, object.date.millisecondsSinceEpoch);
+          fbb.addFloat64(3, object.change);
+          fbb.finish(fbb.endTable());
+          return object.id;
+        },
+        objectFromFB: (obx.Store store, ByteData fbData) {
+          final buffer = fb.BufferContext(fbData);
+          final rootOffset = buffer.derefObject(0);
+          final nameParam = const fb.StringReader(asciiOptimization: true)
+              .vTableGet(buffer, rootOffset, 6, '');
+          final dateParam = DateTime.fromMillisecondsSinceEpoch(
+              const fb.Int64Reader().vTableGet(buffer, rootOffset, 8, 0));
+          final changeParam =
+              const fb.Float64Reader().vTableGet(buffer, rootOffset, 10, 0);
+          final object = CurrencyForexChange(nameParam, dateParam, changeParam)
+            ..id = const fb.Int64Reader().vTableGet(buffer, rootOffset, 4, 0);
 
           return object;
         })
@@ -664,6 +738,10 @@ class MarketInfo_ {
   static final value =
       obx.QueryDoubleProperty<MarketInfo>(_entities[5].properties[6]);
 
+  /// see [MarketInfo.valueAtMainCurrency]
+  static final valueAtMainCurrency =
+      obx.QueryDoubleProperty<MarketInfo>(_entities[5].properties[7]);
+
   /// see [MarketInfo.historyValue]
   static final historyValue =
       obx.QueryRelationToMany<MarketInfo, AssetHistoryTimeValue>(
@@ -683,4 +761,23 @@ class AssetHistoryTimeValue_ {
   /// see [AssetHistoryTimeValue.value]
   static final value = obx.QueryDoubleProperty<AssetHistoryTimeValue>(
       _entities[6].properties[2]);
+}
+
+/// [CurrencyForexChange] entity fields to define ObjectBox queries.
+class CurrencyForexChange_ {
+  /// see [CurrencyForexChange.id]
+  static final id =
+      obx.QueryIntegerProperty<CurrencyForexChange>(_entities[7].properties[0]);
+
+  /// see [CurrencyForexChange.name]
+  static final name =
+      obx.QueryStringProperty<CurrencyForexChange>(_entities[7].properties[1]);
+
+  /// see [CurrencyForexChange.date]
+  static final date =
+      obx.QueryDateProperty<CurrencyForexChange>(_entities[7].properties[2]);
+
+  /// see [CurrencyForexChange.change]
+  static final change =
+      obx.QueryDoubleProperty<CurrencyForexChange>(_entities[7].properties[3]);
 }

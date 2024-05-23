@@ -3,7 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:intl/intl.dart';
 import 'package:net_worth_manager/app_dimensions.dart';
-import 'package:net_worth_manager/domain/repository/alphaVantage/AlphaVantageRepImp.dart';
+import 'package:net_worth_manager/domain/repository/alphaVantage/alpha_vantage_repo.dart';
 import 'package:net_worth_manager/ui/screens/add_market_asset/add_market_asset_bloc.dart';
 import 'package:net_worth_manager/ui/screens/add_market_asset/add_market_asset_event.dart';
 import 'package:net_worth_manager/ui/screens/add_market_asset/add_market_asset_state.dart';
@@ -121,7 +121,7 @@ class _AddMarketAssetScreenState extends State<AddMarketAssetScreen> {
                                                   fontWeight: FontWeight.bold),
                                         ),
                                         Text(
-                                            "${position.getPurchaseValueWithPurchaseCurrency()} | QT. ${position.quantity.toStringFormatted()}"),
+                                            "${position.getValueWithCurrency()} | QT. ${position.quantity.toStringFormatted()}"),
                                       ],
                                     ),
                                     const Expanded(child: SizedBox()),

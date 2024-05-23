@@ -3,32 +3,50 @@ import 'package:intl/intl.dart';
 import '../../models/obox/asset_obox.dart';
 import '../../ui/widgets/graph/simple_asset_line_graph.dart';
 
-enum DataGap { all, ytd, g60, g30 }
+enum GraphTime { all, fiveYears, oneYear, ytd, threeMonths, oneMonth }
 
-extension DataGapExt on DataGap {
+extension DataGapExt on GraphTime {
   String getName() {
     switch (this) {
-      case DataGap.all:
+      case GraphTime.all:
         return "ALL";
-      case DataGap.ytd:
+      case GraphTime.fiveYears:
+        return "5Y";
+      case GraphTime.oneYear:
+        return "1Y";
+      case GraphTime.ytd:
         return "YTD";
-      case DataGap.g30:
-        return "30 D";
-      case DataGap.g60:
-        return "60 D";
+      case GraphTime.threeMonths:
+        return "3M";
+      case GraphTime.oneMonth:
+        return "1M";
     }
   }
 
   DateTime getStartDate(Asset asset) {
+    DateTime assetFirstDate = asset.getFirstTimeValueDate()!;
+
     switch (this) {
-      case DataGap.all:
-        return asset.getFirstTimeValueDate()!;
-      case DataGap.ytd:
+      case GraphTime.all:
+        return assetFirstDate;
+      case GraphTime.ytd:
         return DateTime(SimpleAssetLineGraph.today.year);
-      case DataGap.g60:
-        return SimpleAssetLineGraph.today.subtract(const Duration(days: 60));
-      case DataGap.g30:
-        return SimpleAssetLineGraph.today.subtract(const Duration(days: 30));
+      case GraphTime.threeMonths:
+        DateTime subDate =
+            SimpleAssetLineGraph.today.subtract(const Duration(days: 60));
+        return subDate.isBefore(assetFirstDate) ? assetFirstDate : subDate;
+      case GraphTime.oneMonth:
+        DateTime subDate =
+            SimpleAssetLineGraph.today.subtract(const Duration(days: 30));
+        return subDate.isBefore(assetFirstDate) ? assetFirstDate : subDate;
+      case GraphTime.fiveYears:
+        DateTime subDate =
+            SimpleAssetLineGraph.today.subtract(const Duration(days: 365 * 5));
+        return subDate.isBefore(assetFirstDate) ? assetFirstDate : subDate;
+      case GraphTime.oneYear:
+        DateTime subDate =
+            SimpleAssetLineGraph.today.subtract(const Duration(days: 365));
+        return subDate.isBefore(assetFirstDate) ? assetFirstDate : subDate;
     }
   }
 
@@ -38,13 +56,13 @@ extension DataGapExt on DataGap {
 
   DateFormat getDateFormat() {
     switch (this) {
-      case DataGap.all:
+      case GraphTime.all:
+      case GraphTime.fiveYears:
+      case GraphTime.oneYear:
         return DateFormat("MMM yy");
-      case DataGap.ytd:
-        return DateFormat("dd MMM");
-      case DataGap.g60:
-        return DateFormat("dd MMM");
-      case DataGap.g30:
+      case GraphTime.ytd:
+      case GraphTime.threeMonths:
+      case GraphTime.oneMonth:
         return DateFormat("dd MMM");
     }
   }

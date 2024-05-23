@@ -4,13 +4,18 @@ import 'package:net_worth_manager/main.dart';
 import 'package:net_worth_manager/models/network/av_quote_model.dart';
 import 'package:net_worth_manager/domain/repository/stock/StockApi.dart';
 import 'package:net_worth_manager/models/obox/asset_history_time_value.dart';
+import 'package:net_worth_manager/models/obox/main_currency_forex_change.dart';
+import 'package:net_worth_manager/models/obox/settings_obox.dart';
 
 import '../../../models/network/av_ticker_search.dart';
 import '../../../models/obox/market_info_obox.dart';
+import '../../../objectbox.g.dart';
 import '../../../utils/Constants.dart';
 
 class AlphaVantageRepImp implements StockApi {
-  final _client = Dio(BaseOptions(baseUrl: Constants.ALPHA_VANTAGE_BASE_URL))
+  final _client = Dio(BaseOptions(
+      baseUrl: Constants.ALPHA_VANTAGE_BASE_URL,
+      connectTimeout: Duration(seconds: 10)))
     ..interceptors.add(InterceptorsWrapper(onRequest: (options, handler) {
       print("= DioRequest ===================================================");
       print("URI: ${options.uri}");
@@ -115,6 +120,12 @@ class AlphaVantageRepImp implements StockApi {
         Map<String, dynamic> json = response["Time Series (Daily)"];
         for (var i = 0; i <= daysToLoop; i++) {
           DateTime day = startDate.add(Duration(days: i));
+
+          // for some reason the hour after i = 135 is 01 and not 00
+          if (day.hour == 1) {
+            day = day.subtract(const Duration(hours: 1));
+          }
+
           String dayString = df.format(day);
           if (json.containsKey(dayString)) {
             Map<String, dynamic> dayValueJson = json[dayString];
@@ -132,6 +143,78 @@ class AlphaVantageRepImp implements StockApi {
       return history;
     } catch (e) {
       print("getPriceHistoryBySymbol error: $e");
+      return null;
+    }
+  }
+
+  @override
+  Future<void> fetchForexChange(
+    String originCurrencyName,
+  ) async {
+    String mainCurrencySymbol = objectbox.store
+        .box<Settings>()
+        .getAll()
+        .first
+        .defaultCurrency
+        .target!
+        .name;
+
+    final forexBox = objectbox.store.box<CurrencyForexChange>();
+    final df = DateFormat("yyyy-MM-dd");
+
+    final forexChangeForCurrency = forexBox
+        .query(CurrencyForexChange_.name
+            .equals("$originCurrencyName$mainCurrencySymbol"))
+        .order(CurrencyForexChange_.date, flags: Order.descending)
+        .build()
+        .find();
+
+    CurrencyForexChange? lastChange = forexChangeForCurrency.firstOrNull;
+
+    if (lastChange != null && lastChange.date.day == DateTime.now().day) {
+      // db is up to date return them
+      return;
+    }
+
+    Map<String, String> queryData = {
+      "function": "FX_DAILY",
+      "from_symbol": originCurrencyName,
+      "to_symbol": mainCurrencySymbol,
+      "apikey": Constants.ALPHA_VANTAGE_KEY
+    };
+
+    if (lastChange == null ||
+        lastChange.date.difference(DateTime.now()).abs().inDays > 80) {
+      // for that combo do currency there are no values or they are not updates since 80 days
+      // call full api
+      queryData.addAll({"outputsize": "full"});
+    }
+
+    try {
+      var response = await _client.get("query", queryParameters: queryData);
+
+      List<CurrencyForexChange> forexHistory = [];
+      if ((response.data as Map<String, dynamic>)
+          .containsKey("Time Series FX (Daily)")) {
+        Map<String, dynamic> forexHistoryJson =
+            response.data["Time Series FX (Daily)"];
+        for (var entry in forexHistoryJson.entries.toList()) {
+          forexHistory.add(CurrencyForexChange(
+              "$originCurrencyName$mainCurrencySymbol",
+              df.parse(entry.key),
+              double.parse(entry.value["4. close"])));
+        }
+      }
+
+      // remove the one already in the db
+      for (var dbForex in forexChangeForCurrency) {
+        forexHistory.removeWhere((element) => element.date == dbForex.date);
+      }
+
+      // save to db
+      forexBox.putMany(forexHistory);
+    } catch (e) {
+      print("fetchForexChange error: $e");
       return null;
     }
   }

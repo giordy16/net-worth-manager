@@ -7,8 +7,9 @@ import 'package:net_worth_manager/ui/screens/asset_detail/asset_detail_bloc.dart
 import 'package:net_worth_manager/ui/screens/asset_detail/asset_detail_event.dart';
 import 'package:net_worth_manager/ui/screens/asset_detail/asset_detail_state.dart';
 import 'package:net_worth_manager/ui/screens/asset_detail/components/asset_detail_history_item.dart';
+import 'package:net_worth_manager/utils/extensions/number_extension.dart';
 
-import '../../../domain/repository/alphaVantage/AlphaVantageRepImp.dart';
+import '../../../domain/repository/alphaVantage/alpha_vantage_repo.dart';
 import '../../../domain/repository/asset/asset_repo_impl.dart';
 import '../../../models/obox/asset_obox.dart';
 import '../../widgets/graph/line_graph.dart';
@@ -60,20 +61,28 @@ class AssetDetailScreen extends StatelessWidget {
                             style: theme.textTheme.titleLarge
                                 ?.copyWith(fontWeight: FontWeight.bold),
                           ),
-                          if (state.asset.marketInfo.target == null)
-                            SimpleAssetLineGraph(
-                              asset: state.asset,
-                              graphData: state.graphData,
-                            ),
-                          if (state.asset.marketInfo.target != null) ...[
-                            const SizedBox(height: Dimensions.m),
-                            LineGraph(
-                              showGapSelection: true,
-                              asset: state.asset,
-                              graphData: state.graphData,
-                            ),
-                          ],
                           const SizedBox(height: Dimensions.m),
+                          LineGraph(
+                            showGapSelection: true,
+                            asset: state.asset,
+                            graphData: state.graphData,
+                          ),
+                          const SizedBox(height: Dimensions.m),
+                          // Text(
+                          //   "Investment info",
+                          //   style: theme.textTheme.titleMedium
+                          //       ?.copyWith(fontWeight: FontWeight.bold),
+                          // ),
+                          // const SizedBox(height: Dimensions.s),
+                          // Text(
+                          //   "${state.asset.marketInfo.target!.symbol} current price: ${state.asset.marketInfo.target!.getCurrentValueWithAssetCurrency()} (${state.asset.marketInfo.target!.getCurrentValueWithMainCurrency()})",
+                          // ),
+                          // Text("Total shares: ${state.asset.getQuantityAtDateTime(DateTime.now()).toStringFormatted()}"),
+                          // Text("Net Return: ${state.asset.getPerformance()}"),
+                          // Text("Time-Weighted Return: -"),
+                          // Text("Invested: -"),
+                          // Text("Average Purchase price: -"),
+                          // const SizedBox(height: Dimensions.m),
                           Row(
                             children: [
                               Text(
@@ -109,7 +118,9 @@ class AssetDetailScreen extends StatelessWidget {
                                 );
                               },
                               separatorBuilder: (context, index) {
-                                return const Divider(height: 32,);
+                                return const Divider(
+                                  height: 32,
+                                );
                               },
                               itemCount: state.asset.timeValues.length)
                         ],

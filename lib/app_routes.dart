@@ -1,6 +1,7 @@
 import 'package:go_router/go_router.dart';
 import 'package:net_worth_manager/models/obox/asset_category_obox.dart';
 import 'package:net_worth_manager/models/obox/asset_obox.dart';
+import 'package:net_worth_manager/models/obox/currency_obox.dart';
 import 'package:net_worth_manager/ui/screens/add_asset/add_asset_screen.dart';
 import 'package:net_worth_manager/ui/screens/add_asset_position/add_asset_position_screen.dart';
 import 'package:net_worth_manager/ui/screens/add_asset_position/add_asset_position_screen_params.dart';
@@ -28,7 +29,7 @@ final appRoutes = GoRouter(
     ),
     GoRoute(
       path: CurrencySelectionScreen.route,
-      builder: (context, state) => const CurrencySelectionScreen(),
+      builder: (context, state) => CurrencySelectionScreen(state.extra as Currency?),
     ),
     GoRoute(
       path: AddSelectionScreen.route,

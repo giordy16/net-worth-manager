@@ -153,7 +153,7 @@
     },
     {
       "id": "7:8021363571026158853",
-      "lastPropertyId": "7:5451300475036688041",
+      "lastPropertyId": "8:8954571008166053623",
       "name": "MarketInfo",
       "properties": [
         {
@@ -191,6 +191,11 @@
           "id": "7:5451300475036688041",
           "name": "value",
           "type": 8
+        },
+        {
+          "id": "8:8954571008166053623",
+          "name": "valueAtMainCurrency",
+          "type": 8
         }
       ],
       "relations": [
@@ -224,16 +229,46 @@
         }
       ],
       "relations": []
+    },
+    {
+      "id": "10:5867538031110432434",
+      "lastPropertyId": "4:5781970473616038762",
+      "name": "CurrencyForexChange",
+      "properties": [
+        {
+          "id": "1:4740523890644035246",
+          "name": "id",
+          "type": 6,
+          "flags": 1
+        },
+        {
+          "id": "2:1266780386572025578",
+          "name": "name",
+          "type": 9
+        },
+        {
+          "id": "3:887083226809787831",
+          "name": "date",
+          "type": 10
+        },
+        {
+          "id": "4:5781970473616038762",
+          "name": "change",
+          "type": 8
+        }
+      ],
+      "relations": []
     }
   ],
-  "lastEntityId": "8:7487394912198200723",
+  "lastEntityId": "10:5867538031110432434",
   "lastIndexId": "4:2434188033820685796",
   "lastRelationId": "2:4132757054122527006",
   "lastSequenceId": "0:0",
   "modelVersion": 5,
   "modelVersionParserMinimum": 5,
   "retiredEntityUids": [
-    2599935032832553010
+    2599935032832553010,
+    5400605241944609287
   ],
   "retiredIndexUids": [],
   "retiredPropertyUids": [
@@ -242,7 +277,11 @@
     6233702783877267062,
     3847910549491861168,
     7984061082260616687,
-    1873420031035488607
+    1873420031035488607,
+    5560563163274612759,
+    7494022986936963048,
+    8125039645251255593,
+    3509591852082565968
   ],
   "retiredRelationUids": [],
   "version": 1

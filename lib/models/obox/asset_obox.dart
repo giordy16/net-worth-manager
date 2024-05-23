@@ -1,3 +1,4 @@
+import 'package:get_it/get_it.dart';
 import 'package:net_worth_manager/models/obox/asset_time_value_obox.dart';
 import 'package:net_worth_manager/models/obox/market_info_obox.dart';
 import 'package:net_worth_manager/models/obox/settings_obox.dart';
@@ -40,7 +41,8 @@ class Asset {
     } else {
       // market asset, need to look to market value
       return double.parse(
-          (marketInfo.target!.getCurrentValueAtMainCurrency() * getTotalQuantity()).toStringAsFixed(2));
+          (marketInfo.target!.valueAtMainCurrency * getTotalQuantity())
+              .toStringAsFixed(2));
     }
   }
 
@@ -58,7 +60,7 @@ class Asset {
 
   String getCurrentValueWithCurrency() {
     var lastValue = getCurrentValue();
-    Settings settings = objectbox.store.box<Settings>().getAll().first;
+    Settings settings = GetIt.instance<Settings>();
 
     return "${settings.defaultCurrency.target?.symbol} ${lastValue.toStringFormatted()}";
   }
@@ -92,7 +94,7 @@ class Asset {
               .where((element) =>
                   element.date.isBefore(dateTime.add(const Duration(days: 1))))
               .lastOrNull
-              ?.getValueAtMainCurrency() ??
+              ?.getValueAtMainCurrency(dateTime) ??
           0;
     } else {
       // market asset
@@ -100,11 +102,18 @@ class Asset {
               .where((element) =>
                   element.date.isBefore(dateTime.add(const Duration(days: 1))))
               .lastOrNull
-              ?.value.convertToMainCurrency(marketInfo.target!.currency) ??
-          0;
+              ?.getValueAtMainCurrency(marketInfo.target!.currency, dateTime) ?? 0.0;
 
       return double.parse((marketValueAtTime * getQuantityAtDateTime(dateTime))
           .toStringAsFixed(2));
     }
+  }
+
+  double getPerformance() {
+    double p = 0.0;
+    timeValues.forEach((element) {
+      p = p + element.getPerformance(marketInfo.target!.value);
+    });
+    return p;
   }
 }

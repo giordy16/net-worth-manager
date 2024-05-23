@@ -8,7 +8,7 @@ import 'package:net_worth_manager/ui/screens/ticker_search/tikcer_search_state.d
 import 'package:net_worth_manager/ui/widgets/base_components/app_text_field.dart';
 import 'package:net_worth_manager/utils/extensions/mappers.dart';
 
-import '../../../domain/repository/alphaVantage/AlphaVantageRepImp.dart';
+import '../../../domain/repository/alphaVantage/alpha_vantage_repo.dart';
 import '../add_market_asset/add_market_asset_screen.dart';
 import '../add_market_asset/add_market_asset_screen_params.dart';
 import 'components/ticker_list_item.dart';

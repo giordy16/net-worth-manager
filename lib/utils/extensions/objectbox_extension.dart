@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:get_it/get_it.dart';
 import 'package:intl/intl.dart';
 import 'package:net_worth_manager/domain/database/objectbox.dart';
 import 'package:net_worth_manager/main.dart';
@@ -8,8 +9,10 @@ import 'package:net_worth_manager/models/obox/currency_obox.dart';
 import 'package:net_worth_manager/models/obox/market_info_obox.dart';
 import 'package:net_worth_manager/models/obox/settings_obox.dart';
 import 'package:net_worth_manager/objectbox.g.dart';
+import 'package:net_worth_manager/utils/forex.dart';
 
-import '../../domain/repository/alphaVantage/AlphaVantageRepImp.dart';
+import '../../domain/repository/alphaVantage/alpha_vantage_repo.dart';
+import '../../models/obox/asset_time_value_obox.dart';
 import '../currency_enum.dart';
 
 extension ObjectBoxExtension on ObjectBox {
@@ -56,8 +59,36 @@ extension ObjectBoxExtension on ObjectBox {
       var resp = await repo.getLastPriceBySymbol(info.symbol);
       if (resp != null) {
         info.value = resp;
+        info.valueAtMainCurrency = double.parse(
+            (resp * Forex.getCurrencyChange(info.currency)).toStringAsFixed(2));
         objectbox.store.box<MarketInfo>().put(info);
       }
+    }
+  }
+
+  Future<void> syncForexPrices() async {
+    final repo = AlphaVantageRepImp();
+    String mainCurrencySymbol =
+        GetIt.instance<Settings>().defaultCurrency.target!.name;
+
+    List<String> assetCurrencies = GetIt.instance<Store>()
+        .box<AssetTimeValue>()
+        .getAll()
+        .map((e) => e.currency.target!.name)
+        .toSet()
+        .toList();
+
+    assetCurrencies.addAll(GetIt.instance<Store>()
+        .box<MarketInfo>()
+        .getAll()
+        .map((e) => e.currency)
+        .toSet()
+        .toList());
+
+    assetCurrencies.remove(mainCurrencySymbol);
+
+    for (String currency in assetCurrencies) {
+      await repo.fetchForexChange(currency);
     }
   }
 }

@@ -12,13 +12,14 @@ import 'package:net_worth_manager/ui/widgets/base_components/app_text_field.dart
 class CurrencySelectionScreen extends StatelessWidget {
   static const route = "/CurrencySelectionScreen";
 
-  const CurrencySelectionScreen({super.key});
+  Currency? selectedCurrency;
+
+  CurrencySelectionScreen(this.selectedCurrency);
 
   @override
   Widget build(BuildContext context) {
     ThemeData theme = Theme.of(context);
     final settingsRepo = SettingsRepoImpl();
-    Currency? selectedCurrency = settingsRepo.getDefaultCurrency();
 
     return RepositoryProvider.value(
       value: settingsRepo,
@@ -54,7 +55,7 @@ class CurrencySelectionScreen extends StatelessWidget {
                               },
                               child: ListTile(
                                   trailing: (selectedCurrency != null &&
-                                          selectedCurrency.id ==
+                                          selectedCurrency!.id ==
                                               state.currenciesList[index].id)
                                       ? const Icon(Icons.check)
                                       : null,

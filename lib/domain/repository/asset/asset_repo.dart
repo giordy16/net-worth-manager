@@ -10,6 +10,7 @@ abstract class AssetRepo {
 
   void saveAsset(Asset asset);
   void saveAssetPosition(AssetTimeValue position, Asset asset);
+  void updatePosition(AssetTimeValue position);
 
   void deleteAsset(Asset asset);
   void deleteCategory(AssetCategory category);

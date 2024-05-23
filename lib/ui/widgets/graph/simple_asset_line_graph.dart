@@ -29,7 +29,7 @@ class SimpleAssetLineGraph extends StatefulWidget {
 }
 
 class _AssetLineGraph extends State<SimpleAssetLineGraph> {
-  DataGap currentGap = DataGap.all;
+  GraphTime currentGap = GraphTime.all;
   List<AssetTimeValue> assetValuesOfGap = [];
 
   @override
@@ -74,13 +74,13 @@ class _AssetLineGraph extends State<SimpleAssetLineGraph> {
           visible: widget.showGapSelection,
           child: CustomSlidingSegmentedControl(
             isStretch: true,
-            initialValue: DataGap.values.indexOf(currentGap),
+            initialValue: GraphTime.values.indexOf(currentGap),
             innerPadding: const EdgeInsets.all(Dimensions.xxs),
             children: {
-              0: Text(DataGap.all.getName()),
-              1: Text(DataGap.ytd.getName()),
-              2: Text(DataGap.g60.getName()),
-              3: Text(DataGap.g30.getName()),
+              0: Text(GraphTime.all.getName()),
+              1: Text(GraphTime.ytd.getName()),
+              2: Text(GraphTime.threeMonths.getName()),
+              3: Text(GraphTime.oneMonth.getName()),
             },
             decoration: BoxDecoration(
               color: theme.colorScheme.onPrimary,
@@ -94,7 +94,7 @@ class _AssetLineGraph extends State<SimpleAssetLineGraph> {
             curve: Curves.easeInToLinear,
             onValueChanged: (v) {
               setState(() {
-                currentGap = DataGap.values[v];
+                currentGap = GraphTime.values[v];
                 initPage();
               });
             },
