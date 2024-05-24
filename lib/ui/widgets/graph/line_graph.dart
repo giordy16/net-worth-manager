@@ -10,17 +10,14 @@ import '../../../models/obox/asset_obox.dart';
 import '../../../models/ui/graph_data.dart';
 import '../../../utils/enum/graph_data_gap_enum.dart';
 
-
 class LineGraph extends StatefulWidget {
   static DateTime today = DateTime.now();
 
-  Asset asset;
   bool showGapSelection;
   List<GraphData> graphData;
 
   LineGraph({
     super.key,
-    required this.asset,
     required this.graphData,
     this.showGapSelection = false,
   });
@@ -37,7 +34,7 @@ class _MarketAssetLineGraph extends State<LineGraph> {
   Widget build(BuildContext context) {
     ThemeData theme = Theme.of(context);
 
-    if (widget.asset.timeValues.isEmpty) {
+    if (widget.graphData.isEmpty) {
       return const Padding(
         padding: EdgeInsets.fromLTRB(
             Dimensions.screenMargin, Dimensions.l, Dimensions.screenMargin, 0),
@@ -84,6 +81,7 @@ class _MarketAssetLineGraph extends State<LineGraph> {
         ),
         const SizedBox(height: Dimensions.m),
         SfCartesianChart(
+          margin: EdgeInsets.zero,
           zoomPanBehavior:
               ZoomPanBehavior(enablePinching: true, enablePanning: true),
           trackballBehavior: TrackballBehavior(
@@ -100,7 +98,8 @@ class _MarketAssetLineGraph extends State<LineGraph> {
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         Text(
-                          (trackballDetails.point!.y as double).toStringFormatted(),
+                          (trackballDetails.point!.y as double)
+                              .toStringFormatted(),
                           style: TextStyle(
                             color: theme.colorScheme.onSecondary,
                             fontWeight: FontWeight.bold,
@@ -119,7 +118,7 @@ class _MarketAssetLineGraph extends State<LineGraph> {
               }),
           primaryXAxis: NumericAxis(
             minimum: currentGap
-                .getStartDate(widget.asset)
+                .getStartDate(widget.graphData.firstOrNull?.x)
                 .millisecondsSinceEpoch
                 .toDouble(),
             maximum: currentGap.getEndDate().millisecondsSinceEpoch.toDouble(),
@@ -128,6 +127,11 @@ class _MarketAssetLineGraph extends State<LineGraph> {
                     currentGap.getDateFormat().format(
                         DateTime.fromMillisecondsSinceEpoch(
                             (details.value as double).toInt())),
+                    details.textStyle),
+          ),
+          primaryYAxis: NumericAxis(
+            axisLabelFormatter: (AxisLabelRenderDetails details) =>
+                ChartAxisLabel(NumberFormat.compact().format(details.value),
                     details.textStyle),
           ),
           series: [

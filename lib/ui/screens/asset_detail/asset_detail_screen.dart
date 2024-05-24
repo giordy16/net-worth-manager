@@ -7,13 +7,11 @@ import 'package:net_worth_manager/ui/screens/asset_detail/asset_detail_bloc.dart
 import 'package:net_worth_manager/ui/screens/asset_detail/asset_detail_event.dart';
 import 'package:net_worth_manager/ui/screens/asset_detail/asset_detail_state.dart';
 import 'package:net_worth_manager/ui/screens/asset_detail/components/asset_detail_history_item.dart';
-import 'package:net_worth_manager/utils/extensions/number_extension.dart';
 
 import '../../../domain/repository/alphaVantage/alpha_vantage_repo.dart';
 import '../../../domain/repository/asset/asset_repo_impl.dart';
 import '../../../models/obox/asset_obox.dart';
 import '../../widgets/graph/line_graph.dart';
-import '../../widgets/graph/simple_asset_line_graph.dart';
 import '../add_asset_position/add_asset_position_screen_params.dart';
 
 class AssetDetailScreen extends StatelessWidget {
@@ -64,7 +62,6 @@ class AssetDetailScreen extends StatelessWidget {
                           const SizedBox(height: Dimensions.m),
                           LineGraph(
                             showGapSelection: true,
-                            asset: state.asset,
                             graphData: state.graphData,
                           ),
                           const SizedBox(height: Dimensions.m),

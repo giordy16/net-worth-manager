@@ -42,7 +42,6 @@ class HomePageCategory extends StatelessWidget {
                 icon: const Icon(Icons.more_vert))
           ],
         ),
-        const SizedBox(height: Dimensions.xxs),
         ListView.separated(
             shrinkWrap: true,
             physics: const NeverScrollableScrollPhysics(),

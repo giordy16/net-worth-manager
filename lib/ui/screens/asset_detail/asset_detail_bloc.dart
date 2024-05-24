@@ -50,10 +50,15 @@ class AssetDetailBloc extends Bloc<AssetDetailEvent, AssetDetailState> {
       }
 
       List<GraphData> graphData = await runInDifferentThread(() {
-        return days
-            .map((e) => GraphData(e, asset.getValueAtDateTime(e)))
+        return asset.getTimeValuesChronologicalOrder()
+            .map((e) => GraphData(e.date, asset.getValueAtDateTime(e.date)))
             .toList();
       });
+
+      // add a data to plot the chart until today
+      if (graphData.isNotEmpty) {
+        graphData.add(GraphData(DateTime.now(), graphData.last.y));
+      }
 
       add(FetchGraphDataCompletedEvent(asset, graphData));
     } else {

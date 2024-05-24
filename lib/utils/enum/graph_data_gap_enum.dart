@@ -1,7 +1,5 @@
 import 'package:intl/intl.dart';
-
-import '../../models/obox/asset_obox.dart';
-import '../../ui/widgets/graph/simple_asset_line_graph.dart';
+import 'package:net_worth_manager/utils/extensions/date_time_extension.dart';
 
 enum GraphTime { all, fiveYears, oneYear, ytd, threeMonths, oneMonth }
 
@@ -23,35 +21,33 @@ extension DataGapExt on GraphTime {
     }
   }
 
-  DateTime getStartDate(Asset asset) {
-    DateTime assetFirstDate = asset.getFirstTimeValueDate()!;
+  DateTime getStartDate(DateTime? oldestDate) {
+    DateTime today = DateTime.now().keepOnlyYMD();
+
+    if (oldestDate == null) return today;
 
     switch (this) {
       case GraphTime.all:
-        return assetFirstDate;
+        return oldestDate;
       case GraphTime.ytd:
-        return DateTime(SimpleAssetLineGraph.today.year);
+        return DateTime(today.year);
       case GraphTime.threeMonths:
-        DateTime subDate =
-            SimpleAssetLineGraph.today.subtract(const Duration(days: 60));
-        return subDate.isBefore(assetFirstDate) ? assetFirstDate : subDate;
+        DateTime subDate = today.subtract(const Duration(days: 60));
+        return subDate.isBefore(oldestDate) ? oldestDate : subDate;
       case GraphTime.oneMonth:
-        DateTime subDate =
-            SimpleAssetLineGraph.today.subtract(const Duration(days: 30));
-        return subDate.isBefore(assetFirstDate) ? assetFirstDate : subDate;
+        DateTime subDate = today.subtract(const Duration(days: 30));
+        return subDate.isBefore(oldestDate) ? oldestDate : subDate;
       case GraphTime.fiveYears:
-        DateTime subDate =
-            SimpleAssetLineGraph.today.subtract(const Duration(days: 365 * 5));
-        return subDate.isBefore(assetFirstDate) ? assetFirstDate : subDate;
+        DateTime subDate = today.subtract(const Duration(days: 365 * 5));
+        return subDate.isBefore(oldestDate) ? oldestDate : subDate;
       case GraphTime.oneYear:
-        DateTime subDate =
-            SimpleAssetLineGraph.today.subtract(const Duration(days: 365));
-        return subDate.isBefore(assetFirstDate) ? assetFirstDate : subDate;
+        DateTime subDate = today.subtract(const Duration(days: 365));
+        return subDate.isBefore(oldestDate) ? oldestDate : subDate;
     }
   }
 
   DateTime getEndDate() {
-    return SimpleAssetLineGraph.today;
+    return DateTime.now().keepOnlyYMD();
   }
 
   DateFormat getDateFormat() {

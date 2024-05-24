@@ -73,19 +73,17 @@ extension ObjectBoxExtension on ObjectBox {
     String mainCurrencySymbol =
         GetIt.instance<Settings>().defaultCurrency.target!.name;
 
-    List<String> assetCurrencies = GetIt.instance<Store>()
+    Set<String> assetCurrencies = GetIt.instance<Store>()
         .box<AssetTimeValue>()
         .getAll()
         .map((e) => e.currency.target!.name)
-        .toSet()
-        .toList();
+        .toSet();
 
     assetCurrencies.addAll(GetIt.instance<Store>()
         .box<MarketInfo>()
         .getAll()
         .map((e) => e.currency)
-        .toSet()
-        .toList());
+        .toSet());
 
     assetCurrencies.remove(mainCurrencySymbol);
 

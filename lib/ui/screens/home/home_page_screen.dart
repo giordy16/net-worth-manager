@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
-import 'package:intl/intl.dart';
 import 'package:net_worth_manager/app_dimensions.dart';
 import 'package:net_worth_manager/domain/repository/asset/asset_repo_impl.dart';
 import 'package:net_worth_manager/models/obox/asset_category_obox.dart';
@@ -15,7 +14,7 @@ import 'package:net_worth_manager/utils/extensions/number_extension.dart';
 
 import '../../../main.dart';
 import '../../../models/obox/asset_obox.dart';
-import '../../../utils/TextStyles.dart';
+import '../../widgets/graph/line_graph.dart';
 import '../add_category/add_category_screen.dart';
 import '../add_selection/add_selection_screen.dart';
 import 'components/home_page_category.dart';
@@ -153,35 +152,21 @@ class HomePage extends StatelessWidget {
                       horizontal: Dimensions.screenMargin),
                   child: Column(
                     mainAxisSize: MainAxisSize.min,
-                    crossAxisAlignment: CrossAxisAlignment.center,
+                    crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Card(
-                        shape: RoundedRectangleBorder(
-                          borderRadius:
-                              BorderRadius.circular(Dimensions.cardCorner),
-                        ),
-                        color: Theme.of(context).colorScheme.secondary,
-                        child: Container(
-                          padding: const EdgeInsets.all(Dimensions.m),
-                          width: double.infinity,
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text(
-                                'Your net worth:',
-                                style: normalBoldTextTS().copyWith(
-                                    color: theme.colorScheme.onSecondary),
-                              ),
-                              Text(
-                                "${settings.defaultCurrency.target?.symbol} ${(state.netWorthValue ?? 0).toStringFormatted()}",
-                                style: normalTextTS().copyWith(
-                                    color: theme.colorScheme.onSecondary),
-                              ),
-                            ],
-                          ),
-                        ),
+                      const SizedBox(height: Dimensions.xs),
+                      const Text("Your net worth"),
+                      Text(
+                        "${settings.defaultCurrency.target?.symbol} ${(state.netWorthValue ?? 0).toStringFormatted()}",
+                        style: theme.textTheme.titleLarge?.copyWith(
+                            fontWeight: FontWeight.bold, fontSize: 24),
                       ),
-                      const SizedBox(height: Dimensions.l),
+                      const SizedBox(height: Dimensions.m),
+                      LineGraph(
+                        showGapSelection: true,
+                        graphData: state.graphData ?? [],
+                      ),
+                      const SizedBox(height: Dimensions.m),
                       ListView.separated(
                         itemCount: categories.length,
                         shrinkWrap: true,
@@ -202,7 +187,7 @@ class HomePage extends StatelessWidget {
                                 AssetDetailScreen.route,
                                 extra: asset,
                               );
-                              context.read<HomePageBloc>().add(FetchHomePage());
+                              // context.read<HomePageBloc>().add(FetchHomePage());
                             },
                             onLongPress: (asset) =>
                                 onAssetLongPress(context, asset),
@@ -213,7 +198,8 @@ class HomePage extends StatelessWidget {
                         separatorBuilder: (BuildContext context, int index) {
                           return const SizedBox(height: Dimensions.l);
                         },
-                      )
+                      ),
+                      SizedBox(height: 100)
                     ],
                   ),
                 ),
