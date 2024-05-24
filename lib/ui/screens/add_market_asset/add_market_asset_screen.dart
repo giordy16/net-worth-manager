@@ -67,7 +67,6 @@ class _AddMarketAssetScreenState extends State<AddMarketAssetScreen> {
                   context
                       .read<AddMarketAssetBloc>()
                       .add(SaveMarketAssetEvent(widget.params.asset));
-                  context.pop();
                 },
               ),
               body: SafeArea(
@@ -98,9 +97,11 @@ class _AddMarketAssetScreenState extends State<AddMarketAssetScreen> {
                                   AssetTimeValue? newPosition = await context
                                       .push(AddAssetPositionScreen.route,
                                           extra: AddAssetPositionScreenParams(
-                                              asset: widget.params.asset,
-                                              timeValue: widget.params.asset
-                                                  .timeValues[index]));
+                                            asset: widget.params.asset,
+                                            timeValue: widget
+                                                .params.asset.timeValues[index],
+                                            justPopBack: true,
+                                          ));
                                   if (newPosition != null) {
                                     widget.params.asset.timeValues[index] =
                                         newPosition;
@@ -155,10 +156,12 @@ class _AddMarketAssetScreenState extends State<AddMarketAssetScreen> {
                         const SizedBox(height: Dimensions.xxs),
                         IconButton(
                           onPressed: () async {
-                            AssetTimeValue? position = await context.push(
-                                AddAssetPositionScreen.route,
-                                extra: AddAssetPositionScreenParams(
-                                    asset: widget.params.asset));
+                            AssetTimeValue? position =
+                                await context.push(AddAssetPositionScreen.route,
+                                    extra: AddAssetPositionScreenParams(
+                                      asset: widget.params.asset,
+                                      justPopBack: true,
+                                    ));
                             if (position != null) {
                               widget.params.asset.timeValues.add(position);
                               setState(() {});

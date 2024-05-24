@@ -73,7 +73,7 @@ Future<bool?> showYesNoBottomSheet(BuildContext context, String message) async {
                 ),
               ],
             ),
-            SizedBox(height: Dimensions.xl)
+            SizedBox(height: MediaQuery.paddingOf(context).bottom)
           ]),
         );
       });
@@ -101,7 +101,7 @@ Future<Widget?> showSelectionSheet(
                     ),
                   ),
                 )),
-            SizedBox(height: Dimensions.l)
+            SizedBox(height: MediaQuery.paddingOf(context).bottom)
           ]),
         );
       });

@@ -7,9 +7,3 @@ class SaveMarketAssetEvent extends AddMarketAssetEvent {
 
   SaveMarketAssetEvent(this.asset);
 }
-
-// class PriceRecoveredEvent extends AddMarketAssetEvent {
-//   Asset asset;
-//
-//   PriceRecoveredEvent(this.asset);
-// }

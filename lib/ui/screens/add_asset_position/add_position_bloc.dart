@@ -28,7 +28,7 @@ class AddPositionBloc extends Bloc<AddPositionEvent, AddPositionState> {
       // todo show loader
       await objectbox.syncForexPrices();
 
-      context.pop(event.position);
+      context.pop();
     });
 
     on<DeletePositionEvent>((event, emit) {

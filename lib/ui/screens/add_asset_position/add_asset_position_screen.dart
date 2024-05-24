@@ -25,19 +25,16 @@ class AddAssetPositionScreen extends StatefulWidget {
 
   @override
   State<StatefulWidget> createState() => _AddAssetPositionScreenState();
-
 }
 
 class _AddAssetPositionScreenState extends State<AddAssetPositionScreen> {
-
   final _formKey = GlobalKey<FormState>();
 
   late AddAssetPositionScreenParams params;
   late AssetTimeValue position;
 
   @override
-  void initState(){
-
+  void initState() {
     params = widget.params;
 
     position = params.timeValue == null
@@ -59,7 +56,6 @@ class _AddAssetPositionScreenState extends State<AddAssetPositionScreen> {
 
   @override
   Widget build(BuildContext context) {
-
     return RepositoryProvider(
         create: (_) => AssetRepoImpl(),
         child: BlocProvider(
@@ -90,9 +86,11 @@ class _AddAssetPositionScreenState extends State<AddAssetPositionScreen> {
                     text: "Save",
                     onTap: () async {
                       if (_formKey.currentState!.validate()) {
-                        context
-                            .read<AddPositionBloc>()
-                            .add(SavePositionEvent(params.asset, position));
+                        widget.params.justPopBack
+                            ? context.pop(position)
+                            : context
+                                .read<AddPositionBloc>()
+                                .add(SavePositionEvent(params.asset, position));
                       }
                     },
                   ),
