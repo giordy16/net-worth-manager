@@ -13,7 +13,7 @@ class Forex {
 
     if (toCurrency == fromCurrency) return 1;
 
-    date ??= DateTime.now().keepOnlyYMT();
+    date ??= DateTime.now().keepOnlyYMD();
 
     double? change = GetIt.instance<Store>()
         .box<CurrencyForexChange>()

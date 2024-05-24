@@ -39,7 +39,7 @@ class AssetDetailHistoryItem extends StatelessWidget {
         const Expanded(child: SizedBox()),
         Text(timeValue.getValueWithCurrency()),
         IconButton(
-          padding: EdgeInsets.all(0),
+            padding: EdgeInsets.all(0),
             onPressed: () async {
               await context.push(AddAssetPositionScreen.route,
                   extra: AddAssetPositionScreenParams(
@@ -65,9 +65,9 @@ class AssetDetailHistoryItem extends StatelessWidget {
 
     Currency assetCurrency = asset.marketInfo.target!.getCurrency();
 
-    double value = double.parse((timeValue.quantity *
-            asset.marketInfo.target!.valueAtMainCurrency)
-        .toStringAsFixed(2));
+    double value = double.parse(
+        (timeValue.quantity * asset.marketInfo.target!.valueAtMainCurrency)
+            .toStringAsFixed(2));
 
     double performance =
         timeValue.getPerformance(asset.marketInfo.target!.value);
@@ -86,9 +86,7 @@ class AssetDetailHistoryItem extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(df.format(timeValue.date)),
-                SizedBox(
-                  height: Dimensions.xs,
-                ),
+                const SizedBox(height: Dimensions.xs),
                 Row(
                   children: [
                     Text("Net return: "),
@@ -108,8 +106,7 @@ class AssetDetailHistoryItem extends StatelessWidget {
                 Text(
                     "Current value: ${mainCurrency.symbol} ${value.toStringFormatted()}"),
                 Text("Shares: ${timeValue.quantity.toStringFormatted()}"),
-                Text(
-                    "Purchase price: ${timeValue.getValueWithCurrency()}"),
+                Text("Purchase price: ${timeValue.getValueWithCurrency()}"),
               ],
             ),
             const Expanded(child: SizedBox()),
@@ -124,6 +121,14 @@ class AssetDetailHistoryItem extends StatelessWidget {
                 },
                 icon: Icon(
                   Icons.edit,
+                  color: theme.colorScheme.secondary,
+                )),
+            IconButton(
+                onPressed: () async {
+
+                },
+                icon: Icon(
+                  Icons.sell_outlined,
                   color: theme.colorScheme.secondary,
                 )),
           ],

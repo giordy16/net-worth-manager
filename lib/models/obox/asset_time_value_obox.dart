@@ -32,7 +32,7 @@ class AssetTimeValue {
 
   AssetTimeValue.empty(MarketInfo? info)
       : id = 0,
-        date = DateTime.now().keepOnlyYMT(),
+        date = DateTime.now().keepOnlyYMD(),
         value = 0,
         quantity = 1 {
     currency.target = GetIt.instance<Settings>().defaultCurrency.target;

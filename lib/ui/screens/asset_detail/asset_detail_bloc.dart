@@ -46,7 +46,7 @@ class AssetDetailBloc extends Bloc<AssetDetailEvent, AssetDetailState> {
 
       List<DateTime> days = [];
       for (int i = 0; i <= daysToLoop; i++) {
-        days.add(firstInvestmentDate.add(Duration(days: i)).keepOnlyYMT());
+        days.add(firstInvestmentDate.add(Duration(days: i)).keepOnlyYMD());
       }
 
       List<GraphData> graphData = await runInDifferentThread(() {

@@ -173,7 +173,7 @@ final _entities = <obx_int.ModelEntity>[
   obx_int.ModelEntity(
       id: const obx_int.IdUid(7, 8021363571026158853),
       name: 'MarketInfo',
-      lastPropertyId: const obx_int.IdUid(8, 8954571008166053623),
+      lastPropertyId: const obx_int.IdUid(9, 1088568014202407642),
       flags: 0,
       properties: <obx_int.ModelProperty>[
         obx_int.ModelProperty(
@@ -215,6 +215,11 @@ final _entities = <obx_int.ModelEntity>[
             id: const obx_int.IdUid(8, 8954571008166053623),
             name: 'valueAtMainCurrency',
             type: 8,
+            flags: 0),
+        obx_int.ModelProperty(
+            id: const obx_int.IdUid(9, 1088568014202407642),
+            name: 'dateLastPriceFetch',
+            type: 10,
             flags: 0)
       ],
       relations: <obx_int.ModelRelation>[
@@ -516,7 +521,7 @@ obx_int.ModelDefinition getObjectBoxModel() {
           final typeOffset = fbb.writeString(object.type);
           final currencyOffset = fbb.writeString(object.currency);
           final regionOffset = fbb.writeString(object.region);
-          fbb.startTable(9);
+          fbb.startTable(10);
           fbb.addInt64(0, object.id ?? 0);
           fbb.addOffset(1, symbolOffset);
           fbb.addOffset(2, nameOffset);
@@ -525,12 +530,15 @@ obx_int.ModelDefinition getObjectBoxModel() {
           fbb.addOffset(5, regionOffset);
           fbb.addFloat64(6, object.value);
           fbb.addFloat64(7, object.valueAtMainCurrency);
+          fbb.addInt64(8, object.dateLastPriceFetch?.millisecondsSinceEpoch);
           fbb.finish(fbb.endTable());
           return object.id ?? 0;
         },
         objectFromFB: (obx.Store store, ByteData fbData) {
           final buffer = fb.BufferContext(fbData);
           final rootOffset = buffer.derefObject(0);
+          final dateLastPriceFetchValue =
+              const fb.Int64Reader().vTableGetNullable(buffer, rootOffset, 20);
           final symbolParam = const fb.StringReader(asciiOptimization: true)
               .vTableGet(buffer, rootOffset, 6, '');
           final nameParam = const fb.StringReader(asciiOptimization: true)
@@ -549,7 +557,10 @@ obx_int.ModelDefinition getObjectBoxModel() {
               symbolParam, nameParam, typeParam, currencyParam, regionParam,
               value: valueParam, valueAtMainCurrency: valueAtMainCurrencyParam)
             ..id =
-                const fb.Int64Reader().vTableGetNullable(buffer, rootOffset, 4);
+                const fb.Int64Reader().vTableGetNullable(buffer, rootOffset, 4)
+            ..dateLastPriceFetch = dateLastPriceFetchValue == null
+                ? null
+                : DateTime.fromMillisecondsSinceEpoch(dateLastPriceFetchValue);
           obx_int.InternalToManyAccess.setRelInfo<MarketInfo>(
               object.historyValue,
               store,
@@ -741,6 +752,10 @@ class MarketInfo_ {
   /// see [MarketInfo.valueAtMainCurrency]
   static final valueAtMainCurrency =
       obx.QueryDoubleProperty<MarketInfo>(_entities[5].properties[7]);
+
+  /// see [MarketInfo.dateLastPriceFetch]
+  static final dateLastPriceFetch =
+      obx.QueryDateProperty<MarketInfo>(_entities[5].properties[8]);
 
   /// see [MarketInfo.historyValue]
   static final historyValue =

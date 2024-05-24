@@ -1,4 +1,5 @@
 import 'package:dio/dio.dart';
+import 'package:get_it/get_it.dart';
 import 'package:intl/intl.dart';
 import 'package:net_worth_manager/main.dart';
 import 'package:net_worth_manager/models/network/av_quote_model.dart';
@@ -6,6 +7,7 @@ import 'package:net_worth_manager/domain/repository/stock/StockApi.dart';
 import 'package:net_worth_manager/models/obox/asset_history_time_value.dart';
 import 'package:net_worth_manager/models/obox/main_currency_forex_change.dart';
 import 'package:net_worth_manager/models/obox/settings_obox.dart';
+import 'package:net_worth_manager/utils/extensions/date_time_extension.dart';
 
 import '../../../models/network/av_ticker_search.dart';
 import '../../../models/obox/market_info_obox.dart';
@@ -18,7 +20,7 @@ class AlphaVantageRepImp implements StockApi {
       connectTimeout: Duration(seconds: 10)))
     ..interceptors.add(InterceptorsWrapper(onRequest: (options, handler) {
       print("= DioRequest ===================================================");
-      print("URI: ${options.uri}");
+      print(options.uri);
       print("Headers: ${options.headers}");
       print("================================================================");
       return handler.next(options);
@@ -59,6 +61,19 @@ class AlphaVantageRepImp implements StockApi {
 
   @override
   Future<double?> getLastPriceBySymbol(String symbol) async {
+
+    // first look on db
+    double? price = GetIt.instance<Store>()
+        .box<MarketInfo>()
+        .query(MarketInfo_.symbol.equals(symbol) &
+            MarketInfo_.dateLastPriceFetch
+                .equalsDate(DateTime.now().keepOnlyYMD()))
+        .build()
+        .findFirst()
+        ?.value;
+
+    if (price != null) return price;
+
     try {
       dynamic queryData = {
         "function": "GLOBAL_QUOTE",

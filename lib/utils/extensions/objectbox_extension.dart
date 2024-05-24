@@ -9,6 +9,7 @@ import 'package:net_worth_manager/models/obox/currency_obox.dart';
 import 'package:net_worth_manager/models/obox/market_info_obox.dart';
 import 'package:net_worth_manager/models/obox/settings_obox.dart';
 import 'package:net_worth_manager/objectbox.g.dart';
+import 'package:net_worth_manager/utils/extensions/date_time_extension.dart';
 import 'package:net_worth_manager/utils/forex.dart';
 
 import '../../domain/repository/alphaVantage/alpha_vantage_repo.dart';
@@ -58,6 +59,7 @@ extension ObjectBoxExtension on ObjectBox {
     for (var info in marketInfos) {
       var resp = await repo.getLastPriceBySymbol(info.symbol);
       if (resp != null) {
+        info.dateLastPriceFetch = DateTime.now().keepOnlyYMD();
         info.value = resp;
         info.valueAtMainCurrency = double.parse(
             (resp * Forex.getCurrencyChange(info.currency)).toStringAsFixed(2));

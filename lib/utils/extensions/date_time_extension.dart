@@ -3,7 +3,7 @@ extension DateTimeExtension on DateTime {
     return millisecondsSinceEpoch / 1000 / 60;
   }
 
-  DateTime keepOnlyYMT() {
+  DateTime keepOnlyYMD() {
     return DateTime(year, month, day);
   }
 

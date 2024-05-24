@@ -18,6 +18,10 @@ class MarketInfo {
   String type;
   String currency;
   String region;
+
+  @Property(type: PropertyType.date)
+  DateTime? dateLastPriceFetch;
+
   double value;
   double valueAtMainCurrency;
 
