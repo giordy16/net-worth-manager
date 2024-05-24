@@ -29,7 +29,10 @@ class HomePageBloc extends Bloc<HomePageEvent, HomePageState> {
           .nonNulls
           .toList();
 
-      if (oldestAssetsFirstBuys.isEmpty) return;
+      if (oldestAssetsFirstBuys.isEmpty) {
+        emit(state.copyWith(graphData: []));
+        return;
+      }
 
       DateTime oldestAssetData =
           oldestAssetsFirstBuys.reduce((a, b) => a.isBefore(b) ? a : b);

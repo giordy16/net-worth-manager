@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:go_router/go_router.dart';
 import 'package:net_worth_manager/app_dimensions.dart';
 import 'package:net_worth_manager/domain/repository/asset/asset_repo_impl.dart';
@@ -12,6 +13,7 @@ import 'package:net_worth_manager/ui/screens/home/home_page_event.dart';
 import 'package:net_worth_manager/ui/widgets/modal/bottom_sheet.dart';
 import 'package:net_worth_manager/utils/extensions/number_extension.dart';
 
+import '../../../app_images.dart';
 import '../../../main.dart';
 import '../../../models/obox/asset_obox.dart';
 import '../../widgets/graph/line_graph.dart';
@@ -124,14 +126,6 @@ class HomePage extends StatelessWidget {
         )..add(FetchHomePage()),
         child:
             BlocBuilder<HomePageBloc, HomePageState>(builder: (context, state) {
-          Settings settings = objectbox.store.box<Settings>().getAll().first;
-
-          List<AssetCategory> categories = (state.assets ?? [])
-              .map((e) => e.category.target)
-              .nonNulls
-              .toSet()
-              .toList();
-
           return Scaffold(
             floatingActionButton: FloatingActionButton(
               backgroundColor: theme.colorScheme.tertiaryContainer,
@@ -145,68 +139,111 @@ class HomePage extends StatelessWidget {
                 color: theme.colorScheme.secondary,
               ),
             ),
-            body: SafeArea(
-              child: SingleChildScrollView(
-                child: Container(
-                  margin: const EdgeInsets.symmetric(
-                      horizontal: Dimensions.screenMargin),
-                  child: Column(
-                    mainAxisSize: MainAxisSize.min,
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      const SizedBox(height: Dimensions.xs),
-                      const Text("Your net worth"),
-                      Text(
-                        "${settings.defaultCurrency.target?.symbol} ${(state.netWorthValue ?? 0).toStringFormatted()}",
-                        style: theme.textTheme.titleLarge?.copyWith(
-                            fontWeight: FontWeight.bold, fontSize: 24),
-                      ),
-                      const SizedBox(height: Dimensions.m),
-                      LineGraph(
-                        showGapSelection: true,
-                        graphData: state.graphData ?? [],
-                      ),
-                      const SizedBox(height: Dimensions.m),
-                      ListView.separated(
-                        itemCount: categories.length,
-                        shrinkWrap: true,
-                        physics: const NeverScrollableScrollPhysics(),
-                        itemBuilder: (context, index) {
-                          var category = categories.toList()[index];
-                          var assetsOfCategory = state.assets
-                                  ?.where((element) =>
-                                      element.category.target == category)
-                                  .toList() ??
-                              [];
-
-                          return HomePageCategory(
-                            category: category,
-                            assets: assetsOfCategory,
-                            onItemClick: (asset) async {
-                              await context.push(
-                                AssetDetailScreen.route,
-                                extra: asset,
-                              );
-                              // context.read<HomePageBloc>().add(FetchHomePage());
-                            },
-                            onLongPress: (asset) =>
-                                onAssetLongPress(context, asset),
-                            onMoreClick: (category) =>
-                                onShowMoreCategory(context, category),
-                          );
-                        },
-                        separatorBuilder: (BuildContext context, int index) {
-                          return const SizedBox(height: Dimensions.l);
-                        },
-                      ),
-                      SizedBox(height: 100)
-                    ],
-                  ),
-                ),
-              ),
-            ),
+            body: (state.graphData != null && state.graphData!.isEmpty)
+                ? buildNoDataUI(context)
+                : buildUI(context, state),
           );
         }),
+      ),
+    );
+  }
+
+  Widget buildNoDataUI(BuildContext context) {
+    ThemeData theme = Theme.of(context);
+
+    return SafeArea(
+        child: Padding(
+      padding: const EdgeInsets.all(Dimensions.screenMargin),
+      child: Center(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            SvgPicture.asset(AppImages.addData,
+                width: 50,
+                height: 50,
+                colorFilter: ColorFilter.mode(
+                  theme.colorScheme.secondary,
+                  BlendMode.srcIn,
+                )),
+            const SizedBox(height: Dimensions.l),
+            Text(
+              "You have not registered any assets yet.\nAdd the assets that are part of your networth with the button below.",
+              textAlign: TextAlign.center,
+            ),
+          ],
+        ),
+      ),
+    ));
+  }
+
+  Widget buildUI(BuildContext context, HomePageState state) {
+    ThemeData theme = Theme.of(context);
+
+    Settings settings = objectbox.store.box<Settings>().getAll().first;
+
+    List<AssetCategory> categories = (state.assets ?? [])
+        .map((e) => e.category.target)
+        .nonNulls
+        .toSet()
+        .toList();
+
+    return SafeArea(
+      child: SingleChildScrollView(
+        child: Container(
+          margin:
+              const EdgeInsets.symmetric(horizontal: Dimensions.screenMargin),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              const SizedBox(height: Dimensions.xs),
+              const Text("Your net worth"),
+              Text(
+                "${settings.defaultCurrency.target?.symbol} ${(state.netWorthValue ?? 0).toStringFormatted()}",
+                style: theme.textTheme.titleLarge
+                    ?.copyWith(fontWeight: FontWeight.bold, fontSize: 24),
+              ),
+              const SizedBox(height: Dimensions.m),
+              LineGraph(
+                showGapSelection: true,
+                graphData: state.graphData ?? [],
+              ),
+              const SizedBox(height: Dimensions.m),
+              ListView.separated(
+                itemCount: categories.length,
+                shrinkWrap: true,
+                physics: const NeverScrollableScrollPhysics(),
+                itemBuilder: (context, index) {
+                  var category = categories.toList()[index];
+                  var assetsOfCategory = state.assets
+                          ?.where(
+                              (element) => element.category.target == category)
+                          .toList() ??
+                      [];
+
+                  return HomePageCategory(
+                    category: category,
+                    assets: assetsOfCategory,
+                    onItemClick: (asset) async {
+                      await context.push(
+                        AssetDetailScreen.route,
+                        extra: asset,
+                      );
+                      // context.read<HomePageBloc>().add(FetchHomePage());
+                    },
+                    onLongPress: (asset) => onAssetLongPress(context, asset),
+                    onMoreClick: (category) =>
+                        onShowMoreCategory(context, category),
+                  );
+                },
+                separatorBuilder: (BuildContext context, int index) {
+                  return const SizedBox(height: Dimensions.l);
+                },
+              ),
+              SizedBox(height: 100)
+            ],
+          ),
+        ),
       ),
     );
   }

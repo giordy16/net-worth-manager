@@ -62,6 +62,8 @@ class AlphaVantageRepImp implements StockApi {
   @override
   Future<double?> getLastPriceBySymbol(String symbol) async {
 
+    return 180;
+
     // first look on db
     double? price = GetIt.instance<Store>()
         .box<MarketInfo>()
