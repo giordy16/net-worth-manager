@@ -188,32 +188,16 @@
           "type": 9
         },
         {
-          "id": "7:5451300475036688041",
-          "name": "value",
-          "type": 8
-        },
-        {
-          "id": "8:8954571008166053623",
-          "name": "valueAtMainCurrency",
-          "type": 8
-        },
-        {
           "id": "9:1088568014202407642",
           "name": "dateLastPriceFetch",
           "type": 10
         }
       ],
-      "relations": [
-        {
-          "id": "2:4132757054122527006",
-          "name": "historyValue",
-          "targetId": "8:7487394912198200723"
-        }
-      ]
+      "relations": []
     },
     {
       "id": "8:7487394912198200723",
-      "lastPropertyId": "3:7780162268411866185",
+      "lastPropertyId": "4:7977442837461885490",
       "name": "AssetHistoryTimeValue",
       "properties": [
         {
@@ -231,6 +215,11 @@
           "id": "3:7780162268411866185",
           "name": "value",
           "type": 8
+        },
+        {
+          "id": "4:7977442837461885490",
+          "name": "assetName",
+          "type": 9
         }
       ],
       "relations": []
@@ -263,9 +252,33 @@
         }
       ],
       "relations": []
+    },
+    {
+      "id": "11:2306986170839656647",
+      "lastPropertyId": "3:8622513153300181257",
+      "name": "NetWorthHistory",
+      "properties": [
+        {
+          "id": "1:1371879321094481246",
+          "name": "id",
+          "type": 6,
+          "flags": 1
+        },
+        {
+          "id": "2:8137044112376677082",
+          "name": "date",
+          "type": 10
+        },
+        {
+          "id": "3:8622513153300181257",
+          "name": "value",
+          "type": 8
+        }
+      ],
+      "relations": []
     }
   ],
-  "lastEntityId": "10:5867538031110432434",
+  "lastEntityId": "11:2306986170839656647",
   "lastIndexId": "4:2434188033820685796",
   "lastRelationId": "2:4132757054122527006",
   "lastSequenceId": "0:0",
@@ -286,8 +299,12 @@
     5560563163274612759,
     7494022986936963048,
     8125039645251255593,
-    3509591852082565968
+    3509591852082565968,
+    5451300475036688041,
+    8954571008166053623
   ],
-  "retiredRelationUids": [],
+  "retiredRelationUids": [
+    4132757054122527006
+  ],
   "version": 1
 }

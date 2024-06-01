@@ -36,10 +36,13 @@ class AddSelectionScreen extends StatelessWidget {
                   if (kDebugMode) {
                     context.push(AddMarketAssetScreen.route,
                         extra: AddMarketAssetScreenParams(
-                            asset: MarketInfo("AAPL", "Apple Inc.", "Equity",
-                                    "USD", "USA",
-                                    value: 100)
-                                .convertToAsset()));
+                            asset: MarketInfo(
+                          "AAPL",
+                          "Apple Inc.",
+                          "Equity",
+                          "USD",
+                          "USA",
+                        ).convertToAsset()));
                   } else {
                     context.push(TickerSearchScreen.route);
                   }

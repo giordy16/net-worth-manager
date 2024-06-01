@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:get_it/get_it.dart';
 import 'package:go_router/go_router.dart';
 import 'package:intl/number_symbols_data.dart';
@@ -127,6 +128,9 @@ class _AppNumericTextFieldState extends State<AppNumericTextField> {
         decimal: true,
         signed: true,
       ),
+      inputFormatters: [
+        FilteringTextInputFormatter.allow(RegExp('[0-9.,-]')),
+      ],
       textCapitalization: TextCapitalization.sentences,
       decoration: InputDecoration(
         label: Text(widget.title),
@@ -140,8 +144,9 @@ class _AppNumericTextFieldState extends State<AppNumericTextField> {
             ),
             onPressed: widget.userCanChangeCurrency
                 ? () async {
-                    Currency? c = await context
-                        .push(CurrencySelectionScreen.route, extra: currency) as Currency?;
+                    Currency? c = await context.push(
+                        CurrencySelectionScreen.route,
+                        extra: currency) as Currency?;
                     if (c == null) return;
                     if (widget.onCurrencyChange != null) {
                       widget.onCurrencyChange!(c);

@@ -1,7 +1,9 @@
 import 'package:get_it/get_it.dart';
+import 'package:net_worth_manager/models/obox/asset_history_time_value.dart';
 import 'package:net_worth_manager/models/obox/asset_time_value_obox.dart';
 import 'package:net_worth_manager/models/obox/market_info_obox.dart';
 import 'package:net_worth_manager/models/obox/settings_obox.dart';
+import 'package:net_worth_manager/objectbox.g.dart';
 import 'package:net_worth_manager/utils/extensions/number_extension.dart';
 import 'package:objectbox/objectbox.dart';
 
@@ -36,13 +38,21 @@ class Asset {
       // simple asset, just look the last value inserted by the user
       return getTimeValuesChronologicalOrder()
               .lastOrNull
-              ?.getValueAtMainCurrency() ??
+              ?.getCurrentValueAtMainCurrency() ??
           0;
     } else {
       // market asset, need to look to market value
-      return double.parse(
-          (marketInfo.target!.valueAtMainCurrency * getTotalQuantity())
-              .toStringAsFixed(2));
+      double value = GetIt.I<Store>()
+              .box<AssetHistoryTimeValue>()
+              .query()
+              .order(AssetHistoryTimeValue_.date, flags: Order.descending)
+              .build()
+              .findFirst()
+              ?.value ??
+          0 ;
+
+      return double.parse((value * getTotalQuantity()).toStringAsFixed(2));
+
     }
   }
 
@@ -87,33 +97,11 @@ class Asset {
     return q;
   }
 
-  double getValueAtDateTime(DateTime dateTime) {
-    if (marketInfo.target == null) {
-      // simple asset
-      return getTimeValuesChronologicalOrder()
-              .where((element) =>
-                  element.date.isBefore(dateTime.add(const Duration(days: 1))))
-              .lastOrNull
-              ?.getValueAtMainCurrency(dateTime) ??
-          0;
-    } else {
-      // market asset
-      var marketValueAtTime = marketInfo.target!.historyValue
-              .where((element) =>
-                  element.date.isBefore(dateTime.add(const Duration(days: 1))))
-              .lastOrNull
-              ?.getValueAtMainCurrency(marketInfo.target!.currency, dateTime) ?? 0.0;
-
-      return double.parse((marketValueAtTime * getQuantityAtDateTime(dateTime))
-          .toStringAsFixed(2));
-    }
-  }
-
   double getPerformance() {
     double p = 0.0;
-    timeValues.forEach((element) {
-      p = p + element.getPerformance(marketInfo.target!.value);
-    });
+    for (var element in timeValues) {
+      p = p + element.getPerformance(marketInfo.target!.symbol);
+    }
     return p;
   }
 }

@@ -9,6 +9,7 @@ import 'package:net_worth_manager/ui/widgets/base_components/app_numeric_text_fi
 import 'package:net_worth_manager/utils/extensions/string_extension.dart';
 import '../../../app_dimensions.dart';
 import '../../../domain/repository/asset/asset_repo_impl.dart';
+import '../../../domain/repository/net_worth/net_worth_repo_impl.dart';
 import '../../../models/obox/asset_time_value_obox.dart';
 import '../../widgets/base_components/app_bottom_fab.dart';
 import '../../widgets/base_components/app_text_field.dart';
@@ -56,12 +57,17 @@ class _AddAssetPositionScreenState extends State<AddAssetPositionScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return RepositoryProvider(
-        create: (_) => AssetRepoImpl(),
+    return MultiRepositoryProvider(
+        providers: [
+          RepositoryProvider<AssetRepoImpl>(create: (context) => AssetRepoImpl()),
+          RepositoryProvider<NetWorthRepoImpl>(
+              create: (context) => NetWorthRepoImpl()),
+        ],
         child: BlocProvider(
             create: (context) => AddPositionBloc(
                   context: context,
                   assetRepo: context.read<AssetRepoImpl>(),
+                  netWorthRepo: context.read<NetWorthRepoImpl>(),
                 ),
             child: BlocBuilder<AddPositionBloc, AddPositionState>(
                 builder: (context, state) {

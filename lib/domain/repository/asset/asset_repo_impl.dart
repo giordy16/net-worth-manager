@@ -1,24 +1,18 @@
+import 'package:get_it/get_it.dart';
+import 'package:intl/intl.dart';
 import 'package:net_worth_manager/main.dart';
 import 'package:net_worth_manager/models/obox/asset_category_obox.dart';
 import 'package:net_worth_manager/models/obox/asset_time_value_obox.dart';
 import 'package:net_worth_manager/models/obox/market_info_obox.dart';
+import 'package:net_worth_manager/utils/extensions/date_time_extension.dart';
 import 'package:net_worth_manager/utils/extensions/objectbox_extension.dart';
 
+import '../../../models/obox/asset_history_time_value.dart';
 import '../../../models/obox/asset_obox.dart';
 import '../../../objectbox.g.dart';
 import 'asset_repo.dart';
 
 class AssetRepoImpl implements AssetRepo {
-  @override
-  double getNetWorth() {
-    var value = 0.0;
-    var allAssets = objectbox.store.box<Asset>().getAll();
-    for (var asset in allAssets) {
-      value = value + asset.getCurrentValue();
-    }
-
-    return value;
-  }
 
   @override
   void saveAsset(Asset asset) {
@@ -72,7 +66,7 @@ class AssetRepoImpl implements AssetRepo {
       deleteAsset(asset);
     }
 
-    if(category.userCanSelect) {
+    if (category.userCanSelect) {
       objectbox.store.box<AssetCategory>().remove(category.id);
     }
   }
@@ -97,4 +91,54 @@ class AssetRepoImpl implements AssetRepo {
     await objectbox.syncForexPrices();
   }
 
+  final assetHistoryTimeValueBox =
+      GetIt.I<Store>().box<AssetHistoryTimeValue>();
+
+  @override
+  double getValueAtDateTime(Asset asset, DateTime dateTime) {
+    if (asset.marketInfo.target == null) {
+      // simple asset
+      return asset
+              .getTimeValuesChronologicalOrder()
+              .where((element) =>
+                  element.date.isBefore(dateTime.add(const Duration(days: 1))))
+              .lastOrNull
+              ?.getCurrentValueAtMainCurrency(date: dateTime) ??
+          0;
+    } else {
+      // market asset
+
+      int i = 0;
+      double marketValueAtTime = 0;
+
+      while (marketValueAtTime == 0) {
+        marketValueAtTime = assetHistoryTimeValueBox
+                .query(AssetHistoryTimeValue_.assetName
+                        .equals(asset.marketInfo.target!.symbol) &
+                    AssetHistoryTimeValue_.date
+                        .equalsDate(dateTime.subtract(Duration(days: i))))
+                .build()
+                .findFirst()
+                ?.value ??
+            0;
+        i++;
+      }
+
+      return double.parse(
+          (marketValueAtTime * asset.getQuantityAtDateTime(dateTime))
+              .toStringAsFixed(2));
+    }
+  }
+
+  @override
+  List<AssetHistoryTimeValue> getValueHistoryBySymbol(
+      MarketInfo marketInfo, DateTime startDate) {
+    final historyBox = GetIt.I<Store>().box<AssetHistoryTimeValue>();
+    return historyBox
+        .query(AssetHistoryTimeValue_.assetName.equals(marketInfo.symbol) &
+            AssetHistoryTimeValue_.date.greaterOrEqualDate(startDate))
+        .order(AssetHistoryTimeValue_.date)
+        .build()
+        .find();
+  }
 }

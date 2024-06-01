@@ -138,7 +138,7 @@ class _MarketAssetLineGraph extends State<LineGraph> {
             SplineSeries<GraphData, int>(
               color: theme.colorScheme.secondary,
               splineType: SplineType.monotonic,
-              animationDuration: 100,
+              animationDuration: 0,
               enableTooltip: true,
               dataSource: widget.graphData,
               xValueMapper: (GraphData data, _) =>

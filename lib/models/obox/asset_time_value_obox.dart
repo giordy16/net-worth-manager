@@ -1,5 +1,6 @@
 import 'package:get_it/get_it.dart';
 import 'package:intl/intl.dart';
+import 'package:net_worth_manager/models/obox/asset_history_time_value.dart';
 import 'package:net_worth_manager/models/obox/currency_obox.dart';
 import 'package:net_worth_manager/models/obox/market_info_obox.dart';
 import 'package:net_worth_manager/models/obox/settings_obox.dart';
@@ -8,6 +9,7 @@ import 'package:net_worth_manager/utils/extensions/number_extension.dart';
 import 'package:objectbox/objectbox.dart';
 
 import '../../main.dart';
+import '../../objectbox.g.dart';
 import '../../utils/forex.dart';
 
 @Entity()
@@ -38,26 +40,64 @@ class AssetTimeValue {
     currency.target = GetIt.instance<Settings>().defaultCurrency.target;
   }
 
-  String getValueWithCurrency() {
-    return "${currency.target!.symbol} ${(value * quantity).toStringFormatted()}";
+  /// get purchase value of the single share
+  String getPurchaseValueWithCurrency() {
+    return "${(value).toStringFormatted()} ${currency.target!.symbol}";
   }
 
-  double getValueAtMainCurrency([DateTime? date]) {
+  /// get total purchase value (single value * quantity)
+  String getTotalPurchaseValueWithCurrency() {
+    return "${(value * quantity).toStringFormatted()} ${currency.target!.symbol}";
+  }
+
+  double getCurrentValueAtMainCurrency({
+    DateTime? date,
+    MarketInfo? marketInfo,
+  }) {
     double change = Forex.getCurrencyChange(currency.target!.name, date: date);
-    return double.parse((change * value * quantity).toStringAsFixed(2));
+
+    if (marketInfo == null) {
+      // simple asset
+      return double.parse((change * value * quantity).toStringAsFixed(2));
+    } else {
+      // market asset
+      double symbolValue = GetIt.I<Store>()
+          .box<AssetHistoryTimeValue>()
+          .query(AssetHistoryTimeValue_.assetName.equals(marketInfo.symbol))
+          .order(AssetHistoryTimeValue_.date, flags: Order.descending)
+          .build()
+          .findFirst()
+          ?.value ??
+          0;
+      return double.parse((change * symbolValue * quantity).toStringAsFixed(2));
+    }
   }
 
-  double getPerformance(double currentValue) {
-    return double.parse(((currentValue - value) * quantity).toStringAsFixed(2));
+  double getPerformance(String symbol) {
+    double symbolValue = GetIt.I<Store>()
+            .box<AssetHistoryTimeValue>()
+            .query(AssetHistoryTimeValue_.assetName.equals(symbol))
+            .order(AssetHistoryTimeValue_.date, flags: Order.descending)
+            .build()
+            .findFirst()
+            ?.value ??
+        0;
+
+    return double.parse(((symbolValue - value) * quantity).toStringAsFixed(2));
   }
 
-  double getPerformancePerc(double currentValue) {
+  double getPerformancePerc(String symbol) {
+    double symbolValue = GetIt.I<Store>()
+            .box<AssetHistoryTimeValue>()
+            .query(AssetHistoryTimeValue_.assetName.equals(symbol))
+            .order(AssetHistoryTimeValue_.date, flags: Order.descending)
+            .build()
+            .findFirst()
+            ?.value ??
+        0;
+
     return double.parse(
-        ((currentValue - value) / value * 100).toStringAsFixed(2));
-  }
-
-  String getPerformancePercString(double currentValue) {
-    return "${getPerformancePerc(currentValue)}%";
+        ((symbolValue - value) / value * 100).toStringAsFixed(1));
   }
 }
 

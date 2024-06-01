@@ -22,6 +22,7 @@ import 'models/obox/asset_time_value_obox.dart';
 import 'models/obox/currency_obox.dart';
 import 'models/obox/main_currency_forex_change.dart';
 import 'models/obox/market_info_obox.dart';
+import 'models/obox/net_worth_history.dart';
 import 'models/obox/settings_obox.dart';
 
 export 'package:objectbox/objectbox.dart'; // so that callers only have to import this file
@@ -207,32 +208,17 @@ final _entities = <obx_int.ModelEntity>[
             type: 9,
             flags: 0),
         obx_int.ModelProperty(
-            id: const obx_int.IdUid(7, 5451300475036688041),
-            name: 'value',
-            type: 8,
-            flags: 0),
-        obx_int.ModelProperty(
-            id: const obx_int.IdUid(8, 8954571008166053623),
-            name: 'valueAtMainCurrency',
-            type: 8,
-            flags: 0),
-        obx_int.ModelProperty(
             id: const obx_int.IdUid(9, 1088568014202407642),
             name: 'dateLastPriceFetch',
             type: 10,
             flags: 0)
       ],
-      relations: <obx_int.ModelRelation>[
-        obx_int.ModelRelation(
-            id: const obx_int.IdUid(2, 4132757054122527006),
-            name: 'historyValue',
-            targetId: const obx_int.IdUid(8, 7487394912198200723))
-      ],
+      relations: <obx_int.ModelRelation>[],
       backlinks: <obx_int.ModelBacklink>[]),
   obx_int.ModelEntity(
       id: const obx_int.IdUid(8, 7487394912198200723),
       name: 'AssetHistoryTimeValue',
-      lastPropertyId: const obx_int.IdUid(3, 7780162268411866185),
+      lastPropertyId: const obx_int.IdUid(4, 7977442837461885490),
       flags: 0,
       properties: <obx_int.ModelProperty>[
         obx_int.ModelProperty(
@@ -249,6 +235,11 @@ final _entities = <obx_int.ModelEntity>[
             id: const obx_int.IdUid(3, 7780162268411866185),
             name: 'value',
             type: 8,
+            flags: 0),
+        obx_int.ModelProperty(
+            id: const obx_int.IdUid(4, 7977442837461885490),
+            name: 'assetName',
+            type: 9,
             flags: 0)
       ],
       relations: <obx_int.ModelRelation>[],
@@ -277,6 +268,30 @@ final _entities = <obx_int.ModelEntity>[
         obx_int.ModelProperty(
             id: const obx_int.IdUid(4, 5781970473616038762),
             name: 'change',
+            type: 8,
+            flags: 0)
+      ],
+      relations: <obx_int.ModelRelation>[],
+      backlinks: <obx_int.ModelBacklink>[]),
+  obx_int.ModelEntity(
+      id: const obx_int.IdUid(11, 2306986170839656647),
+      name: 'NetWorthHistory',
+      lastPropertyId: const obx_int.IdUid(3, 8622513153300181257),
+      flags: 0,
+      properties: <obx_int.ModelProperty>[
+        obx_int.ModelProperty(
+            id: const obx_int.IdUid(1, 1371879321094481246),
+            name: 'id',
+            type: 6,
+            flags: 1),
+        obx_int.ModelProperty(
+            id: const obx_int.IdUid(2, 8137044112376677082),
+            name: 'date',
+            type: 10,
+            flags: 0),
+        obx_int.ModelProperty(
+            id: const obx_int.IdUid(3, 8622513153300181257),
+            name: 'value',
             type: 8,
             flags: 0)
       ],
@@ -319,7 +334,7 @@ Future<obx.Store> openStore(
 obx_int.ModelDefinition getObjectBoxModel() {
   final model = obx_int.ModelInfo(
       entities: _entities,
-      lastEntityId: const obx_int.IdUid(10, 5867538031110432434),
+      lastEntityId: const obx_int.IdUid(11, 2306986170839656647),
       lastIndexId: const obx_int.IdUid(4, 2434188033820685796),
       lastRelationId: const obx_int.IdUid(2, 4132757054122527006),
       lastSequenceId: const obx_int.IdUid(0, 0),
@@ -335,9 +350,11 @@ obx_int.ModelDefinition getObjectBoxModel() {
         5560563163274612759,
         7494022986936963048,
         8125039645251255593,
-        3509591852082565968
+        3509591852082565968,
+        5451300475036688041,
+        8954571008166053623
       ],
-      retiredRelationUids: const [],
+      retiredRelationUids: const [4132757054122527006],
       modelVersion: 5,
       modelVersionParserMinimum: 5,
       version: 1);
@@ -507,10 +524,7 @@ obx_int.ModelDefinition getObjectBoxModel() {
     MarketInfo: obx_int.EntityDefinition<MarketInfo>(
         model: _entities[5],
         toOneRelations: (MarketInfo object) => [],
-        toManyRelations: (MarketInfo object) => {
-              obx_int.RelInfo<MarketInfo>.toMany(2, object.id!):
-                  object.historyValue
-            },
+        toManyRelations: (MarketInfo object) => {},
         getId: (MarketInfo object) => object.id,
         setId: (MarketInfo object, int id) {
           object.id = id;
@@ -528,8 +542,6 @@ obx_int.ModelDefinition getObjectBoxModel() {
           fbb.addOffset(3, typeOffset);
           fbb.addOffset(4, currencyOffset);
           fbb.addOffset(5, regionOffset);
-          fbb.addFloat64(6, object.value);
-          fbb.addFloat64(7, object.valueAtMainCurrency);
           fbb.addInt64(8, object.dateLastPriceFetch?.millisecondsSinceEpoch);
           fbb.finish(fbb.endTable());
           return object.id ?? 0;
@@ -549,22 +561,14 @@ obx_int.ModelDefinition getObjectBoxModel() {
               .vTableGet(buffer, rootOffset, 12, '');
           final regionParam = const fb.StringReader(asciiOptimization: true)
               .vTableGet(buffer, rootOffset, 14, '');
-          final valueParam =
-              const fb.Float64Reader().vTableGet(buffer, rootOffset, 16, 0);
-          final valueAtMainCurrencyParam =
-              const fb.Float64Reader().vTableGet(buffer, rootOffset, 18, 0);
           final object = MarketInfo(
-              symbolParam, nameParam, typeParam, currencyParam, regionParam,
-              value: valueParam, valueAtMainCurrency: valueAtMainCurrencyParam)
+              symbolParam, nameParam, typeParam, currencyParam, regionParam)
             ..id =
                 const fb.Int64Reader().vTableGetNullable(buffer, rootOffset, 4)
             ..dateLastPriceFetch = dateLastPriceFetchValue == null
                 ? null
                 : DateTime.fromMillisecondsSinceEpoch(dateLastPriceFetchValue);
-          obx_int.InternalToManyAccess.setRelInfo<MarketInfo>(
-              object.historyValue,
-              store,
-              obx_int.RelInfo<MarketInfo>.toMany(2, object.id!));
+
           return object;
         }),
     AssetHistoryTimeValue: obx_int.EntityDefinition<AssetHistoryTimeValue>(
@@ -576,10 +580,12 @@ obx_int.ModelDefinition getObjectBoxModel() {
           object.id = id;
         },
         objectToFB: (AssetHistoryTimeValue object, fb.Builder fbb) {
-          fbb.startTable(4);
+          final assetNameOffset = fbb.writeString(object.assetName);
+          fbb.startTable(5);
           fbb.addInt64(0, object.id ?? 0);
           fbb.addInt64(1, object.date.millisecondsSinceEpoch);
           fbb.addFloat64(2, object.value);
+          fbb.addOffset(3, assetNameOffset);
           fbb.finish(fbb.endTable());
           return object.id ?? 0;
         },
@@ -590,7 +596,10 @@ obx_int.ModelDefinition getObjectBoxModel() {
               const fb.Int64Reader().vTableGet(buffer, rootOffset, 6, 0));
           final valueParam =
               const fb.Float64Reader().vTableGet(buffer, rootOffset, 8, 0);
-          final object = AssetHistoryTimeValue(dateParam, valueParam)
+          final assetNameParam = const fb.StringReader(asciiOptimization: true)
+              .vTableGet(buffer, rootOffset, 10, '');
+          final object = AssetHistoryTimeValue(
+              dateParam, valueParam, assetNameParam)
             ..id =
                 const fb.Int64Reader().vTableGetNullable(buffer, rootOffset, 4);
 
@@ -625,6 +634,35 @@ obx_int.ModelDefinition getObjectBoxModel() {
               const fb.Float64Reader().vTableGet(buffer, rootOffset, 10, 0);
           final object = CurrencyForexChange(nameParam, dateParam, changeParam)
             ..id = const fb.Int64Reader().vTableGet(buffer, rootOffset, 4, 0);
+
+          return object;
+        }),
+    NetWorthHistory: obx_int.EntityDefinition<NetWorthHistory>(
+        model: _entities[8],
+        toOneRelations: (NetWorthHistory object) => [],
+        toManyRelations: (NetWorthHistory object) => {},
+        getId: (NetWorthHistory object) => object.id,
+        setId: (NetWorthHistory object, int id) {
+          object.id = id;
+        },
+        objectToFB: (NetWorthHistory object, fb.Builder fbb) {
+          fbb.startTable(4);
+          fbb.addInt64(0, object.id ?? 0);
+          fbb.addInt64(1, object.date.millisecondsSinceEpoch);
+          fbb.addFloat64(2, object.value);
+          fbb.finish(fbb.endTable());
+          return object.id ?? 0;
+        },
+        objectFromFB: (obx.Store store, ByteData fbData) {
+          final buffer = fb.BufferContext(fbData);
+          final rootOffset = buffer.derefObject(0);
+          final dateParam = DateTime.fromMillisecondsSinceEpoch(
+              const fb.Int64Reader().vTableGet(buffer, rootOffset, 6, 0));
+          final valueParam =
+              const fb.Float64Reader().vTableGet(buffer, rootOffset, 8, 0);
+          final object = NetWorthHistory(dateParam, valueParam)
+            ..id =
+                const fb.Int64Reader().vTableGetNullable(buffer, rootOffset, 4);
 
           return object;
         })
@@ -745,22 +783,9 @@ class MarketInfo_ {
   static final region =
       obx.QueryStringProperty<MarketInfo>(_entities[5].properties[5]);
 
-  /// see [MarketInfo.value]
-  static final value =
-      obx.QueryDoubleProperty<MarketInfo>(_entities[5].properties[6]);
-
-  /// see [MarketInfo.valueAtMainCurrency]
-  static final valueAtMainCurrency =
-      obx.QueryDoubleProperty<MarketInfo>(_entities[5].properties[7]);
-
   /// see [MarketInfo.dateLastPriceFetch]
   static final dateLastPriceFetch =
-      obx.QueryDateProperty<MarketInfo>(_entities[5].properties[8]);
-
-  /// see [MarketInfo.historyValue]
-  static final historyValue =
-      obx.QueryRelationToMany<MarketInfo, AssetHistoryTimeValue>(
-          _entities[5].relations[0]);
+      obx.QueryDateProperty<MarketInfo>(_entities[5].properties[6]);
 }
 
 /// [AssetHistoryTimeValue] entity fields to define ObjectBox queries.
@@ -776,6 +801,10 @@ class AssetHistoryTimeValue_ {
   /// see [AssetHistoryTimeValue.value]
   static final value = obx.QueryDoubleProperty<AssetHistoryTimeValue>(
       _entities[6].properties[2]);
+
+  /// see [AssetHistoryTimeValue.assetName]
+  static final assetName = obx.QueryStringProperty<AssetHistoryTimeValue>(
+      _entities[6].properties[3]);
 }
 
 /// [CurrencyForexChange] entity fields to define ObjectBox queries.
@@ -795,4 +824,19 @@ class CurrencyForexChange_ {
   /// see [CurrencyForexChange.change]
   static final change =
       obx.QueryDoubleProperty<CurrencyForexChange>(_entities[7].properties[3]);
+}
+
+/// [NetWorthHistory] entity fields to define ObjectBox queries.
+class NetWorthHistory_ {
+  /// see [NetWorthHistory.id]
+  static final id =
+      obx.QueryIntegerProperty<NetWorthHistory>(_entities[8].properties[0]);
+
+  /// see [NetWorthHistory.date]
+  static final date =
+      obx.QueryDateProperty<NetWorthHistory>(_entities[8].properties[1]);
+
+  /// see [NetWorthHistory.value]
+  static final value =
+      obx.QueryDoubleProperty<NetWorthHistory>(_entities[8].properties[2]);
 }

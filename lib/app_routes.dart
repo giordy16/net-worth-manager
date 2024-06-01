@@ -2,6 +2,7 @@ import 'package:go_router/go_router.dart';
 import 'package:net_worth_manager/models/obox/asset_category_obox.dart';
 import 'package:net_worth_manager/models/obox/asset_obox.dart';
 import 'package:net_worth_manager/models/obox/currency_obox.dart';
+import 'package:net_worth_manager/ui/main_navigation.dart';
 import 'package:net_worth_manager/ui/screens/add_asset/add_asset_screen.dart';
 import 'package:net_worth_manager/ui/screens/add_asset_position/add_asset_position_screen.dart';
 import 'package:net_worth_manager/ui/screens/add_asset_position/add_asset_position_screen_params.dart';
@@ -15,8 +16,12 @@ import 'package:net_worth_manager/ui/screens/home/home_page_screen.dart';
 import 'package:net_worth_manager/ui/screens/ticker_search/ticker_search_screen.dart';
 
 final appRoutes = GoRouter(
-  initialLocation: HomePage.route,
+  initialLocation: MainNavigation.route,
   routes: [
+    GoRoute(
+      path: MainNavigation.route,
+      builder: (context, state) => MainNavigation(state.extra as int?),
+    ),
     GoRoute(
       path: HomePage.route,
       builder: (context, state) => const HomePage(),

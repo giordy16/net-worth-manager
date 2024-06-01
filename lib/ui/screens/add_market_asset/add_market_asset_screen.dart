@@ -4,6 +4,7 @@ import 'package:go_router/go_router.dart';
 import 'package:intl/intl.dart';
 import 'package:net_worth_manager/app_dimensions.dart';
 import 'package:net_worth_manager/domain/repository/alphaVantage/alpha_vantage_repo.dart';
+import 'package:net_worth_manager/domain/repository/net_worth/net_worth_repo_impl.dart';
 import 'package:net_worth_manager/ui/screens/add_market_asset/add_market_asset_bloc.dart';
 import 'package:net_worth_manager/ui/screens/add_market_asset/add_market_asset_event.dart';
 import 'package:net_worth_manager/ui/screens/add_market_asset/add_market_asset_state.dart';
@@ -44,6 +45,8 @@ class _AddMarketAssetScreenState extends State<AddMarketAssetScreen> {
     return MultiRepositoryProvider(
       providers: [
         RepositoryProvider<AssetRepoImpl>(create: (context) => AssetRepoImpl()),
+        RepositoryProvider<NetWorthRepoImpl>(
+            create: (context) => NetWorthRepoImpl()),
         RepositoryProvider<AlphaVantageRepImp>(
             create: (context) => AlphaVantageRepImp()),
       ],
@@ -52,6 +55,7 @@ class _AddMarketAssetScreenState extends State<AddMarketAssetScreen> {
                 context,
                 context.read<AssetRepoImpl>(),
                 context.read<AlphaVantageRepImp>(),
+                context.read<NetWorthRepoImpl>(),
               ),
           child: BlocBuilder<AddMarketAssetBloc, AddMarketAssetState>(
               builder: (context, state) {
@@ -122,7 +126,7 @@ class _AddMarketAssetScreenState extends State<AddMarketAssetScreen> {
                                                   fontWeight: FontWeight.bold),
                                         ),
                                         Text(
-                                            "${position.getValueWithCurrency()} | QT. ${position.quantity.toStringFormatted()}"),
+                                            "${position.getTotalPurchaseValueWithCurrency()} | QT. ${position.quantity.toStringFormatted()}"),
                                       ],
                                     ),
                                     const Expanded(child: SizedBox()),

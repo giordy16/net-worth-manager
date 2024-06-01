@@ -4,6 +4,7 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:go_router/go_router.dart';
 import 'package:net_worth_manager/app_dimensions.dart';
 import 'package:net_worth_manager/domain/repository/asset/asset_repo_impl.dart';
+import 'package:net_worth_manager/domain/repository/net_worth/net_worth_repo_impl.dart';
 import 'package:net_worth_manager/models/obox/asset_category_obox.dart';
 import 'package:net_worth_manager/models/obox/settings_obox.dart';
 import 'package:net_worth_manager/ui/screens/add_asset/add_asset_screen.dart';
@@ -23,7 +24,7 @@ import 'components/home_page_category.dart';
 import 'home_page_state.dart';
 
 class HomePage extends StatelessWidget {
-  static const route = "/";
+  static const route = "/HomePage";
 
   const HomePage({super.key});
 
@@ -118,12 +119,17 @@ class HomePage extends StatelessWidget {
   Widget build(BuildContext context) {
     ThemeData theme = Theme.of(context);
 
-    return RepositoryProvider(
-      create: (_) => AssetRepoImpl(),
+    return MultiRepositoryProvider(
+      providers: [
+        RepositoryProvider<AssetRepoImpl>(create: (context) => AssetRepoImpl()),
+        RepositoryProvider<NetWorthRepoImpl>(
+            create: (context) => NetWorthRepoImpl()),
+      ],
       child: BlocProvider(
         create: (context) => HomePageBloc(
-          assetRepo: context.read<AssetRepoImpl>(),
-        )..add(FetchHomePage()),
+            assetRepo: context.read<AssetRepoImpl>(),
+            netWorthRepo: context.read<NetWorthRepoImpl>())
+          ..add(FetchHomePage()),
         child:
             BlocBuilder<HomePageBloc, HomePageState>(builder: (context, state) {
           return Scaffold(
@@ -229,7 +235,7 @@ class HomePage extends StatelessWidget {
                         AssetDetailScreen.route,
                         extra: asset,
                       );
-                      // context.read<HomePageBloc>().add(FetchHomePage());
+                      context.read<HomePageBloc>().add(FetchHomePage());
                     },
                     onLongPress: (asset) => onAssetLongPress(context, asset),
                     onMoreClick: (category) =>
@@ -240,7 +246,14 @@ class HomePage extends StatelessWidget {
                   return const SizedBox(height: Dimensions.l);
                 },
               ),
-              SizedBox(height: 100)
+              const SizedBox(height: 56),
+              Text(
+                "Prices are updated to the closing value of the previous day.\nThere may be a difference between the actual values and the values displayed in the app",
+                style: theme.textTheme.bodySmall
+                    ?.copyWith(color: theme.colorScheme.onPrimaryContainer),
+                textAlign: TextAlign.center,
+              ),
+              const SizedBox(height: 80)
             ],
           ),
         ),

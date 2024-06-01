@@ -1,7 +1,7 @@
 // import 'package:get/get_connect/connect.dart';
 // import 'package:net_worth_manager/data/alphavantage/quote/av_quote_model.dart';
 // import 'package:net_worth_manager/data/yhfinance/tickerSearch/YHAutoCompleteResponse.dart';
-// import 'package:net_worth_manager/domain/repository/stock/StockApi.dart';
+// import 'package:net_worth_manager/domain/repository/stock/stock_api.dart';
 //
 // import '../../../data/ProductEntity.dart';
 // import '../../../utils/Constants.dart';

@@ -3,7 +3,7 @@ import 'package:get_it/get_it.dart';
 import 'package:intl/intl.dart';
 import 'package:net_worth_manager/main.dart';
 import 'package:net_worth_manager/models/network/av_quote_model.dart';
-import 'package:net_worth_manager/domain/repository/stock/StockApi.dart';
+import 'package:net_worth_manager/domain/repository/stock/stock_api.dart';
 import 'package:net_worth_manager/models/obox/asset_history_time_value.dart';
 import 'package:net_worth_manager/models/obox/main_currency_forex_change.dart';
 import 'package:net_worth_manager/models/obox/settings_obox.dart';
@@ -61,107 +61,33 @@ class AlphaVantageRepImp implements StockApi {
 
   @override
   Future<double?> getLastPriceBySymbol(String symbol) async {
-
-    return 180;
+    return 0;
 
     // first look on db
-    double? price = GetIt.instance<Store>()
-        .box<MarketInfo>()
-        .query(MarketInfo_.symbol.equals(symbol) &
-            MarketInfo_.dateLastPriceFetch
-                .equalsDate(DateTime.now().keepOnlyYMD()))
-        .build()
-        .findFirst()
-        ?.value;
-
-    if (price != null) return price;
-
-    try {
-      dynamic queryData = {
-        "function": "GLOBAL_QUOTE",
-        "symbol": Uri.encodeFull(symbol),
-        "apikey": Constants.ALPHA_VANTAGE_KEY
-      };
-
-      var response = await _client.get("query", queryParameters: queryData);
-      return AVQuoteList.fromJson(response.data).quote.price;
-    } catch (e) {
-      print("getLastPriceBySymbol error: $e");
-      return null;
-    }
-  }
-
-  @override
-  Future<List<AssetHistoryTimeValue>?> getPriceHistoryBySymbol(
-    MarketInfo marketInfo,
-    DateTime? startDate,
-  ) async {
-    if (startDate == null) return [];
-
-    final df = DateFormat("yyyy-MM-dd");
-    final yesterday =
-        df.parse(df.format(DateTime.now())).subtract(const Duration(days: 1));
-
-    try {
-      // first look on the db
-      List<AssetHistoryTimeValue> historyDB =
-          marketInfo.getHistoryChronologicalOrder();
-      var latestHistoryValue = historyDB.lastOrNull;
-      var oldestHistoryValue = historyDB.firstOrNull;
-      if ((latestHistoryValue != null &&
-              df.format(latestHistoryValue.date) == df.format(yesterday)) &&
-          (oldestHistoryValue != null &&
-              df.format(oldestHistoryValue.date) == df.format(startDate))) {
-        // db contains the 2 extremities, so it's up to date
-        return marketInfo.historyValue
-            .where((element) => element.date
-                .isAfter(startDate.subtract(const Duration(days: 1))))
-            .toList();
-      }
-
-      // db is NOT up to date, fetch history from API
-      dynamic queryData = {
-        "function": "TIME_SERIES_DAILY",
-        "symbol": Uri.encodeFull(marketInfo.symbol),
-        "outputsize": "full",
-        "apikey": Constants.ALPHA_VANTAGE_KEY
-      };
-
-      List<AssetHistoryTimeValue> history = [];
-      var daysToLoop = yesterday.difference(startDate).inDays + 1;
-
-      Map<String, dynamic> response =
-          (await _client.get("query", queryParameters: queryData)).data;
-
-      if (response.containsKey("Time Series (Daily)")) {
-        Map<String, dynamic> json = response["Time Series (Daily)"];
-        for (var i = 0; i <= daysToLoop; i++) {
-          DateTime day = startDate.add(Duration(days: i));
-
-          // for some reason the hour after i = 135 is 01 and not 00
-          if (day.hour == 1) {
-            day = day.subtract(const Duration(hours: 1));
-          }
-
-          String dayString = df.format(day);
-          if (json.containsKey(dayString)) {
-            Map<String, dynamic> dayValueJson = json[dayString];
-            history.add(AssetHistoryTimeValue(
-                day, double.parse(dayValueJson["4. close"])));
-          }
-        }
-      }
-
-      // save to db
-      marketInfo.historyValue.clear();
-      marketInfo.historyValue.addAll(history);
-      objectbox.store.box<MarketInfo>().put(marketInfo);
-
-      return history;
-    } catch (e) {
-      print("getPriceHistoryBySymbol error: $e");
-      return null;
-    }
+    // double? price = GetIt.instance<Store>()
+    //     .box<MarketInfo>()
+    //     .query(MarketInfo_.symbol.equals(symbol) &
+    //         MarketInfo_.dateLastPriceFetch
+    //             .equalsDate(DateTime.now().keepOnlyYMD()))
+    //     .build()
+    //     .findFirst()
+    //     ?.value;
+    //
+    // if (price != null) return price;
+    //
+    // try {
+    //   dynamic queryData = {
+    //     "function": "GLOBAL_QUOTE",
+    //     "symbol": Uri.encodeFull(symbol),
+    //     "apikey": Constants.ALPHA_VANTAGE_KEY
+    //   };
+    //
+    //   var response = await _client.get("query", queryParameters: queryData);
+    //   return AVQuoteList.fromJson(response.data).quote.price;
+    // } catch (e) {
+    //   print("getLastPriceBySymbol error: $e");
+    //   return null;
+    // }
   }
 
   @override
@@ -233,6 +159,106 @@ class AlphaVantageRepImp implements StockApi {
     } catch (e) {
       print("fetchForexChange error: $e");
       return null;
+    }
+  }
+
+  /// the api will have the latest value as first element, with this structure:
+  /// "Time Series (Daily)": {
+  ///  "2024-05-29": {
+  ///      "1. open": "66.1500",
+  ///      "2. high": "66.2400",
+  ///      "3. low": "65.3500",
+  ///      "4. close": "65.4700",
+  ///      "5. volume": "3414908"
+  ///  },
+  ///  "2024-05-28": {
+  ///      ...
+  ///  },
+  ///  ...
+  ///
+  ///  so i'll loop starting from today and every step of the loop i'll take
+  ///  the object with key == today-i. the loop will end when for DAYS_STOP days in
+  ///  a row no value will be found
+  @override
+  Future<void> fetchPriceHistoryBySymbol(MarketInfo marketInfo) async {
+    const int DAYS_STOP = 10;
+
+    // if already fetch today, not fetching anymore
+    if (marketInfo.dateLastPriceFetch != null &&
+        marketInfo.dateLastPriceFetch!
+            .keepOnlyYMD()
+            .isAtSameMomentAs(DateTime.now().keepOnlyYMD())) {
+      return;
+    }
+
+    try {
+      Map<String, dynamic> queryData = {
+        "function": "TIME_SERIES_DAILY",
+        "symbol": Uri.encodeFull(marketInfo.symbol),
+        "apikey": Constants.ALPHA_VANTAGE_KEY
+      };
+
+      if (marketInfo.dateLastPriceFetch == null ||
+          DateTime.now()
+                  .difference(marketInfo.dateLastPriceFetch!)
+                  .abs()
+                  .inDays >
+              80) {
+        queryData.addAll({"outputsize": "full"});
+      }
+
+      Map<String, dynamic> response =
+          (await _client.get("query", queryParameters: queryData)).data;
+
+      List<AssetHistoryTimeValue> history = [];
+      final df = DateFormat("yyyy-MM-dd");
+
+      if (response.containsKey("Time Series (Daily)")) {
+        Map<String, dynamic> json = response["Time Series (Daily)"];
+
+        int i = 0;
+        int daysWithNoValue = 0;
+
+        while (daysWithNoValue < DAYS_STOP) {
+          DateTime day =
+              DateTime.now().subtract(Duration(days: i)).keepOnlyYMD();
+          String key = df.format(day);
+          if (json.containsKey(key)) {
+            daysWithNoValue = 0;
+            Map<String, dynamic> dayValueJson = json[key];
+
+            history.add(AssetHistoryTimeValue(
+              day,
+              double.parse(dayValueJson["4. close"]),
+              marketInfo.symbol,
+            ));
+          } else {
+            daysWithNoValue++;
+          }
+          i++;
+        }
+      }
+
+      final historyBox = GetIt.I<Store>().box<AssetHistoryTimeValue>();
+      var dbHistory = historyBox
+          .query(AssetHistoryTimeValue_.assetName.equals(marketInfo.symbol))
+          .build()
+          .find();
+
+      // remove from the data fetched the one already in the db
+      dbHistory.forEach((dbElement) {
+        history.removeWhere(
+            (element) => element.date.isAtSameMomentAs(dbElement.date));
+      });
+
+      // save
+      historyBox.putMany(history);
+
+
+      marketInfo.dateLastPriceFetch = DateTime.now().keepOnlyYMD();
+      objectbox.store.box<MarketInfo>().put(marketInfo);
+    } catch (e) {
+      print("fetchPriceHistoryBySymbol error: $e");
     }
   }
 }

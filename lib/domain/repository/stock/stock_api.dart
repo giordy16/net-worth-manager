@@ -8,10 +8,7 @@ abstract class StockApi {
 
   Future<double?> getLastPriceBySymbol(String symbol);
 
-  Future<List<AssetHistoryTimeValue>?> getPriceHistoryBySymbol(
-    MarketInfo marketInfo,
-    DateTime? startDate,
-  );
-
   Future<void> fetchForexChange(String originCurrencyName);
+
+  Future<void> fetchPriceHistoryBySymbol(MarketInfo marketInfo);
 }

@@ -2,7 +2,7 @@ import 'dart:isolate';
 
 import 'package:bloc/bloc.dart';
 import 'package:net_worth_manager/domain/repository/asset/asset_repo.dart';
-import 'package:net_worth_manager/domain/repository/stock/StockApi.dart';
+import 'package:net_worth_manager/domain/repository/stock/stock_api.dart';
 import 'package:net_worth_manager/main.dart';
 import 'package:net_worth_manager/models/ui/graph_data.dart';
 import 'package:net_worth_manager/ui/screens/asset_detail/asset_detail_event.dart';
@@ -37,46 +37,21 @@ class AssetDetailBloc extends Bloc<AssetDetailEvent, AssetDetailState> {
 
     if (asset.timeValues.isEmpty) return;
 
-    if (asset.marketInfo.target == null) {
-      // simple asset
+    List<GraphData> graphData = [];
 
-      DateTime firstInvestmentDate =
-          asset.getTimeValuesChronologicalOrder().first.date;
-      int daysToLoop = DateTime.now().difference(firstInvestmentDate).inDays;
+    DateTime oldestDateTime =
+        asset.getTimeValuesChronologicalOrder().first.date;
 
-      List<DateTime> days = [];
-      for (int i = 0; i <= daysToLoop; i++) {
-        days.add(firstInvestmentDate.add(Duration(days: i)).keepOnlyYMD());
-      }
-
-      List<GraphData> graphData = await runInDifferentThread(() {
-        return asset.getTimeValuesChronologicalOrder()
-            .map((e) => GraphData(e.date, asset.getValueAtDateTime(e.date)))
-            .toList();
-      });
-
-      // add a data to plot the chart until today
-      if (graphData.isNotEmpty) {
-        graphData.add(GraphData(DateTime.now(), graphData.last.y));
-      }
-
-      add(FetchGraphDataCompletedEvent(asset, graphData));
-    } else {
-      // market asset
-
-      List<AssetHistoryTimeValue> list = await stockApi.getPriceHistoryBySymbol(
-            asset.marketInfo.target!,
-            asset.getTimeValuesChronologicalOrder().firstOrNull?.date,
-          ) ??
-          [];
-
-      List<GraphData> graphData = await runInDifferentThread(() {
-        return list
-            .map((e) => GraphData(e.date, asset.getValueAtDateTime(e.date)))
-            .toList();
-      });
-
-      add(FetchGraphDataCompletedEvent(asset, graphData));
+    for (int i = 0;
+        i < DateTime.now().keepOnlyYMD().difference(oldestDateTime).inDays;
+        i++) {
+      DateTime date = oldestDateTime.add(Duration(days: i)).keepOnlyYMD();
+      graphData.add(GraphData(date, assetRepo.getValueAtDateTime(asset, date)));
     }
+
+    // add one top plot graph until the end
+    graphData.add(GraphData(DateTime.now(), graphData.last.y));
+
+    add(FetchGraphDataCompletedEvent(asset, graphData));
   }
 }

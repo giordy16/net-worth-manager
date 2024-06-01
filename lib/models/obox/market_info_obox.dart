@@ -22,30 +22,13 @@ class MarketInfo {
   @Property(type: PropertyType.date)
   DateTime? dateLastPriceFetch;
 
-  double value;
-  double valueAtMainCurrency;
-
-  ToMany<AssetHistoryTimeValue> historyValue = ToMany<AssetHistoryTimeValue>();
-
   MarketInfo(
     this.symbol,
     this.name,
     this.type,
     this.currency,
-    this.region, {
-    this.value = 0,
-    this.valueAtMainCurrency = 0,
-  });
-
-  /// if @latestFirst is false, the oldest value is the first of the list, otherwise the last
-  List<AssetHistoryTimeValue> getHistoryChronologicalOrder({
-    bool latestFirst = false,
-  }) {
-    var values = historyValue.toList();
-    values.sort((a, b) =>
-        latestFirst ? b.date.compareTo(a.date) : a.date.compareTo(b.date));
-    return values;
-  }
+    this.region,
+  );
 
   Currency getCurrency() {
     return objectbox.store
@@ -54,20 +37,5 @@ class MarketInfo {
         .build()
         .find()
         .first;
-  }
-
-  String getCurrentValueWithAssetCurrency() {
-    return "${getCurrency().symbol} ${value.toStringFormatted()}";
-  }
-
-  String getCurrentValueWithMainCurrency() {
-    String mainCurrency = objectbox.store
-        .box<Settings>()
-        .getAll()
-        .first
-        .defaultCurrency
-        .target!
-        .symbol;
-    return "$mainCurrency ${valueAtMainCurrency.toStringFormatted()}";
   }
 }

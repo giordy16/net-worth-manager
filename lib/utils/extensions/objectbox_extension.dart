@@ -57,18 +57,11 @@ extension ObjectBoxExtension on ObjectBox {
     final repo = AlphaVantageRepImp();
     var marketInfos = objectbox.store.box<MarketInfo>().getAll();
     for (var info in marketInfos) {
-      var resp = await repo.getLastPriceBySymbol(info.symbol);
-      if (resp != null) {
-        info.dateLastPriceFetch = DateTime.now().keepOnlyYMD();
-        info.value = resp;
-        info.valueAtMainCurrency = double.parse(
-            (resp * Forex.getCurrencyChange(info.currency)).toStringAsFixed(2));
-        objectbox.store.box<MarketInfo>().put(info);
-      }
+      repo.fetchPriceHistoryBySymbol(info);
     }
   }
 
-  Future<void> syncForexPrices() async {
+  Future<void> syncForexPrices({String? currencyToFetch}) async {
     final repo = AlphaVantageRepImp();
     String mainCurrencySymbol =
         GetIt.instance<Settings>().defaultCurrency.target!.name;
@@ -84,6 +77,10 @@ extension ObjectBoxExtension on ObjectBox {
         .getAll()
         .map((e) => e.currency)
         .toSet());
+
+    if (currencyToFetch != null) {
+      assetCurrencies.add(currencyToFetch);
+    }
 
     assetCurrencies.remove(mainCurrencySymbol);
 
