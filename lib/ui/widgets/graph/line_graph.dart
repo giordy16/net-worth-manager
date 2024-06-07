@@ -15,11 +15,13 @@ class LineGraph extends StatefulWidget {
 
   bool showGapSelection;
   List<GraphData> graphData;
+  Function(GraphTime)? onGraphTimeChange;
 
   LineGraph({
     super.key,
     required this.graphData,
     this.showGapSelection = false,
+    this.onGraphTimeChange,
   });
 
   @override
@@ -76,6 +78,9 @@ class _MarketAssetLineGraph extends State<LineGraph> {
               setState(() {
                 currentGap = GraphTime.values[v];
               });
+              if (widget.onGraphTimeChange != null) {
+                widget.onGraphTimeChange!(currentGap);
+              }
             },
           ),
         ),

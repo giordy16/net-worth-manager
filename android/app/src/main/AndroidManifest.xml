@@ -1,5 +1,8 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.networth.manager.app.net_worth_manager">
+
+    <uses-permission android:name="android.permission.INTERNET" />
+
    <application
         android:label="net_worth_manager"
         android:name="${applicationName}"

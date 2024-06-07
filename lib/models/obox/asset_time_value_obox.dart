@@ -50,6 +50,11 @@ class AssetTimeValue {
     return "${(value * quantity).toStringFormatted()} ${currency.target!.symbol}";
   }
 
+  /// get total purchase value (single value * quantity)
+  double getTotalPurchaseValue() {
+    return double.parse((value * quantity).toStringAsFixed(2));
+  }
+
   double getCurrentValueAtMainCurrency({
     DateTime? date,
     MarketInfo? marketInfo,

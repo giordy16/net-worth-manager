@@ -104,4 +104,14 @@ class Asset {
     }
     return p;
   }
+
+  double getPerformancePerc() {
+    double amountSpent = 0.0;
+    for (var element in timeValues) {
+      amountSpent = amountSpent + element.getTotalPurchaseValue();
+    }
+
+    return double.parse(
+        ((getCurrentValue() - amountSpent) / amountSpent * 100).toStringAsFixed(1));
+  }
 }

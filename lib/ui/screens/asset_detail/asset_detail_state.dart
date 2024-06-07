@@ -15,6 +15,9 @@ class AssetDetailState extends Equatable {
     Asset? asset,
     List<GraphData>? graphData,
   }) {
-    return AssetDetailState(asset ?? this.asset, graphData ?? this.graphData);
+    return AssetDetailState(
+      asset ?? this.asset,
+      graphData ?? this.graphData,
+    );
   }
 }

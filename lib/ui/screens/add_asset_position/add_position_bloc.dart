@@ -23,14 +23,15 @@ class AddPositionBloc extends Bloc<AddPositionEvent, AddPositionState> {
     required this.assetRepo,
     required this.netWorthRepo,
     required this.context,
-  }) : super(const AddPositionState()) {
+  }) : super(AddPositionState()) {
     on<SavePositionEvent>((event, emit) async {
+      emit(state.copyWith(showProgress: true));
+
       assetRepo.saveAssetPosition(
         event.position,
         event.asset,
       );
 
-      // todo show loader
       await objectbox.syncForexPrices();
 
       var assetPositionsDate = GetIt.I<Store>()

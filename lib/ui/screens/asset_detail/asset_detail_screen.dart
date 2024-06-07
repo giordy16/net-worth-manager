@@ -7,10 +7,12 @@ import 'package:net_worth_manager/ui/screens/asset_detail/asset_detail_bloc.dart
 import 'package:net_worth_manager/ui/screens/asset_detail/asset_detail_event.dart';
 import 'package:net_worth_manager/ui/screens/asset_detail/asset_detail_state.dart';
 import 'package:net_worth_manager/ui/screens/asset_detail/components/asset_detail_history_item.dart';
+import 'package:net_worth_manager/ui/widgets/base_components/performance_box.dart';
 
 import '../../../domain/repository/alphaVantage/alpha_vantage_repo.dart';
 import '../../../domain/repository/asset/asset_repo_impl.dart';
 import '../../../models/obox/asset_obox.dart';
+import '../../../utils/enum/graph_data_gap_enum.dart';
 import '../../widgets/graph/line_graph.dart';
 import '../add_asset_position/add_asset_position_screen_params.dart';
 
@@ -20,6 +22,11 @@ class AssetDetailScreen extends StatelessWidget {
   Asset asset;
 
   AssetDetailScreen({super.key, required this.asset});
+
+  void onGraphTimeChange(
+    BuildContext context,
+    GraphTime graphTime,
+  ) {}
 
   @override
   Widget build(BuildContext context) {
@@ -63,23 +70,27 @@ class AssetDetailScreen extends StatelessWidget {
                           LineGraph(
                             showGapSelection: true,
                             graphData: state.graphData,
+                            onGraphTimeChange: (gap) {
+                              onGraphTimeChange(context, gap);
+                            },
                           ),
                           const SizedBox(height: Dimensions.m),
+                          Text(
+                            "Investment info",
+                            style: theme.textTheme.titleMedium
+                                ?.copyWith(fontWeight: FontWeight.bold),
+                          ),
+                          const SizedBox(height: Dimensions.s),
                           // Text(
-                          //   "Investment info",
-                          //   style: theme.textTheme.titleMedium
-                          //       ?.copyWith(fontWeight: FontWeight.bold),
+                          //   "${state.asset.marketInfo.target!.symbol} current price: ${state.asset.getLastUpdateDate()} (${state.asset.marketInfo.target!.getCurrentValueWithMainCurrency()})",
                           // ),
-                          // const SizedBox(height: Dimensions.s),
                           // Text(
-                          //   "${state.asset.marketInfo.target!.symbol} current price: ${state.asset.marketInfo.target!.getCurrentValueWithAssetCurrency()} (${state.asset.marketInfo.target!.getCurrentValueWithMainCurrency()})",
-                          // ),
-                          // Text("Total shares: ${state.asset.getQuantityAtDateTime(DateTime.now()).toStringFormatted()}"),
+                          //     "Total shares: ${state.asset.getQuantityAtDateTime(DateTime.now())}"),
                           // Text("Net Return: ${state.asset.getPerformance()}"),
                           // Text("Time-Weighted Return: -"),
                           // Text("Invested: -"),
                           // Text("Average Purchase price: -"),
-                          // const SizedBox(height: Dimensions.m),
+                          const SizedBox(height: Dimensions.m),
                           Row(
                             children: [
                               Text(

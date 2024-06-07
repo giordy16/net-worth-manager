@@ -41,10 +41,12 @@ class HomePageBloc extends Bloc<HomePageEvent, HomePageState> {
 
     on<DeleteAsset>((event, emit) {
       assetRepo.deleteAsset(event.asset);
+      netWorthRepo.updateNetWorth();
     });
 
     on<DeleteCategory>((event, emit) {
       assetRepo.deleteCategory(event.category);
+      netWorthRepo.updateNetWorth();
     });
   }
 }
