@@ -126,7 +126,7 @@ class _AddMarketAssetScreenState extends State<AddMarketAssetScreen> {
                                                   fontWeight: FontWeight.bold),
                                         ),
                                         Text(
-                                            "${position.getTotalPurchaseValueWithCurrency()} | QT. ${position.quantity.toStringFormatted()}"),
+                                            "${position.getTotalPurchaseValue().toStringWithCurrency()} | QT. ${position.quantity.toStringFormatted()}"),
                                       ],
                                     ),
                                     const Expanded(child: SizedBox()),

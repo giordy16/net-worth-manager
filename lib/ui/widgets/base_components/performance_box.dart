@@ -1,8 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:get_it/get_it.dart';
-
-import '../../../models/obox/currency_obox.dart';
-import '../../../models/obox/settings_obox.dart';
+import 'package:net_worth_manager/utils/extensions/number_extension.dart';
 
 enum PerformanceShowType { row, column }
 
@@ -20,22 +17,18 @@ class PerformanceBox extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    Currency mainCurrency = GetIt.I<Settings>().defaultCurrency.target!;
-
     return Column(
       crossAxisAlignment: CrossAxisAlignment.end,
       children: [
         Visibility(
           visible: currentValue != null,
-          child: Text(
-            "$currentValue ${mainCurrency.symbol}",
-          ),
+          child: Text(currentValue!),
         ),
         const SizedBox(width: 8),
         Row(
           children: [
             Text(
-              "${performance >= 0 ? "+" : ""}$performance ${mainCurrency.symbol}",
+              "${performance >= 0 ? "+" : ""}${performance.toStringWithCurrency()}",
               style: Theme.of(context).textTheme.bodyMedium?.copyWith(
                   color: performance >= 0 ? Colors.green : Colors.red),
             ),

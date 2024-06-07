@@ -40,69 +40,82 @@ class AssetTimeValue {
     currency.target = GetIt.instance<Settings>().defaultCurrency.target;
   }
 
-  /// get purchase value of the single share
-  String getPurchaseValueWithCurrency() {
-    return "${(value).toStringFormatted()} ${currency.target!.symbol}";
-  }
-
-  /// get total purchase value (single value * quantity)
-  String getTotalPurchaseValueWithCurrency() {
-    return "${(value * quantity).toStringFormatted()} ${currency.target!.symbol}";
-  }
-
   /// get total purchase value (single value * quantity)
   double getTotalPurchaseValue() {
     return double.parse((value * quantity).toStringAsFixed(2));
   }
 
-  double getCurrentValueAtMainCurrency({
+  double getCurrentValue({
     DateTime? date,
     MarketInfo? marketInfo,
   }) {
-    double change = Forex.getCurrencyChange(currency.target!.name, date: date);
-
     if (marketInfo == null) {
       // simple asset
-      return double.parse((change * value * quantity).toStringAsFixed(2));
+      return (value * quantity)
+          .atMainCurrency(fromCurrency: currency.target!.name);
     } else {
       // market asset
       double symbolValue = GetIt.I<Store>()
-          .box<AssetHistoryTimeValue>()
-          .query(AssetHistoryTimeValue_.assetName.equals(marketInfo.symbol))
-          .order(AssetHistoryTimeValue_.date, flags: Order.descending)
-          .build()
-          .findFirst()
-          ?.value ??
+              .box<AssetHistoryTimeValue>()
+              .query(AssetHistoryTimeValue_.assetName.equals(marketInfo.symbol))
+              .order(AssetHistoryTimeValue_.date, flags: Order.descending)
+              .build()
+              .findFirst()
+              ?.value ??
           0;
-      return double.parse((change * symbolValue * quantity).toStringAsFixed(2));
+      return (symbolValue * quantity)
+          .atMainCurrency(fromCurrency: marketInfo.currency);
     }
   }
 
   double getPerformance(String symbol) {
+    String symbolCurrency = GetIt.I<Store>()
+        .box<MarketInfo>()
+        .query(MarketInfo_.symbol.equals(symbol))
+        .build()
+        .findFirst()!
+        .currency;
+
     double symbolValue = GetIt.I<Store>()
             .box<AssetHistoryTimeValue>()
             .query(AssetHistoryTimeValue_.assetName.equals(symbol))
             .order(AssetHistoryTimeValue_.date, flags: Order.descending)
             .build()
             .findFirst()
-            ?.value ??
+            ?.value
+            .atMainCurrency(fromCurrency: symbolCurrency) ??
         0;
 
-    return double.parse(((symbolValue - value) * quantity).toStringAsFixed(2));
+    var valueMainCurrency = value.atMainCurrency(
+        fromCurrency: currency.target!.name, dateTime: date);
+
+    return double.parse(
+        ((symbolValue - valueMainCurrency) * quantity).toStringAsFixed(2));
   }
 
   double getPerformancePerc(String symbol) {
+    String symbolCurrency = GetIt.I<Store>()
+        .box<MarketInfo>()
+        .query(MarketInfo_.symbol.equals(symbol))
+        .build()
+        .findFirst()!
+        .currency;
+
     double symbolValue = GetIt.I<Store>()
             .box<AssetHistoryTimeValue>()
             .query(AssetHistoryTimeValue_.assetName.equals(symbol))
             .order(AssetHistoryTimeValue_.date, flags: Order.descending)
             .build()
             .findFirst()
-            ?.value ??
+            ?.value
+            .atMainCurrency(fromCurrency: symbolCurrency) ??
         0;
 
+    var valueMainCurrency = value.atMainCurrency(
+        fromCurrency: currency.target!.name, dateTime: date);
+
     return double.parse(
-        ((symbolValue - value) / value * 100).toStringAsFixed(1));
+        ((symbolValue - valueMainCurrency) / valueMainCurrency * 100).toStringAsFixed(1));
   }
 }
 

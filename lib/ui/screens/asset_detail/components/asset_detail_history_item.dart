@@ -38,7 +38,7 @@ class AssetDetailHistoryItem extends StatelessWidget {
       children: [
         Text(df.format(timeValue.date)),
         const Expanded(child: SizedBox()),
-        Text(timeValue.getTotalPurchaseValueWithCurrency()),
+        Text(timeValue.getTotalPurchaseValue().toStringWithCurrency()),
         IconButton(
             padding: EdgeInsets.all(0),
             onPressed: () async {
@@ -59,14 +59,6 @@ class AssetDetailHistoryItem extends StatelessWidget {
   }
 
   Widget buildMarketAssetItem(BuildContext context) {
-    Currency mainCurrency =
-    objectbox.store
-        .box<Settings>()
-        .getAll()
-        .first
-        .defaultCurrency
-        .target!;
-
     double performance =
     timeValue.getPerformance(asset.marketInfo.target!.symbol);
     double performancePerc =
@@ -94,13 +86,12 @@ class AssetDetailHistoryItem extends StatelessWidget {
                   children: [
                     Text("Quantity: ${timeValue.quantity.toStringFormatted()}"),
                     Text(
-                        "Purchase price: ${timeValue
-                            .getPurchaseValueWithCurrency()}"),
+                        "Purchase price: ${timeValue.value.toStringWithCurrency()}"),
                   ],
                 ),
                 const Expanded(child: SizedBox()),
                 PerformanceBox(
-                  currentValue: timeValue.getCurrentValueAtMainCurrency(marketInfo: asset.marketInfo.target).toStringFormatted(),
+                  currentValue: timeValue.getCurrentValue(marketInfo: asset.marketInfo.target).toStringWithCurrency(),
                   performance: performance,
                   performancePerc: performancePerc,
                   showType: PerformanceShowType.column,

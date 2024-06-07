@@ -14,8 +14,4 @@ class NetWorthHistory {
 
   NetWorthHistory(this.date, this.value);
 
-  double getValueAtMainCurrency(String currency, DateTime date) {
-    double change = Forex.getCurrencyChange(currency, date: date);
-    return double.parse((change * value).toStringAsFixed(2));
-  }
 }

@@ -38,7 +38,7 @@ class HomePageAsset extends StatelessWidget {
             ),
             const Expanded(child: SizedBox()),
             Text(
-              "${settings.defaultCurrency.target?.symbol} ${asset.getCurrentValue().toStringFormatted()}",
+              asset.getCurrentValue().toStringWithCurrency(),
               style: theme.textTheme.bodyLarge,
             ),
           ],

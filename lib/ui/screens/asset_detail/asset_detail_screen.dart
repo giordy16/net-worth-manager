@@ -8,6 +8,7 @@ import 'package:net_worth_manager/ui/screens/asset_detail/asset_detail_event.dar
 import 'package:net_worth_manager/ui/screens/asset_detail/asset_detail_state.dart';
 import 'package:net_worth_manager/ui/screens/asset_detail/components/asset_detail_history_item.dart';
 import 'package:net_worth_manager/ui/widgets/base_components/performance_box.dart';
+import 'package:net_worth_manager/utils/extensions/number_extension.dart';
 
 import '../../../domain/repository/alphaVantage/alpha_vantage_repo.dart';
 import '../../../domain/repository/asset/asset_repo_impl.dart';
@@ -62,7 +63,7 @@ class AssetDetailScreen extends StatelessWidget {
                         children: [
                           const Text("Current value"),
                           Text(
-                            state.asset.getCurrentValueWithCurrency(),
+                            state.asset.getCurrentValue().toStringWithCurrency(),
                             style: theme.textTheme.titleLarge
                                 ?.copyWith(fontWeight: FontWeight.bold),
                           ),

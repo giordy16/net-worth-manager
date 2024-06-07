@@ -29,6 +29,8 @@ class Asset {
     return getTimeValuesChronologicalOrder().lastOrNull?.date;
   }
 
+  /// Get current value at main currency
+  ///
   /// for simple asset (marketInfo == null) the current value is just
   /// the last value inserted by the user.
   /// for market asset (marketInfo != null) the current value is the current
@@ -36,10 +38,12 @@ class Asset {
   double getCurrentValue() {
     if (marketInfo.target == null) {
       // simple asset, just look the last value inserted by the user
-      return getTimeValuesChronologicalOrder()
-              .lastOrNull
-              ?.getCurrentValueAtMainCurrency() ??
-          0;
+      AssetTimeValue? lastTimeValue =
+          getTimeValuesChronologicalOrder().lastOrNull;
+      if (lastTimeValue == null) return 0;
+
+      return lastTimeValue.value
+          .atMainCurrency(fromCurrency: lastTimeValue.currency.target!.name);
     } else {
       // market asset, need to look to market value
       double value = GetIt.I<Store>()
@@ -49,10 +53,10 @@ class Asset {
               .build()
               .findFirst()
               ?.value ??
-          0 ;
+          0;
 
-      return double.parse((value * getTotalQuantity()).toStringAsFixed(2));
-
+      return (value * getTotalQuantity())
+          .atMainCurrency(fromCurrency: marketInfo.target!.currency);
     }
   }
 
@@ -66,13 +70,6 @@ class Asset {
 
   DateTime? getFirstTimeValueDate() {
     return getTimeValuesChronologicalOrder().firstOrNull?.date;
-  }
-
-  String getCurrentValueWithCurrency() {
-    var lastValue = getCurrentValue();
-    Settings settings = GetIt.instance<Settings>();
-
-    return "${settings.defaultCurrency.target?.symbol} ${lastValue.toStringFormatted()}";
   }
 
   /// if @latestFirst is false, the oldest value is the first of the list, otherwise the last
@@ -111,7 +108,7 @@ class Asset {
       amountSpent = amountSpent + element.getTotalPurchaseValue();
     }
 
-    return double.parse(
-        ((getCurrentValue() - amountSpent) / amountSpent * 100).toStringAsFixed(1));
+    return double.parse(((getCurrentValue() - amountSpent) / amountSpent * 100)
+        .toStringAsFixed(1));
   }
 }

@@ -3,6 +3,7 @@ import 'package:net_worth_manager/main.dart';
 import 'package:net_worth_manager/models/obox/asset_category_obox.dart';
 import 'package:net_worth_manager/models/obox/asset_time_value_obox.dart';
 import 'package:net_worth_manager/models/obox/market_info_obox.dart';
+import 'package:net_worth_manager/utils/extensions/number_extension.dart';
 import 'package:net_worth_manager/utils/extensions/objectbox_extension.dart';
 
 import '../../../models/obox/asset_history_time_value.dart';
@@ -11,7 +12,6 @@ import '../../../objectbox.g.dart';
 import 'asset_repo.dart';
 
 class AssetRepoImpl implements AssetRepo {
-
   @override
   void saveAsset(Asset asset) {
     objectbox.store.box<Asset>().put(asset);
@@ -92,16 +92,21 @@ class AssetRepoImpl implements AssetRepo {
   final assetHistoryTimeValueBox =
       GetIt.I<Store>().box<AssetHistoryTimeValue>();
 
+  /// Returning the value of the @asset at the specified @dateTime at the mainCurrency
   @override
   double getValueAtDateTime(Asset asset, DateTime dateTime) {
     if (asset.marketInfo.target == null) {
       // simple asset
-      return asset
-              .getTimeValuesChronologicalOrder()
-              .where((element) =>
-                  element.date.isBefore(dateTime.add(const Duration(days: 1))))
-              .lastOrNull
-              ?.getCurrentValueAtMainCurrency(date: dateTime) ??
+      AssetTimeValue? lastTimeValue = asset
+          .getTimeValuesChronologicalOrder()
+          .where((element) =>
+              element.date.isBefore(dateTime.add(const Duration(days: 1))))
+          .lastOrNull;
+
+      return lastTimeValue?.getCurrentValue(date: dateTime).atMainCurrency(
+                fromCurrency: lastTimeValue.currency.target!.name,
+                dateTime: dateTime,
+              ) ??
           0;
     } else {
       // market asset
@@ -122,9 +127,11 @@ class AssetRepoImpl implements AssetRepo {
         i++;
       }
 
-      return double.parse(
-          (marketValueAtTime * asset.getQuantityAtDateTime(dateTime))
-              .toStringAsFixed(2));
+      return (marketValueAtTime * asset.getQuantityAtDateTime(dateTime))
+          .atMainCurrency(
+        fromCurrency: asset.marketInfo.target!.currency,
+        dateTime: dateTime,
+      );
     }
   }
 

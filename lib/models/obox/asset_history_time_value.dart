@@ -16,8 +16,4 @@ class AssetHistoryTimeValue {
 
   AssetHistoryTimeValue(this.date, this.value, this.assetName);
 
-  double getValueAtMainCurrency(String currency, DateTime date) {
-    double change = Forex.getCurrencyChange(currency, date: date);
-    return double.parse((change * value).toStringAsFixed(2));
-  }
 }
