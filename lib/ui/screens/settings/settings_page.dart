@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
 import 'package:go_router/go_router.dart';
+import 'package:net_worth_manager/domain/repository/net_worth/net_worth_repo_impl.dart';
 import 'package:net_worth_manager/main.dart';
 import 'package:net_worth_manager/models/obox/settings_obox.dart';
 import 'package:net_worth_manager/utils/extensions/objectbox_extension.dart';
@@ -30,6 +31,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
       setState(() {});
 
       await objectbox.syncForexPrices();
+      NetWorthRepoImpl().updateNetWorth();
     }
   }
 

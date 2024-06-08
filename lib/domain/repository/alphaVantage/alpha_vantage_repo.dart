@@ -114,7 +114,8 @@ class AlphaVantageRepImp implements StockApi {
 
     CurrencyForexChange? lastChange = forexChangeForCurrency.firstOrNull;
 
-    if (lastChange != null && lastChange.date.day == DateTime.now().day) {
+    if (lastChange != null &&
+        lastChange.lastFetchDate == DateTime.now().keepOnlyYMD()) {
       // db is up to date return them
       return;
     }
@@ -127,7 +128,7 @@ class AlphaVantageRepImp implements StockApi {
     };
 
     if (lastChange == null ||
-        lastChange.date.difference(DateTime.now()).abs().inDays > 80) {
+        lastChange.lastFetchDate.difference(DateTime.now()).abs().inDays > 80) {
       // for that combo do currency there are no values or they are not updates since 80 days
       // call full api
       queryData.addAll({"outputsize": "full"});
@@ -143,9 +144,11 @@ class AlphaVantageRepImp implements StockApi {
             response.data["Time Series FX (Daily)"];
         for (var entry in forexHistoryJson.entries.toList()) {
           forexHistory.add(CurrencyForexChange(
-              "$originCurrencyName$mainCurrencySymbol",
-              df.parse(entry.key),
-              double.parse(entry.value["4. close"])));
+            "$originCurrencyName$mainCurrencySymbol",
+            df.parse(entry.key),
+            double.parse(entry.value["4. close"]),
+            DateTime.now().keepOnlyYMD(),
+          ));
         }
       }
 
@@ -253,7 +256,6 @@ class AlphaVantageRepImp implements StockApi {
 
       // save
       historyBox.putMany(history);
-
 
       marketInfo.dateLastPriceFetch = DateTime.now().keepOnlyYMD();
       objectbox.store.box<MarketInfo>().put(marketInfo);

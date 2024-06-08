@@ -226,7 +226,7 @@
     },
     {
       "id": "10:5867538031110432434",
-      "lastPropertyId": "4:5781970473616038762",
+      "lastPropertyId": "5:5432596696048017419",
       "name": "CurrencyForexChange",
       "properties": [
         {
@@ -249,6 +249,11 @@
           "id": "4:5781970473616038762",
           "name": "change",
           "type": 8
+        },
+        {
+          "id": "5:5432596696048017419",
+          "name": "lastFetchDate",
+          "type": 10
         }
       ],
       "relations": []

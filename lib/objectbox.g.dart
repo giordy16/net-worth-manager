@@ -247,7 +247,7 @@ final _entities = <obx_int.ModelEntity>[
   obx_int.ModelEntity(
       id: const obx_int.IdUid(10, 5867538031110432434),
       name: 'CurrencyForexChange',
-      lastPropertyId: const obx_int.IdUid(4, 5781970473616038762),
+      lastPropertyId: const obx_int.IdUid(5, 5432596696048017419),
       flags: 0,
       properties: <obx_int.ModelProperty>[
         obx_int.ModelProperty(
@@ -269,6 +269,11 @@ final _entities = <obx_int.ModelEntity>[
             id: const obx_int.IdUid(4, 5781970473616038762),
             name: 'change',
             type: 8,
+            flags: 0),
+        obx_int.ModelProperty(
+            id: const obx_int.IdUid(5, 5432596696048017419),
+            name: 'lastFetchDate',
+            type: 10,
             flags: 0)
       ],
       relations: <obx_int.ModelRelation>[],
@@ -615,11 +620,12 @@ obx_int.ModelDefinition getObjectBoxModel() {
         },
         objectToFB: (CurrencyForexChange object, fb.Builder fbb) {
           final nameOffset = fbb.writeString(object.name);
-          fbb.startTable(5);
+          fbb.startTable(6);
           fbb.addInt64(0, object.id);
           fbb.addOffset(1, nameOffset);
           fbb.addInt64(2, object.date.millisecondsSinceEpoch);
           fbb.addFloat64(3, object.change);
+          fbb.addInt64(4, object.lastFetchDate.millisecondsSinceEpoch);
           fbb.finish(fbb.endTable());
           return object.id;
         },
@@ -632,7 +638,10 @@ obx_int.ModelDefinition getObjectBoxModel() {
               const fb.Int64Reader().vTableGet(buffer, rootOffset, 8, 0));
           final changeParam =
               const fb.Float64Reader().vTableGet(buffer, rootOffset, 10, 0);
-          final object = CurrencyForexChange(nameParam, dateParam, changeParam)
+          final lastFetchDateParam = DateTime.fromMillisecondsSinceEpoch(
+              const fb.Int64Reader().vTableGet(buffer, rootOffset, 12, 0));
+          final object = CurrencyForexChange(
+              nameParam, dateParam, changeParam, lastFetchDateParam)
             ..id = const fb.Int64Reader().vTableGet(buffer, rootOffset, 4, 0);
 
           return object;
@@ -824,6 +833,10 @@ class CurrencyForexChange_ {
   /// see [CurrencyForexChange.change]
   static final change =
       obx.QueryDoubleProperty<CurrencyForexChange>(_entities[7].properties[3]);
+
+  /// see [CurrencyForexChange.lastFetchDate]
+  static final lastFetchDate =
+      obx.QueryDateProperty<CurrencyForexChange>(_entities[7].properties[4]);
 }
 
 /// [NetWorthHistory] entity fields to define ObjectBox queries.

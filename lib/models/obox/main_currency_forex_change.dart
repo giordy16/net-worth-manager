@@ -12,5 +12,8 @@ class CurrencyForexChange {
 
   double change;
 
-  CurrencyForexChange(this.name, this.date, this.change);
+  @Property(type: PropertyType.date)
+  DateTime lastFetchDate;
+
+  CurrencyForexChange(this.name, this.date, this.change, this.lastFetchDate);
 }

@@ -34,7 +34,10 @@ class NetWorthRepoImpl extends NetWorthRepo {
         .toList();
 
     // empty asset
-    if (oldestAssetsFirstBuys.isEmpty) return;
+    if (oldestAssetsFirstBuys.isEmpty) {
+      GetIt.I<Store>().box<NetWorthHistory>().removeAll();
+      return;
+    }
 
     // oldest AssetTimeValue, from where the nw starts
     DateTime oldestAssetDate =
