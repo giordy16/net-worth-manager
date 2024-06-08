@@ -103,14 +103,9 @@ class AssetRepoImpl implements AssetRepo {
               element.date.isBefore(dateTime.add(const Duration(days: 1))))
           .lastOrNull;
 
-      return lastTimeValue?.getCurrentValue(date: dateTime).atMainCurrency(
-                fromCurrency: lastTimeValue.currency.target!.name,
-                dateTime: dateTime,
-              ) ??
-          0;
+      return lastTimeValue?.getCurrentValue(date: dateTime) ?? 0;
     } else {
       // market asset
-
       int i = 0;
       double marketValueAtTime = 0;
 

@@ -34,35 +34,32 @@ class AssetDetailHistoryItem extends StatelessWidget {
   Widget buildSimpleAssetItem(BuildContext context) {
     ThemeData theme = Theme.of(context);
 
-    return Row(
-      children: [
-        Text(df.format(timeValue.date)),
-        const Expanded(child: SizedBox()),
-        Text(timeValue.getTotalPurchaseValue().toStringWithCurrency()),
-        IconButton(
-            padding: EdgeInsets.all(0),
-            onPressed: () async {
-              await context.push(AddAssetPositionScreen.route,
-                  extra: AddAssetPositionScreenParams(
-                    asset: asset,
-                    timeValue: timeValue,
-                  ));
-              context.read<AssetDetailBloc>().add(FetchGraphDataEvent());
-            },
-            icon: Icon(
-              size: 18,
-              Icons.edit,
-              color: theme.colorScheme.secondary,
-            )),
-      ],
+    return Material(
+      child: InkWell(
+        onTap: () async {
+          await context.push(AddAssetPositionScreen.route,
+              extra: AddAssetPositionScreenParams(
+                asset: asset,
+                timeValue: timeValue,
+              ));
+          context.read<AssetDetailBloc>().add(FetchGraphDataEvent());
+        },
+        child: Row(
+          children: [
+            Text(df.format(timeValue.date)),
+            const Expanded(child: SizedBox()),
+            Text(timeValue.getTotalPurchaseValue().atMainCurrency(fromCurrency: timeValue.currency.target!.name).toStringWithCurrency()),
+          ],
+        ),
+      ),
     );
   }
 
   Widget buildMarketAssetItem(BuildContext context) {
     double performance =
-    timeValue.getPerformance(asset.marketInfo.target!.symbol);
+        timeValue.getPerformance(asset.marketInfo.target!.symbol);
     double performancePerc =
-    timeValue.getPerformancePerc(asset.marketInfo.target!.symbol);
+        timeValue.getPerformancePerc(asset.marketInfo.target!.symbol);
 
     return Material(
       child: InkWell(
@@ -91,7 +88,9 @@ class AssetDetailHistoryItem extends StatelessWidget {
                 ),
                 const Expanded(child: SizedBox()),
                 PerformanceBox(
-                  currentValue: timeValue.getCurrentValue(marketInfo: asset.marketInfo.target).toStringWithCurrency(),
+                  currentValue: timeValue
+                      .getCurrentValue(marketInfo: asset.marketInfo.target)
+                      .toStringWithCurrency(),
                   performance: performance,
                   performancePerc: performancePerc,
                   showType: PerformanceShowType.column,

@@ -45,6 +45,7 @@ class AssetTimeValue {
     return double.parse((value * quantity).toStringAsFixed(2));
   }
 
+  /// get current value of the position at main currency
   double getCurrentValue({
     DateTime? date,
     MarketInfo? marketInfo,
@@ -52,7 +53,7 @@ class AssetTimeValue {
     if (marketInfo == null) {
       // simple asset
       return (value * quantity)
-          .atMainCurrency(fromCurrency: currency.target!.name);
+          .atMainCurrency(fromCurrency: currency.target!.name, dateTime: date);
     } else {
       // market asset
       double symbolValue = GetIt.I<Store>()
@@ -64,7 +65,7 @@ class AssetTimeValue {
               ?.value ??
           0;
       return (symbolValue * quantity)
-          .atMainCurrency(fromCurrency: marketInfo.currency);
+          .atMainCurrency(fromCurrency: marketInfo.currency, dateTime: date);
     }
   }
 
@@ -115,7 +116,8 @@ class AssetTimeValue {
         fromCurrency: currency.target!.name, dateTime: date);
 
     return double.parse(
-        ((symbolValue - valueMainCurrency) / valueMainCurrency * 100).toStringAsFixed(1));
+        ((symbolValue - valueMainCurrency) / valueMainCurrency * 100)
+            .toStringAsFixed(1));
   }
 }
 
