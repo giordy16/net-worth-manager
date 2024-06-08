@@ -49,8 +49,12 @@ class AssetDetailBloc extends Bloc<AssetDetailEvent, AssetDetailState> {
       graphData.add(GraphData(date, assetRepo.getValueAtDateTime(asset, date)));
     }
 
-    // add one top plot graph until the end
-    graphData.add(GraphData(DateTime.now(), graphData.last.y));
+    // in case there is only 1 asset.timeValues and has the date of today,
+    // the for above will not loop, so we need to out the data manually
+    if (asset.timeValues.length == 1 &&
+        oldestDateTime == DateTime.now().keepOnlyYMD()) {
+      graphData.add(GraphData(oldestDateTime, assetRepo.getValueAtDateTime(asset, oldestDateTime)));
+    }
 
     add(FetchGraphDataCompletedEvent(asset, graphData));
   }

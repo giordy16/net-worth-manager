@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:net_worth_manager/app_dimensions.dart';
 import 'package:net_worth_manager/models/obox/asset_time_value_obox.dart';
+import 'package:net_worth_manager/utils/extensions/date_time_extension.dart';
 import 'package:net_worth_manager/utils/extensions/number_extension.dart';
 import 'package:syncfusion_flutter_charts/charts.dart';
 
@@ -46,6 +47,32 @@ class _MarketAssetLineGraph extends State<LineGraph> {
           textAlign: TextAlign.center,
         )),
       );
+    }
+
+    double minX = currentGap
+        .getStartDate(widget.graphData.firstOrNull?.x)
+        .millisecondsSinceEpoch
+        .toDouble();
+    double maxX = currentGap.getEndDate().millisecondsSinceEpoch.toDouble();
+
+    // add a new point if the last one is not today, so the graph is plotted until the right edge
+    if (widget.graphData.isNotEmpty &&
+        widget.graphData.lastOrNull?.x.keepOnlyYMD() != DateTime.now().keepOnlyYMD()) {
+      widget.graphData.add(
+          GraphData(DateTime.now().keepOnlyYMD(), widget.graphData.last.y));
+    }
+
+    // edge case: graphData has only 1 element and has the date of today
+    // solution: add to graphData the date of tomorrow
+    if (widget.graphData.length == 1 &&
+        widget.graphData.lastOrNull?.x == DateTime.now().keepOnlyYMD()) {
+      DateTime todayLastDateTime = DateTime.now().keepOnlyYMD()
+          .add(Duration(days: 1))
+          .subtract(Duration(milliseconds: 1));
+
+      widget.graphData
+          .add(GraphData(todayLastDateTime, widget.graphData.last.y));
+      maxX = todayLastDateTime.millisecondsSinceEpoch.toDouble();
     }
 
     return Column(
@@ -122,11 +149,8 @@ class _MarketAssetLineGraph extends State<LineGraph> {
                     ));
               }),
           primaryXAxis: NumericAxis(
-            minimum: currentGap
-                .getStartDate(widget.graphData.firstOrNull?.x)
-                .millisecondsSinceEpoch
-                .toDouble(),
-            maximum: currentGap.getEndDate().millisecondsSinceEpoch.toDouble(),
+            minimum: minX,
+            maximum: maxX,
             axisLabelFormatter: (AxisLabelRenderDetails details) =>
                 ChartAxisLabel(
                     currentGap.getDateFormat().format(
@@ -143,7 +167,6 @@ class _MarketAssetLineGraph extends State<LineGraph> {
             LineSeries<GraphData, int>(
               color: theme.colorScheme.secondary,
               animationDuration: 100,
-
               enableTooltip: true,
               dataSource: widget.graphData,
               xValueMapper: (GraphData data, _) =>
