@@ -94,9 +94,10 @@ class NetWorthRepoImpl extends NetWorthRepo {
       for (var element in nwValues) {
         double dayValue = 0;
         for (var asset in assets) {
+          // print("asset ${asset.name} at ${element.date} has value ${assetRepo.getValueAtDateTime(asset, element.date)}");
           dayValue = dayValue + assetRepo.getValueAtDateTime(asset, element.date);
         }
-        element.value = dayValue;
+        element.value = double.parse(dayValue.toStringAsFixed(2));
         _nwBox.put(element);
       }
     });
