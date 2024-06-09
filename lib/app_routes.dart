@@ -11,16 +11,19 @@ import 'package:net_worth_manager/ui/screens/add_market_asset/add_market_asset_s
 import 'package:net_worth_manager/ui/screens/add_market_asset/add_market_asset_screen.dart';
 import 'package:net_worth_manager/ui/screens/add_selection/add_selection_screen.dart';
 import 'package:net_worth_manager/ui/screens/asset_detail/asset_detail_screen.dart';
+import 'package:net_worth_manager/ui/screens/currency_selection/currency_selection_params.dart';
 import 'package:net_worth_manager/ui/screens/currency_selection/currency_selection_screen.dart';
 import 'package:net_worth_manager/ui/screens/home/home_page_screen.dart';
 import 'package:net_worth_manager/ui/screens/ticker_search/ticker_search_screen.dart';
+import 'package:net_worth_manager/ui/widgets/modal/loading_overlay.dart';
 
 final appRoutes = GoRouter(
   initialLocation: MainNavigation.route,
   routes: [
     GoRoute(
       path: MainNavigation.route,
-      builder: (context, state) => MainNavigation(state.extra as int?),
+      builder: (context, state) =>
+          LoadingOverlay(child: MainNavigation(state.extra as int?)),
     ),
     GoRoute(
       path: HomePage.route,
@@ -34,7 +37,8 @@ final appRoutes = GoRouter(
     ),
     GoRoute(
       path: CurrencySelectionScreen.route,
-      builder: (context, state) => CurrencySelectionScreen(state.extra as Currency?),
+      builder: (context, state) =>
+          CurrencySelectionScreen(state.extra as CurrencySelectionParams),
     ),
     GoRoute(
       path: AddSelectionScreen.route,
@@ -48,8 +52,10 @@ final appRoutes = GoRouter(
     ),
     GoRoute(
       path: AddAssetPositionScreen.route,
-      builder: (context, state) => AddAssetPositionScreen(
-        params: state.extra as AddAssetPositionScreenParams,
+      builder: (context, state) => LoadingOverlay(
+        child: AddAssetPositionScreen(
+          params: state.extra as AddAssetPositionScreenParams,
+        ),
       ),
     ),
     GoRoute(
@@ -65,7 +71,7 @@ final appRoutes = GoRouter(
     GoRoute(
       path: AddMarketAssetScreen.route,
       builder: (context, state) =>
-          AddMarketAssetScreen(state.extra as AddMarketAssetScreenParams),
+          LoadingOverlay(child: AddMarketAssetScreen(state.extra as AddMarketAssetScreenParams)),
     ),
   ],
 );

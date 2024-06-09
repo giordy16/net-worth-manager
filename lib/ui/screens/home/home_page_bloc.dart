@@ -1,11 +1,16 @@
+import 'dart:math';
+
 import 'package:bloc/bloc.dart';
+import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
+import 'package:intl/intl.dart';
 import 'package:net_worth_manager/domain/repository/asset/asset_repo.dart';
 import 'package:net_worth_manager/domain/repository/net_worth/net_worth_repo.dart';
 import 'package:net_worth_manager/models/obox/asset_obox.dart';
 import 'package:net_worth_manager/models/obox/net_worth_history.dart';
 import 'package:net_worth_manager/models/ui/graph_data.dart';
 import 'package:net_worth_manager/ui/screens/home/home_page_event.dart';
+import 'package:net_worth_manager/ui/widgets/modal/loading_overlay.dart';
 import 'package:net_worth_manager/utils/extensions/date_time_extension.dart';
 import '../../../objectbox.g.dart';
 import 'home_page_state.dart';
@@ -13,8 +18,10 @@ import 'home_page_state.dart';
 class HomePageBloc extends Bloc<HomePageEvent, HomePageState> {
   final AssetRepo assetRepo;
   final NetWorthRepo netWorthRepo;
+  final BuildContext context;
 
   HomePageBloc({
+    required this.context,
     required this.assetRepo,
     required this.netWorthRepo,
   }) : super(const HomePageState()) {
@@ -22,10 +29,9 @@ class HomePageBloc extends Bloc<HomePageEvent, HomePageState> {
       List<Asset> assets = assetRepo.getAssets();
 
       emit(state.copyWith(
-        assets: assets,
-        netWorthValue: netWorthRepo.getNetWorth(),
-        graphData: []
-      ));
+          assets: assets,
+          netWorthValue: netWorthRepo.getNetWorth(),
+          graphData: []));
 
       List<GraphData> graphData = GetIt.I<Store>()
           .box<NetWorthHistory>()
@@ -39,14 +45,39 @@ class HomePageBloc extends Bloc<HomePageEvent, HomePageState> {
       emit(state.copyWith(graphData: graphData));
     });
 
-    on<DeleteAsset>((event, emit) {
+    on<DeleteAsset>((event, emit) async {
+      DateTime? oldestDate = event.asset.getOldestTimeValueDate();
+
       assetRepo.deleteAsset(event.asset);
-      netWorthRepo.updateNetWorth();
+
+      if (oldestDate != null) {
+        LoadingOverlay.of(context).show();
+        await netWorthRepo.updateNetWorth(updateStartingDate: oldestDate);
+        LoadingOverlay.of(context).hide();
+      }
+
+      add(FetchHomePage());
     });
 
-    on<DeleteCategory>((event, emit) {
+    on<DeleteCategory>((event, emit) async {
+      List<int> oldestPositionDateList = assetRepo
+          .getAssetsFromCategory(event.category)
+          .map(
+              (asset) => asset.getOldestTimeValueDate()?.millisecondsSinceEpoch)
+          .nonNulls
+          .toList();
+
       assetRepo.deleteCategory(event.category);
-      netWorthRepo.updateNetWorth();
+
+      if (oldestPositionDateList.isNotEmpty) {
+        LoadingOverlay.of(context).show();
+        await netWorthRepo.updateNetWorth(
+            updateStartingDate: DateTime.fromMillisecondsSinceEpoch(
+                oldestPositionDateList.reduce(min)));
+        LoadingOverlay.of(context).hide();
+      }
+
+      add(FetchHomePage());
     });
   }
 }

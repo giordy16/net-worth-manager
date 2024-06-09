@@ -1,6 +1,7 @@
 import 'package:get_it/get_it.dart';
 import 'package:net_worth_manager/domain/repository/asset/asset_repo_impl.dart';
 import 'package:net_worth_manager/models/obox/net_worth_history.dart';
+import 'package:net_worth_manager/utils/background_thread.dart';
 import 'package:net_worth_manager/utils/extensions/date_time_extension.dart';
 
 import '../../../models/obox/asset_obox.dart';
@@ -22,8 +23,10 @@ class NetWorthRepoImpl extends NetWorthRepo {
         0;
   }
 
+  /// When @updateStartingDate is specified, the nw values are updated starting
+  /// from @updateStartingDate, so the values before are not updated
   @override
-  void updateNetWorth({DateTime? updateStartingDate}) {
+  Future<void> updateNetWorth({DateTime? updateStartingDate}) async {
     var assets = GetIt.I<Store>().box<Asset>().getAll();
 
     // contains the date of the first AssetTimeValue for each asset
@@ -85,14 +88,18 @@ class NetWorthRepoImpl extends NetWorthRepo {
       nwValues = temp + nwValues;
     }
 
-    for (var element in nwValues) {
-      double dayValue = 0;
-      for (var asset in assets) {
-        dayValue = dayValue + assetRepo.getValueAtDateTime(asset, element.date);
+    await runInDifferentThread(() {
+      final _nwBox = GetIt.I<Store>().box<NetWorthHistory>();
+
+      for (var element in nwValues) {
+        double dayValue = 0;
+        for (var asset in assets) {
+          dayValue = dayValue + assetRepo.getValueAtDateTime(asset, element.date);
+        }
+        element.value = dayValue;
+        _nwBox.put(element);
       }
-      element.value = dayValue;
-      nwBox.put(element);
-    }
+    });
 
     // remove nwValues where date < oldestAssetsFirstBuy
     oldestAssetDate =

@@ -6,6 +6,7 @@ import 'package:net_worth_manager/main.dart';
 import 'package:net_worth_manager/models/obox/market_info_obox.dart';
 import 'package:net_worth_manager/ui/screens/add_market_asset/add_market_asset_event.dart';
 import 'package:net_worth_manager/ui/screens/add_market_asset/add_market_asset_state.dart';
+import 'package:net_worth_manager/ui/widgets/modal/loading_overlay.dart';
 import 'package:net_worth_manager/utils/extensions/objectbox_extension.dart';
 import 'package:net_worth_manager/utils/forex.dart';
 
@@ -30,7 +31,7 @@ class AddMarketAssetBloc
       Asset asset = event.asset;
       MarketInfo marketInfo = asset.marketInfo.target!;
 
-      // todo show progress
+      LoadingOverlay.of(context).show();
 
       await objectbox.syncForexPrices(currencyToFetch: marketInfo.currency);
       await stockApi.fetchPriceHistoryBySymbol(marketInfo);
@@ -43,9 +44,10 @@ class AddMarketAssetBloc
       if (assetPositionsDate.isNotEmpty) {
         DateTime oldestDate =
         assetPositionsDate.reduce((a, b) => a.isBefore(b) ? a : b);
-        netWorthRepo.updateNetWorth(updateStartingDate: oldestDate);
+        await netWorthRepo.updateNetWorth(updateStartingDate: oldestDate);
       }
 
+      LoadingOverlay.of(context).hide();
       context.pop();
     });
   }

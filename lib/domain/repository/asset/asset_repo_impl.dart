@@ -59,7 +59,7 @@ class AssetRepoImpl implements AssetRepo {
 
   @override
   void deleteCategory(AssetCategory category) {
-    var assets = getAssetFromCategory(category);
+    var assets = getAssetsFromCategory(category);
     for (var asset in assets) {
       deleteAsset(asset);
     }
@@ -75,7 +75,7 @@ class AssetRepoImpl implements AssetRepo {
   }
 
   @override
-  List<Asset> getAssetFromCategory(AssetCategory category) {
+  List<Asset> getAssetsFromCategory(AssetCategory category) {
     return objectbox.store
         .box<Asset>()
         .query(Asset_.category.equals(category.id))
@@ -89,9 +89,6 @@ class AssetRepoImpl implements AssetRepo {
     await objectbox.syncForexPrices();
   }
 
-  final assetHistoryTimeValueBox =
-      GetIt.I<Store>().box<AssetHistoryTimeValue>();
-
   /// Returning the value of the @asset at the specified @dateTime at the mainCurrency
   @override
   double getValueAtDateTime(Asset asset, DateTime dateTime) {
@@ -103,11 +100,18 @@ class AssetRepoImpl implements AssetRepo {
               element.date.isBefore(dateTime.add(const Duration(days: 1))))
           .lastOrNull;
 
-      return lastTimeValue?.getCurrentValue(date: dateTime) ?? 0;
+      return lastTimeValue?.getCurrentValue(date: dateTime).atMainCurrency(
+                fromCurrency: lastTimeValue.currency.target!.name,
+                dateTime: dateTime,
+              ) ??
+          0;
     } else {
       // market asset
+
       int i = 0;
       double marketValueAtTime = 0;
+      final assetHistoryTimeValueBox =
+          GetIt.I<Store>().box<AssetHistoryTimeValue>();
 
       while (marketValueAtTime == 0) {
         marketValueAtTime = assetHistoryTimeValueBox

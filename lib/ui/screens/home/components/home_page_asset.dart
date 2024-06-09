@@ -15,7 +15,6 @@ class HomePageAsset extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     ThemeData theme = Theme.of(context);
-    Settings settings = objectbox.store.box<Settings>().getAll().first;
     DateFormat df = DateFormat("dd/MM/yyyy");
 
     return Material(

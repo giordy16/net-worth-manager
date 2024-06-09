@@ -22,7 +22,7 @@ abstract class AssetRepo {
 
   List<Asset> getAssets();
 
-  List<Asset> getAssetFromCategory(AssetCategory category);
+  List<Asset> getAssetsFromCategory(AssetCategory category);
 
   double getValueAtDateTime(Asset asset, DateTime dateTime);
 

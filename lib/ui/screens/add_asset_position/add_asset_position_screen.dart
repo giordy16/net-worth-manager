@@ -1,8 +1,6 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
-import 'package:net_worth_manager/main.dart';
 import 'package:net_worth_manager/ui/screens/add_asset_position/add_position_bloc.dart';
 import 'package:net_worth_manager/ui/screens/add_asset_position/add_position_event.dart';
 import 'package:net_worth_manager/ui/widgets/base_components/app_date_field.dart';
@@ -73,128 +71,107 @@ class _AddAssetPositionScreenState extends State<AddAssetPositionScreen> {
                 ),
             child: BlocBuilder<AddPositionBloc, AddPositionState>(
                 builder: (context, state) {
-              return Stack(
-                children: [
-                  Scaffold(
-                      resizeToAvoidBottomInset: false,
-                      appBar: AppBar(
-                        title: Text("Position"),
-                        actions: [
-                          if (params.timeValue != null)
-                            IconButton(
-                              onPressed: () => onDelete(context),
-                              icon: const Icon(
-                                Icons.delete_outlined,
-                                color: Colors.white,
-                              ),
-                            )
-                        ],
-                      ),
-                      floatingActionButtonLocation:
-                          FloatingActionButtonLocation.centerFloat,
-                      floatingActionButton: AppBottomFab(
-                        text: "Save",
-                        onTap: () async {
-                          if (_formKey.currentState!.validate()) {
-                            widget.params.justPopBack
-                                ? context.pop(position)
-                                : context.read<AddPositionBloc>().add(
-                                    SavePositionEvent(params.asset, position));
-                          }
-                        },
-                      ),
-                      body: SafeArea(
-                        child: Form(
-                          key: _formKey,
-                          child: Padding(
-                            padding: const EdgeInsets.symmetric(
-                                horizontal: Dimensions.screenMargin),
-                            child: Column(
-                              children: [
-                                Padding(
-                                  padding:
-                                      const EdgeInsets.only(top: Dimensions.m),
-                                  child: AppTextField(
-                                    initialValue: params.asset.name,
-                                    title: "Asset",
-                                    readOnly: true,
-                                    isMandatory: true,
-                                  ),
-                                ),
-                                Padding(
-                                  padding:
-                                      const EdgeInsets.only(top: Dimensions.m),
-                                  child: AppDateField(
-                                    initialValue: position.date,
-                                    title: "Date",
-                                    isMandatory: true,
-                                    onDatePicked: (date) {
-                                      position.date = date;
-                                    },
-                                  ),
-                                ),
-                                Padding(
-                                  padding:
-                                      const EdgeInsets.only(top: Dimensions.m),
-                                  child: AppNumericTextField(
-                                    moneyBehavior: true,
-                                    title: "Value",
-                                    initialValue: position.value,
-                                    currency: position.currency.target,
-                                    userCanChangeCurrency:
-                                        params.asset.marketInfo.target == null,
-                                    isMandatory: true,
-                                    onTextChange: (value) {
-                                      position.value = value.convertToDouble();
-                                    },
-                                    onCurrencyChange: (currency) {
-                                      position.currency.target = currency;
-                                    },
-                                  ),
-                                ),
-                                Visibility(
-                                  // visible only for market asset
-                                  visible:
-                                      params.asset.marketInfo.target != null,
-                                  child: Padding(
-                                    padding: const EdgeInsets.only(
-                                        top: Dimensions.m),
-                                    child: AppNumericTextField(
-                                      title: "Quantity",
-                                      initialValue: position.quantity,
-                                      isMandatory: true,
-                                      onTextChange: (value) {
-                                        position.quantity =
-                                            value.convertToDouble();
-                                      },
-                                      moneyBehavior: false,
-                                    ),
-                                  ),
-                                ),
-                              ],
-                            ),
+              return Scaffold(
+                  resizeToAvoidBottomInset: false,
+                  appBar: AppBar(
+                    title: Text("Position"),
+                    actions: [
+                      if (params.timeValue != null)
+                        IconButton(
+                          onPressed: () => onDelete(context),
+                          icon: const Icon(
+                            Icons.delete_outlined,
+                            color: Colors.white,
                           ),
-                        ),
-                      )),
-
-                  if (state.showProgress)
-                    Scaffold(
-                      backgroundColor: Colors.transparent,
-                      body: Container(
-                        color: Colors.black.withOpacity(0.7),
-                        alignment: Alignment.center,
+                        )
+                    ],
+                  ),
+                  floatingActionButtonLocation:
+                      FloatingActionButtonLocation.centerFloat,
+                  floatingActionButton: AppBottomFab(
+                    text: "Save",
+                    onTap: () async {
+                      if (_formKey.currentState!.validate()) {
+                        widget.params.justPopBack
+                            ? context.pop(position)
+                            : context.read<AddPositionBloc>().add(
+                                SavePositionEvent(params.asset, position));
+                      }
+                    },
+                  ),
+                  body: SafeArea(
+                    child: Form(
+                      key: _formKey,
+                      child: Padding(
+                        padding: const EdgeInsets.symmetric(
+                            horizontal: Dimensions.screenMargin),
                         child: Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          mainAxisSize: MainAxisSize.max,
                           children: [
-                            CircularProgressIndicator(),
-                            Text("Just a moment...")
+                            Padding(
+                              padding:
+                                  const EdgeInsets.only(top: Dimensions.m),
+                              child: AppTextField(
+                                initialValue: params.asset.name,
+                                title: "Asset",
+                                readOnly: true,
+                                isMandatory: true,
+                              ),
+                            ),
+                            Padding(
+                              padding:
+                                  const EdgeInsets.only(top: Dimensions.m),
+                              child: AppDateField(
+                                initialValue: position.date,
+                                title: "Date",
+                                isMandatory: true,
+                                onDatePicked: (date) {
+                                  position.date = date;
+                                },
+                              ),
+                            ),
+                            Padding(
+                              padding:
+                                  const EdgeInsets.only(top: Dimensions.m),
+                              child: AppNumericTextField(
+                                moneyBehavior: true,
+                                title: "Value",
+                                initialValue: position.value,
+                                currency: position.currency.target,
+                                userCanChangeCurrency:
+                                    params.asset.marketInfo.target == null,
+                                isMandatory: true,
+                                onTextChange: (value) {
+                                  position.value = value.convertToDouble();
+                                },
+                                onCurrencyChange: (currency) {
+                                  position.currency.target = currency;
+                                },
+                              ),
+                            ),
+                            Visibility(
+                              // visible only for market asset
+                              visible:
+                                  params.asset.marketInfo.target != null,
+                              child: Padding(
+                                padding: const EdgeInsets.only(
+                                    top: Dimensions.m),
+                                child: AppNumericTextField(
+                                  title: "Quantity",
+                                  initialValue: position.quantity,
+                                  isMandatory: true,
+                                  onTextChange: (value) {
+                                    position.quantity =
+                                        value.convertToDouble();
+                                  },
+                                  moneyBehavior: false,
+                                ),
+                              ),
+                            ),
                           ],
                         ),
                       ),
                     ),
-                ],
-              );
+                  ));
             })));
   }
 }

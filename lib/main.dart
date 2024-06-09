@@ -32,7 +32,7 @@ Future<void> initApp() async {
   await objectbox.syncForexPrices();
   await objectbox.syncAssetPrices();
 
-  NetWorthRepoImpl()
+  await NetWorthRepoImpl()
       .updateNetWorth(updateStartingDate: DateTime.now().keepOnlyYMD());
 }
 

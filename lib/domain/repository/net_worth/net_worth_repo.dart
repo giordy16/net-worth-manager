@@ -1,6 +1,6 @@
 abstract class NetWorthRepo {
 
-  void updateNetWorth({DateTime? updateStartingDate});
+  Future<void> updateNetWorth({DateTime? updateStartingDate});
 
   double getNetWorth();
 

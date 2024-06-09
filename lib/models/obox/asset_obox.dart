@@ -68,7 +68,7 @@ class Asset {
     return q;
   }
 
-  DateTime? getFirstTimeValueDate() {
+  DateTime? getOldestTimeValueDate() {
     return getTimeValuesChronologicalOrder().firstOrNull?.date;
   }
 

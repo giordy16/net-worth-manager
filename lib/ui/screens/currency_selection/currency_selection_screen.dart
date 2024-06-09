@@ -9,12 +9,14 @@ import 'package:net_worth_manager/ui/screens/currency_selection/currency_selecti
 import 'package:net_worth_manager/ui/screens/currency_selection/currency_selection_state.dart';
 import 'package:net_worth_manager/ui/widgets/base_components/app_text_field.dart';
 
+import 'currency_selection_params.dart';
+
 class CurrencySelectionScreen extends StatelessWidget {
   static const route = "/CurrencySelectionScreen";
 
-  Currency? selectedCurrency;
+  CurrencySelectionParams params;
 
-  CurrencySelectionScreen(this.selectedCurrency);
+  CurrencySelectionScreen(this.params);
 
   @override
   Widget build(BuildContext context) {
@@ -51,11 +53,15 @@ class CurrencySelectionScreen extends StatelessWidget {
                           return Material(
                             child: InkWell(
                               onTap: () {
+                                if (params.onCurrencySelected != null) {
+                                  params.onCurrencySelected!(
+                                      state.currenciesList[index]);
+                                }
                                 context.pop(state.currenciesList[index]);
                               },
                               child: ListTile(
-                                  trailing: (selectedCurrency != null &&
-                                          selectedCurrency!.id ==
+                                  trailing: (params.selectedCurrency != null &&
+                                          params.selectedCurrency!.id ==
                                               state.currenciesList[index].id)
                                       ? const Icon(Icons.check)
                                       : null,

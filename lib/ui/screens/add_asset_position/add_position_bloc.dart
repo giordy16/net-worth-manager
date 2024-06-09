@@ -6,6 +6,7 @@ import 'package:net_worth_manager/domain/repository/net_worth/net_worth_repo.dar
 import 'package:net_worth_manager/models/obox/settings_obox.dart';
 import 'package:net_worth_manager/ui/screens/add_asset_position/add_position_event.dart';
 import 'package:net_worth_manager/ui/screens/add_asset_position/add_position_state.dart';
+import 'package:net_worth_manager/ui/widgets/modal/loading_overlay.dart';
 import 'package:net_worth_manager/utils/extensions/objectbox_extension.dart';
 
 import '../../../domain/repository/asset/asset_repo.dart';
@@ -25,7 +26,7 @@ class AddPositionBloc extends Bloc<AddPositionEvent, AddPositionState> {
     required this.context,
   }) : super(AddPositionState()) {
     on<SavePositionEvent>((event, emit) async {
-      emit(state.copyWith(showProgress: true));
+      LoadingOverlay.of(context).show();
 
       assetRepo.saveAssetPosition(
         event.position,
@@ -45,9 +46,10 @@ class AddPositionBloc extends Bloc<AddPositionEvent, AddPositionState> {
         DateTime oldestDate =
             assetPositionsDate.reduce((a, b) => a.isBefore(b) ? a : b);
 
-        netWorthRepo.updateNetWorth(updateStartingDate: oldestDate);
+        await netWorthRepo.updateNetWorth(updateStartingDate: oldestDate);
       }
 
+      LoadingOverlay.of(context).hide();
       context.pop();
     });
 

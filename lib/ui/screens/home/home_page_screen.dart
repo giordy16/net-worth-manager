@@ -60,7 +60,6 @@ class HomePage extends StatelessWidget {
                 "Are you sure you want to delete this category? All its asset and positions will be deleted")) ==
             true) {
           context.read<HomePageBloc>().add(DeleteCategory(category));
-          context.read<HomePageBloc>().add(FetchHomePage());
         }
       }
     });
@@ -105,7 +104,6 @@ class HomePage extends StatelessWidget {
       ): () async {
         if ((await showDeleteConfirmSheet(context)) == true) {
           context.read<HomePageBloc>().add(DeleteAsset(asset));
-          context.read<HomePageBloc>().add(FetchHomePage());
         }
       }
     });
@@ -127,6 +125,7 @@ class HomePage extends StatelessWidget {
       ],
       child: BlocProvider(
         create: (context) => HomePageBloc(
+            context: context,
             assetRepo: context.read<AssetRepoImpl>(),
             netWorthRepo: context.read<NetWorthRepoImpl>())
           ..add(FetchHomePage()),
