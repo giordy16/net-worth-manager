@@ -124,12 +124,16 @@ class _AppNumericTextFieldState extends State<AppNumericTextField> {
     return TextFormField(
       controller: controller,
       onTapOutside: (_) => FocusScope.of(context).unfocus(),
-      keyboardType: const TextInputType.numberWithOptions(
-        decimal: true,
-        signed: true,
-      ),
+      keyboardType: widget.moneyBehavior
+          ? const TextInputType.numberWithOptions(decimal: true)
+          : const TextInputType.numberWithOptions(
+              decimal: true,
+              signed: true,
+            ),
       inputFormatters: [
-        FilteringTextInputFormatter.allow(RegExp('[0-9.,-]')),
+        widget.moneyBehavior
+            ? FilteringTextInputFormatter.allow(RegExp('[0-9.,]'))
+            : FilteringTextInputFormatter.allow(RegExp('[0-9.,-]')),
       ],
       textCapitalization: TextCapitalization.sentences,
       decoration: InputDecoration(
