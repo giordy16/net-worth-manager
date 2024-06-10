@@ -17,12 +17,14 @@ class LineGraph extends StatefulWidget {
   bool showGapSelection;
   List<GraphData> graphData;
   Function(GraphTime)? onGraphTimeChange;
+  GraphTime initialGap;
 
   LineGraph({
     super.key,
     required this.graphData,
     this.showGapSelection = false,
     this.onGraphTimeChange,
+    this.initialGap = GraphTime.all,
   });
 
   @override
@@ -30,8 +32,14 @@ class LineGraph extends StatefulWidget {
 }
 
 class _MarketAssetLineGraph extends State<LineGraph> {
-  GraphTime currentGap = GraphTime.all;
+  late GraphTime currentGap;
   List<AssetTimeValue> assetValuesOfGap = [];
+
+  @override
+  void initState() {
+    currentGap = widget.initialGap;
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {

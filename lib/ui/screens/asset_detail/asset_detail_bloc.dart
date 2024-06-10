@@ -12,6 +12,7 @@ import 'package:net_worth_manager/utils/extensions/date_time_extension.dart';
 
 import '../../../models/obox/asset_history_time_value.dart';
 import '../../../models/obox/asset_obox.dart';
+import '../../../utils/enum/graph_data_gap_enum.dart';
 
 List<DateTime> topLevelDate = [DateTime.now()];
 
@@ -21,11 +22,30 @@ class AssetDetailBloc extends Bloc<AssetDetailEvent, AssetDetailState> {
   final StockApi stockApi;
 
   AssetDetailBloc(this.asset, this.assetRepo, this.stockApi)
-      : super(AssetDetailState(asset, const [])) {
+      : super(AssetDetailState(asset, const [], GraphTime.all, null, null)) {
     on<FetchGraphDataEvent>(_onFetchGraphDataEvent);
+
+    on<UpdatePerformanceEvent>((event, emit) {
+      emit(state.copyWith(graphTime: event.gap));
+
+      if (state.graphData.isNotEmpty) {
+        DateTime oldestDate = asset.getOldestTimeValueDate()!;
+
+        double performance = asset.getPerformance(
+            startDateTime: event.gap.getStartDate(oldestDate));
+        double performancePerc = asset.getPerformancePerc(
+            startDateTime: event.gap.getStartDate(oldestDate));
+
+        emit(state.copyWith(
+          performance: double.parse(performance.toStringAsFixed(2)),
+          performancePerc: double.parse(performancePerc.toStringAsFixed(1)),
+        ));
+      }
+    });
 
     on<FetchGraphDataCompletedEvent>((event, emit) {
       emit(state.copyWith(asset: event.asset, graphData: event.list));
+      add(UpdatePerformanceEvent(state.graphTime));
     });
   }
 
@@ -53,7 +73,8 @@ class AssetDetailBloc extends Bloc<AssetDetailEvent, AssetDetailState> {
     // the for above will not loop, so we need to out the data manually
     if (asset.timeValues.length == 1 &&
         oldestDateTime == DateTime.now().keepOnlyYMD()) {
-      graphData.add(GraphData(oldestDateTime, assetRepo.getValueAtDateTime(asset, oldestDateTime)));
+      graphData.add(GraphData(
+          oldestDateTime, assetRepo.getValueAtDateTime(asset, oldestDateTime)));
     }
 
     add(FetchGraphDataCompletedEvent(asset, graphData));

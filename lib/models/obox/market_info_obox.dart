@@ -1,3 +1,4 @@
+import 'package:get_it/get_it.dart';
 import 'package:net_worth_manager/models/obox/asset_history_time_value.dart';
 import 'package:net_worth_manager/models/obox/currency_obox.dart';
 import 'package:net_worth_manager/models/obox/settings_obox.dart';
@@ -30,12 +31,14 @@ class MarketInfo {
     this.region,
   );
 
-  Currency getCurrency() {
-    return objectbox.store
-        .box<Currency>()
-        .query(Currency_.name.equals(currency))
-        .build()
-        .find()
-        .first;
+  double getCurrentPrice() {
+    return GetIt.I<Store>()
+            .box<AssetHistoryTimeValue>()
+            .query()
+            .order(AssetHistoryTimeValue_.date, flags: Order.descending)
+            .build()
+            .findFirst()
+            ?.value ??
+        0;
   }
 }

@@ -5,6 +5,7 @@ import 'package:intl/number_symbols_data.dart';
 
 extension StringHelper on String {
   double convertToDouble() {
+    if (isEmpty) return 0;
     var decimalSeparator =
         numberFormatSymbols[Platform.localeName.split("_").first]?.DECIMAL_SEP;
 

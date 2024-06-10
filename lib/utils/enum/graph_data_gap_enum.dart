@@ -30,7 +30,8 @@ extension DataGapExt on GraphTime {
       case GraphTime.all:
         return oldestDate;
       case GraphTime.ytd:
-        return DateTime(today.year);
+        DateTime subDate = DateTime(today.year);
+        return subDate.isBefore(oldestDate) ? oldestDate : subDate;
       case GraphTime.threeMonths:
         DateTime subDate = today.subtract(const Duration(days: 60));
         return subDate.isBefore(oldestDate) ? oldestDate : subDate;

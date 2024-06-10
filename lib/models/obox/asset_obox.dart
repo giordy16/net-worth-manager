@@ -1,4 +1,5 @@
 import 'package:get_it/get_it.dart';
+import 'package:net_worth_manager/domain/repository/asset/asset_repo_impl.dart';
 import 'package:net_worth_manager/models/obox/asset_history_time_value.dart';
 import 'package:net_worth_manager/models/obox/asset_time_value_obox.dart';
 import 'package:net_worth_manager/models/obox/market_info_obox.dart';
@@ -62,6 +63,7 @@ class Asset {
 
   double getTotalQuantity() {
     double q = 0;
+    var timeValues = GetIt.I<Store>().box<Asset>().get(id)!.timeValues;
     for (var element in timeValues) {
       q = q + element.quantity;
     }
@@ -76,6 +78,7 @@ class Asset {
   List<AssetTimeValue> getTimeValuesChronologicalOrder({
     bool latestFirst = false,
   }) {
+    var timeValues = GetIt.I<Store>().box<Asset>().get(id)!.timeValues;
     var values = timeValues.toList();
     values.sort((a, b) =>
         latestFirst ? b.date.compareTo(a.date) : a.date.compareTo(b.date));
@@ -94,21 +97,62 @@ class Asset {
     return q;
   }
 
-  double getPerformance() {
+  double getPerformance({DateTime? startDateTime}) {
     double p = 0.0;
-    for (var element in timeValues) {
-      p = p + element.getPerformance(marketInfo.target!.symbol);
+    var timeValues = GetIt.I<Store>().box<Asset>().get(id)!.timeValues;
+    if (startDateTime == null || startDateTime == getOldestTimeValueDate()) {
+      for (var element in timeValues) {
+        p = p + element.getPerformance(marketInfo.target!.symbol);
+      }
+    } else {
+      double valueAtStartDateTime =
+          AssetRepoImpl().getValueAtDateTime(this, startDateTime);
+      List<AssetTimeValue> positionsAfterStartDateTime = timeValues
+          .where((value) => value.date.isAfter(startDateTime))
+          .toList();
+      double newPositionCost = 0;
+      positionsAfterStartDateTime.forEach((position) {
+        newPositionCost = newPositionCost + position.getTotalPurchaseValue();
+      });
+
+      p = getCurrentValue() - valueAtStartDateTime - newPositionCost;
     }
-    return p;
+    return double.parse(p.toStringAsFixed(2));
   }
 
-  double getPerformancePerc() {
-    double amountSpent = 0.0;
-    for (var element in timeValues) {
-      amountSpent = amountSpent + element.getTotalPurchaseValue();
-    }
+  double getPerformancePerc({DateTime? startDateTime}) {
+    if (startDateTime == null || startDateTime == getOldestTimeValueDate()) {
+      double amountSpent = 0.0;
+      for (var element in timeValues) {
+        amountSpent = amountSpent + element.getTotalPurchaseValue();
+      }
 
-    return double.parse(((getCurrentValue() - amountSpent) / amountSpent * 100)
-        .toStringAsFixed(1));
+      return double.parse(
+          ((getCurrentValue() - amountSpent) / amountSpent * 100)
+              .toStringAsFixed(1));
+    } else {
+      double valueAtStartDateTime =
+          AssetRepoImpl().getValueAtDateTime(this, startDateTime);
+      double perf = getPerformance(startDateTime: startDateTime) /
+          valueAtStartDateTime *
+          100;
+      return double.parse(perf.toStringAsFixed(1));
+    }
+  }
+
+  double getTotalAmountInvested() {
+    double totPurchasePrice = 0;
+    for (var item in timeValues) {
+      totPurchasePrice = totPurchasePrice +
+          (item.quantity *
+              item.value
+                  .atMainCurrency(fromCurrency: item.currency.target!.name));
+    }
+    return double.parse(totPurchasePrice.toStringAsFixed(2));
+  }
+
+  double getAvgPurchasePrice() {
+    return double.parse(
+        (getTotalAmountInvested() / getTotalQuantity()).toStringAsFixed(2));
   }
 }

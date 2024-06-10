@@ -7,13 +7,12 @@ import 'package:net_worth_manager/ui/screens/asset_detail/asset_detail_bloc.dart
 import 'package:net_worth_manager/ui/screens/asset_detail/asset_detail_event.dart';
 import 'package:net_worth_manager/ui/screens/asset_detail/asset_detail_state.dart';
 import 'package:net_worth_manager/ui/screens/asset_detail/components/asset_detail_history_item.dart';
-import 'package:net_worth_manager/ui/widgets/base_components/performance_box.dart';
+import 'package:net_worth_manager/ui/widgets/base_components/performance_text.dart';
 import 'package:net_worth_manager/utils/extensions/number_extension.dart';
 
 import '../../../domain/repository/alphaVantage/alpha_vantage_repo.dart';
 import '../../../domain/repository/asset/asset_repo_impl.dart';
 import '../../../models/obox/asset_obox.dart';
-import '../../../utils/enum/graph_data_gap_enum.dart';
 import '../../widgets/graph/line_graph.dart';
 import '../add_asset_position/add_asset_position_screen_params.dart';
 
@@ -23,11 +22,6 @@ class AssetDetailScreen extends StatelessWidget {
   Asset asset;
 
   AssetDetailScreen({super.key, required this.asset});
-
-  void onGraphTimeChange(
-    BuildContext context,
-    GraphTime graphTime,
-  ) {}
 
   @override
   Widget build(BuildContext context) {
@@ -61,36 +55,119 @@ class AssetDetailScreen extends StatelessWidget {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         mainAxisSize: MainAxisSize.min,
                         children: [
-                          const Text("Current value"),
-                          Text(
-                            state.asset.getCurrentValue().toStringWithCurrency(),
-                            style: theme.textTheme.titleLarge
-                                ?.copyWith(fontWeight: FontWeight.bold),
+                          Row(
+                            crossAxisAlignment: CrossAxisAlignment.end,
+                            children: [
+                              Column(
+                                children: [
+                                  const Text("Current value"),
+                                  Text(
+                                    state.asset
+                                        .getCurrentValue()
+                                        .toStringWithCurrency(),
+                                    style: theme.textTheme.titleLarge
+                                        ?.copyWith(fontWeight: FontWeight.bold),
+                                  ),
+                                ],
+                              ),
+                              const Expanded(child: SizedBox()),
+                              if (state.performance != null)
+                                Column(
+                                  crossAxisAlignment: CrossAxisAlignment.end,
+                                  children: [
+                                    PerformanceText(
+                                      performance: state.performancePerc!,
+                                      type: PerformanceTextType.percentage,
+                                      textStyle: theme.textTheme.titleSmall,
+                                    ),
+                                    PerformanceText(
+                                      performance: state.performance!,
+                                      type: PerformanceTextType.value,
+                                      textStyle: theme.textTheme.titleMedium,
+                                    ),
+                                  ],
+                                )
+                            ],
                           ),
                           const SizedBox(height: Dimensions.m),
                           LineGraph(
                             showGapSelection: true,
                             graphData: state.graphData,
+                            initialGap: state.graphTime,
                             onGraphTimeChange: (gap) {
-                              onGraphTimeChange(context, gap);
+                              context
+                                  .read<AssetDetailBloc>()
+                                  .add(UpdatePerformanceEvent(gap));
                             },
                           ),
                           const SizedBox(height: Dimensions.m),
-                          Text(
-                            "Investment info",
-                            style: theme.textTheme.titleMedium
-                                ?.copyWith(fontWeight: FontWeight.bold),
-                          ),
-                          const SizedBox(height: Dimensions.s),
-                          // Text(
-                          //   "${state.asset.marketInfo.target!.symbol} current price: ${state.asset.getLastUpdateDate()} (${state.asset.marketInfo.target!.getCurrentValueWithMainCurrency()})",
-                          // ),
-                          // Text(
-                          //     "Total shares: ${state.asset.getQuantityAtDateTime(DateTime.now())}"),
-                          // Text("Net Return: ${state.asset.getPerformance()}"),
-                          // Text("Time-Weighted Return: -"),
-                          // Text("Invested: -"),
-                          // Text("Average Purchase price: -"),
+                          if (asset.marketInfo.target != null)
+                            Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(
+                                  "Investment info",
+                                  style: theme.textTheme.titleMedium
+                                      ?.copyWith(fontWeight: FontWeight.bold),
+                                ),
+                                const SizedBox(height: Dimensions.s),
+                                SingleChildScrollView(
+                                  scrollDirection: Axis.horizontal,
+                                  child: Row(
+                                    children: [
+                                      Column(
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
+                                        children: [
+                                          Text(
+                                              "${state.asset.marketInfo.target!.symbol} value",
+                                              style: theme.textTheme.bodyMedium
+                                                  ?.copyWith(
+                                                      fontWeight:
+                                                          FontWeight.bold)),
+                                          Text(state.asset.marketInfo.target!
+                                              .getCurrentPrice()
+                                              .atMainCurrency(
+                                                  fromCurrency: asset.marketInfo
+                                                      .target!.currency)
+                                              .toStringWithCurrency())
+                                        ],
+                                      ),
+                                      const SizedBox(width: Dimensions.xl),
+                                      Column(
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
+                                        children: [
+                                          Text("Quantity",
+                                              style: theme.textTheme.bodyMedium
+                                                  ?.copyWith(
+                                                      fontWeight:
+                                                          FontWeight.bold)),
+                                          Text(state.asset
+                                              .getTotalQuantity()
+                                              .toStringFormatted())
+                                        ],
+                                      ),
+                                      const SizedBox(width: Dimensions.xl),
+                                      Column(
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
+                                        children: [
+                                          Text("Avg. purchase price",
+                                              style: theme.textTheme.bodyMedium
+                                                  ?.copyWith(
+                                                      fontWeight:
+                                                          FontWeight.bold)),
+                                          Text(state.asset
+                                              .getAvgPurchasePrice()
+                                              .toStringWithCurrency())
+                                        ],
+                                      )
+                                    ],
+                                  ),
+                                ),
+                              ],
+                            ),
                           const SizedBox(height: Dimensions.m),
                           Row(
                             children: [
