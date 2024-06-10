@@ -104,18 +104,23 @@ class AssetRepoImpl implements AssetRepo {
     } else {
       // market asset
 
+      int i = 0;
+      double marketValueAtTime = 0;
       final assetHistoryTimeValueBox =
           GetIt.I<Store>().box<AssetHistoryTimeValue>();
 
-      double marketValueAtTime = assetHistoryTimeValueBox
-              .query(AssetHistoryTimeValue_.assetName
-                      .equals(asset.marketInfo.target!.symbol) &
-                  AssetHistoryTimeValue_.date.lessOrEqualDate(dateTime))
-              .order(AssetHistoryTimeValue_.date, flags: Order.descending)
-              .build()
-              .findFirst()
-              ?.value ??
-          0;
+      while (marketValueAtTime == 0) {
+        marketValueAtTime = assetHistoryTimeValueBox
+                .query(AssetHistoryTimeValue_.assetName
+                        .equals(asset.marketInfo.target!.symbol) &
+                    AssetHistoryTimeValue_.date
+                        .equalsDate(dateTime.subtract(Duration(days: i))))
+                .build()
+                .findFirst()
+                ?.value ??
+            0;
+        i++;
+      }
 
       return (marketValueAtTime * asset.getQuantityAtDateTime(dateTime))
           .atMainCurrency(
