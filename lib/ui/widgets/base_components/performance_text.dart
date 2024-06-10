@@ -30,10 +30,10 @@ class PerformanceText extends StatelessWidget {
             decoration: BoxDecoration(
                 color: (performance >= 0 ? Colors.green : Colors.red)
                     .withOpacity(0.2),
-                borderRadius: BorderRadius.all(Radius.circular(4))),
-            padding: EdgeInsets.all(2),
+                borderRadius: const BorderRadius.all(Radius.circular(4))),
+            padding: const EdgeInsets.all(2),
             child: Text(
-              "$performance%",
+              performance == double.infinity ? "STONKS" : "$performance%",
               style: textStyle?.copyWith(
                 color: performance >= 0 ? Colors.green : Colors.red,
               ),

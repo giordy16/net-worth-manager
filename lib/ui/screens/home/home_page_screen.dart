@@ -90,7 +90,6 @@ class HomePage extends StatelessWidget {
           await context.push(AddAssetScreen.route, extra: asset);
           if (!context.mounted) return;
           context.read<HomePageBloc>().add(FetchHomePage());
-          context.read<HomePageBloc>().add(FetchHomePage());
         }
       });
     }

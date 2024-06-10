@@ -49,4 +49,17 @@ extension DoubleHelper on double {
     double change = Forex.getCurrencyChange(fromCurrency, date: dateTime);
     return double.parse((change * this).toStringAsFixed(2));
   }
+
+  double roundToClosestMultiple(double multiple) {
+    return ((this + (multiple/2)) ~/ multiple) * multiple;
+  }
+
+  double roundRoundUoToNextMultiple(double multiple) {
+    return ((this + (multiple-1)) ~/ multiple) * multiple;
+  }
+
+  double roundRoundUoToPreviousMultiple(double multiple) {
+    return (this ~/ multiple) * multiple;
+  }
+
 }

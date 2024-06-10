@@ -4,12 +4,10 @@ import 'package:custom_sliding_segmented_control/custom_sliding_segmented_contro
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:net_worth_manager/app_dimensions.dart';
-import 'package:net_worth_manager/models/obox/asset_time_value_obox.dart';
 import 'package:net_worth_manager/utils/extensions/date_time_extension.dart';
 import 'package:net_worth_manager/utils/extensions/number_extension.dart';
 import 'package:syncfusion_flutter_charts/charts.dart';
 
-import '../../../models/obox/asset_obox.dart';
 import '../../../models/ui/graph_data.dart';
 import '../../../utils/enum/graph_data_gap_enum.dart';
 
@@ -37,7 +35,6 @@ class LineGraph extends StatefulWidget {
 
 class _MarketAssetLineGraph extends State<LineGraph> {
   late GraphTime currentGap;
-  List<AssetTimeValue> assetValuesOfGap = [];
 
   @override
   void initState() {
@@ -98,6 +95,25 @@ class _MarketAssetLineGraph extends State<LineGraph> {
       }
       maxX = todayLastDateTime.millisecondsSinceEpoch.toDouble();
     }
+
+    // calc min and max y
+    List<GraphData> subset = widget.graphData
+        .where((element) => element.x
+            .isAfter(currentGap.getStartDate(widget.graphData.firstOrNull?.x)))
+        .toList();
+
+    double maxY =
+        (subset.map((element) => element.y).reduce(max))
+            .toInt()
+            .toDouble();
+    double minY =
+        (subset.map((element) => element.y).reduce(min))
+            .toInt()
+            .toDouble();
+
+    double delta = maxY - minY;
+    maxY = maxY + delta / 5;
+    minY = minY - delta / 5;
 
     return Column(
       children: [
@@ -190,10 +206,8 @@ class _MarketAssetLineGraph extends State<LineGraph> {
                       details.textStyle),
             ),
             primaryYAxis: NumericAxis(
-              maximum:
-                  widget.graphData.map((element) => element.y).reduce(max) + 25,
-              minimum:
-                  widget.graphData.map((element) => element.y).reduce(min) - 25,
+              maximum: maxY,
+              minimum: minY,
               axisLabelFormatter: (AxisLabelRenderDetails details) =>
                   ChartAxisLabel(NumberFormat.compact().format(details.value),
                       details.textStyle),
