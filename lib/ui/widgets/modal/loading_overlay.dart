@@ -29,12 +29,13 @@ class LoadingOverlayState extends State<LoadingOverlay> {
     await Future.delayed(const Duration(milliseconds: 200));
   }
 
-  void hide() {
+  Future<void> hide() async {
     if (mounted) {
       setState(() {
         _isLoading = false;
       });
     }
+    await Future.delayed(const Duration(milliseconds: 100));
   }
 
   @override

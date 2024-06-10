@@ -30,8 +30,6 @@ class AssetDetailHistoryItem extends StatelessWidget {
   }
 
   Widget buildSimpleAssetItem(BuildContext context) {
-    ThemeData theme = Theme.of(context);
-
     bool shouldShowOriginalPrice = timeValue.currency.target!.name !=
         GetIt.I<Settings>().defaultCurrency.target!.name;
 
@@ -102,7 +100,9 @@ class AssetDetailHistoryItem extends StatelessWidget {
                       type: PerformanceTextType.value,
                       textStyle: theme.textTheme.bodyMedium,
                     ),
-                    const SizedBox(width: 4,),
+                    const SizedBox(
+                      width: 4,
+                    ),
                     PerformanceText(
                       performance: performancePerc,
                       type: PerformanceTextType.percentage,

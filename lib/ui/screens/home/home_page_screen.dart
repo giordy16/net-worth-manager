@@ -75,22 +75,25 @@ class HomePage extends StatelessWidget {
   ) async {
     Map<Widget, Function> selections = {};
 
-    selections.addAll({
-      const Row(
-        children: [
-          Icon(Icons.edit),
-          SizedBox(
-            width: 4,
-          ),
-          Text("Edit")
-        ],
-      ): () async {
-        await context.push(AddAssetScreen.route, extra: asset);
-        if (!context.mounted) return;
-        context.read<HomePageBloc>().add(FetchHomePage());
-        context.read<HomePageBloc>().add(FetchHomePage());
-      }
-    });
+    if (asset.marketInfo.target == null) {
+      // only for simple asset
+      selections.addAll({
+        const Row(
+          children: [
+            Icon(Icons.edit),
+            SizedBox(
+              width: 4,
+            ),
+            Text("Edit")
+          ],
+        ): () async {
+          await context.push(AddAssetScreen.route, extra: asset);
+          if (!context.mounted) return;
+          context.read<HomePageBloc>().add(FetchHomePage());
+          context.read<HomePageBloc>().add(FetchHomePage());
+        }
+      });
+    }
 
     selections.addAll({
       const Row(
@@ -144,7 +147,7 @@ class HomePage extends StatelessWidget {
                 color: theme.colorScheme.secondary,
               ),
             ),
-            body: (state.graphData != null && state.graphData!.isEmpty)
+            body: (state.assets != null && state.assets!.isEmpty)
                 ? buildNoDataUI(context)
                 : buildUI(context, state),
           );

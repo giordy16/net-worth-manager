@@ -59,6 +59,7 @@ class AssetDetailScreen extends StatelessWidget {
                             crossAxisAlignment: CrossAxisAlignment.end,
                             children: [
                               Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
                                   const Text("Current value"),
                                   Text(
@@ -167,13 +168,13 @@ class AssetDetailScreen extends StatelessWidget {
                                       const SizedBox(width: Dimensions.xl),
                                       Column(
                                         crossAxisAlignment:
-                                        CrossAxisAlignment.start,
+                                            CrossAxisAlignment.start,
                                         children: [
                                           Text("Avg. purchase price",
                                               style: theme.textTheme.bodyMedium
                                                   ?.copyWith(
-                                                  fontWeight:
-                                                  FontWeight.bold)),
+                                                      fontWeight:
+                                                          FontWeight.bold)),
                                           Text(state.asset
                                               .getAvgPurchasePrice()
                                               .toStringWithCurrency())
@@ -208,23 +209,24 @@ class AssetDetailScreen extends StatelessWidget {
                             ],
                           ),
                           ListView.separated(
-                              shrinkWrap: true,
-                              physics: const NeverScrollableScrollPhysics(),
-                              itemBuilder: (context, index) {
-                                var timeValue = state.asset
-                                    .getTimeValuesChronologicalOrder(
-                                        latestFirst: true)[index];
-                                return AssetDetailHistoryItem(
-                                  state.asset,
-                                  timeValue,
-                                );
-                              },
-                              separatorBuilder: (context, index) {
-                                return const Divider(
-                                  height: 32,
-                                );
-                              },
-                              itemCount: state.asset.timeValues.length)
+                            shrinkWrap: true,
+                            physics: const NeverScrollableScrollPhysics(),
+                            itemBuilder: (context, index) {
+                              var timeValue = state.asset
+                                  .getTimeValuesChronologicalOrder(
+                                      latestFirst: true)[index];
+                              return AssetDetailHistoryItem(
+                                state.asset,
+                                timeValue,
+                              );
+                            },
+                            separatorBuilder: (context, index) {
+                              return const Divider(
+                                height: 32,
+                              );
+                            },
+                            itemCount: state.asset.timeValues.length,
+                          )
                         ],
                       ),
                     ),

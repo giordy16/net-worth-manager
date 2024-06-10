@@ -122,6 +122,8 @@ class Asset {
 
   double getPerformancePerc({DateTime? startDateTime}) {
     if (startDateTime == null || startDateTime == getOldestTimeValueDate()) {
+      var timeValues = GetIt.I<Store>().box<Asset>().get(id)!.timeValues;
+
       double amountSpent = 0.0;
       for (var element in timeValues) {
         amountSpent = amountSpent + element.getTotalPurchaseValue();
@@ -160,6 +162,7 @@ class Asset {
   }
 
   double getAvgPurchasePrice() {
+    if (getTotalQuantity() == 0) return 0;
     return double.parse(
         (getTotalAmountInvested() / getTotalQuantity()).toStringAsFixed(2));
   }

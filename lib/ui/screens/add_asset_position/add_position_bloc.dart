@@ -61,8 +61,10 @@ class AddPositionBloc extends Bloc<AddPositionEvent, AddPositionState> {
       if (oldestDate != null) {
         LoadingOverlay.of(context).show();
         await netWorthRepo.updateNetWorth(updateStartingDate: oldestDate);
-        LoadingOverlay.of(context).hide();
+        await LoadingOverlay.of(context).hide();
       }
+
+      context.pop();
 
     });
   }

@@ -50,14 +50,16 @@ class _MarketAssetLineGraph extends State<LineGraph> {
     ThemeData theme = Theme.of(context);
 
     if (widget.graphData.isEmpty) {
-      return const Padding(
-        padding: EdgeInsets.fromLTRB(
+      return Padding(
+        padding: const EdgeInsets.fromLTRB(
             Dimensions.screenMargin, Dimensions.l, Dimensions.screenMargin, 0),
-        child: Center(
-            child: Text(
-          "Not enough data to plot the chart",
-          textAlign: TextAlign.center,
-        )),
+        child: Container(
+            height: 200,
+            alignment: Alignment.center,
+            child: const Text(
+              "Not enough data to plot the chart",
+              textAlign: TextAlign.center,
+            )),
       );
     }
 

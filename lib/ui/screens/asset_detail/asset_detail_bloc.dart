@@ -22,7 +22,7 @@ class AssetDetailBloc extends Bloc<AssetDetailEvent, AssetDetailState> {
   final StockApi stockApi;
 
   AssetDetailBloc(this.asset, this.assetRepo, this.stockApi)
-      : super(AssetDetailState(asset, [], [], GraphTime.all, null, null)) {
+      : super(AssetDetailState.empty(asset)) {
     on<FetchGraphDataEvent>(_onFetchGraphDataEvent);
 
     on<UpdatePerformanceEvent>((event, emit) {
@@ -58,7 +58,12 @@ class AssetDetailBloc extends Bloc<AssetDetailEvent, AssetDetailState> {
   ) async {
     Asset asset = objectbox.store.box<Asset>().get(this.asset.id)!;
 
-    if (asset.timeValues.isEmpty) return;
+    emit(state.copyWith(asset: asset));
+
+    if (asset.timeValues.isEmpty) {
+      emit(AssetDetailState.empty(asset));
+      return;
+    }
 
     List<GraphData> graphData = [];
 

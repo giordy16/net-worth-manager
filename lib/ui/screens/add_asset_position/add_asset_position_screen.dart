@@ -50,7 +50,6 @@ class _AddAssetPositionScreenState extends State<AddAssetPositionScreen> {
       context
           .read<AddPositionBloc>()
           .add(DeletePositionEvent(params.asset, params.timeValue!));
-      context.pop();
     }
   }
 

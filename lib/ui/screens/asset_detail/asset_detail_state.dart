@@ -20,6 +20,15 @@ class AssetDetailState extends Equatable {
     this.performancePerc,
   );
 
+  AssetDetailState.empty(
+    this.asset, {
+    this.graphData = const [],
+    this.secondGraphData = const [],
+    this.graphTime = GraphTime.all,
+    this.performance,
+    this.performancePerc,
+  });
+
   @override
   List<Object?> get props => [
         asset,
