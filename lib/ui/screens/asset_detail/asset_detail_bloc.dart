@@ -62,10 +62,8 @@ class AssetDetailBloc extends Bloc<AssetDetailEvent, AssetDetailState> {
 
     List<GraphData> graphData = [];
 
-
     DateTime oldestDateTime =
         asset.getTimeValuesChronologicalOrder().first.date;
-    print("${DateTime.now()}");
 
     for (int i = 0;
         i < DateTime.now().keepOnlyYMD().difference(oldestDateTime).inDays;
@@ -73,7 +71,6 @@ class AssetDetailBloc extends Bloc<AssetDetailEvent, AssetDetailState> {
       DateTime date = oldestDateTime.add(Duration(days: i)).keepOnlyYMD();
       graphData.add(GraphData(date, assetRepo.getValueAtDateTime(asset, date)));
     }
-    print("${DateTime.now()}");
 
     // in case there is only 1 asset.timeValues and has the date of today,
     // the for above will not loop, so we need to out the data manually
@@ -82,15 +79,12 @@ class AssetDetailBloc extends Bloc<AssetDetailEvent, AssetDetailState> {
       graphData.add(GraphData(
           oldestDateTime, assetRepo.getValueAtDateTime(asset, oldestDateTime)));
     }
-    print(DateTime.now());
 
-    print("${DateTime.now()}");
     List<GraphData> secondGraphData = [];
-    for (var position in asset.timeValues) {
+    for (var position in asset.getTimeValuesChronologicalOrder()) {
       secondGraphData.add(GraphData(position.date,
           asset.getTotalAmountInvested(dateTime: position.date)));
     }
-    print("${DateTime.now()}");
 
     add(FetchGraphDataCompletedEvent(asset, graphData, secondGraphData));
   }

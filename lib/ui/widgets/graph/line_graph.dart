@@ -138,7 +138,10 @@ class _MarketAssetLineGraph extends State<LineGraph> {
           height: 350,
           child: SfCartesianChart(
             margin: EdgeInsets.zero,
-            legend: Legend(isVisible: true, position: LegendPosition.bottom),
+            legend: Legend(
+              isVisible: widget.secondaryGraphData != null,
+              position: LegendPosition.bottom,
+            ),
             zoomPanBehavior:
                 ZoomPanBehavior(enablePinching: true, enablePanning: true),
             trackballBehavior: TrackballBehavior(
@@ -206,7 +209,7 @@ class _MarketAssetLineGraph extends State<LineGraph> {
               ),
               if (widget.secondaryGraphData != null)
                 StepLineSeries<GraphData, int>(
-                  name: "Money invested",
+                  name: "Invested",
                   color: Colors.grey,
                   enableTooltip: false,
                   dashArray: const [5, 5],

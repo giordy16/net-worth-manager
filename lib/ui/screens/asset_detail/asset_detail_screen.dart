@@ -154,16 +154,31 @@ class AssetDetailScreen extends StatelessWidget {
                                         crossAxisAlignment:
                                             CrossAxisAlignment.start,
                                         children: [
-                                          Text("Avg. purchase price",
+                                          Text("Invested",
                                               style: theme.textTheme.bodyMedium
                                                   ?.copyWith(
                                                       fontWeight:
                                                           FontWeight.bold)),
                                           Text(state.asset
+                                              .getTotalAmountInvested()
+                                              .toStringWithCurrency())
+                                        ],
+                                      ),
+                                      const SizedBox(width: Dimensions.xl),
+                                      Column(
+                                        crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                        children: [
+                                          Text("Avg. purchase price",
+                                              style: theme.textTheme.bodyMedium
+                                                  ?.copyWith(
+                                                  fontWeight:
+                                                  FontWeight.bold)),
+                                          Text(state.asset
                                               .getAvgPurchasePrice()
                                               .toStringWithCurrency())
                                         ],
-                                      )
+                                      ),
                                     ],
                                   ),
                                 ),

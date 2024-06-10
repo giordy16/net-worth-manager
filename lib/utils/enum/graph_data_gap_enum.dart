@@ -48,7 +48,7 @@ extension DataGapExt on GraphTime {
   }
 
   DateTime getEndDate() {
-    return DateTime.now().add(Duration(days: 1)).keepOnlyYMD();
+    return DateTime.now().keepOnlyYMD();
   }
 
   DateFormat getDateFormat() {
