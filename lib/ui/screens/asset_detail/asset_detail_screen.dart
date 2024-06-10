@@ -93,6 +93,7 @@ class AssetDetailScreen extends StatelessWidget {
                           LineGraph(
                             showGapSelection: true,
                             graphData: state.graphData,
+                            secondaryGraphData: state.secondGraphData,
                             initialGap: state.graphTime,
                             onGraphTimeChange: (gap) {
                               context

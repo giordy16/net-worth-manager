@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:custom_sliding_segmented_control/custom_sliding_segmented_control.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
@@ -16,12 +18,14 @@ class LineGraph extends StatefulWidget {
 
   bool showGapSelection;
   List<GraphData> graphData;
+  List<GraphData>? secondaryGraphData;
   Function(GraphTime)? onGraphTimeChange;
   GraphTime initialGap;
 
   LineGraph({
     super.key,
     required this.graphData,
+    this.secondaryGraphData,
     this.showGapSelection = false,
     this.onGraphTimeChange,
     this.initialGap = GraphTime.all,
@@ -65,21 +69,31 @@ class _MarketAssetLineGraph extends State<LineGraph> {
 
     // add a new point if the last one is not today, so the graph is plotted until the right edge
     if (widget.graphData.isNotEmpty &&
-        widget.graphData.lastOrNull?.x.keepOnlyYMD() != DateTime.now().keepOnlyYMD()) {
+        widget.graphData.lastOrNull?.x.keepOnlyYMD() !=
+            DateTime.now().keepOnlyYMD()) {
       widget.graphData.add(
           GraphData(DateTime.now().keepOnlyYMD(), widget.graphData.last.y));
+      if (widget.secondaryGraphData != null) {
+        widget.secondaryGraphData!.add(GraphData(
+            DateTime.now().keepOnlyYMD(), widget.secondaryGraphData!.last.y));
+      }
     }
 
     // edge case: graphData has only 1 element and has the date of today
     // solution: add to graphData the date of tomorrow
     if (widget.graphData.length == 1 &&
         widget.graphData.lastOrNull?.x == DateTime.now().keepOnlyYMD()) {
-      DateTime todayLastDateTime = DateTime.now().keepOnlyYMD()
+      DateTime todayLastDateTime = DateTime.now()
+          .keepOnlyYMD()
           .add(Duration(days: 1))
           .subtract(Duration(milliseconds: 1));
 
       widget.graphData
           .add(GraphData(todayLastDateTime, widget.graphData.last.y));
+      if (widget.secondaryGraphData != null) {
+        widget.secondaryGraphData!.add(
+            GraphData(todayLastDateTime, widget.secondaryGraphData!.last.y));
+      }
       maxX = todayLastDateTime.millisecondsSinceEpoch.toDouble();
     }
 
@@ -120,68 +134,90 @@ class _MarketAssetLineGraph extends State<LineGraph> {
           ),
         ),
         const SizedBox(height: Dimensions.m),
-        SfCartesianChart(
-          margin: EdgeInsets.zero,
-          zoomPanBehavior:
-              ZoomPanBehavior(enablePinching: true, enablePanning: true),
-          trackballBehavior: TrackballBehavior(
-              enable: true,
-              activationMode: ActivationMode.singleTap,
-              builder: (context, trackballDetails) {
-                return Container(
-                    width: 100,
-                    height: 50,
-                    decoration: const BoxDecoration(
-                        borderRadius: BorderRadius.all(Radius.circular(8)),
-                        color: Colors.white),
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Text(
-                          (trackballDetails.point!.y as double)
-                              .toStringFormatted(),
-                          style: TextStyle(
-                            color: theme.colorScheme.onSecondary,
-                            fontWeight: FontWeight.bold,
+        SizedBox(
+          height: 350,
+          child: SfCartesianChart(
+            margin: EdgeInsets.zero,
+            legend: Legend(isVisible: true, position: LegendPosition.bottom),
+            zoomPanBehavior:
+                ZoomPanBehavior(enablePinching: true, enablePanning: true),
+            trackballBehavior: TrackballBehavior(
+                enable: true,
+                activationMode: ActivationMode.singleTap,
+                tooltipDisplayMode: TrackballDisplayMode.nearestPoint,
+                builder: (context, trackballDetails) {
+                  return Container(
+                      width: 100,
+                      height: 50,
+                      decoration: const BoxDecoration(
+                          borderRadius: BorderRadius.all(Radius.circular(8)),
+                          color: Colors.white),
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Text(
+                            (trackballDetails.point!.y as double)
+                                .toStringFormatted(),
+                            style: TextStyle(
+                              color: theme.colorScheme.onSecondary,
+                              fontWeight: FontWeight.bold,
+                            ),
                           ),
-                        ),
-                        Text(
-                          DateFormat("dd/MM/yy").format(
-                              DateTime.fromMillisecondsSinceEpoch(
-                                  trackballDetails.point!.x)),
-                          style: TextStyle(
-                            color: theme.colorScheme.onSecondary,
+                          Text(
+                            DateFormat("dd/MM/yy").format(
+                                DateTime.fromMillisecondsSinceEpoch(
+                                    trackballDetails.point!.x)),
+                            style: TextStyle(
+                              color: theme.colorScheme.onSecondary,
+                            ),
                           ),
-                        ),
-                      ],
-                    ));
-              }),
-          primaryXAxis: NumericAxis(
-            minimum: minX,
-            maximum: maxX,
-            axisLabelFormatter: (AxisLabelRenderDetails details) =>
-                ChartAxisLabel(
-                    currentGap.getDateFormat().format(
-                        DateTime.fromMillisecondsSinceEpoch(
-                            (details.value as double).toInt())),
-                    details.textStyle),
+                        ],
+                      ));
+                }),
+            primaryXAxis: NumericAxis(
+              minimum: minX,
+              maximum: maxX,
+              axisLabelFormatter: (AxisLabelRenderDetails details) =>
+                  ChartAxisLabel(
+                      currentGap.getDateFormat().format(
+                          DateTime.fromMillisecondsSinceEpoch(
+                              (details.value as double).toInt())),
+                      details.textStyle),
+            ),
+            primaryYAxis: NumericAxis(
+              maximum:
+                  widget.graphData.map((element) => element.y).reduce(max) + 25,
+              minimum:
+                  widget.graphData.map((element) => element.y).reduce(min) - 25,
+              axisLabelFormatter: (AxisLabelRenderDetails details) =>
+                  ChartAxisLabel(NumberFormat.compact().format(details.value),
+                      details.textStyle),
+            ),
+            series: [
+              LineSeries<GraphData, int>(
+                name: "Asset value",
+                color: theme.colorScheme.secondary,
+                animationDuration: 100,
+                // enableTooltip: true,
+                dataSource: widget.graphData,
+                xValueMapper: (GraphData data, _) =>
+                    data.x.millisecondsSinceEpoch,
+                yValueMapper: (GraphData data, _) => data.y,
+              ),
+              if (widget.secondaryGraphData != null)
+                StepLineSeries<GraphData, int>(
+                  name: "Money invested",
+                  color: Colors.grey,
+                  enableTooltip: false,
+                  dashArray: const [5, 5],
+                  animationDuration: 100,
+                  dataSource: widget.secondaryGraphData,
+                  xValueMapper: (GraphData data, _) =>
+                      data.x.millisecondsSinceEpoch,
+                  yValueMapper: (GraphData data, _) => data.y,
+                )
+            ],
           ),
-          primaryYAxis: NumericAxis(
-            axisLabelFormatter: (AxisLabelRenderDetails details) =>
-                ChartAxisLabel(NumberFormat.compact().format(details.value),
-                    details.textStyle),
-          ),
-          series: [
-            LineSeries<GraphData, int>(
-              color: theme.colorScheme.secondary,
-              animationDuration: 100,
-              enableTooltip: true,
-              dataSource: widget.graphData,
-              xValueMapper: (GraphData data, _) =>
-                  data.x.millisecondsSinceEpoch,
-              yValueMapper: (GraphData data, _) => data.y,
-            )
-          ],
         ),
       ],
     );

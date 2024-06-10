@@ -16,6 +16,7 @@ class UpdatePerformanceEvent extends AssetDetailEvent {
 class FetchGraphDataCompletedEvent extends AssetDetailEvent {
   Asset asset;
   List<GraphData> list;
+  List<GraphData> secondList;
 
-  FetchGraphDataCompletedEvent(this.asset, this.list);
+  FetchGraphDataCompletedEvent(this.asset, this.list, this.secondList);
 }

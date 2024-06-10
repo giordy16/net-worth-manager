@@ -53,8 +53,17 @@ class AddPositionBloc extends Bloc<AddPositionEvent, AddPositionState> {
       context.pop();
     });
 
-    on<DeletePositionEvent>((event, emit) {
+    on<DeletePositionEvent>((event, emit) async {
+      DateTime? oldestDate = event.asset.getOldestTimeValueDate();
+
       assetRepo.deletePosition(event.asset, event.position);
+
+      if (oldestDate != null) {
+        LoadingOverlay.of(context).show();
+        await netWorthRepo.updateNetWorth(updateStartingDate: oldestDate);
+        LoadingOverlay.of(context).hide();
+      }
+
     });
   }
 }

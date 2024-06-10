@@ -140,9 +140,17 @@ class Asset {
     }
   }
 
-  double getTotalAmountInvested() {
+  /// get total amount invested until dateTime, if specified, or all
+  double getTotalAmountInvested({DateTime? dateTime}) {
     double totPurchasePrice = 0;
-    for (var item in timeValues) {
+    List<AssetTimeValue> positions = dateTime == null
+        ? timeValues
+        : timeValues
+            .where((position) =>
+                position.date == dateTime || position.date.isBefore(dateTime))
+            .toList();
+
+    for (var item in positions) {
       totPurchasePrice = totPurchasePrice +
           (item.quantity *
               item.value

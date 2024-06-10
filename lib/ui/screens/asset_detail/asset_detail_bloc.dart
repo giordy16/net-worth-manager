@@ -22,7 +22,7 @@ class AssetDetailBloc extends Bloc<AssetDetailEvent, AssetDetailState> {
   final StockApi stockApi;
 
   AssetDetailBloc(this.asset, this.assetRepo, this.stockApi)
-      : super(AssetDetailState(asset, const [], GraphTime.all, null, null)) {
+      : super(AssetDetailState(asset, [], [], GraphTime.all, null, null)) {
     on<FetchGraphDataEvent>(_onFetchGraphDataEvent);
 
     on<UpdatePerformanceEvent>((event, emit) {
@@ -44,7 +44,10 @@ class AssetDetailBloc extends Bloc<AssetDetailEvent, AssetDetailState> {
     });
 
     on<FetchGraphDataCompletedEvent>((event, emit) {
-      emit(state.copyWith(asset: event.asset, graphData: event.list));
+      emit(state.copyWith(
+          asset: event.asset,
+          graphData: event.list,
+          secondGraphData: event.secondList));
       add(UpdatePerformanceEvent(state.graphTime));
     });
   }
@@ -62,7 +65,7 @@ class AssetDetailBloc extends Bloc<AssetDetailEvent, AssetDetailState> {
 
     DateTime oldestDateTime =
         asset.getTimeValuesChronologicalOrder().first.date;
-    print(DateTime.now());
+    print("${DateTime.now()}");
 
     for (int i = 0;
         i < DateTime.now().keepOnlyYMD().difference(oldestDateTime).inDays;
@@ -70,7 +73,7 @@ class AssetDetailBloc extends Bloc<AssetDetailEvent, AssetDetailState> {
       DateTime date = oldestDateTime.add(Duration(days: i)).keepOnlyYMD();
       graphData.add(GraphData(date, assetRepo.getValueAtDateTime(asset, date)));
     }
-    print(DateTime.now());
+    print("${DateTime.now()}");
 
     // in case there is only 1 asset.timeValues and has the date of today,
     // the for above will not loop, so we need to out the data manually
@@ -81,6 +84,14 @@ class AssetDetailBloc extends Bloc<AssetDetailEvent, AssetDetailState> {
     }
     print(DateTime.now());
 
-    add(FetchGraphDataCompletedEvent(asset, graphData));
+    print("${DateTime.now()}");
+    List<GraphData> secondGraphData = [];
+    for (var position in asset.timeValues) {
+      secondGraphData.add(GraphData(position.date,
+          asset.getTotalAmountInvested(dateTime: position.date)));
+    }
+    print("${DateTime.now()}");
+
+    add(FetchGraphDataCompletedEvent(asset, graphData, secondGraphData));
   }
 }
