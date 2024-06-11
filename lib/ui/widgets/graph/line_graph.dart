@@ -84,8 +84,8 @@ class _MarketAssetLineGraph extends State<LineGraph> {
         widget.graphData.lastOrNull?.x == DateTime.now().keepOnlyYMD()) {
       DateTime todayLastDateTime = DateTime.now()
           .keepOnlyYMD()
-          .add(Duration(days: 1))
-          .subtract(Duration(milliseconds: 1));
+          .add(const Duration(days: 1))
+          .subtract(const Duration(milliseconds: 1));
 
       widget.graphData
           .add(GraphData(todayLastDateTime, widget.graphData.last.y));

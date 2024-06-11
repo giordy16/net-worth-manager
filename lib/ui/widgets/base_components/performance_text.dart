@@ -13,7 +13,7 @@ class PerformanceText extends StatelessWidget {
 
   PerformanceText({
     required this.performance,
-    required this.textStyle,
+    this.textStyle,
     required this.type,
   });
 

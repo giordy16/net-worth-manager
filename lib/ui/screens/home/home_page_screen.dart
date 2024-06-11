@@ -11,7 +11,9 @@ import 'package:net_worth_manager/ui/screens/add_asset/add_asset_screen.dart';
 import 'package:net_worth_manager/ui/screens/asset_detail/asset_detail_screen.dart';
 import 'package:net_worth_manager/ui/screens/home/home_page_bloc.dart';
 import 'package:net_worth_manager/ui/screens/home/home_page_event.dart';
+import 'package:net_worth_manager/ui/widgets/base_components/performance_text.dart';
 import 'package:net_worth_manager/ui/widgets/modal/bottom_sheet.dart';
+import 'package:net_worth_manager/utils/enum/graph_data_gap_enum.dart';
 import 'package:net_worth_manager/utils/extensions/number_extension.dart';
 
 import '../../../app_images.dart';
@@ -204,16 +206,53 @@ class HomePage extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               const SizedBox(height: Dimensions.xs),
-              const Text("Your net worth"),
-              Text(
-                "${settings.defaultCurrency.target?.symbol} ${(state.netWorthValue ?? 0).toStringFormatted()}",
-                style: theme.textTheme.titleLarge
-                    ?.copyWith(fontWeight: FontWeight.bold, fontSize: 24),
+              Row(
+                children: [
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      const Text("Your net worth"),
+                      Text(
+                        "${settings.defaultCurrency.target?.symbol} ${(state.netWorthValue ?? 0).toStringFormatted()}",
+                        style: theme.textTheme.titleLarge?.copyWith(
+                          fontWeight: FontWeight.bold,
+                          fontSize: 24,
+                        ),
+                      ),
+                    ],
+                  ),
+                  const Expanded(child: SizedBox()),
+                  if (state.graphGap != GraphTime.all &&
+                      state.performance != null)
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.end,
+                      children: [
+                        PerformanceText(
+                          performance: state.performancePerc!,
+                          textStyle: theme.textTheme.bodyMedium,
+                          type: PerformanceTextType.percentage,
+                        ),
+                        PerformanceText(
+                          performance: state.performance!,
+                          textStyle: theme.textTheme.titleLarge?.copyWith(
+                            fontWeight: FontWeight.bold,
+                            fontSize: 24,
+                          ),
+                          type: PerformanceTextType.value,
+                        )
+                      ],
+                    ),
+                ],
               ),
               const SizedBox(height: Dimensions.m),
               LineGraph(
                 showGapSelection: true,
                 graphData: state.graphData ?? [],
+                onGraphTimeChange: (graphGap) {
+                  context
+                      .read<HomePageBloc>()
+                      .add(FetchHomePage(gap: graphGap));
+                },
               ),
               const SizedBox(height: Dimensions.m),
               ListView.separated(

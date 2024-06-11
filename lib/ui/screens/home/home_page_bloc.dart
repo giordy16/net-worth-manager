@@ -3,7 +3,6 @@ import 'dart:math';
 import 'package:bloc/bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
-import 'package:intl/intl.dart';
 import 'package:net_worth_manager/domain/repository/asset/asset_repo.dart';
 import 'package:net_worth_manager/domain/repository/net_worth/net_worth_repo.dart';
 import 'package:net_worth_manager/models/obox/asset_obox.dart';
@@ -11,7 +10,7 @@ import 'package:net_worth_manager/models/obox/net_worth_history.dart';
 import 'package:net_worth_manager/models/ui/graph_data.dart';
 import 'package:net_worth_manager/ui/screens/home/home_page_event.dart';
 import 'package:net_worth_manager/ui/widgets/modal/loading_overlay.dart';
-import 'package:net_worth_manager/utils/extensions/date_time_extension.dart';
+import 'package:net_worth_manager/utils/enum/graph_data_gap_enum.dart';
 import '../../../objectbox.g.dart';
 import 'home_page_state.dart';
 
@@ -24,12 +23,13 @@ class HomePageBloc extends Bloc<HomePageEvent, HomePageState> {
     required this.context,
     required this.assetRepo,
     required this.netWorthRepo,
-  }) : super(const HomePageState()) {
+  }) : super(HomePageState()) {
     on<FetchHomePage>((event, emit) {
       List<Asset> assets = assetRepo.getAssets();
 
       emit(state.copyWith(
           assets: assets,
+          graphGap: event.gap,
           netWorthValue: netWorthRepo.getNetWorth(),
           graphData: []));
 
@@ -43,6 +43,28 @@ class HomePageBloc extends Bloc<HomePageEvent, HomePageState> {
           .toList();
 
       emit(state.copyWith(graphData: graphData));
+
+      if (graphData.isNotEmpty) {
+        DateTime oldestDate = graphData.first.x;
+
+        double? oldestValue = graphData
+            .where((data) =>
+                data.x == state.graphGap!.getStartDate(oldestDate) ||
+                data.x.isAfter(state.graphGap!.getStartDate(oldestDate)))
+            .toList()
+            .firstOrNull
+            ?.y;
+
+        if (oldestValue != null) {
+          double performance = graphData.last.y - oldestValue;
+          double performancePerc = performance / oldestValue * 100;
+
+          emit(state.copyWith(
+            performance: double.parse(performance.toStringAsFixed(2)),
+            performancePerc: double.parse(performancePerc.toStringAsFixed(1)),
+          ));
+        }
+      }
     });
 
     on<DeleteAsset>((event, emit) async {
