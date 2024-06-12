@@ -283,7 +283,7 @@ class HomePage extends StatelessWidget {
                   );
                 },
                 separatorBuilder: (BuildContext context, int index) {
-                  return const SizedBox(height: Dimensions.l);
+                  return const SizedBox(height: Dimensions.m);
                 },
               ),
               const SizedBox(height: 56),

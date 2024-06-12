@@ -221,9 +221,7 @@ class AssetDetailScreen extends StatelessWidget {
                               );
                             },
                             separatorBuilder: (context, index) {
-                              return const Divider(
-                                height: 32,
-                              );
+                              return const Divider(height: 1);
                             },
                             itemCount: state.asset.timeValues.length,
                           )

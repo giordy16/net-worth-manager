@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:net_worth_manager/utils/extensions/number_extension.dart';
+import '../../../../app_dimensions.dart';
 import '../../../../main.dart';
 import '../../../../models/obox/asset_obox.dart';
 import '../../../../models/obox/settings_obox.dart';
@@ -21,26 +22,18 @@ class HomePageAsset extends StatelessWidget {
       child: InkWell(
         onTap: () => onItemClick(asset),
         onLongPress: () => onLongPress(asset),
-        child: Row(
-          children: [
-            Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(asset.name, style: theme.textTheme.bodyLarge),
-                Visibility(
-                  visible: asset.marketInfo.target == null,
-                  child: Text(
-                      "Last update: ${asset.getLastUpdateDate() != null ? df.format(asset.getLastUpdateDate()!) : "-"}",
-                      style: theme.textTheme.bodySmall),
-                ),
-              ],
-            ),
-            const Expanded(child: SizedBox()),
-            Text(
-              asset.getCurrentValue().toStringWithCurrency(),
-              style: theme.textTheme.bodyLarge,
-            ),
-          ],
+        child: Padding(
+          padding: const EdgeInsets.symmetric(vertical: Dimensions.m),
+          child: Row(
+            children: [
+              Text(asset.name, style: theme.textTheme.bodyLarge),
+              const Expanded(child: SizedBox()),
+              Text(
+                asset.getCurrentValue().toStringWithCurrency(),
+                style: theme.textTheme.bodyLarge,
+              ),
+            ],
+          ),
         ),
       ),
     );

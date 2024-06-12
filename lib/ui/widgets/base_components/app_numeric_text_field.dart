@@ -14,6 +14,7 @@ import '../../../models/obox/settings_obox.dart';
 import '../../../objectbox.g.dart';
 import '../../../utils/form_component_border.dart';
 import '../../../utils/form_validators.dart';
+import '../../screens/currency_selection/currency_selection_params.dart';
 
 class AppNumericTextField extends StatefulWidget {
   double? initialValue;
@@ -56,6 +57,7 @@ class _AppNumericTextFieldState extends State<AppNumericTextField> {
     "8",
     "9",
     "-",
+    ","
   ];
 
   String oldText = "";
@@ -79,7 +81,7 @@ class _AppNumericTextFieldState extends State<AppNumericTextField> {
     initCurrency();
 
     allowedSymbols.add(
-        numberFormatSymbols[Platform.localeName.split("_").first]?.DECIMAL_SEP);
+        numberFormatSymbols[Platform.localeName.split("_").last.toLowerCase()]?.DECIMAL_SEP);
   }
 
   void initCurrency() {
@@ -130,11 +132,6 @@ class _AppNumericTextFieldState extends State<AppNumericTextField> {
               decimal: true,
               signed: true,
             ),
-      inputFormatters: [
-        widget.moneyBehavior
-            ? FilteringTextInputFormatter.allow(RegExp('[0-9.,]'))
-            : FilteringTextInputFormatter.allow(RegExp('[0-9.,-]')),
-      ],
       textCapitalization: TextCapitalization.sentences,
       decoration: InputDecoration(
         label: Text(widget.title),
@@ -150,7 +147,8 @@ class _AppNumericTextFieldState extends State<AppNumericTextField> {
                 ? () async {
                     Currency? c = await context.push(
                         CurrencySelectionScreen.route,
-                        extra: currency) as Currency?;
+                        extra: CurrencySelectionParams(
+                            selectedCurrency: currency)) as Currency?;
                     if (c == null) return;
                     if (widget.onCurrencyChange != null) {
                       widget.onCurrencyChange!(c);

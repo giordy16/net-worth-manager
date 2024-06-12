@@ -14,8 +14,6 @@ import '../../../models/obox/asset_history_time_value.dart';
 import '../../../models/obox/asset_obox.dart';
 import '../../../utils/enum/graph_data_gap_enum.dart';
 
-List<DateTime> topLevelDate = [DateTime.now()];
-
 class AssetDetailBloc extends Bloc<AssetDetailEvent, AssetDetailState> {
   final Asset asset;
   final AssetRepo assetRepo;
@@ -27,6 +25,11 @@ class AssetDetailBloc extends Bloc<AssetDetailEvent, AssetDetailState> {
 
     on<UpdatePerformanceEvent>((event, emit) {
       emit(state.copyWith(graphTime: event.gap));
+
+      // show percentage only for market asset
+      if (asset.marketInfo.target == null) {
+        return;
+      }
 
       if (state.graphData.isNotEmpty) {
         DateTime oldestDate = asset.getOldestTimeValueDate()!;
@@ -85,10 +88,15 @@ class AssetDetailBloc extends Bloc<AssetDetailEvent, AssetDetailState> {
           oldestDateTime, assetRepo.getValueAtDateTime(asset, oldestDateTime)));
     }
 
-    List<GraphData> secondGraphData = [];
-    for (var position in asset.getTimeValuesChronologicalOrder()) {
-      secondGraphData.add(GraphData(position.date,
-          asset.getTotalAmountInvested(dateTime: position.date)));
+    List<GraphData>? secondGraphData = [];
+
+    if (asset.marketInfo.target != null) {
+      for (var position in asset.getTimeValuesChronologicalOrder()) {
+        secondGraphData.add(GraphData(position.date,
+            asset.getTotalAmountInvested(dateTime: position.date)));
+      }
+    } else {
+      secondGraphData = null;
     }
 
     add(FetchGraphDataCompletedEvent(asset, graphData, secondGraphData));

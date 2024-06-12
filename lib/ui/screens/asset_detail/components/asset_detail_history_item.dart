@@ -8,6 +8,7 @@ import 'package:net_worth_manager/ui/screens/add_asset_position/add_asset_positi
 import 'package:net_worth_manager/ui/screens/add_asset_position/add_asset_position_screen_params.dart';
 import 'package:net_worth_manager/utils/extensions/number_extension.dart';
 
+import '../../../../app_dimensions.dart';
 import '../../../../models/obox/asset_obox.dart';
 import '../../../../models/obox/settings_obox.dart';
 import '../../../widgets/base_components/performance_text.dart';
@@ -43,24 +44,27 @@ class AssetDetailHistoryItem extends StatelessWidget {
               ));
           context.read<AssetDetailBloc>().add(FetchGraphDataEvent());
         },
-        child: Row(
-          children: [
-            Text(df.format(timeValue.date)),
-            const Expanded(child: SizedBox()),
-            Column(
-              crossAxisAlignment: CrossAxisAlignment.end,
-              children: [
-                Text(timeValue
-                    .getTotalPurchaseValue()
-                    .atMainCurrency(
-                        fromCurrency: timeValue.currency.target!.name)
-                    .toStringWithCurrency()),
-                if (shouldShowOriginalPrice)
-                  Text(
-                      "(${timeValue.getTotalPurchaseValue().toStringFormatted()} ${timeValue.currency.target!.symbol})")
-              ],
-            ),
-          ],
+        child: Padding(
+          padding: const EdgeInsets.symmetric(vertical: Dimensions.m),
+          child: Row(
+            children: [
+              Text(df.format(timeValue.date)),
+              const Expanded(child: SizedBox()),
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.end,
+                children: [
+                  Text(timeValue
+                      .getTotalPurchaseValue()
+                      .atMainCurrency(
+                          fromCurrency: timeValue.currency.target!.name)
+                      .toStringWithCurrency()),
+                  if (shouldShowOriginalPrice)
+                    Text(
+                        "(${timeValue.getTotalPurchaseValue().toStringFormatted()} ${timeValue.currency.target!.symbol})")
+                ],
+              ),
+            ],
+          ),
         ),
       ),
     );
@@ -83,36 +87,39 @@ class AssetDetailHistoryItem extends StatelessWidget {
               ));
           context.read<AssetDetailBloc>().add(FetchGraphDataEvent());
         },
-        child: Row(
-          children: [
-            Text("${df.format(timeValue.date)}"),
-            const Expanded(child: SizedBox()),
-            Column(
-              crossAxisAlignment: CrossAxisAlignment.end,
-              children: [
-                Text(timeValue
-                    .getCurrentValue(marketInfo: asset.marketInfo.target)
-                    .toStringWithCurrency()),
-                Row(
-                  children: [
-                    PerformanceText(
-                      performance: performance,
-                      type: PerformanceTextType.value,
-                      textStyle: theme.textTheme.bodyMedium,
-                    ),
-                    const SizedBox(
-                      width: 4,
-                    ),
-                    PerformanceText(
-                      performance: performancePerc,
-                      type: PerformanceTextType.percentage,
-                      textStyle: theme.textTheme.bodyMedium,
-                    )
-                  ],
-                )
-              ],
-            )
-          ],
+        child: Padding(
+          padding: const EdgeInsets.symmetric(vertical: Dimensions.m),
+          child: Row(
+            children: [
+              Text("${df.format(timeValue.date)}"),
+              const Expanded(child: SizedBox()),
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.end,
+                children: [
+                  Text(timeValue
+                      .getCurrentValue(marketInfo: asset.marketInfo.target)
+                      .toStringWithCurrency()),
+                  Row(
+                    children: [
+                      PerformanceText(
+                        performance: performance,
+                        type: PerformanceTextType.value,
+                        textStyle: theme.textTheme.bodyMedium,
+                      ),
+                      const SizedBox(
+                        width: 4,
+                      ),
+                      PerformanceText(
+                        performance: performancePerc,
+                        type: PerformanceTextType.percentage,
+                        textStyle: theme.textTheme.bodyMedium,
+                      )
+                    ],
+                  )
+                ],
+              )
+            ],
+          ),
         ),
       ),
     );

@@ -33,7 +33,7 @@ class AddSelectionScreen extends StatelessWidget {
                 "Market investment",
                 "Add your investments in the stock market.\nTheir value will be automatically calculated day by day",
                 () {
-                  if (kDebugMode) {
+                  if (false) {
                     context.push(AddMarketAssetScreen.route,
                         extra: AddMarketAssetScreenParams(
                             asset: MarketInfo(

@@ -54,7 +54,7 @@ class HomePageCategory extends StatelessWidget {
               );
             },
             separatorBuilder: (context, index) {
-              return const Divider();
+              return const Divider(height: 1);
             },
             itemCount: assets.length)
       ],

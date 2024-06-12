@@ -17,12 +17,12 @@ extension DoubleHelper on double {
     var decimalDigits = toString().length - toString().indexOf(".") - 1;
 
     String string = NumberFormat.decimalPatternDigits(
-            locale: Platform.localeName, decimalDigits: decimalDigits)
+            locale: Platform.localeName.split("_").last, decimalDigits: decimalDigits)
         .format(this);
 
     if (removeGroupSeparator) {
       String groupSeparator =
-          numberFormatSymbols[Platform.localeName.split("_").first]?.GROUP_SEP;
+          numberFormatSymbols[Platform.localeName.split("_").last.toLowerCase()]?.GROUP_SEP;
       string = string.replaceAll(groupSeparator, "");
     }
 

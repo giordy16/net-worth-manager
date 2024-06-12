@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
 import 'package:net_worth_manager/app_theme.dart';
 import 'package:net_worth_manager/domain/repository/net_worth/net_worth_repo_impl.dart';
+import 'package:net_worth_manager/models/obox/asset_history_time_value.dart';
 import 'package:net_worth_manager/models/obox/settings_obox.dart';
 import 'package:net_worth_manager/utils/extensions/date_time_extension.dart';
 import 'package:net_worth_manager/utils/extensions/objectbox_extension.dart';
@@ -28,6 +29,8 @@ Future<void> initApp() async {
   GetIt.I.registerSingleton<Store>(objectbox.store);
   GetIt.I.registerSingleton<Settings>(
       objectbox.store.box<Settings>().getAll().first);
+
+  // objectbox.store.box<AssetHistoryTimeValue>().removeAll();
 
   await objectbox.syncForexPrices();
   await objectbox.syncAssetPrices();

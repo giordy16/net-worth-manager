@@ -102,19 +102,6 @@ class _MarketAssetLineGraph extends State<LineGraph> {
             .isAfter(currentGap.getStartDate(widget.graphData.firstOrNull?.x)))
         .toList();
 
-    double maxY =
-        (subset.map((element) => element.y).reduce(max))
-            .toInt()
-            .toDouble();
-    double minY =
-        (subset.map((element) => element.y).reduce(min))
-            .toInt()
-            .toDouble();
-
-    double delta = maxY - minY;
-    maxY = maxY + delta / 5;
-    minY = minY - delta / 5;
-
     return Column(
       children: [
         Visibility(
@@ -206,8 +193,6 @@ class _MarketAssetLineGraph extends State<LineGraph> {
                       details.textStyle),
             ),
             primaryYAxis: NumericAxis(
-              maximum: maxY,
-              minimum: minY,
               axisLabelFormatter: (AxisLabelRenderDetails details) =>
                   ChartAxisLabel(NumberFormat.compact().format(details.value),
                       details.textStyle),
