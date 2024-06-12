@@ -93,8 +93,9 @@ class _AddAssetPositionScreenState extends State<AddAssetPositionScreen> {
                       if (_formKey.currentState!.validate()) {
                         widget.params.justPopBack
                             ? context.pop(position)
-                            : context.read<AddPositionBloc>().add(
-                                SavePositionEvent(params.asset, position));
+                            : context
+                                .read<AddPositionBloc>()
+                                .add(SavePositionEvent(params.asset, position));
                       }
                     },
                   ),
@@ -107,8 +108,7 @@ class _AddAssetPositionScreenState extends State<AddAssetPositionScreen> {
                         child: Column(
                           children: [
                             Padding(
-                              padding:
-                                  const EdgeInsets.only(top: Dimensions.m),
+                              padding: const EdgeInsets.only(top: Dimensions.m),
                               child: AppTextField(
                                 initialValue: params.asset.name,
                                 title: "Asset",
@@ -117,8 +117,7 @@ class _AddAssetPositionScreenState extends State<AddAssetPositionScreen> {
                               ),
                             ),
                             Padding(
-                              padding:
-                                  const EdgeInsets.only(top: Dimensions.m),
+                              padding: const EdgeInsets.only(top: Dimensions.m),
                               child: AppDateField(
                                 initialValue: position.date,
                                 title: "Date",
@@ -129,8 +128,7 @@ class _AddAssetPositionScreenState extends State<AddAssetPositionScreen> {
                               ),
                             ),
                             Padding(
-                              padding:
-                                  const EdgeInsets.only(top: Dimensions.m),
+                              padding: const EdgeInsets.only(top: Dimensions.m),
                               child: AppNumericTextField(
                                 moneyBehavior: true,
                                 title: "Value",
@@ -149,20 +147,18 @@ class _AddAssetPositionScreenState extends State<AddAssetPositionScreen> {
                             ),
                             Visibility(
                               // visible only for market asset
-                              visible:
-                                  params.asset.marketInfo.target != null,
+                              visible: params.asset.marketInfo.target != null,
                               child: Padding(
-                                padding: const EdgeInsets.only(
-                                    top: Dimensions.m),
+                                padding:
+                                    const EdgeInsets.only(top: Dimensions.m),
                                 child: AppNumericTextField(
+                                  moneyBehavior: false,
                                   title: "Quantity",
                                   initialValue: position.quantity,
                                   isMandatory: true,
                                   onTextChange: (value) {
-                                    position.quantity =
-                                        value.convertToDouble();
+                                    position.quantity = value.convertToDouble();
                                   },
-                                  moneyBehavior: false,
                                 ),
                               ),
                             ),

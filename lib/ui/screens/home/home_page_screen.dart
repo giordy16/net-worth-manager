@@ -267,6 +267,8 @@ class HomePage extends StatelessWidget {
                           .toList() ??
                       [];
 
+                  assetsOfCategory.sort((a,b) => a.name.compareTo(b.name));
+
                   return HomePageCategory(
                     category: category,
                     assets: assetsOfCategory,

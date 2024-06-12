@@ -81,7 +81,8 @@ class _AppNumericTextFieldState extends State<AppNumericTextField> {
     initCurrency();
 
     allowedSymbols.add(
-        numberFormatSymbols[Platform.localeName.split("_").last.toLowerCase()]?.DECIMAL_SEP);
+        numberFormatSymbols[Platform.localeName.split("_").last.toLowerCase()]
+            ?.DECIMAL_SEP);
   }
 
   void initCurrency() {
@@ -127,11 +128,11 @@ class _AppNumericTextFieldState extends State<AppNumericTextField> {
       controller: controller,
       onTapOutside: (_) => FocusScope.of(context).unfocus(),
       keyboardType: widget.moneyBehavior
-          ? const TextInputType.numberWithOptions(decimal: true)
-          : const TextInputType.numberWithOptions(
+          ? const TextInputType.numberWithOptions(
               decimal: true,
               signed: true,
-            ),
+            )
+          : const TextInputType.numberWithOptions(decimal: true),
       textCapitalization: TextCapitalization.sentences,
       decoration: InputDecoration(
         label: Text(widget.title),
