@@ -202,7 +202,6 @@ class _MarketAssetLineGraph extends State<LineGraph> {
                 name: "Asset value",
                 color: theme.colorScheme.secondary,
                 animationDuration: 100,
-                // enableTooltip: true,
                 dataSource: widget.graphData,
                 xValueMapper: (GraphData data, _) =>
                     data.x.millisecondsSinceEpoch,

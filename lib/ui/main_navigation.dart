@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:net_worth_manager/ui/screens/home/home_page_screen.dart';
+import 'package:net_worth_manager/ui/screens/insights/insights_screen.dart';
 import 'package:net_worth_manager/ui/screens/settings/settings_page.dart';
 
 class MainNavigation extends StatefulWidget {
@@ -15,7 +16,7 @@ class MainNavigation extends StatefulWidget {
 
 class _MainNavigationState extends State<MainNavigation> {
   int _selectedIndex = 0;
-  final widgets = [HomePage(), SettingsScreen(), SettingsScreen()];
+  final widgets = [HomePage(), InsightsScreen(), SettingsScreen()];
 
   @override
   void initState() {

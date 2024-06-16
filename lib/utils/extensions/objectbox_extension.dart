@@ -23,7 +23,7 @@ extension ObjectBoxExtension on ObjectBox {
     if (currency.isEmpty) {
       for (var curr in CurrencyEnum.values) {
         var format = NumberFormat.simpleCurrency(
-            locale: Platform.localeName.split("_").last, name: curr.name);
+            locale: Platform.localeName, name: curr.name);
         store.box<Currency>().put(Currency(format.currencySymbol, curr.name));
       }
     }
@@ -31,7 +31,7 @@ extension ObjectBoxExtension on ObjectBox {
     // set defaultCurrency to the currency based on the phone's location
     var settings = store.box<Settings>().getAll();
     if (settings.isEmpty) {
-      var format = NumberFormat.simpleCurrency(locale: Platform.localeName.split("_").last);
+      var format = NumberFormat.simpleCurrency(locale: Platform.localeName);
       Currency currency = store
               .box<Currency>()
               .query(Currency_.name.equals(format.currencyName!))

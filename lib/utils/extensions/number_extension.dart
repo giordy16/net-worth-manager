@@ -17,12 +17,13 @@ extension DoubleHelper on double {
     var decimalDigits = toString().length - toString().indexOf(".") - 1;
 
     String string = NumberFormat.decimalPatternDigits(
-            locale: Platform.localeName.split("_").last, decimalDigits: decimalDigits)
+            locale: Platform.localeName, decimalDigits: decimalDigits)
         .format(this);
 
     if (removeGroupSeparator) {
-      String groupSeparator =
-          numberFormatSymbols[Platform.localeName.split("_").last.toLowerCase()]?.GROUP_SEP;
+      String groupSeparator = numberFormatSymbols[
+              Platform.localeName.split("_").last.toLowerCase().toLowerCase()]
+          ?.GROUP_SEP;
       string = string.replaceAll(groupSeparator, "");
     }
 
@@ -51,15 +52,14 @@ extension DoubleHelper on double {
   }
 
   double roundToClosestMultiple(double multiple) {
-    return ((this + (multiple/2)) ~/ multiple) * multiple;
+    return ((this + (multiple / 2)) ~/ multiple) * multiple;
   }
 
   double roundRoundUoToNextMultiple(double multiple) {
-    return ((this + (multiple-1)) ~/ multiple) * multiple;
+    return ((this + (multiple - 1)) ~/ multiple) * multiple;
   }
 
   double roundRoundUoToPreviousMultiple(double multiple) {
     return (this ~/ multiple) * multiple;
   }
-
 }

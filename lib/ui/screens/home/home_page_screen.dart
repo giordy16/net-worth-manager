@@ -148,7 +148,7 @@ class HomePage extends StatelessWidget {
                 color: theme.colorScheme.secondary,
               ),
             ),
-            body: (state.assets != null && state.assets!.isEmpty)
+            body: (state.assets == null || state.assets!.isEmpty)
                 ? buildNoDataUI(context)
                 : buildUI(context, state),
           );

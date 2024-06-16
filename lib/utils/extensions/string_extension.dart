@@ -11,7 +11,7 @@ extension StringHelper on String {
 
     var decimalDigits = length - indexOf(decimalSeparator) - 1;
     return NumberFormat.decimalPatternDigits(
-            locale: Platform.localeName.split("_").last, decimalDigits: decimalDigits)
+            locale: Platform.localeName, decimalDigits: decimalDigits)
         .parse(this) as double;
   }
 }

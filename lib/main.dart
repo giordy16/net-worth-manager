@@ -30,8 +30,6 @@ Future<void> initApp() async {
   GetIt.I.registerSingleton<Settings>(
       objectbox.store.box<Settings>().getAll().first);
 
-  // objectbox.store.box<AssetHistoryTimeValue>().removeAll();
-
   await objectbox.syncForexPrices();
   await objectbox.syncAssetPrices();
 

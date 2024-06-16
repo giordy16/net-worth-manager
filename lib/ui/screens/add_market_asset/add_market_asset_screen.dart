@@ -66,17 +66,17 @@ class _AddMarketAssetScreenState extends State<AddMarketAssetScreen> {
               appBar: AppBar(
                 title: const Text("Market asset"),
                 actions: [
-                  IconButton(
-                      onPressed: () {
-                        context.push(ImportInvestmentsScreen.route);
-                      },
-                      icon: SvgPicture.asset(AppImages.import,
-                          height: 30,
-                          width: 30,
-                          colorFilter: ColorFilter.mode(
-                            theme.colorScheme.secondary,
-                            BlendMode.srcIn,
-                          )))
+                  // IconButton(
+                  //     onPressed: () {
+                  //       context.push(ImportInvestmentsScreen.route);
+                  //     },
+                  //     icon: SvgPicture.asset(AppImages.import,
+                  //         height: 30,
+                  //         width: 30,
+                  //         colorFilter: ColorFilter.mode(
+                  //           theme.colorScheme.secondary,
+                  //           BlendMode.srcIn,
+                  //         )))
                 ],
               ),
               floatingActionButtonLocation:

@@ -1,4 +1,8 @@
+import 'package:get_it/get_it.dart';
 import 'package:objectbox/objectbox.dart';
+
+import '../../objectbox.g.dart';
+import 'asset_obox.dart';
 
 @Entity()
 class AssetCategory {
@@ -21,4 +25,21 @@ class AssetCategory {
 
   @override
   int get hashCode => id.hashCode;
+
+  List<Asset> getAssets() {
+    return GetIt.I<Store>()
+        .box<Asset>()
+        .query(Asset_.category.equals(id))
+        .build()
+        .find();
+  }
+
+  double getValue() {
+    double value = 0;
+    for (var asset in getAssets()) {
+      value = value + asset.getCurrentValue();
+    }
+    return value;
+  }
+
 }
