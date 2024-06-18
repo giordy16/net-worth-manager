@@ -45,20 +45,6 @@ class AppNumericTextField extends StatefulWidget {
 class _AppNumericTextFieldState extends State<AppNumericTextField> {
   late TextEditingController controller;
   late Currency currency;
-  final allowedSymbols = [
-    "0",
-    "1",
-    "2",
-    "3",
-    "4",
-    "5",
-    "6",
-    "7",
-    "8",
-    "9",
-    "-",
-    ","
-  ];
 
   String oldText = "";
   Settings settings = GetIt.instance<Settings>();
@@ -79,10 +65,6 @@ class _AppNumericTextFieldState extends State<AppNumericTextField> {
     super.initState();
     initController();
     initCurrency();
-
-    allowedSymbols.add(
-        numberFormatSymbols[Platform.localeName.split("_").last.toLowerCase()]
-            ?.DECIMAL_SEP);
   }
 
   void initCurrency() {
@@ -103,19 +85,13 @@ class _AppNumericTextFieldState extends State<AppNumericTextField> {
   bool isTextOk(String text) {
     if (text.isEmpty) return true;
 
-    // the - can be only in first position
-    if (text.contains("-") && text.characters.first != "-") return false;
+    // only number are allowed
+    if (double.tryParse(text) == null) return false;
 
-    // only one "," is allowed
-    if (text.characters.where((c) => c == ",").length > 1) return false;
-
-    // only allowedSymbols are allowed
-    if (!allowedSymbols.contains(text.characters.last)) return false;
-
-    // only 2 digits after "," are allowed
+    // only 2 digits after "," are allowed if is money textfield
     if (widget.moneyBehavior &&
-        text.contains(",") &&
-        text.split(",")[1].length > 2) return false;
+        text.contains(".") &&
+        text.split(".")[1].length > 2) return false;
 
     return true;
   }
@@ -166,6 +142,7 @@ class _AppNumericTextFieldState extends State<AppNumericTextField> {
         focusedErrorBorder: formFocusedBorder(context),
       ),
       onChanged: (value) {
+        value = value.replaceAll(",", ".");
         if (isTextOk(value)) {
           oldText = value;
           if (widget.onTextChange != null) widget.onTextChange!(value);

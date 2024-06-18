@@ -138,7 +138,7 @@ class _AddAssetPositionScreenState extends State<AddAssetPositionScreen> {
                                     params.asset.marketInfo.target == null,
                                 isMandatory: true,
                                 onTextChange: (value) {
-                                  position.value = value.convertToDouble();
+                                  position.value = double.tryParse(value) ?? 0;
                                 },
                                 onCurrencyChange: (currency) {
                                   position.currency.target = currency;
@@ -157,7 +157,7 @@ class _AddAssetPositionScreenState extends State<AddAssetPositionScreen> {
                                   initialValue: position.quantity,
                                   isMandatory: true,
                                   onTextChange: (value) {
-                                    position.quantity = value.convertToDouble();
+                                    position.quantity = double.tryParse(value) ?? 0;
                                   },
                                 ),
                               ),
