@@ -20,6 +20,7 @@ import 'models/obox/asset_history_time_value.dart';
 import 'models/obox/asset_obox.dart';
 import 'models/obox/asset_time_value_obox.dart';
 import 'models/obox/currency_obox.dart';
+import 'models/obox/custom_pie_obox.dart';
 import 'models/obox/main_currency_forex_change.dart';
 import 'models/obox/market_info_obox.dart';
 import 'models/obox/net_worth_history.dart';
@@ -301,6 +302,34 @@ final _entities = <obx_int.ModelEntity>[
             flags: 0)
       ],
       relations: <obx_int.ModelRelation>[],
+      backlinks: <obx_int.ModelBacklink>[]),
+  obx_int.ModelEntity(
+      id: const obx_int.IdUid(12, 5903921347179551314),
+      name: 'CustomPie',
+      lastPropertyId: const obx_int.IdUid(2, 7357382118388860697),
+      flags: 0,
+      properties: <obx_int.ModelProperty>[
+        obx_int.ModelProperty(
+            id: const obx_int.IdUid(1, 4205562783063258404),
+            name: 'id',
+            type: 6,
+            flags: 1),
+        obx_int.ModelProperty(
+            id: const obx_int.IdUid(2, 7357382118388860697),
+            name: 'name',
+            type: 9,
+            flags: 0)
+      ],
+      relations: <obx_int.ModelRelation>[
+        obx_int.ModelRelation(
+            id: const obx_int.IdUid(3, 9064630919078014490),
+            name: 'assets',
+            targetId: const obx_int.IdUid(1, 1818913365485819735)),
+        obx_int.ModelRelation(
+            id: const obx_int.IdUid(4, 2940534397388135956),
+            name: 'categories',
+            targetId: const obx_int.IdUid(2, 4698624914262505470))
+      ],
       backlinks: <obx_int.ModelBacklink>[])
 ];
 
@@ -339,9 +368,9 @@ Future<obx.Store> openStore(
 obx_int.ModelDefinition getObjectBoxModel() {
   final model = obx_int.ModelInfo(
       entities: _entities,
-      lastEntityId: const obx_int.IdUid(11, 2306986170839656647),
+      lastEntityId: const obx_int.IdUid(12, 5903921347179551314),
       lastIndexId: const obx_int.IdUid(4, 2434188033820685796),
-      lastRelationId: const obx_int.IdUid(2, 4132757054122527006),
+      lastRelationId: const obx_int.IdUid(4, 2940534397388135956),
       lastSequenceId: const obx_int.IdUid(0, 0),
       retiredEntityUids: const [2599935032832553010, 5400605241944609287],
       retiredIndexUids: const [],
@@ -674,6 +703,38 @@ obx_int.ModelDefinition getObjectBoxModel() {
                 const fb.Int64Reader().vTableGetNullable(buffer, rootOffset, 4);
 
           return object;
+        }),
+    CustomPie: obx_int.EntityDefinition<CustomPie>(
+        model: _entities[9],
+        toOneRelations: (CustomPie object) => [],
+        toManyRelations: (CustomPie object) => {
+              obx_int.RelInfo<CustomPie>.toMany(3, object.id): object.assets,
+              obx_int.RelInfo<CustomPie>.toMany(4, object.id): object.categories
+            },
+        getId: (CustomPie object) => object.id,
+        setId: (CustomPie object, int id) {
+          object.id = id;
+        },
+        objectToFB: (CustomPie object, fb.Builder fbb) {
+          final nameOffset = fbb.writeString(object.name);
+          fbb.startTable(3);
+          fbb.addInt64(0, object.id);
+          fbb.addOffset(1, nameOffset);
+          fbb.finish(fbb.endTable());
+          return object.id;
+        },
+        objectFromFB: (obx.Store store, ByteData fbData) {
+          final buffer = fb.BufferContext(fbData);
+          final rootOffset = buffer.derefObject(0);
+          final nameParam = const fb.StringReader(asciiOptimization: true)
+              .vTableGet(buffer, rootOffset, 6, '');
+          final object = CustomPie(nameParam)
+            ..id = const fb.Int64Reader().vTableGet(buffer, rootOffset, 4, 0);
+          obx_int.InternalToManyAccess.setRelInfo<CustomPie>(object.assets,
+              store, obx_int.RelInfo<CustomPie>.toMany(3, object.id));
+          obx_int.InternalToManyAccess.setRelInfo<CustomPie>(object.categories,
+              store, obx_int.RelInfo<CustomPie>.toMany(4, object.id));
+          return object;
         })
   };
 
@@ -852,4 +913,23 @@ class NetWorthHistory_ {
   /// see [NetWorthHistory.value]
   static final value =
       obx.QueryDoubleProperty<NetWorthHistory>(_entities[8].properties[2]);
+}
+
+/// [CustomPie] entity fields to define ObjectBox queries.
+class CustomPie_ {
+  /// see [CustomPie.id]
+  static final id =
+      obx.QueryIntegerProperty<CustomPie>(_entities[9].properties[0]);
+
+  /// see [CustomPie.name]
+  static final name =
+      obx.QueryStringProperty<CustomPie>(_entities[9].properties[1]);
+
+  /// see [CustomPie.assets]
+  static final assets =
+      obx.QueryRelationToMany<CustomPie, Asset>(_entities[9].relations[0]);
+
+  /// see [CustomPie.categories]
+  static final categories = obx.QueryRelationToMany<CustomPie, AssetCategory>(
+      _entities[9].relations[1]);
 }

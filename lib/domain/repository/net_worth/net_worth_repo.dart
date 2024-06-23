@@ -4,4 +4,6 @@ abstract class NetWorthRepo {
 
   double getNetWorth();
 
+  Map<DateTime, double> getNetWorthsAtTheEndOfMonths();
+
 }

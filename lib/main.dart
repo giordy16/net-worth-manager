@@ -30,8 +30,8 @@ Future<void> initApp() async {
   GetIt.I.registerSingleton<Settings>(
       objectbox.store.box<Settings>().getAll().first);
 
-  await objectbox.syncForexPrices();
-  await objectbox.syncAssetPrices();
+  // await objectbox.syncForexPrices();
+  // await objectbox.syncAssetPrices();
 
   await NetWorthRepoImpl()
       .updateNetWorth(updateStartingDate: DateTime.now().keepOnlyYMD());

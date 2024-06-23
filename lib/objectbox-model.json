@@ -281,11 +281,41 @@
         }
       ],
       "relations": []
+    },
+    {
+      "id": "12:5903921347179551314",
+      "lastPropertyId": "2:7357382118388860697",
+      "name": "CustomPie",
+      "properties": [
+        {
+          "id": "1:4205562783063258404",
+          "name": "id",
+          "type": 6,
+          "flags": 1
+        },
+        {
+          "id": "2:7357382118388860697",
+          "name": "name",
+          "type": 9
+        }
+      ],
+      "relations": [
+        {
+          "id": "3:9064630919078014490",
+          "name": "assets",
+          "targetId": "1:1818913365485819735"
+        },
+        {
+          "id": "4:2940534397388135956",
+          "name": "categories",
+          "targetId": "2:4698624914262505470"
+        }
+      ]
     }
   ],
-  "lastEntityId": "11:2306986170839656647",
+  "lastEntityId": "12:5903921347179551314",
   "lastIndexId": "4:2434188033820685796",
-  "lastRelationId": "2:4132757054122527006",
+  "lastRelationId": "4:2940534397388135956",
   "lastSequenceId": "0:0",
   "modelVersion": 5,
   "modelVersionParserMinimum": 5,

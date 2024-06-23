@@ -15,6 +15,9 @@ import '../../widgets/modal/loading_overlay.dart';
 import '../currency_selection/currency_selection_screen.dart';
 
 class SettingsScreen extends StatefulWidget {
+
+  static String route = "/SettingsScreen";
+
   @override
   State<StatefulWidget> createState() => _SettingsScreenState();
 }

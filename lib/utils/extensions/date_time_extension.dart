@@ -7,4 +7,7 @@ extension DateTimeExtension on DateTime {
     return DateTime(year, month, day);
   }
 
+  DateTime get lastDayOfTheMonth {
+    return month < 12 ? DateTime(year, month + 1, 0) : DateTime(year + 1, 1, 0);
+  }
 }

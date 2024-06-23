@@ -7,7 +7,7 @@ import '../../../objectbox.g.dart';
 import '../../widgets/graph/allocation_pie_chart.dart';
 
 class FullAssetAllocationScreen extends StatelessWidget {
-  static String route = "/FullAssetAllocationScreen";
+  static String route = "FullAssetAllocationScreen";
 
   @override
   Widget build(BuildContext context) {

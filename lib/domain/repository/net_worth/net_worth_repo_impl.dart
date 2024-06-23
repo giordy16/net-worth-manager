@@ -95,7 +95,8 @@ class NetWorthRepoImpl extends NetWorthRepo {
         double dayValue = 0;
         for (var asset in assets) {
           // print("asset ${asset.name} at ${element.date} has value ${assetRepo.getValueAtDateTime(asset, element.date)}");
-          dayValue = dayValue + assetRepo.getValueAtDateTime(asset, element.date);
+          dayValue =
+              dayValue + assetRepo.getValueAtDateTime(asset, element.date);
         }
         element.value = double.parse(dayValue.toStringAsFixed(2));
         _nwBox.put(element);
@@ -109,5 +110,37 @@ class NetWorthRepoImpl extends NetWorthRepo {
         .getAll()
         .where((element) => element.date.isBefore(oldestAssetDate));
     nwBox.removeMany(valuesToDelete.map((e) => e.id!).toList());
+  }
+
+  @override
+  Map<DateTime, double> getNetWorthsAtTheEndOfMonths() {
+    Map<DateTime, double> nw = {};
+
+    final nwBox = GetIt.I<Store>().box<NetWorthHistory>();
+
+    DateTime? firstNWDate =
+        nwBox.query().order(NetWorthHistory_.date).build().findFirst()?.date;
+
+    if (firstNWDate == null) {
+      return nw;
+    }
+
+    DateTime lastDayOfTheMonth = firstNWDate.lastDayOfTheMonth;
+
+    while (lastDayOfTheMonth.isBefore(DateTime.now())) {
+      double nwValue = nwBox
+              .query(NetWorthHistory_.date.lessOrEqualDate(lastDayOfTheMonth))
+              .order(NetWorthHistory_.date, flags: Order.descending)
+              .build()
+              .findFirst()
+              ?.value ??
+          0;
+
+      nw.addAll({lastDayOfTheMonth: nwValue});
+
+      lastDayOfTheMonth = (lastDayOfTheMonth.copyWith(day: lastDayOfTheMonth.day + 1)).keepOnlyYMD().lastDayOfTheMonth;
+    }
+
+    return nw;
   }
 }
