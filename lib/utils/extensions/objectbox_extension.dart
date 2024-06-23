@@ -49,7 +49,7 @@ extension ObjectBoxExtension on ObjectBox {
     if (categories.isEmpty) {
       store
           .box<AssetCategory>()
-          .put(AssetCategory("Investments", userCanSelect: false));
+          .put(AssetCategory("ETFs / Stocks", userCanSelect: false));
     }
   }
 

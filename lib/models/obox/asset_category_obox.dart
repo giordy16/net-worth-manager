@@ -39,7 +39,7 @@ class AssetCategory {
     for (var asset in getAssets()) {
       value = value + asset.getCurrentValue();
     }
-    return value;
+    return double.parse(value.toStringAsFixed(2));
   }
 
 }

@@ -15,6 +15,7 @@ import 'package:net_worth_manager/ui/screens/currency_selection/currency_selecti
 import 'package:net_worth_manager/ui/screens/currency_selection/currency_selection_screen.dart';
 import 'package:net_worth_manager/ui/screens/home/home_page_screen.dart';
 import 'package:net_worth_manager/ui/screens/import_investments/import_investments_screen.dart';
+import 'package:net_worth_manager/ui/screens/insights/full_asset_allocation_screen.dart';
 import 'package:net_worth_manager/ui/screens/ticker_search/ticker_search_screen.dart';
 import 'package:net_worth_manager/ui/widgets/modal/loading_overlay.dart';
 
@@ -71,13 +72,18 @@ final appRoutes = GoRouter(
     ),
     GoRoute(
       path: AddMarketAssetScreen.route,
-      builder: (context, state) =>
-          LoadingOverlay(child: AddMarketAssetScreen(state.extra as AddMarketAssetScreenParams)),
+      builder: (context, state) => LoadingOverlay(
+          child:
+              AddMarketAssetScreen(state.extra as AddMarketAssetScreenParams)),
     ),
     GoRoute(
       path: ImportInvestmentsScreen.route,
       builder: (context, state) =>
           LoadingOverlay(child: ImportInvestmentsScreen()),
+    ),
+    GoRoute(
+      path: FullAssetAllocationScreen.route,
+      builder: (context, state) => FullAssetAllocationScreen(),
     ),
   ],
 );
