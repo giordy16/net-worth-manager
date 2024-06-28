@@ -26,11 +26,17 @@ import '../add_selection/add_selection_screen.dart';
 import 'components/home_page_category.dart';
 import 'home_page_state.dart';
 
-class HomePage extends StatelessWidget {
+class HomePage extends StatefulWidget {
   static const route = "/HomePage";
 
   const HomePage({super.key});
 
+  @override
+  State<HomePage> createState() => _HomePageState();
+}
+
+class _HomePageState extends State<HomePage>
+    with AutomaticKeepAliveClientMixin {
   Future<void> onShowMoreCategory(
       BuildContext context, AssetCategory category) async {
     Map<Widget, Function> selections = {};
@@ -120,6 +126,7 @@ class HomePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    super.build(context);
     ThemeData theme = Theme.of(context);
 
     return MultiRepositoryProvider(
@@ -149,9 +156,11 @@ class HomePage extends StatelessWidget {
                 color: theme.colorScheme.secondary,
               ),
             ),
-            body: (state.assets == null || state.assets!.isEmpty)
-                ? buildNoDataUI(context)
-                : buildUI(context, state),
+            body: state.assets == null
+                ? const Center(child: CircularProgressIndicator())
+                : state.assets!.isEmpty
+                    ? buildNoDataUI(context)
+                    : buildUI(context, state),
           );
         }),
       ),
@@ -268,7 +277,7 @@ class HomePage extends StatelessWidget {
                           .toList() ??
                       [];
 
-                  assetsOfCategory.sort((a,b) => a.name.compareTo(b.name));
+                  assetsOfCategory.sort((a, b) => a.name.compareTo(b.name));
 
                   return HomePageCategory(
                     category: category,
@@ -303,4 +312,7 @@ class HomePage extends StatelessWidget {
       ),
     );
   }
+
+  @override
+  bool get wantKeepAlive => true;
 }

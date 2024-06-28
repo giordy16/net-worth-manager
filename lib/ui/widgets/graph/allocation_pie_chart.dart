@@ -12,13 +12,17 @@ class PieChartData {
 }
 
 class AllocationPieChart extends StatelessWidget {
-  List<PieChartData> data;
+  List<PieChartData>? data;
 
   AllocationPieChart(this.data);
 
   @override
   Widget build(BuildContext context) {
     ThemeData theme = Theme.of(context);
+
+    if (data == null) {
+      return const Center(child: CircularProgressIndicator());
+    }
 
     return Container(
       height: 200,

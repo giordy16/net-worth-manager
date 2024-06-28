@@ -12,19 +12,15 @@ class ColumnGraphData {
 }
 
 class GainLossesChart extends StatelessWidget {
+
+  List<ColumnGraphData>? chartData;
+
+  GainLossesChart(this.chartData);
+
   Widget build(BuildContext context) {
-    final nwAtTheEndOfMonths =
-        NetWorthRepoImpl().getNetWorthsAtTheEndOfMonths();
 
-    List<ColumnGraphData> chartData = [];
-
-    for (var i = 1; i < nwAtTheEndOfMonths.entries.length - 2; i++) {
-      var entry = nwAtTheEndOfMonths.entries.toList()[i];
-      var entryPrevMonth = nwAtTheEndOfMonths.entries.toList()[i - 1];
-      chartData.add(ColumnGraphData(
-          DateFormat("MMM yy").format(entry.key),
-          double.parse(
-              (entry.value - entryPrevMonth.value).toStringAsFixed(2))));
+    if (chartData == null) {
+      return const Center(child: CircularProgressIndicator());
     }
 
     return Container(

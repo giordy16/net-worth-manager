@@ -17,7 +17,7 @@ import '../../widgets/graph/line_graph.dart';
 import '../add_asset_position/add_asset_position_screen_params.dart';
 
 class AssetDetailScreen extends StatelessWidget {
-  static const route = "AssetDetailScreen";
+  static const route = "/AssetDetailScreen";
 
   Asset asset;
 

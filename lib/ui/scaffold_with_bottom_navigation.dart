@@ -4,29 +4,18 @@ import 'package:net_worth_manager/ui/screens/home/home_page_screen.dart';
 import 'package:net_worth_manager/ui/screens/insights/insights_screen.dart';
 import 'package:net_worth_manager/ui/screens/settings/settings_page.dart';
 
-// class ScaffoldWithBottomNavigation extends StatefulWidget {
-//   int? initialPosition;
-//
-//   ScaffoldWithBottomNavigation(this.initialPosition);
-//
-//   @override
-//   State<StatefulWidget> createState() => _ScaffoldWithBottomNavigationState();
-// }
+class ScaffoldWithBottomNavigation extends StatefulWidget {
+  static String path = "/";
 
-class ScaffoldWithBottomNavigation extends StatelessWidget {
-  const ScaffoldWithBottomNavigation({
-    super.key,
-    required this.navigationShell,
-  });
+  @override
+  State<StatefulWidget> createState() => _ScaffoldWithBottomNavigationState();
+}
 
-  final StatefulNavigationShell navigationShell;
-
-  void _goBranch(int index) {
-    navigationShell.goBranch(
-      index,
-      initialLocation: index == navigationShell.currentIndex,
-    );
-  }
+class _ScaffoldWithBottomNavigationState
+    extends State<ScaffoldWithBottomNavigation> {
+  int _selectedIndex = 0;
+  final widgets = [HomePage(), InsightsScreen(), SettingsScreen()];
+  final PageController _controller = PageController();
 
   @override
   Widget build(BuildContext context) {
@@ -40,10 +29,18 @@ class ScaffoldWithBottomNavigation extends StatelessWidget {
           BottomNavigationBarItem(
               icon: Icon(Icons.settings), label: "Settings"),
         ],
-        currentIndex: navigationShell.currentIndex,
-        onTap: _goBranch,
+        currentIndex: _selectedIndex,
+        onTap: (index) {
+          _controller.jumpToPage(index);
+          setState(() {
+            _selectedIndex = index;
+          });
+        },
       ),
-      body: navigationShell,
+      body: PageView(
+          physics: NeverScrollableScrollPhysics(),
+          controller: _controller,
+          children: widgets),
     );
   }
 }
