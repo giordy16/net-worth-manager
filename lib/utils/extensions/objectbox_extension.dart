@@ -28,9 +28,10 @@ extension ObjectBoxExtension on ObjectBox {
       }
     }
 
-    // set defaultCurrency to the currency based on the phone's location
+    // init settings
     var settings = store.box<Settings>().getAll();
     if (settings.isEmpty) {
+      // set defaultCurrency to the currency based on the phone's location
       var format = NumberFormat.simpleCurrency(locale: Platform.localeName);
       Currency currency = store
               .box<Currency>()

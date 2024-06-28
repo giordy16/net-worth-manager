@@ -8,4 +8,10 @@ class Settings {
   int id = 0;
 
   ToOne<Currency> defaultCurrency = ToOne<Currency>();
+
+  @Property(type: PropertyType.date)
+  DateTime? startDateGainGraph;
+
+  @Property(type: PropertyType.date)
+  DateTime? endDateGainGraph;
 }

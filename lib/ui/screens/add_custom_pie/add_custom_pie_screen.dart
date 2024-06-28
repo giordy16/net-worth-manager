@@ -10,7 +10,7 @@ import '../../../objectbox.g.dart';
 import '../../widgets/base_components/app_bottom_fab.dart';
 
 class AddCustomPieScreen extends StatefulWidget {
-  static String route = "AddCustomPieScreen";
+  static String route = "/AddCustomPieScreen";
 
   @override
   State<StatefulWidget> createState() => _AddCustomPieScreenState();

@@ -1,6 +1,8 @@
 import 'package:bloc/bloc.dart';
+import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
 import 'package:intl/intl.dart';
+import 'package:net_worth_manager/models/obox/settings_obox.dart';
 import 'package:net_worth_manager/ui/screens/insights/insights_state.dart';
 import 'package:net_worth_manager/utils/background_thread.dart';
 
@@ -11,11 +13,15 @@ import '../../widgets/graph/allocation_pie_chart.dart';
 import '../../widgets/graph/gain_losses_chart.dart';
 
 class InsightsCubit extends Cubit<InsightsState> {
-  InsightsCubit(this.nwRepo) : super(InsightsState.initial()) {
+  InsightsCubit({
+    required this.context,
+    required this.nwRepo,
+  }) : super(InsightsState.initial()) {
     initPage();
   }
 
   NetWorthRepo nwRepo;
+  BuildContext context;
 
   void initPage() {
     initCategoryAssetData();
@@ -44,14 +50,11 @@ class InsightsCubit extends Cubit<InsightsState> {
   }
 
   Future<void> initGainLossesData() async {
-    print(DateTime.now());
-    final nwAtTheEndOfMonths =
-        await runInDifferentThread(() => nwRepo.getNetWorthsAtTheEndOfMonths());
-    print(DateTime.now());
+    final nwAtTheEndOfMonths = await nwRepo.getNetWorthsAtTheEndOfMonths();
 
     List<ColumnGraphData> chartData = [];
 
-    for (var i = 1; i < nwAtTheEndOfMonths.entries.length - 2; i++) {
+    for (var i = 1; i < nwAtTheEndOfMonths.entries.length; i++) {
       var entry = nwAtTheEndOfMonths.entries.toList()[i];
       var entryPrevMonth = nwAtTheEndOfMonths.entries.toList()[i - 1];
       chartData.add(ColumnGraphData(
@@ -59,8 +62,47 @@ class InsightsCubit extends Cubit<InsightsState> {
           double.parse(
               (entry.value - entryPrevMonth.value).toStringAsFixed(2))));
     }
-    print(DateTime.now());
+
+    emit(state.copyWith(
+        startDateGainGraph: GetIt.I<Settings>().startDateGainGraph ??
+            DateFormat("MMM yy").parse(chartData.first.x)));
+
+    emit(state.copyWith(
+        endDateGainGraph: GetIt.I<Settings>().endDateGainGraph ??
+            DateFormat("MMM yy").parse(chartData.last.x)));
 
     emit(state.copyWith(gainLossData: chartData));
   }
+
+Future<void> changeStartGainGraph() async {
+  final settings = GetIt.I<Settings>();
+
+  final DateTime? picked = await showDatePicker(
+      context: context,
+      initialDate: state.startDateGainGraph,
+      firstDate: DateFormat("MMM yy").parse(state.gainLossData!.first.x),
+      lastDate: DateFormat("MMM yy").parse(state.gainLossData!.last.x),);
+  if (picked != null) {
+    settings.startDateGainGraph = picked;
+    GetIt.I<Store>().box<Settings>().put(settings);
+
+    emit(state.copyWith(startDateGainGraph: picked));
+  }
+}
+
+Future<void> changeEndGainGraph() async {
+  final settings = GetIt.I<Settings>();
+
+  final DateTime? picked = await showDatePicker(
+      context: context,
+      initialDate: state.endDateGainGraph,
+      firstDate: DateFormat("MMM yy").parse(state.gainLossData!.first.x),
+      lastDate: DateFormat("MMM yy").parse(state.gainLossData!.last.x),);
+  if (picked != null) {
+    settings.endDateGainGraph = picked;
+    GetIt.I<Store>().box<Settings>().put(settings);
+
+    emit(state.copyWith(endDateGainGraph: picked));
+  }
+}
 }

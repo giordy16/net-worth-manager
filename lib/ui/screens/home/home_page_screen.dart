@@ -284,7 +284,7 @@ class _HomePageState extends State<HomePage>
                     assets: assetsOfCategory,
                     onItemClick: (asset) async {
                       await context.push(
-                        context.currentPath() + AssetDetailScreen.route,
+                        AssetDetailScreen.route,
                         extra: asset,
                       );
                       context.read<HomePageBloc>().add(FetchHomePage());

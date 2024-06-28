@@ -154,7 +154,7 @@ final _entities = <obx_int.ModelEntity>[
   obx_int.ModelEntity(
       id: const obx_int.IdUid(6, 2549230891191389848),
       name: 'Settings',
-      lastPropertyId: const obx_int.IdUid(2, 6578063487016878583),
+      lastPropertyId: const obx_int.IdUid(4, 4815485716240959814),
       flags: 0,
       properties: <obx_int.ModelProperty>[
         obx_int.ModelProperty(
@@ -168,7 +168,17 @@ final _entities = <obx_int.ModelEntity>[
             type: 11,
             flags: 520,
             indexId: const obx_int.IdUid(3, 5774481709415715408),
-            relationTarget: 'Currency')
+            relationTarget: 'Currency'),
+        obx_int.ModelProperty(
+            id: const obx_int.IdUid(3, 2509006704211905136),
+            name: 'startDateGainGraph',
+            type: 10,
+            flags: 0),
+        obx_int.ModelProperty(
+            id: const obx_int.IdUid(4, 4815485716240959814),
+            name: 'endDateGainGraph',
+            type: 10,
+            flags: 0)
       ],
       relations: <obx_int.ModelRelation>[],
       backlinks: <obx_int.ModelBacklink>[]),
@@ -538,18 +548,29 @@ obx_int.ModelDefinition getObjectBoxModel() {
           object.id = id;
         },
         objectToFB: (Settings object, fb.Builder fbb) {
-          fbb.startTable(3);
+          fbb.startTable(5);
           fbb.addInt64(0, object.id);
           fbb.addInt64(1, object.defaultCurrency.targetId);
+          fbb.addInt64(2, object.startDateGainGraph?.millisecondsSinceEpoch);
+          fbb.addInt64(3, object.endDateGainGraph?.millisecondsSinceEpoch);
           fbb.finish(fbb.endTable());
           return object.id;
         },
         objectFromFB: (obx.Store store, ByteData fbData) {
           final buffer = fb.BufferContext(fbData);
           final rootOffset = buffer.derefObject(0);
-
+          final startDateGainGraphValue =
+              const fb.Int64Reader().vTableGetNullable(buffer, rootOffset, 8);
+          final endDateGainGraphValue =
+              const fb.Int64Reader().vTableGetNullable(buffer, rootOffset, 10);
           final object = Settings()
-            ..id = const fb.Int64Reader().vTableGet(buffer, rootOffset, 4, 0);
+            ..id = const fb.Int64Reader().vTableGet(buffer, rootOffset, 4, 0)
+            ..startDateGainGraph = startDateGainGraphValue == null
+                ? null
+                : DateTime.fromMillisecondsSinceEpoch(startDateGainGraphValue)
+            ..endDateGainGraph = endDateGainGraphValue == null
+                ? null
+                : DateTime.fromMillisecondsSinceEpoch(endDateGainGraphValue);
           object.defaultCurrency.targetId =
               const fb.Int64Reader().vTableGet(buffer, rootOffset, 6, 0);
           object.defaultCurrency.attach(store);
@@ -825,6 +846,14 @@ class Settings_ {
   /// see [Settings.defaultCurrency]
   static final defaultCurrency =
       obx.QueryRelationToOne<Settings, Currency>(_entities[4].properties[1]);
+
+  /// see [Settings.startDateGainGraph]
+  static final startDateGainGraph =
+      obx.QueryDateProperty<Settings>(_entities[4].properties[2]);
+
+  /// see [Settings.endDateGainGraph]
+  static final endDateGainGraph =
+      obx.QueryDateProperty<Settings>(_entities[4].properties[3]);
 }
 
 /// [MarketInfo] entity fields to define ObjectBox queries.

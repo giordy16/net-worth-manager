@@ -113,34 +113,37 @@ class NetWorthRepoImpl extends NetWorthRepo {
   }
 
   @override
-  Map<DateTime, double> getNetWorthsAtTheEndOfMonths() {
-    Map<DateTime, double> nw = {};
+  Future<Map<DateTime, double>> getNetWorthsAtTheEndOfMonths() async {
+    return await runInDifferentThread(() {
 
-    final nwBox = GetIt.I<Store>().box<NetWorthHistory>();
+      Map<DateTime, double> nw = {};
 
-    DateTime? firstNWDate =
-        nwBox.query().order(NetWorthHistory_.date).build().findFirst()?.date;
+      final nwBox = GetIt.I<Store>().box<NetWorthHistory>();
 
-    if (firstNWDate == null) {
+      DateTime? firstNWDate =
+          nwBox.query().order(NetWorthHistory_.date).build().findFirst()?.date;
+
+      if (firstNWDate == null) {
+        return nw;
+      }
+
+      DateTime lastDayOfTheMonth = firstNWDate.lastDayOfTheMonth;
+
+      while (lastDayOfTheMonth.isBefore(DateTime.now())) {
+        double nwValue = nwBox
+            .query(NetWorthHistory_.date.lessOrEqualDate(lastDayOfTheMonth))
+            .order(NetWorthHistory_.date, flags: Order.descending)
+            .build()
+            .findFirst()
+            ?.value ??
+            0;
+
+        nw.addAll({lastDayOfTheMonth: nwValue});
+
+        lastDayOfTheMonth = (lastDayOfTheMonth.copyWith(day: lastDayOfTheMonth.day + 1)).keepOnlyYMD().lastDayOfTheMonth;
+      }
+
       return nw;
-    }
-
-    DateTime lastDayOfTheMonth = firstNWDate.lastDayOfTheMonth;
-
-    while (lastDayOfTheMonth.isBefore(DateTime.now())) {
-      double nwValue = nwBox
-              .query(NetWorthHistory_.date.lessOrEqualDate(lastDayOfTheMonth))
-              .order(NetWorthHistory_.date, flags: Order.descending)
-              .build()
-              .findFirst()
-              ?.value ??
-          0;
-
-      nw.addAll({lastDayOfTheMonth: nwValue});
-
-      lastDayOfTheMonth = (lastDayOfTheMonth.copyWith(day: lastDayOfTheMonth.day + 1)).keepOnlyYMD().lastDayOfTheMonth;
-    }
-
-    return nw;
+    });
   }
 }

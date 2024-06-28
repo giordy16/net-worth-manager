@@ -6,6 +6,7 @@ import 'package:net_worth_manager/ui/screens/add_asset/add_asset_screen.dart';
 import 'package:net_worth_manager/ui/screens/add_asset_position/add_asset_position_screen.dart';
 import 'package:net_worth_manager/ui/screens/add_asset_position/add_asset_position_screen_params.dart';
 import 'package:net_worth_manager/ui/screens/add_category/add_category_screen.dart';
+import 'package:net_worth_manager/ui/screens/add_custom_pie/add_custom_pie_screen.dart';
 import 'package:net_worth_manager/ui/screens/add_market_asset/add_market_asset_screen_params.dart';
 import 'package:net_worth_manager/ui/screens/add_market_asset/add_market_asset_screen.dart';
 import 'package:net_worth_manager/ui/screens/add_selection/add_selection_screen.dart';
@@ -78,6 +79,10 @@ final appRoutes = GoRouter(
     GoRoute(
       path: FullAssetAllocationScreen.route,
       builder: (context, state) => FullAssetAllocationScreen(),
+    ),
+    GoRoute(
+      path: AddCustomPieScreen.route,
+      builder: (context, state) => AddCustomPieScreen(),
     ),
   ],
 );
