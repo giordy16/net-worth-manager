@@ -140,7 +140,7 @@ class _MarketAssetLineGraph extends State<LineGraph> {
         ),
         const SizedBox(height: Dimensions.m),
         SizedBox(
-          height: 350,
+          height: 300,
           child: SfCartesianChart(
             margin: EdgeInsets.zero,
             legend: Legend(
