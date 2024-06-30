@@ -54,6 +54,11 @@ class InsightsCubit extends Cubit<InsightsState> {
 
     List<ColumnGraphData> chartData = [];
 
+    if (nwAtTheEndOfMonths.isEmpty) {
+      emit(state.copyWith(gainLossData: chartData));
+      return;
+    }
+
     for (var i = 1; i < nwAtTheEndOfMonths.entries.length; i++) {
       var entry = nwAtTheEndOfMonths.entries.toList()[i];
       var entryPrevMonth = nwAtTheEndOfMonths.entries.toList()[i - 1];
@@ -63,15 +68,15 @@ class InsightsCubit extends Cubit<InsightsState> {
               (entry.value - entryPrevMonth.value).toStringAsFixed(2))));
     }
 
-    emit(state.copyWith(
-        startDateGainGraph: GetIt.I<Settings>().startDateGainGraph ??
-            DateFormat("MMM yy").parse(chartData.first.x)));
+    if (chartData.isNotEmpty) {
+      emit(state.copyWith(
+          startDateGainGraph: GetIt.I<Settings>().startDateGainGraph ??
+              DateFormat("MMM yy").parse(chartData.first.x)));
 
-    emit(state.copyWith(
-        endDateGainGraph: GetIt.I<Settings>().endDateGainGraph ??
-            DateFormat("MMM yy").parse(chartData.last.x)));
-
-    emit(state.copyWith(gainLossData: chartData));
+      emit(state.copyWith(
+          endDateGainGraph: GetIt.I<Settings>().endDateGainGraph ??
+              DateFormat("MMM yy").parse(chartData.last.x)));
+    }
   }
 
 Future<void> changeStartGainGraph() async {

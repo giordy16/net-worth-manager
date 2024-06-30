@@ -21,17 +21,21 @@ class GainLossesChart extends StatelessWidget {
   Widget build(BuildContext context) {
     if (chartData == null) {
       return const Center(child: CircularProgressIndicator());
+    } else if (chartData!.isEmpty) {
+      return const Center(
+          child: Text(
+        "Not enough data to plot the chart.\n\nProbably you don't have data from the last month to evaluate gains or losses",
+        textAlign: TextAlign.center,
+      ));
     }
 
     if (start != null && end != null) {
       // filter chartData
-      chartData = chartData!
-          .where((element) {
-            var date = DateFormat("MMM yy").parse(element.x);
-            return (date.isAfter(start!) || date.isAtSameMomentAs(start!)) &&
-                (date.isBefore(end!) || date.isAtSameMomentAs(end!));
+      chartData = chartData!.where((element) {
+        var date = DateFormat("MMM yy").parse(element.x);
+        return (date.isAfter(start!) || date.isAtSameMomentAs(start!)) &&
+            (date.isBefore(end!) || date.isAtSameMomentAs(end!));
       }).toList();
-
     }
 
     return Container(

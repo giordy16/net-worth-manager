@@ -186,7 +186,7 @@ class _HomePageState extends State<HomePage>
                 )),
             const SizedBox(height: Dimensions.l),
             Text(
-              "You have not registered any assets yet.\nAdd the assets that are part of your networth with the button below.",
+              "You have not registered any assets yet.\n\nAdd your assets with the button below.",
               textAlign: TextAlign.center,
             ),
           ],

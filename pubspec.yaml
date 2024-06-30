@@ -40,6 +40,7 @@ dependencies:
   get_it: ^7.7.0
   flutter_svg: ^2.0.9
   package_info_plus: ^8.0.0
+  flutter_native_splash: ^2.4.0
 
 dev_dependencies:
   flutter_test:
@@ -64,4 +65,5 @@ flutter:
   assets:
     - assets/
     - assets/svg/
+    - assets/app/
 

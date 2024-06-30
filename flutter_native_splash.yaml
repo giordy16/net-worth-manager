@@ -1,0 +1,16 @@
+# https://pub.dev/packages/flutter_native_splash
+
+# dart run flutter_native_splash:create
+# dart run flutter_native_splash:remove
+flutter_native_splash:
+  color: "#0D1014"
+
+  # The image parameter allows you to specify an image used in the splash screen.  It must be a
+  # png file and should be sized for 4x pixel density.
+  image: assets/app/app_splash.png
+
+  # Android 12 handles the splash screen differently than previous versions.
+  android_12:
+    color: "#0D1014"
+
+    image: assets/app/app_splash.png

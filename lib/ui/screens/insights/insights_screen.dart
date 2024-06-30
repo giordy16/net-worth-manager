@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:get_it/get_it.dart';
 import 'package:go_router/go_router.dart';
 import 'package:intl/intl.dart';
@@ -16,6 +17,7 @@ import 'package:net_worth_manager/ui/widgets/graph/gain_losses_chart.dart';
 import 'package:net_worth_manager/utils/extensions/context_extensions.dart';
 
 import '../../../app_dimensions.dart';
+import '../../../app_images.dart';
 import '../../../models/obox/net_worth_history.dart';
 import '../../../objectbox.g.dart';
 import 'insights_cubit.dart';
@@ -73,87 +75,114 @@ class InsightsScreen extends StatelessWidget {
                     if (state.loading) {
                       return const Center(child: CircularProgressIndicator());
                     } else {
-                      return ListView(
-                        children: [
-                          Row(
+                      if (state.categoryAllocationData?.isEmpty == true) {
+                        // there are no assets with > 0, build empty UI
+
+                        return Center(
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
                             children: [
+                              SvgPicture.asset(AppImages.addData,
+                                  width: 50,
+                                  height: 50,
+                                  colorFilter: ColorFilter.mode(
+                                    theme.colorScheme.secondary,
+                                    BlendMode.srcIn,
+                                  )),
+                              const SizedBox(height: Dimensions.l),
                               Text(
-                                "Allocation",
-                                style: theme.textTheme.titleLarge
-                                    ?.copyWith(fontWeight: FontWeight.bold),
+                                "You have not registered any assets yet.\n\nAdd your assets in the Home to have the insights.",
+                                textAlign: TextAlign.center,
                               ),
-                              const Expanded(child: SizedBox()),
-                              IconButton(
-                                padding: EdgeInsets.zero,
-                                onPressed: () => context.push(
-                                    AddCustomPieScreen.route),
-                                icon: Icon(Icons.add),
-                              )
                             ],
                           ),
-                          const SizedBox(height: Dimensions.s),
-                          AllocationPieChart(state.categoryAllocationData),
-                          const SizedBox(height: Dimensions.l),
-                          ...customPie.map((element) => Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Text(
-                                    element.name,
-                                    style: theme.textTheme.titleLarge
-                                        ?.copyWith(fontWeight: FontWeight.bold),
-                                  ),
-                                  const SizedBox(height: Dimensions.s),
-                                  AllocationPieChart(element.getChartData()),
-                                ],
-                              )),
-                          IconButton(
-                              padding: EdgeInsets.zero,
-                              onPressed: () =>
-                                  context.push(FullAssetAllocationScreen.route),
-                              icon: Row(children: [
+                        );
+                      } else {
+                        return ListView(
+                          children: [
+                            Row(
+                              children: [
                                 Text(
-                                  "See full asset allocation",
-                                  style: theme.textTheme.bodyLarge,
+                                  "Allocation",
+                                  style: theme.textTheme.titleLarge
+                                      ?.copyWith(fontWeight: FontWeight.bold),
                                 ),
                                 const Expanded(child: SizedBox()),
-                                const Icon(Icons.arrow_forward_ios, size: 14)
-                              ])),
-                          Text(
-                            "Monthly Gains/Losses",
-                            style: theme.textTheme.titleLarge
-                                ?.copyWith(fontWeight: FontWeight.bold),
-                          ),
-                          const SizedBox(height: Dimensions.s),
-                          if (state.startDateGainGraph != null &&
-                              state.endDateGainGraph != null)
-                            Row(
-                              mainAxisSize: MainAxisSize.max,
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                                TextButton(
-                                    onPressed: () {
-                                      context
-                                          .read<InsightsCubit>()
-                                          .changeStartGainGraph();
-                                    },
-                                    child: Text(DateFormat("MMM yy")
-                                        .format(state.startDateGainGraph!))),
-                                const Text("-"),
-                                TextButton(
-                                    onPressed: () {
-                                      context
-                                          .read<InsightsCubit>()
-                                          .changeStartGainGraph();
-                                    },
-                                    child: Text(DateFormat("MMM yy")
-                                        .format(state.endDateGainGraph!))),
+                                IconButton(
+                                  padding: EdgeInsets.zero,
+                                  onPressed: () =>
+                                      context.push(AddCustomPieScreen.route),
+                                  icon: Icon(Icons.add),
+                                )
                               ],
                             ),
-                          const SizedBox(height: Dimensions.s),
-                          GainLossesChart(state.gainLossData,
-                              state.startDateGainGraph, state.endDateGainGraph)
-                        ],
-                      );
+                            const SizedBox(height: Dimensions.s),
+                            AllocationPieChart(state.categoryAllocationData),
+                            const SizedBox(height: Dimensions.l),
+                            ...customPie.map((element) => Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Text(
+                                      element.name,
+                                      style: theme.textTheme.titleLarge
+                                          ?.copyWith(
+                                              fontWeight: FontWeight.bold),
+                                    ),
+                                    const SizedBox(height: Dimensions.s),
+                                    AllocationPieChart(element.getChartData()),
+                                  ],
+                                )),
+                            IconButton(
+                                padding: EdgeInsets.zero,
+                                onPressed: () => context
+                                    .push(FullAssetAllocationScreen.route),
+                                icon: Row(children: [
+                                  Text(
+                                    "See full asset allocation",
+                                    style: theme.textTheme.bodyLarge,
+                                  ),
+                                  const Expanded(child: SizedBox()),
+                                  const Icon(Icons.arrow_forward_ios, size: 14)
+                                ])),
+                            Text(
+                              "Monthly Gains/Losses",
+                              style: theme.textTheme.titleLarge
+                                  ?.copyWith(fontWeight: FontWeight.bold),
+                            ),
+                            const SizedBox(height: Dimensions.s),
+                            if (state.startDateGainGraph != null &&
+                                state.endDateGainGraph != null)
+                              Row(
+                                mainAxisSize: MainAxisSize.max,
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  TextButton(
+                                      onPressed: () {
+                                        context
+                                            .read<InsightsCubit>()
+                                            .changeStartGainGraph();
+                                      },
+                                      child: Text(DateFormat("MMM yy")
+                                          .format(state.startDateGainGraph!))),
+                                  const Text("-"),
+                                  TextButton(
+                                      onPressed: () {
+                                        context
+                                            .read<InsightsCubit>()
+                                            .changeStartGainGraph();
+                                      },
+                                      child: Text(DateFormat("MMM yy")
+                                          .format(state.endDateGainGraph!))),
+                                ],
+                              ),
+                            const SizedBox(height: Dimensions.s),
+                            GainLossesChart(
+                                state.gainLossData,
+                                state.startDateGainGraph,
+                                state.endDateGainGraph)
+                          ],
+                        );
+                      }
                     }
                   },
                 ),
