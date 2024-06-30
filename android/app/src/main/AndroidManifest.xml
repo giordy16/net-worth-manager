@@ -4,7 +4,7 @@
     <uses-permission android:name="android.permission.INTERNET" />
 
    <application
-        android:label="WorthNete"
+        android:label="net_worth_manager"
         android:name="${applicationName}"
         android:icon="@mipmap/ic_launcher">
         <activity
