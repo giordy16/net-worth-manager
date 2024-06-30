@@ -83,8 +83,18 @@ class _SettingsScreenState extends State<SettingsScreen> {
       var yes = await showYesNoBottomSheet(context,
           "Are you sure you want to import this file?\nAll current data will be overwritten");
       if (yes == true) {
+        LoadingOverlay.of(context).show();
+
         File file = File(result.files.single.path!);
         await ObjectBox.importDatabase(file);
+
+        GetIt.I.unregister(instance: GetIt.I<Store>());
+        GetIt.I.unregister(instance: GetIt.I<Settings>());
+
+        await initApp();
+
+        LoadingOverlay.of(context).show();
+
         context.pushReplacement(ScaffoldWithBottomNavigation.path);
       }
     }
