@@ -1,6 +1,7 @@
 import 'package:go_router/go_router.dart';
 import 'package:net_worth_manager/models/obox/asset_category_obox.dart';
 import 'package:net_worth_manager/models/obox/asset_obox.dart';
+import 'package:net_worth_manager/models/obox/custom_pie_obox.dart';
 import 'package:net_worth_manager/ui/scaffold_with_bottom_navigation.dart';
 import 'package:net_worth_manager/ui/screens/add_asset/add_asset_screen.dart';
 import 'package:net_worth_manager/ui/screens/add_asset_position/add_asset_position_screen.dart';
@@ -82,7 +83,7 @@ final appRoutes = GoRouter(
     ),
     GoRoute(
       path: AddCustomPieScreen.route,
-      builder: (context, state) => AddCustomPieScreen(),
+      builder: (context, state) => AddCustomPieScreen(state.extra as CustomPie?),
     ),
   ],
 );

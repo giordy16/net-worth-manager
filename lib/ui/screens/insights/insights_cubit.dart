@@ -8,6 +8,7 @@ import 'package:net_worth_manager/utils/background_thread.dart';
 
 import '../../../domain/repository/net_worth/net_worth_repo.dart';
 import '../../../models/obox/asset_category_obox.dart';
+import '../../../models/obox/custom_pie_obox.dart';
 import '../../../objectbox.g.dart';
 import '../../widgets/graph/allocation_pie_chart.dart';
 import '../../widgets/graph/gain_losses_chart.dart';
@@ -25,6 +26,7 @@ class InsightsCubit extends Cubit<InsightsState> {
 
   void initPage() {
     initCategoryAssetData();
+    initCustomAllocationChart();
     initGainLossesData();
 
     emit(state.copyWith(loading: false));
@@ -77,37 +79,50 @@ class InsightsCubit extends Cubit<InsightsState> {
           endDateGainGraph: GetIt.I<Settings>().endDateGainGraph ??
               DateFormat("MMM yy").parse(chartData.last.x)));
     }
+    emit(state.copyWith(gainLossData: chartData));
   }
 
-Future<void> changeStartGainGraph() async {
-  final settings = GetIt.I<Settings>();
+  void initCustomAllocationChart() {
+    final customPie = GetIt.I<Store>().box<CustomPie>().getAll();
+    emit(state.copyWith(customAllocationData: customPie));
+  }
 
-  final DateTime? picked = await showDatePicker(
+  void deleteCustomAllocationChart(int id) {
+    GetIt.I<Store>().box<CustomPie>().remove(id);
+    initCustomAllocationChart();
+  }
+
+  Future<void> changeStartGainGraph() async {
+    final settings = GetIt.I<Settings>();
+
+    final DateTime? picked = await showDatePicker(
       context: context,
       initialDate: state.startDateGainGraph,
       firstDate: DateFormat("MMM yy").parse(state.gainLossData!.first.x),
-      lastDate: DateFormat("MMM yy").parse(state.gainLossData!.last.x),);
-  if (picked != null) {
-    settings.startDateGainGraph = picked;
-    GetIt.I<Store>().box<Settings>().put(settings);
+      lastDate: DateFormat("MMM yy").parse(state.gainLossData!.last.x),
+    );
+    if (picked != null) {
+      settings.startDateGainGraph = picked;
+      GetIt.I<Store>().box<Settings>().put(settings);
 
-    emit(state.copyWith(startDateGainGraph: picked));
+      emit(state.copyWith(startDateGainGraph: picked));
+    }
   }
-}
 
-Future<void> changeEndGainGraph() async {
-  final settings = GetIt.I<Settings>();
+  Future<void> changeEndGainGraph() async {
+    final settings = GetIt.I<Settings>();
 
-  final DateTime? picked = await showDatePicker(
+    final DateTime? picked = await showDatePicker(
       context: context,
       initialDate: state.endDateGainGraph,
       firstDate: DateFormat("MMM yy").parse(state.gainLossData!.first.x),
-      lastDate: DateFormat("MMM yy").parse(state.gainLossData!.last.x),);
-  if (picked != null) {
-    settings.endDateGainGraph = picked;
-    GetIt.I<Store>().box<Settings>().put(settings);
+      lastDate: DateFormat("MMM yy").parse(state.gainLossData!.last.x),
+    );
+    if (picked != null) {
+      settings.endDateGainGraph = picked;
+      GetIt.I<Store>().box<Settings>().put(settings);
 
-    emit(state.copyWith(endDateGainGraph: picked));
+      emit(state.copyWith(endDateGainGraph: picked));
+    }
   }
-}
 }

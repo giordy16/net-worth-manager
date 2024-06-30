@@ -14,7 +14,6 @@ import 'package:net_worth_manager/ui/screens/home/home_page_event.dart';
 import 'package:net_worth_manager/ui/widgets/base_components/performance_text.dart';
 import 'package:net_worth_manager/ui/widgets/modal/bottom_sheet.dart';
 import 'package:net_worth_manager/utils/enum/graph_data_gap_enum.dart';
-import 'package:net_worth_manager/utils/extensions/context_extensions.dart';
 import 'package:net_worth_manager/utils/extensions/number_extension.dart';
 
 import '../../../app_images.dart';

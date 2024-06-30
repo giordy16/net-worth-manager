@@ -3,6 +3,7 @@ import 'package:get_it/get_it.dart';
 import 'package:go_router/go_router.dart';
 import 'package:net_worth_manager/app_dimensions.dart';
 import 'package:net_worth_manager/models/obox/custom_pie_obox.dart';
+import 'package:net_worth_manager/ui/widgets/base_components/app_text_field.dart';
 
 import '../../../models/obox/asset_category_obox.dart';
 import '../../../models/obox/asset_obox.dart';
@@ -11,6 +12,10 @@ import '../../widgets/base_components/app_bottom_fab.dart';
 
 class AddCustomPieScreen extends StatefulWidget {
   static String route = "/AddCustomPieScreen";
+
+  CustomPie? customPie;
+
+  AddCustomPieScreen(this.customPie);
 
   @override
   State<StatefulWidget> createState() => _AddCustomPieScreenState();
@@ -23,27 +28,53 @@ class _AddCustomPieScreenState extends State<AddCustomPieScreen> {
   Set<AssetCategory> selectedCat = {};
   Set<Asset> selectedAsset = {};
 
+  String allocationName = "";
+
+  @override
+  void initState() {
+    if (widget.customPie != null) {
+      allocationName = widget.customPie!.name;
+      selectedCat.addAll(widget.customPie!.categories);
+      selectedAsset.addAll(widget.customPie!.assets);
+    }
+
+    super.initState();
+  }
+
+  void save() {
+    if (widget.customPie == null) {
+      CustomPie pie = CustomPie(allocationName);
+      pie.assets.addAll(selectedAsset);
+      pie.categories.addAll(selectedCat);
+      GetIt.I<Store>().box<CustomPie>().put(pie);
+    } else {
+      widget.customPie!.name = allocationName;
+
+      widget.customPie!.assets.removeWhere((_) => true);
+      widget.customPie!.categories.removeWhere((_) => true);
+
+      widget.customPie!.assets.addAll(selectedAsset);
+      widget.customPie!.categories.addAll(selectedCat);
+      GetIt.I<Store>().box<CustomPie>().put(widget.customPie!);
+    }
+
+    context.pop();
+  }
+
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
 
     return Scaffold(
       appBar: AppBar(
-        title: Text("Add"),
+        title: Text("Create allocation chart"),
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
       floatingActionButton: Visibility(
         visible: selectedCat.length + selectedAsset.length > 1,
         child: AppBottomFab(
           text: "Save",
-          onTap: () {
-            CustomPie pie = CustomPie("Custom allocation");
-            pie.assets.addAll(selectedAsset);
-            pie.categories.addAll(selectedCat);
-
-            GetIt.I<Store>().box<CustomPie>().put(pie);
-            context.pop();
-          },
+          onTap: save,
         ),
       ),
       body: SafeArea(
@@ -51,8 +82,25 @@ class _AddCustomPieScreenState extends State<AddCustomPieScreen> {
           padding: EdgeInsets.symmetric(horizontal: Dimensions.screenMargin),
           child: ListView(
             children: [
-              Text("Create your custom allocation chart"),
-              SizedBox(height: Dimensions.l),
+              SizedBox(height: Dimensions.s),
+              Text(
+                "Choose a name for this chart",
+                style: theme.textTheme.bodyMedium,
+              ),
+              SizedBox(height: Dimensions.s),
+              AppTextField(
+                  isMandatory: true,
+                  title: "Name",
+                  initialValue: allocationName,
+                  onTextChange: (name) {
+                    allocationName = name;
+                  }),
+              SizedBox(height: Dimensions.xl),
+              Text(
+                "Select the categories or assets you want to add to the chart",
+                style: theme.textTheme.bodyMedium,
+              ),
+              SizedBox(height: Dimensions.s),
               Text("Categories",
                   style: theme.textTheme.titleMedium
                       ?.copyWith(fontWeight: FontWeight.bold)),
@@ -74,7 +122,7 @@ class _AddCustomPieScreenState extends State<AddCustomPieScreen> {
                         ],
                       ))
                   .toList(),
-              SizedBox(height: Dimensions.l),
+              SizedBox(height: Dimensions.m),
               Text("Assets",
                   style: theme.textTheme.titleMedium
                       ?.copyWith(fontWeight: FontWeight.bold)),

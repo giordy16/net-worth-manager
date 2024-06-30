@@ -20,41 +20,64 @@ import '../../../app_dimensions.dart';
 import '../../../app_images.dart';
 import '../../../models/obox/net_worth_history.dart';
 import '../../../objectbox.g.dart';
+import '../../widgets/modal/bottom_sheet.dart';
 import 'insights_cubit.dart';
 
 class InsightsScreen extends StatelessWidget {
   static String route = "/InsightsScreen";
 
-  Future<void> changeStartDateGainsGraph(BuildContext context) async {}
+  Future<void> onShowMoreAllocation(
+    BuildContext context,
+    CustomPie customAllocation,
+  ) async {
+    Map<Widget, Function> selections = {};
 
-  Future<void> changeEndDateGainsGraph(BuildContext context) async {
-    final settings = GetIt.I<Settings>();
-    DateTime? end = settings.endDateGainGraph;
+    selections.addAll({
+      const Row(
+        children: [
+          Icon(Icons.edit),
+          SizedBox(
+            width: 4,
+          ),
+          Text("Edit")
+        ],
+      ): () async {
+        await context
+            .push(AddCustomPieScreen.route, extra: customAllocation);
+        context
+            .read<InsightsCubit>()
+            .initCustomAllocationChart();
+      }
+    });
 
-    DateTime firstNw = GetIt.I<Store>()
-        .box<NetWorthHistory>()
-        .query()
-        .order(NetWorthHistory_.date)
-        .build()
-        .findFirst()!
-        .date;
+    selections.addAll({
+      const Row(
+        children: [
+          Icon(Icons.delete_outlined),
+          SizedBox(
+            width: 4,
+          ),
+          Text("Delete")
+        ],
+      ): () async {
+        if ((await showDeleteConfirmSheet(
+                context, "Are you sure you want to delete this chart?")) ==
+            true) {
+          context
+              .read<InsightsCubit>()
+              .deleteCustomAllocationChart(customAllocation.id);
+        }
+      }
+    });
 
-    final DateTime? picked = await showDatePicker(
-        context: context,
-        initialDate: end ?? DateTime.now(),
-        firstDate: firstNw,
-        lastDate: DateTime.now());
-    if (picked != null) {
-      settings.endDateGainGraph = picked;
-      GetIt.I<Store>().box<Settings>().put(settings);
-    }
+    var selectedOption =
+        await showSelectionSheet(context, selections.keys.toList());
+    selections[selectedOption]?.call();
   }
 
   @override
   Widget build(BuildContext context) {
     ThemeData theme = Theme.of(context);
-
-    final customPie = GetIt.I<Store>().box<CustomPie>().getAll();
 
     return Scaffold(
       body: SafeArea(
@@ -77,7 +100,6 @@ class InsightsScreen extends StatelessWidget {
                     } else {
                       if (state.categoryAllocationData?.isEmpty == true) {
                         // there are no assets with > 0, build empty UI
-
                         return Center(
                           child: Column(
                             mainAxisAlignment: MainAxisAlignment.center,
@@ -110,40 +132,66 @@ class InsightsScreen extends StatelessWidget {
                                 const Expanded(child: SizedBox()),
                                 IconButton(
                                   padding: EdgeInsets.zero,
-                                  onPressed: () =>
-                                      context.push(AddCustomPieScreen.route),
+                                  onPressed: () async {
+                                    await context
+                                        .push(AddCustomPieScreen.route);
+                                    context
+                                        .read<InsightsCubit>()
+                                        .initCustomAllocationChart();
+                                  },
                                   icon: Icon(Icons.add),
                                 )
                               ],
                             ),
-                            const SizedBox(height: Dimensions.s),
                             AllocationPieChart(state.categoryAllocationData),
+                            const SizedBox(height: Dimensions.xl),
+                            if (state.customAllocationData?.isNotEmpty == true)
+                              ...state.customAllocationData!
+                                  .map((element) => Column(
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
+                                        children: [
+                                          Row(
+                                            children: [
+                                              Text(
+                                                element.name,
+                                                style: theme
+                                                    .textTheme.titleLarge
+                                                    ?.copyWith(
+                                                        fontWeight:
+                                                            FontWeight.bold),
+                                              ),
+                                              const Expanded(child: SizedBox()),
+                                              IconButton(
+                                                padding: EdgeInsets.zero,
+                                                onPressed: () async {
+                                                  await onShowMoreAllocation(
+                                                    context,
+                                                    element,
+                                                  );
+                                                },
+                                                icon: Icon(Icons.more_vert),
+                                              )
+                                            ],
+                                          ),
+                                          AllocationPieChart(
+                                              element.getChartData()),
+                                          const SizedBox(height: Dimensions.xl),
+                                        ],
+                                      )),
+                            // IconButton(
+                            //     padding: EdgeInsets.zero,
+                            //     onPressed: () => context
+                            //         .push(FullAssetAllocationScreen.route),
+                            //     icon: Row(children: [
+                            //       Text(
+                            //         "See full asset allocation",
+                            //         style: theme.textTheme.bodyLarge,
+                            //       ),
+                            //       const Expanded(child: SizedBox()),
+                            //       const Icon(Icons.arrow_forward_ios, size: 14)
+                            //     ])),
                             const SizedBox(height: Dimensions.l),
-                            ...customPie.map((element) => Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    Text(
-                                      element.name,
-                                      style: theme.textTheme.titleLarge
-                                          ?.copyWith(
-                                              fontWeight: FontWeight.bold),
-                                    ),
-                                    const SizedBox(height: Dimensions.s),
-                                    AllocationPieChart(element.getChartData()),
-                                  ],
-                                )),
-                            IconButton(
-                                padding: EdgeInsets.zero,
-                                onPressed: () => context
-                                    .push(FullAssetAllocationScreen.route),
-                                icon: Row(children: [
-                                  Text(
-                                    "See full asset allocation",
-                                    style: theme.textTheme.bodyLarge,
-                                  ),
-                                  const Expanded(child: SizedBox()),
-                                  const Icon(Icons.arrow_forward_ios, size: 14)
-                                ])),
                             Text(
                               "Monthly Gains/Losses",
                               style: theme.textTheme.titleLarge
