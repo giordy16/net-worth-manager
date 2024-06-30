@@ -1,21 +1,32 @@
+import 'dart:io';
+
+import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get_it/get_it.dart';
 import 'package:go_router/go_router.dart';
 import 'package:net_worth_manager/domain/repository/net_worth/net_worth_repo_impl.dart';
 import 'package:net_worth_manager/main.dart';
 import 'package:net_worth_manager/models/obox/settings_obox.dart';
+import 'package:net_worth_manager/ui/scaffold_with_bottom_navigation.dart';
 import 'package:net_worth_manager/ui/screens/currency_selection/currency_selection_params.dart';
+import 'package:net_worth_manager/ui/screens/home/home_page_state.dart';
+import 'package:net_worth_manager/ui/widgets/modal/bottom_sheet.dart';
 import 'package:net_worth_manager/utils/extensions/objectbox_extension.dart';
 import 'package:package_info_plus/package_info_plus.dart';
+import 'package:restart_app/restart_app.dart';
 
 import '../../../app_dimensions.dart';
+import '../../../domain/database/objectbox.dart';
 import '../../../models/obox/currency_obox.dart';
 import '../../../objectbox.g.dart';
 import '../../widgets/modal/loading_overlay.dart';
 import '../currency_selection/currency_selection_screen.dart';
+import '../home/home_page_bloc.dart';
+import '../home/home_page_event.dart';
+import '../home/home_page_screen.dart';
 
 class SettingsScreen extends StatefulWidget {
-
   static String route = "/SettingsScreen";
 
   @override
@@ -57,6 +68,28 @@ class _SettingsScreenState extends State<SettingsScreen> {
     }
   }
 
+  Future<void> exportDB() async {
+    var dbData = await ObjectBox.getDBData();
+    await FilePicker.platform.saveFile(
+        dialogTitle: 'Please select an output file:',
+        fileName: 'data.mdb',
+        bytes: dbData);
+  }
+
+  Future<void> importDB(BuildContext context) async {
+    FilePickerResult? result = await FilePicker.platform.pickFiles();
+
+    if (result != null) {
+      var yes = await showYesNoBottomSheet(context,
+          "Are you sure you want to import this file?\nAll current data will be overwritten");
+      if (yes == true) {
+        File file = File(result.files.single.path!);
+        await ObjectBox.importDatabase(file);
+        context.pushReplacement(ScaffoldWithBottomNavigation.path);
+      }
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     ThemeData theme = Theme.of(context);
@@ -86,13 +119,38 @@ class _SettingsScreenState extends State<SettingsScreen> {
                     height: 40,
                     child: Row(
                       children: [
-                        Text("Main currency",
-                            style: theme.textTheme.bodyLarge),
+                        Text("Main currency", style: theme.textTheme.bodyLarge),
                         Expanded(child: SizedBox()),
                         Text(currentMainCurrency.name,
                             style: theme.textTheme.bodyLarge),
                         SizedBox(width: Dimensions.s),
                         Icon(Icons.arrow_forward_ios, size: 14)
+                      ],
+                    ),
+                  ),
+                ),
+              ),
+              Material(
+                child: InkWell(
+                  onTap: exportDB,
+                  child: Container(
+                    height: 40,
+                    child: Row(
+                      children: [
+                        Text("Export", style: theme.textTheme.bodyLarge),
+                      ],
+                    ),
+                  ),
+                ),
+              ),
+              Material(
+                child: InkWell(
+                  onTap: () => importDB(context),
+                  child: Container(
+                    height: 40,
+                    child: Row(
+                      children: [
+                        Text("Import", style: theme.textTheme.bodyLarge),
                       ],
                     ),
                   ),
