@@ -15,6 +15,7 @@ import '../../scaffold_with_bottom_navigation.dart';
 import '../../widgets/modal/bottom_sheet.dart';
 import '../../widgets/modal/loading_overlay.dart';
 import '../add_selection/component/add_selection_item.dart';
+import 'package:path/path.dart' as p;
 
 class ImportExportScreen extends StatelessWidget {
   static String path = "/ImportExportScreen";
@@ -41,8 +42,9 @@ class ImportExportScreen extends StatelessWidget {
         "Are you sure you want to import this file?\nAll current data will be overwritten",
       );
       if (yes == true) {
-        if (!result.files.single.path!.split("/").last.contains(".mdb")) {
-          UserMessage.showMessage(context, "The selected file is not correct. Please select a .mdb file");
+        if (p.extension(result.files.single.path!) != ".mdb") {
+          UserMessage.showMessage(context,
+              "The selected file is not correct. Please select a .mdb file");
           LoadingOverlay.of(context).hide();
           return;
         }
@@ -59,9 +61,10 @@ class ImportExportScreen extends StatelessWidget {
           await initApp();
 
           context.clearStackAndReplace(ScaffoldWithBottomNavigation.path);
-        } catch(e) {
+        } catch (e) {
           print(e);
-          UserMessage.showMessage(context, "An error occurred, please try again");
+          UserMessage.showMessage(
+              context, "An error occurred, please try again");
         }
       }
       LoadingOverlay.of(context).hide();
