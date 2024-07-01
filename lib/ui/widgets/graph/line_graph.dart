@@ -66,41 +66,57 @@ class _MarketAssetLineGraph extends State<LineGraph> {
         .toDouble();
     double maxX = currentGap.getEndDate().millisecondsSinceEpoch.toDouble();
 
-    // add a new point if the last one is not today, so the graph is plotted until the right edge
-    if (widget.graphData.isNotEmpty &&
-        widget.graphData.lastOrNull?.x.keepOnlyYMD() !=
+    List<GraphData> visibleData = widget.graphData
+        .where((element) => element.x
+            .isAfter(currentGap.getStartDate(widget.graphData.firstOrNull?.x)))
+        .toList();
+
+    // add a new point at the end if the last one is not today, so the graph is plotted until the right edge
+    if (visibleData.isNotEmpty &&
+        visibleData.lastOrNull?.x.keepOnlyYMD() !=
             DateTime.now().keepOnlyYMD()) {
-      widget.graphData.add(
-          GraphData(DateTime.now().keepOnlyYMD(), widget.graphData.last.y));
+      visibleData
+          .add(GraphData(DateTime.now().keepOnlyYMD(), visibleData.last.y));
       if (widget.secondaryGraphData != null) {
         widget.secondaryGraphData!.add(GraphData(
             DateTime.now().keepOnlyYMD(), widget.secondaryGraphData!.last.y));
       }
     }
 
+    // add a new point at the beginning, so the graph is plotted until the right edge
+    if (visibleData.isNotEmpty &&
+        visibleData.firstOrNull?.x.keepOnlyYMD().millisecondsSinceEpoch !=
+            minX) {
+      visibleData = [
+            GraphData(DateTime.fromMillisecondsSinceEpoch(minX.toInt()),
+                visibleData.first.y)
+          ] +
+          visibleData;
+      if (widget.secondaryGraphData != null) {
+        widget.secondaryGraphData = [
+              GraphData(DateTime.fromMillisecondsSinceEpoch(minX.toInt()),
+                  visibleData.first.y)
+            ] +
+            widget.secondaryGraphData!;
+      }
+    }
+
     // edge case: graphData has only 1 element and has the date of today
     // solution: add to graphData the date of tomorrow
-    if (widget.graphData.length == 1 &&
-        widget.graphData.lastOrNull?.x == DateTime.now().keepOnlyYMD()) {
+    if (visibleData.length == 1 &&
+        visibleData.lastOrNull?.x == DateTime.now().keepOnlyYMD()) {
       DateTime todayLastDateTime = DateTime.now()
           .keepOnlyYMD()
           .add(const Duration(days: 1))
           .subtract(const Duration(milliseconds: 1));
 
-      widget.graphData
-          .add(GraphData(todayLastDateTime, widget.graphData.last.y));
+      visibleData.add(GraphData(todayLastDateTime, visibleData.last.y));
       if (widget.secondaryGraphData != null) {
         widget.secondaryGraphData!.add(
             GraphData(todayLastDateTime, widget.secondaryGraphData!.last.y));
       }
       maxX = todayLastDateTime.millisecondsSinceEpoch.toDouble();
     }
-
-    // calc min and max y
-    List<GraphData> subset = widget.graphData
-        .where((element) => element.x
-            .isAfter(currentGap.getStartDate(widget.graphData.firstOrNull?.x)))
-        .toList();
 
     return Column(
       children: [
@@ -201,8 +217,8 @@ class _MarketAssetLineGraph extends State<LineGraph> {
               LineSeries<GraphData, int>(
                 name: "Asset value",
                 color: theme.colorScheme.secondary,
-                animationDuration: 100,
-                dataSource: widget.graphData,
+                animationDuration: 0,
+                dataSource: visibleData,
                 xValueMapper: (GraphData data, _) =>
                     data.x.millisecondsSinceEpoch,
                 yValueMapper: (GraphData data, _) => data.y,

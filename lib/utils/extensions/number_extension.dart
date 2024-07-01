@@ -1,4 +1,5 @@
 import 'dart:io';
+import 'dart:math';
 
 import 'package:get_it/get_it.dart';
 import 'package:intl/intl.dart';
@@ -59,5 +60,17 @@ extension DoubleHelper on double {
 
   double roundRoundUoToPreviousMultiple(double multiple) {
     return (this ~/ multiple) * multiple;
+  }
+
+  double roundMinGraph() {
+    int numberOfDigits = abs().toInt().toString().length;
+    int multiple = pow(10, numberOfDigits-1).toInt();
+    return roundRoundUoToPreviousMultiple(multiple.toDouble());
+  }
+
+  double roundMaxGraph() {
+    int numberOfDigits = abs().toInt().toString().length;
+    int multiple = pow(10, numberOfDigits-1).toInt();
+    return roundRoundUoToNextMultiple(multiple.toDouble());
   }
 }
