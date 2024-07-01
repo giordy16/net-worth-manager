@@ -72,7 +72,7 @@ class AddAssetScreen extends StatelessWidget {
               builder: (context, state) {
             return Scaffold(
                 appBar: AppBar(
-                  title: Text("Asset"),
+                  title: Text("Asset/Liability"),
                 ),
                 floatingActionButtonLocation:
                     FloatingActionButtonLocation.centerFloat,
@@ -96,7 +96,7 @@ class AddAssetScreen extends StatelessWidget {
                               padding:
                                   const EdgeInsets.only(top: Dimensions.xs),
                               child: Text(
-                                  "Add a new assets. After you saved it, you can add its value")),
+                                  "Add a new asset or liability. After saving it, you can add its value.")),
                           Padding(
                             padding: const EdgeInsets.only(top: Dimensions.m),
                             child: AppTextField(

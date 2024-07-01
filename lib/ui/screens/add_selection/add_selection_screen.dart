@@ -29,28 +29,16 @@ class AddSelectionScreen extends StatelessWidget {
               const Text("Select which kind of asset you want to add:"),
               const SizedBox(height: Dimensions.m),
               AddSelectionItem(
-                "Market investment",
+                "Market Investment (ETF/Stock)",
                 "Add your investments in the stock market.\nTheir value will be automatically calculated day by day",
                 () {
-                  if (false) {
-                    context.push(AddMarketAssetScreen.route,
-                        extra: AddMarketAssetScreenParams(
-                            asset: MarketInfo(
-                          "AAPL",
-                          "Apple Inc.",
-                          "Equity",
-                          "USD",
-                          "USA",
-                        ).convertToAsset()));
-                  } else {
-                    context.push(TickerSearchScreen.route);
-                  }
+                  context.push(TickerSearchScreen.route);
                 },
               ),
               const SizedBox(height: Dimensions.m),
               AddSelectionItem(
-                "Normal asset",
-                "Add your assets that are part of the net worth.\nExample of assets are house, car, pension fund, credits/debts, valuable collections, watches, ...\nThe value of a normal asset is based on the last position added",
+                "Manual Asset or Liability",
+                "Add your asset or liability that are part of the net worth.\nExample of assets are house, car, cash, valuable collections, watches, ...",
                 () {
                   context.push(AddAssetScreen.route);
                 },
