@@ -1,5 +1,4 @@
 import 'package:get_it/get_it.dart';
-import 'package:net_worth_manager/main.dart';
 import 'package:net_worth_manager/models/obox/asset_category_obox.dart';
 import 'package:net_worth_manager/models/obox/asset_time_value_obox.dart';
 import 'package:net_worth_manager/models/obox/market_info_obox.dart';
@@ -14,12 +13,12 @@ import 'asset_repo.dart';
 class AssetRepoImpl implements AssetRepo {
   @override
   void saveAsset(Asset asset) {
-    objectbox.store.box<Asset>().put(asset);
+    GetIt.I<Store>().box<Asset>().put(asset);
   }
 
   @override
   List<AssetCategory> getAssetCategories() {
-    return objectbox.store
+    return GetIt.I<Store>()
         .box<AssetCategory>()
         .query(AssetCategory_.userCanSelect.equals(true))
         .build()
@@ -28,7 +27,7 @@ class AssetRepoImpl implements AssetRepo {
 
   @override
   List<Asset> getAssets() {
-    return objectbox.store.box<Asset>().getAll();
+    return GetIt.I<Store>().box<Asset>().getAll();
   }
 
   @override
@@ -48,12 +47,12 @@ class AssetRepoImpl implements AssetRepo {
     for (var timeValue in asset.timeValues.toList()) {
       deletePosition(asset, timeValue);
     }
-    objectbox.store.box<Asset>().remove(asset.id);
+    GetIt.I<Store>().box<Asset>().remove(asset.id);
   }
 
   @override
   void deletePosition(Asset asset, AssetTimeValue timeValue) {
-    objectbox.store.box<AssetTimeValue>().remove(timeValue.id);
+    GetIt.I<Store>().box<AssetTimeValue>().remove(timeValue.id);
     asset.timeValues.remove(timeValue);
   }
 
@@ -65,18 +64,18 @@ class AssetRepoImpl implements AssetRepo {
     }
 
     if (category.userCanSelect) {
-      objectbox.store.box<AssetCategory>().remove(category.id);
+      GetIt.I<Store>().box<AssetCategory>().remove(category.id);
     }
   }
 
   @override
   void updatePosition(AssetTimeValue position) {
-    objectbox.store.box<AssetTimeValue>().put(position);
+    GetIt.I<Store>().box<AssetTimeValue>().put(position);
   }
 
   @override
   List<Asset> getAssetsFromCategory(AssetCategory category) {
-    return objectbox.store
+    return GetIt.I<Store>()
         .box<Asset>()
         .query(Asset_.category.equals(category.id))
         .build()
@@ -85,8 +84,8 @@ class AssetRepoImpl implements AssetRepo {
 
   @override
   Future<void> saveMarketValue(MarketInfo info) async {
-    objectbox.store.box<MarketInfo>().put(info);
-    await objectbox.syncForexPrices();
+    GetIt.I<Store>().box<MarketInfo>().put(info);
+    await GetIt.I<Store>().syncForexPrices();
   }
 
   /// Returning the value of the @asset at the specified @dateTime at the mainCurrency

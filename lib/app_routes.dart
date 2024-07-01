@@ -14,6 +14,7 @@ import 'package:net_worth_manager/ui/screens/add_selection/add_selection_screen.
 import 'package:net_worth_manager/ui/screens/asset_detail/asset_detail_screen.dart';
 import 'package:net_worth_manager/ui/screens/currency_selection/currency_selection_params.dart';
 import 'package:net_worth_manager/ui/screens/currency_selection/currency_selection_screen.dart';
+import 'package:net_worth_manager/ui/screens/import_export/import_export_screen.dart';
 import 'package:net_worth_manager/ui/screens/import_investments/import_investments_screen.dart';
 import 'package:net_worth_manager/ui/screens/full_asset_allocation/full_asset_allocation_screen.dart';
 import 'package:net_worth_manager/ui/screens/ticker_search/ticker_search_screen.dart';
@@ -83,7 +84,12 @@ final appRoutes = GoRouter(
     ),
     GoRoute(
       path: AddCustomPieScreen.route,
-      builder: (context, state) => AddCustomPieScreen(state.extra as CustomPie?),
+      builder: (context, state) =>
+          AddCustomPieScreen(state.extra as CustomPie?),
+    ),
+    GoRoute(
+      path: ImportExportScreen.path,
+      builder: (context, state) => LoadingOverlay(child: ImportExportScreen()),
     ),
   ],
 );

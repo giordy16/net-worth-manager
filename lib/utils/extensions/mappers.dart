@@ -1,3 +1,4 @@
+import 'package:get_it/get_it.dart';
 import 'package:net_worth_manager/models/obox/market_info_obox.dart';
 import 'package:net_worth_manager/objectbox.g.dart';
 
@@ -10,7 +11,8 @@ extension MarketInfoMapper on MarketInfo {
     Asset? asset;
 
     // check if there is already this asset
-    QueryBuilder<Asset> builder = objectbox.store.box<Asset>().query(Asset_.marketInfo.notNull());
+    QueryBuilder<Asset> builder =
+        GetIt.I<Store>().box<Asset>().query(Asset_.marketInfo.notNull());
     builder.link(Asset_.marketInfo, MarketInfo_.symbol.equals(symbol));
     asset = builder.build().findFirst();
     if (asset != null) {
@@ -19,7 +21,8 @@ extension MarketInfoMapper on MarketInfo {
 
     asset = Asset(name);
     asset.marketInfo.target = this;
-    asset.category.target = objectbox.store.box<AssetCategory>().getAll().first;
+    asset.category.target =
+        GetIt.I<Store>().box<AssetCategory>().getAll().first;
 
     return asset;
   }

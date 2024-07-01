@@ -1,4 +1,5 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:get_it/get_it.dart';
 import 'package:net_worth_manager/main.dart';
 import 'package:net_worth_manager/models/obox/currency_obox.dart';
 import 'package:net_worth_manager/objectbox.g.dart';
@@ -17,9 +18,9 @@ class CurrencySelectionBloc
     on<FetchCurrencies>((event, emit) {
       List<Currency> list = [];
       if (event.searchText.isEmpty) {
-        list = objectbox.store.box<Currency>().getAll();
+        list = GetIt.I<Store>().box<Currency>().getAll();
       } else {
-        list = objectbox.store
+        list = GetIt.I<Store>()
             .box<Currency>()
             .query(Currency_.name.contains(event.searchText, caseSensitive: false))
             .build()

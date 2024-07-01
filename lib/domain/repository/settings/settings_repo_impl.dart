@@ -1,13 +1,12 @@
+import 'package:get_it/get_it.dart';
 import 'package:net_worth_manager/domain/repository/settings/settings_repo.dart';
 import 'package:net_worth_manager/models/obox/currency_obox.dart';
 import 'package:net_worth_manager/models/obox/settings_obox.dart';
 import 'package:objectbox/objectbox.dart';
 
-import '../../../main.dart';
-
 class SettingsRepoImpl extends SettingsRepo {
 
-  Box<Settings> box = objectbox.store.box<Settings>();
+  Box<Settings> box = GetIt.I<Store>().box<Settings>();
 
   @override
   Currency? getDefaultCurrency() {

@@ -1,31 +1,20 @@
-import 'dart:io';
-
-import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get_it/get_it.dart';
 import 'package:go_router/go_router.dart';
 import 'package:net_worth_manager/domain/repository/net_worth/net_worth_repo_impl.dart';
 import 'package:net_worth_manager/main.dart';
 import 'package:net_worth_manager/models/obox/settings_obox.dart';
-import 'package:net_worth_manager/ui/scaffold_with_bottom_navigation.dart';
 import 'package:net_worth_manager/ui/screens/currency_selection/currency_selection_params.dart';
-import 'package:net_worth_manager/ui/screens/home/home_page_state.dart';
 import 'package:net_worth_manager/ui/widgets/app_divider.dart';
-import 'package:net_worth_manager/ui/widgets/modal/bottom_sheet.dart';
 import 'package:net_worth_manager/utils/extensions/objectbox_extension.dart';
 import 'package:package_info_plus/package_info_plus.dart';
-import 'package:restart_app/restart_app.dart';
 
 import '../../../app_dimensions.dart';
-import '../../../domain/database/objectbox.dart';
 import '../../../models/obox/currency_obox.dart';
 import '../../../objectbox.g.dart';
 import '../../widgets/modal/loading_overlay.dart';
 import '../currency_selection/currency_selection_screen.dart';
-import '../home/home_page_bloc.dart';
-import '../home/home_page_event.dart';
-import '../home/home_page_screen.dart';
+import '../import_export/import_export_screen.dart';
 
 class SettingsScreen extends StatefulWidget {
   static String route = "/SettingsScreen";
@@ -62,42 +51,10 @@ class _SettingsScreenState extends State<SettingsScreen> {
       GetIt.I<Store>().box<Settings>().put(settings);
       setState(() {});
 
-      await objectbox.syncForexPrices();
+      await GetIt.I<Store>().syncForexPrices();
       await NetWorthRepoImpl().updateNetWorth();
 
       LoadingOverlay.of(context).hide();
-    }
-  }
-
-  Future<void> exportDB() async {
-    var dbData = await ObjectBox.getDBData();
-    await FilePicker.platform.saveFile(
-        dialogTitle: 'Please select an output file:',
-        fileName: 'data.mdb',
-        bytes: dbData);
-  }
-
-  Future<void> importDB(BuildContext context) async {
-    FilePickerResult? result = await FilePicker.platform.pickFiles();
-
-    if (result != null) {
-      var yes = await showYesNoBottomSheet(context,
-          "Are you sure you want to import this file?\nAll current data will be overwritten");
-      if (yes == true) {
-        LoadingOverlay.of(context).show();
-
-        File file = File(result.files.single.path!);
-        await ObjectBox.importDatabase(file);
-
-        GetIt.I.unregister(instance: GetIt.I<Store>());
-        GetIt.I.unregister(instance: GetIt.I<Settings>());
-
-        await initApp();
-
-        LoadingOverlay.of(context).show();
-
-        context.pushReplacement(ScaffoldWithBottomNavigation.path);
-      }
     }
   }
 
@@ -147,9 +104,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: Dimensions.xxs),
               child: IconButton(
-                onPressed: () {
-
-                },
+                onPressed: () => context.push(ImportExportScreen.path),
                 icon: Row(
                   children: [
                     Text("Import/Export", style: theme.textTheme.bodyLarge),

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:get_it/get_it.dart';
 import 'package:go_router/go_router.dart';
 import 'package:net_worth_manager/app_dimensions.dart';
 import 'package:net_worth_manager/domain/repository/asset/asset_repo_impl.dart';
@@ -198,7 +199,7 @@ class _HomePageState extends State<HomePage>
   Widget buildUI(BuildContext context, HomePageState state) {
     ThemeData theme = Theme.of(context);
 
-    Settings settings = objectbox.store.box<Settings>().getAll().first;
+    Settings settings = GetIt.I<Store>().box<Settings>().getAll().first;
 
     List<AssetCategory> categories = (state.assets ?? [])
         .map((e) => e.category.target)

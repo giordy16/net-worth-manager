@@ -1,8 +1,6 @@
 import 'package:dio/dio.dart';
 import 'package:get_it/get_it.dart';
 import 'package:intl/intl.dart';
-import 'package:net_worth_manager/main.dart';
-import 'package:net_worth_manager/models/network/av_quote_model.dart';
 import 'package:net_worth_manager/domain/repository/stock/stock_api.dart';
 import 'package:net_worth_manager/models/obox/asset_history_time_value.dart';
 import 'package:net_worth_manager/models/obox/main_currency_forex_change.dart';
@@ -94,7 +92,7 @@ class AlphaVantageRepImp implements StockApi {
   Future<void> fetchForexChange(
     String originCurrencyName,
   ) async {
-    String mainCurrencySymbol = objectbox.store
+    String mainCurrencySymbol = GetIt.I<Store>()
         .box<Settings>()
         .getAll()
         .first
@@ -102,7 +100,7 @@ class AlphaVantageRepImp implements StockApi {
         .target!
         .name;
 
-    final forexBox = objectbox.store.box<CurrencyForexChange>();
+    final forexBox = GetIt.I<Store>().box<CurrencyForexChange>();
     final df = DateFormat("yyyy-MM-dd");
 
     final forexChangeForCurrency = forexBox
@@ -258,7 +256,7 @@ class AlphaVantageRepImp implements StockApi {
       historyBox.putMany(history);
 
       marketInfo.dateLastPriceFetch = DateTime.now().keepOnlyYMD();
-      objectbox.store.box<MarketInfo>().put(marketInfo);
+      GetIt.I<Store>().box<MarketInfo>().put(marketInfo);
     } catch (e) {
       print("fetchPriceHistoryBySymbol error: $e");
     }

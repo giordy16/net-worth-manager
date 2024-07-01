@@ -1,21 +1,24 @@
-import 'dart:ffi';
 import 'dart:io';
 import 'dart:typed_data';
 
+import 'package:get_it/get_it.dart';
 import 'package:net_worth_manager/objectbox.g.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:path/path.dart' as p;
 
 class ObjectBox {
-  late final Store store;
 
-  ObjectBox._create(this.store);
-
-  static Future<ObjectBox> create() async {
+  static Future<void> create() async {
     final docsDir = await getApplicationDocumentsDirectory();
-    final store =
-        await openStore(directory: p.join(docsDir.path, "database"));
-    return ObjectBox._create(store);
+    final directoryPath = p.join(docsDir.path, "database");
+
+    if (Store.isOpen(directoryPath)) {
+      final store = Store.attach(getObjectBoxModel(), directoryPath);
+      GetIt.I.registerSingleton<Store>(store);
+    } else {
+      final store = await openStore(directory: directoryPath);
+      GetIt.I.registerSingleton<Store>(store);
+    }
   }
 
   static Future<void> importDatabase(File database) async {
@@ -23,6 +26,8 @@ class ObjectBox {
     String databasePath = p.join(docsDir.path, "database", "data.mdb");
     File databaseData = File(databasePath);
     await databaseData.writeAsBytes(await database.readAsBytes());
+
+    await create();
   }
 
   static Future<Uint8List> getDBData() async {
@@ -30,5 +35,4 @@ class ObjectBox {
     String databasePath = p.join(docsDir.path, "database", "data.mdb");
     return await File(databasePath).readAsBytes();
   }
-
 }

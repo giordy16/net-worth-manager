@@ -10,28 +10,23 @@ import 'package:objectbox/objectbox.dart';
 import 'app_routes.dart';
 import 'domain/database/objectbox.dart';
 
-late ObjectBox objectbox;
-
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
-  objectbox = await ObjectBox.create();
-
+  await ObjectBox.create();
   await initApp();
 
   runApp(const App());
 }
 
 Future<void> initApp() async {
-  objectbox.initIfEmpty();
+  final store = GetIt.I<Store>();
+  store.initIfEmpty();
 
-  // register GetIt
-  GetIt.I.registerSingleton<Store>(objectbox.store);
-  GetIt.I.registerSingleton<Settings>(
-      objectbox.store.box<Settings>().getAll().first);
+  GetIt.I.registerSingleton<Settings>(store.box<Settings>().getAll().first);
 
-  await objectbox.syncForexPrices();
-  await objectbox.syncAssetPrices();
+  // await objectbox.syncForexPrices();
+  // await objectbox.syncAssetPrices();
 
   await NetWorthRepoImpl()
       .updateNetWorth(updateStartingDate: DateTime.now().keepOnlyYMD());

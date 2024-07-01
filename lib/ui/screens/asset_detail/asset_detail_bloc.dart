@@ -1,17 +1,14 @@
-import 'dart:isolate';
-
 import 'package:bloc/bloc.dart';
+import 'package:get_it/get_it.dart';
 import 'package:net_worth_manager/domain/repository/asset/asset_repo.dart';
 import 'package:net_worth_manager/domain/repository/stock/stock_api.dart';
-import 'package:net_worth_manager/main.dart';
 import 'package:net_worth_manager/models/ui/graph_data.dart';
 import 'package:net_worth_manager/ui/screens/asset_detail/asset_detail_event.dart';
 import 'package:net_worth_manager/ui/screens/asset_detail/asset_detail_state.dart';
-import 'package:net_worth_manager/utils/background_thread.dart';
 import 'package:net_worth_manager/utils/extensions/date_time_extension.dart';
 
-import '../../../models/obox/asset_history_time_value.dart';
 import '../../../models/obox/asset_obox.dart';
+import '../../../objectbox.g.dart';
 import '../../../utils/enum/graph_data_gap_enum.dart';
 
 class AssetDetailBloc extends Bloc<AssetDetailEvent, AssetDetailState> {
@@ -59,7 +56,7 @@ class AssetDetailBloc extends Bloc<AssetDetailEvent, AssetDetailState> {
     FetchGraphDataEvent event,
     Emitter<AssetDetailState> emit,
   ) async {
-    Asset asset = objectbox.store.box<Asset>().get(this.asset.id)!;
+    Asset asset = GetIt.I<Store>().box<Asset>().get(this.asset.id)!;
 
     emit(state.copyWith(asset: asset));
 
