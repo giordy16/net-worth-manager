@@ -31,14 +31,14 @@ class AddAssetBloc extends Bloc<AddAssetEvent, AddAssetState> {
         asset.name = state.assetName;
         asset.category.target = state.assetCategory;
       } else {
-        asset = Asset(state.assetName);
+        asset = Asset(state.assetName, true);
         asset.category.target = state.assetCategory;
       }
       assetRepo.saveAsset(asset);
     });
 
     on<SaveAssetAndOpenPositionEvent>((event, emit) {
-      Asset asset = Asset(state.assetName);
+      Asset asset = Asset(state.assetName, true);
       asset.category.target = state.assetCategory;
 
       assetRepo.saveAsset(asset);

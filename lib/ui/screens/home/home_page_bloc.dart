@@ -34,7 +34,10 @@ class HomePageBloc extends Bloc<HomePageEvent, HomePageState> {
         GetIt.I<Store>().box<Settings>().put(settings);
       }
 
-      List<Asset> assets = assetRepo.getAssets();
+      List<Asset> assets = assetRepo
+          .getAssets()
+          .where((element) => element.excludeFromNW != true)
+          .toList();
 
       emit(state.copyWith(
           assets: assets,
@@ -86,6 +89,13 @@ class HomePageBloc extends Bloc<HomePageEvent, HomePageState> {
         await netWorthRepo.updateNetWorth(updateStartingDate: oldestDate);
         LoadingOverlay.of(context).hide();
       }
+
+      add(FetchHomePage());
+    });
+
+    on<HideAsset>((event, emit) async {
+      event.asset.excludeFromNW = true;
+      GetIt.I<Store>().box<Asset>().put(event.asset);
 
       add(FetchHomePage());
     });

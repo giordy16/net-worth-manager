@@ -18,6 +18,12 @@ class DeleteAsset extends HomePageEvent {
   DeleteAsset(this.asset);
 }
 
+class HideAsset extends HomePageEvent {
+  Asset asset;
+
+  HideAsset(this.asset);
+}
+
 class DeleteCategory extends HomePageEvent {
   AssetCategory category;
 

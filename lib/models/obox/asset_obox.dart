@@ -3,12 +3,8 @@ import 'package:net_worth_manager/domain/repository/asset/asset_repo_impl.dart';
 import 'package:net_worth_manager/models/obox/asset_history_time_value.dart';
 import 'package:net_worth_manager/models/obox/asset_time_value_obox.dart';
 import 'package:net_worth_manager/models/obox/market_info_obox.dart';
-import 'package:net_worth_manager/models/obox/settings_obox.dart';
-import 'package:net_worth_manager/objectbox.g.dart';
 import 'package:net_worth_manager/utils/extensions/number_extension.dart';
-import 'package:objectbox/objectbox.dart';
-
-import '../../main.dart';
+import '../../objectbox.g.dart';
 import 'asset_category_obox.dart';
 
 @Entity()
@@ -18,13 +14,16 @@ class Asset {
 
   String name;
 
+  // flag to control if asset should be visible or not in the home
+  bool? excludeFromNW;
+
   ToMany<AssetTimeValue> timeValues = ToMany<AssetTimeValue>();
 
   ToOne<AssetCategory> category = ToOne<AssetCategory>();
 
   ToOne<MarketInfo> marketInfo = ToOne<MarketInfo>();
 
-  Asset(this.name);
+  Asset(this.name, this.excludeFromNW) ;
 
   DateTime? getLastUpdateDate() {
     return getTimeValuesChronologicalOrder().lastOrNull?.date;

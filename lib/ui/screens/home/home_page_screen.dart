@@ -18,7 +18,6 @@ import 'package:net_worth_manager/utils/enum/graph_data_gap_enum.dart';
 import 'package:net_worth_manager/utils/extensions/number_extension.dart';
 
 import '../../../app_images.dart';
-import '../../../main.dart';
 import '../../../models/obox/asset_obox.dart';
 import '../../../objectbox.g.dart';
 import '../../widgets/graph/line_graph.dart';
@@ -67,7 +66,7 @@ class _HomePageState extends State<HomePage>
         ],
       ): () async {
         if ((await showDeleteConfirmSheet(context,
-                "Are you sure you want to delete this category? All its asset and positions will be deleted")) ==
+                "Are you sure you want to delete this category?\nAll its asset and positions will be deleted.")) ==
             true) {
           context.read<HomePageBloc>().add(DeleteCategory(category));
         }
@@ -107,6 +106,24 @@ class _HomePageState extends State<HomePage>
     selections.addAll({
       const Row(
         children: [
+          Icon(Icons.visibility_off),
+          SizedBox(
+            width: 4,
+          ),
+          Text("Hide")
+        ],
+      ): () async {
+        if ((await showDeleteConfirmSheet(context,
+            "Are you sure you want to hide this element from the Home?")) ==
+            true) {
+          context.read<HomePageBloc>().add(HideAsset(asset));
+        }
+      }
+    });
+
+    selections.addAll({
+      const Row(
+        children: [
           Icon(Icons.delete_outlined),
           SizedBox(
             width: 4,
@@ -114,7 +131,9 @@ class _HomePageState extends State<HomePage>
           Text("Delete")
         ],
       ): () async {
-        if ((await showDeleteConfirmSheet(context)) == true) {
+        if ((await showDeleteConfirmSheet(context,
+                "Are you sure you want to delete this element?\nAll its values will be deleted.")) ==
+            true) {
           context.read<HomePageBloc>().add(DeleteAsset(asset));
         }
       }
@@ -215,7 +234,8 @@ class _HomePageState extends State<HomePage>
           children: [
             const SizedBox(height: Dimensions.xs),
             Padding(
-              padding: const EdgeInsets.symmetric(horizontal: Dimensions.screenMargin),
+              padding: const EdgeInsets.symmetric(
+                  horizontal: Dimensions.screenMargin),
               child: Row(
                 children: [
                   Column(
@@ -257,7 +277,8 @@ class _HomePageState extends State<HomePage>
             ),
             const SizedBox(height: Dimensions.m),
             Padding(
-              padding: const EdgeInsets.symmetric(horizontal: Dimensions.screenMargin),
+              padding: const EdgeInsets.symmetric(
+                  horizontal: Dimensions.screenMargin),
               child: LineGraph(
                 showGapSelection: true,
                 graphData: state.graphData ?? [],
@@ -305,7 +326,8 @@ class _HomePageState extends State<HomePage>
             ),
             const SizedBox(height: 56),
             Padding(
-              padding: const EdgeInsets.symmetric(horizontal: Dimensions.screenMargin),
+              padding: const EdgeInsets.symmetric(
+                  horizontal: Dimensions.screenMargin),
               child: Text(
                 "Prices are updated to the closing value of the previous day.\nThere may be a difference between the actual values and the values displayed in the app",
                 style: theme.textTheme.bodySmall

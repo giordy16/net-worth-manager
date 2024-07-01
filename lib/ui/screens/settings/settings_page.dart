@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
 import 'package:go_router/go_router.dart';
 import 'package:net_worth_manager/domain/repository/net_worth/net_worth_repo_impl.dart';
-import 'package:net_worth_manager/main.dart';
 import 'package:net_worth_manager/models/obox/settings_obox.dart';
 import 'package:net_worth_manager/ui/screens/currency_selection/currency_selection_params.dart';
 import 'package:net_worth_manager/ui/widgets/app_divider.dart';
@@ -108,6 +107,30 @@ class _SettingsScreenState extends State<SettingsScreen> {
                 icon: Row(
                   children: [
                     Text("Import/Export", style: theme.textTheme.bodyLarge),
+                    Expanded(child: SizedBox()),
+                    Icon(Icons.arrow_forward_ios, size: 14)
+                  ],
+                ),
+              ),
+            ),
+            SizedBox(height: Dimensions.l),
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: Dimensions.screenMargin),
+              child: Text(
+                "Net worth",
+                style: theme.textTheme.titleLarge
+                    ?.copyWith(fontWeight: FontWeight.bold),
+              ),
+            ),
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: Dimensions.xxs),
+              child: IconButton(
+                onPressed: () {
+
+                },
+                icon: Row(
+                  children: [
+                    Text("Excluded assets", style: theme.textTheme.bodyLarge),
                     Expanded(child: SizedBox()),
                     Icon(Icons.arrow_forward_ios, size: 14)
                   ],

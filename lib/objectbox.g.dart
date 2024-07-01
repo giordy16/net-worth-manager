@@ -32,7 +32,7 @@ final _entities = <obx_int.ModelEntity>[
   obx_int.ModelEntity(
       id: const obx_int.IdUid(1, 1818913365485819735),
       name: 'Asset',
-      lastPropertyId: const obx_int.IdUid(4, 633051065447076762),
+      lastPropertyId: const obx_int.IdUid(6, 7615707338049223920),
       flags: 0,
       properties: <obx_int.ModelProperty>[
         obx_int.ModelProperty(
@@ -58,7 +58,12 @@ final _entities = <obx_int.ModelEntity>[
             type: 11,
             flags: 520,
             indexId: const obx_int.IdUid(2, 5195916543361874140),
-            relationTarget: 'MarketInfo')
+            relationTarget: 'MarketInfo'),
+        obx_int.ModelProperty(
+            id: const obx_int.IdUid(6, 7615707338049223920),
+            name: 'excludeFromNW',
+            type: 1,
+            flags: 0)
       ],
       relations: <obx_int.ModelRelation>[
         obx_int.ModelRelation(
@@ -401,7 +406,8 @@ obx_int.ModelDefinition getObjectBoxModel() {
         8125039645251255593,
         3509591852082565968,
         5451300475036688041,
-        8954571008166053623
+        8954571008166053623,
+        9168322847315820519
       ],
       retiredRelationUids: const [4132757054122527006],
       modelVersion: 5,
@@ -420,11 +426,12 @@ obx_int.ModelDefinition getObjectBoxModel() {
         },
         objectToFB: (Asset object, fb.Builder fbb) {
           final nameOffset = fbb.writeString(object.name);
-          fbb.startTable(5);
+          fbb.startTable(7);
           fbb.addInt64(0, object.id);
           fbb.addOffset(1, nameOffset);
           fbb.addInt64(2, object.category.targetId);
           fbb.addInt64(3, object.marketInfo.targetId);
+          fbb.addBool(5, object.excludeFromNW);
           fbb.finish(fbb.endTable());
           return object.id;
         },
@@ -433,7 +440,9 @@ obx_int.ModelDefinition getObjectBoxModel() {
           final rootOffset = buffer.derefObject(0);
           final nameParam = const fb.StringReader(asciiOptimization: true)
               .vTableGet(buffer, rootOffset, 6, '');
-          final object = Asset(nameParam)
+          final excludeFromNWParam =
+              const fb.BoolReader().vTableGetNullable(buffer, rootOffset, 14);
+          final object = Asset(nameParam, excludeFromNWParam)
             ..id = const fb.Int64Reader().vTableGet(buffer, rootOffset, 4, 0);
           object.category.targetId =
               const fb.Int64Reader().vTableGet(buffer, rootOffset, 8, 0);
@@ -786,6 +795,10 @@ class Asset_ {
   /// see [Asset.marketInfo]
   static final marketInfo =
       obx.QueryRelationToOne<Asset, MarketInfo>(_entities[0].properties[3]);
+
+  /// see [Asset.excludeFromNW]
+  static final excludeFromNW =
+      obx.QueryBooleanProperty<Asset>(_entities[0].properties[4]);
 
   /// see [Asset.timeValues]
   static final timeValues =
