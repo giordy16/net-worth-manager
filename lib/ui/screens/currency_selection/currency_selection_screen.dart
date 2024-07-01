@@ -3,12 +3,12 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:net_worth_manager/app_dimensions.dart';
 import 'package:net_worth_manager/domain/repository/settings/settings_repo_impl.dart';
-import 'package:net_worth_manager/models/obox/currency_obox.dart';
 import 'package:net_worth_manager/ui/screens/currency_selection/currency_selection_bloc.dart';
 import 'package:net_worth_manager/ui/screens/currency_selection/currency_selection_event.dart';
 import 'package:net_worth_manager/ui/screens/currency_selection/currency_selection_state.dart';
 import 'package:net_worth_manager/ui/widgets/base_components/app_text_field.dart';
 
+import '../../widgets/app_divider.dart';
 import 'currency_selection_params.dart';
 
 class CurrencySelectionScreen extends StatelessWidget {
@@ -71,9 +71,7 @@ class CurrencySelectionScreen extends StatelessWidget {
                           );
                         },
                         separatorBuilder: (context, index) {
-                          return Divider(
-                              color:
-                                  theme.colorScheme.secondary.withOpacity(0.3));
+                          return AppDivider();
                         },
                         itemCount: state.currenciesList.length),
                   ),

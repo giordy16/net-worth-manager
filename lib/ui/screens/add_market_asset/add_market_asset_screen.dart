@@ -1,21 +1,19 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 import 'package:go_router/go_router.dart';
 import 'package:intl/intl.dart';
 import 'package:net_worth_manager/app_dimensions.dart';
-import 'package:net_worth_manager/app_images.dart';
 import 'package:net_worth_manager/domain/repository/alphaVantage/alpha_vantage_repo.dart';
 import 'package:net_worth_manager/domain/repository/net_worth/net_worth_repo_impl.dart';
 import 'package:net_worth_manager/ui/screens/add_market_asset/add_market_asset_bloc.dart';
 import 'package:net_worth_manager/ui/screens/add_market_asset/add_market_asset_event.dart';
 import 'package:net_worth_manager/ui/screens/add_market_asset/add_market_asset_state.dart';
-import 'package:net_worth_manager/ui/screens/import_investments/import_investments_screen.dart';
 import 'package:net_worth_manager/ui/widgets/base_components/app_text_field.dart';
 import 'package:net_worth_manager/ui/widgets/modal/bottom_sheet.dart';
 import 'package:net_worth_manager/utils/extensions/number_extension.dart';
 import '../../../domain/repository/asset/asset_repo_impl.dart';
 import '../../../models/obox/asset_time_value_obox.dart';
+import '../../widgets/app_divider.dart';
 import '../../widgets/base_components/app_bottom_fab.dart';
 import '../add_asset_position/add_asset_position_screen.dart';
 import '../add_asset_position/add_asset_position_screen_params.dart';
@@ -167,7 +165,7 @@ class _AddMarketAssetScreenState extends State<AddMarketAssetScreen> {
                             if (index <= lastIndexToHide) {
                               return const SizedBox();
                             }
-                            return const Divider();
+                            return AppDivider();
                           },
                           itemCount: widget.params.asset.timeValues.length,
                         ),

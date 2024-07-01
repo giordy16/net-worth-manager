@@ -11,6 +11,7 @@ import 'package:net_worth_manager/models/obox/settings_obox.dart';
 import 'package:net_worth_manager/ui/scaffold_with_bottom_navigation.dart';
 import 'package:net_worth_manager/ui/screens/currency_selection/currency_selection_params.dart';
 import 'package:net_worth_manager/ui/screens/home/home_page_state.dart';
+import 'package:net_worth_manager/ui/widgets/app_divider.dart';
 import 'package:net_worth_manager/ui/widgets/modal/bottom_sheet.dart';
 import 'package:net_worth_manager/utils/extensions/objectbox_extension.dart';
 import 'package:package_info_plus/package_info_plus.dart';
@@ -106,77 +107,69 @@ class _SettingsScreenState extends State<SettingsScreen> {
 
     return Scaffold(
       body: SafeArea(
-        child: Padding(
-          padding: EdgeInsets.all(Dimensions.screenMargin),
-          child: ListView(
-            children: [
-              Text(
-                "Generals",
+        child: ListView(
+          children: [
+            SizedBox(height: Dimensions.s),
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: Dimensions.screenMargin),
+              child: Text(
+                "Settings",
                 style: theme.textTheme.titleLarge
                     ?.copyWith(fontWeight: FontWeight.bold),
               ),
-              const SizedBox(height: Dimensions.m),
-              Material(
-                child: InkWell(
-                  onTap: () async {
-                    context.push(CurrencySelectionScreen.route,
-                        extra: CurrencySelectionParams(
-                          selectedCurrency: currentMainCurrency,
-                          onCurrencySelected: _onCurrencySelected,
-                        ));
-                  },
-                  child: Container(
-                    height: 40,
-                    child: Row(
-                      children: [
-                        Text("Main currency", style: theme.textTheme.bodyLarge),
-                        Expanded(child: SizedBox()),
-                        Text(currentMainCurrency.name,
-                            style: theme.textTheme.bodyLarge),
-                        SizedBox(width: Dimensions.s),
-                        Icon(Icons.arrow_forward_ios, size: 14)
-                      ],
-                    ),
-                  ),
+            ),
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: Dimensions.xxs),
+              child: IconButton(
+                onPressed: () async {
+                  context.push(CurrencySelectionScreen.route,
+                      extra: CurrencySelectionParams(
+                        selectedCurrency: currentMainCurrency,
+                        onCurrencySelected: _onCurrencySelected,
+                      ));
+                },
+                icon: Row(
+                  children: [
+                    Text("Main currency", style: theme.textTheme.bodyLarge),
+                    Expanded(child: SizedBox()),
+                    Text(currentMainCurrency.name,
+                        style: theme.textTheme.bodyLarge),
+                    SizedBox(width: Dimensions.s),
+                    Icon(Icons.arrow_forward_ios, size: 14)
+                  ],
                 ),
               ),
-              Material(
-                child: InkWell(
-                  onTap: exportDB,
-                  child: Container(
-                    height: 40,
-                    child: Row(
-                      children: [
-                        Text("Export", style: theme.textTheme.bodyLarge),
-                      ],
-                    ),
-                  ),
+            ),
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: Dimensions.screenMargin),
+              child: AppDivider(),
+            ),
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: Dimensions.xxs),
+              child: IconButton(
+                onPressed: () {
+
+                },
+                icon: Row(
+                  children: [
+                    Text("Import/Export", style: theme.textTheme.bodyLarge),
+                    Expanded(child: SizedBox()),
+                    Icon(Icons.arrow_forward_ios, size: 14)
+                  ],
                 ),
               ),
-              Material(
-                child: InkWell(
-                  onTap: () => importDB(context),
-                  child: Container(
-                    height: 40,
-                    child: Row(
-                      children: [
-                        Text("Import", style: theme.textTheme.bodyLarge),
-                      ],
-                    ),
-                  ),
-                ),
-              ),
-              const SizedBox(
-                height: Dimensions.xl,
-              ),
-              Text(
-                "App version: $appVersion",
-                style: theme.textTheme.bodySmall
-                    ?.copyWith(color: theme.colorScheme.onPrimaryContainer),
-                textAlign: TextAlign.center,
-              ),
-            ],
-          ),
+            ),
+
+            const SizedBox(
+              height: Dimensions.xl,
+            ),
+            Text(
+              "App version: $appVersion",
+              style: theme.textTheme.bodySmall
+                  ?.copyWith(color: theme.colorScheme.onPrimaryContainer),
+              textAlign: TextAlign.center,
+            ),
+          ],
         ),
       ),
     );

@@ -81,161 +81,181 @@ class InsightsScreen extends StatelessWidget {
 
     return Scaffold(
       body: SafeArea(
-        child: Padding(
-            padding: const EdgeInsets.all(Dimensions.screenMargin),
-            child: MultiRepositoryProvider(
-              providers: [
-                RepositoryProvider<NetWorthRepoImpl>(
-                    create: (context) => NetWorthRepoImpl()),
-              ],
-              child: BlocProvider<InsightsCubit>(
-                create: (context) => InsightsCubit(
-                  context: context,
-                  nwRepo: context.read<NetWorthRepoImpl>(),
-                ),
-                child: BlocBuilder<InsightsCubit, InsightsState>(
-                  builder: (context, state) {
-                    if (state.loading) {
-                      return const Center(child: CircularProgressIndicator());
-                    } else {
-                      if (state.categoryAllocationData?.isEmpty == true) {
-                        // there are no assets with > 0, build empty UI
-                        return Center(
-                          child: Column(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              SvgPicture.asset(AppImages.addData,
-                                  width: 50,
-                                  height: 50,
-                                  colorFilter: ColorFilter.mode(
-                                    theme.colorScheme.secondary,
-                                    BlendMode.srcIn,
-                                  )),
-                              const SizedBox(height: Dimensions.l),
-                              Text(
-                                "You have not registered any assets yet.\n\nAdd your assets in the Home to have the insights.",
-                                textAlign: TextAlign.center,
-                              ),
-                            ],
-                          ),
-                        );
-                      } else {
-                        return ListView(
+        child: MultiRepositoryProvider(
+          providers: [
+            RepositoryProvider<NetWorthRepoImpl>(
+                create: (context) => NetWorthRepoImpl()),
+          ],
+          child: BlocProvider<InsightsCubit>(
+            create: (context) => InsightsCubit(
+              context: context,
+              nwRepo: context.read<NetWorthRepoImpl>(),
+            ),
+            child: BlocBuilder<InsightsCubit, InsightsState>(
+              builder: (context, state) {
+                if (state.loading) {
+                  return const Center(child: CircularProgressIndicator());
+                } else {
+                  if (state.categoryAllocationData?.isEmpty == true) {
+                    // there are no assets with > 0, build empty UI
+                    return Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: Dimensions.screenMargin),
+                      child: Center(
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
                           children: [
-                            Row(
-                              children: [
-                                Text(
-                                  "Allocation",
-                                  style: theme.textTheme.titleLarge
-                                      ?.copyWith(fontWeight: FontWeight.bold),
-                                ),
-                                const Expanded(child: SizedBox()),
-                                IconButton(
-                                  padding: EdgeInsets.zero,
-                                  onPressed: () async {
-                                    await context
-                                        .push(AddCustomPieScreen.route);
-                                    context
-                                        .read<InsightsCubit>()
-                                        .initCustomAllocationChart();
-                                  },
-                                  icon: Icon(Icons.add),
-                                )
-                              ],
-                            ),
-                            AllocationPieChart(state.categoryAllocationData),
-                            const SizedBox(height: Dimensions.xl),
-                            if (state.customAllocationData?.isNotEmpty == true)
-                              ...state.customAllocationData!
-                                  .map((element) => Column(
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.start,
-                                        children: [
-                                          Row(
-                                            children: [
-                                              Text(
-                                                element.name,
-                                                style: theme
-                                                    .textTheme.titleLarge
-                                                    ?.copyWith(
-                                                        fontWeight:
-                                                            FontWeight.bold),
-                                              ),
-                                              const Expanded(child: SizedBox()),
-                                              IconButton(
-                                                padding: EdgeInsets.zero,
-                                                onPressed: () async {
-                                                  await onShowMoreAllocation(
-                                                    context,
-                                                    element,
-                                                  );
-                                                },
-                                                icon: Icon(Icons.more_vert),
-                                              )
-                                            ],
-                                          ),
-                                          AllocationPieChart(
-                                              element.getChartData()),
-                                          const SizedBox(height: Dimensions.xl),
-                                        ],
-                                      )),
-                            // IconButton(
-                            //     padding: EdgeInsets.zero,
-                            //     onPressed: () => context
-                            //         .push(FullAssetAllocationScreen.route),
-                            //     icon: Row(children: [
-                            //       Text(
-                            //         "See full asset allocation",
-                            //         style: theme.textTheme.bodyLarge,
-                            //       ),
-                            //       const Expanded(child: SizedBox()),
-                            //       const Icon(Icons.arrow_forward_ios, size: 14)
-                            //     ])),
+                            SvgPicture.asset(AppImages.addData,
+                                width: 50,
+                                height: 50,
+                                colorFilter: ColorFilter.mode(
+                                  theme.colorScheme.secondary,
+                                  BlendMode.srcIn,
+                                )),
                             const SizedBox(height: Dimensions.l),
                             Text(
-                              "Monthly Gains/Losses",
-                              style: theme.textTheme.titleLarge
-                                  ?.copyWith(fontWeight: FontWeight.bold),
+                              "You have not registered any assets yet.\n\nAdd your assets in the Home to have the insights.",
+                              textAlign: TextAlign.center,
                             ),
-                            const SizedBox(height: Dimensions.s),
-                            if (state.startDateGainGraph != null &&
-                                state.endDateGainGraph != null)
-                              Row(
-                                mainAxisSize: MainAxisSize.max,
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: [
-                                  TextButton(
-                                      onPressed: () {
-                                        context
-                                            .read<InsightsCubit>()
-                                            .changeStartGainGraph();
-                                      },
-                                      child: Text(DateFormat("MMM yy")
-                                          .format(state.startDateGainGraph!))),
-                                  const Text("-"),
-                                  TextButton(
-                                      onPressed: () {
-                                        context
-                                            .read<InsightsCubit>()
-                                            .changeStartGainGraph();
-                                      },
-                                      child: Text(DateFormat("MMM yy")
-                                          .format(state.endDateGainGraph!))),
-                                ],
-                              ),
-                            const SizedBox(height: Dimensions.s),
-                            GainLossesChart(
-                                state.gainLossData,
-                                state.startDateGainGraph,
-                                state.endDateGainGraph)
                           ],
-                        );
-                      }
-                    }
-                  },
-                ),
-              ),
-            )),
+                        ),
+                      ),
+                    );
+                  } else {
+                    return ListView(
+                      children: [
+                        Row(
+                          children: [
+                            Padding(
+                              padding: const EdgeInsets.only(left: Dimensions.screenMargin),
+                              child: Text(
+                                "Allocation",
+                                style: theme.textTheme.titleLarge
+                                    ?.copyWith(fontWeight: FontWeight.bold),
+                              ),
+                            ),
+                            const Expanded(child: SizedBox()),
+                            IconButton(
+                              padding: EdgeInsets.zero,
+                              onPressed: () async {
+                                await context
+                                    .push(AddCustomPieScreen.route);
+                                context
+                                    .read<InsightsCubit>()
+                                    .initCustomAllocationChart();
+                              },
+                              icon: Icon(Icons.add),
+                            )
+                          ],
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: Dimensions.screenMargin),
+                          child: AllocationPieChart(state.categoryAllocationData),
+                        ),
+                        const SizedBox(height: Dimensions.xl),
+                        if (state.customAllocationData?.isNotEmpty == true)
+                          ...state.customAllocationData!
+                              .map((element) => Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: [
+                                      Row(
+                                        children: [
+                                          Padding(
+                                            padding: const EdgeInsets.only(left: Dimensions.screenMargin),
+                                            child: Text(
+                                              element.name,
+                                              style: theme
+                                                  .textTheme.titleLarge
+                                                  ?.copyWith(
+                                                      fontWeight:
+                                                          FontWeight.bold),
+                                            ),
+                                          ),
+                                          const Expanded(child: SizedBox()),
+                                          IconButton(
+                                            padding: EdgeInsets.zero,
+                                            onPressed: () async {
+                                              await onShowMoreAllocation(
+                                                context,
+                                                element,
+                                              );
+                                            },
+                                            icon: Icon(Icons.more_vert),
+                                          )
+                                        ],
+                                      ),
+                                      Padding(
+                                        padding: const EdgeInsets.symmetric(horizontal: Dimensions.screenMargin),
+                                        child: AllocationPieChart(
+                                            element.getChartData()),
+                                      ),
+                                      const SizedBox(height: Dimensions.xl),
+                                    ],
+                                  )),
+                        // IconButton(
+                        //     padding: EdgeInsets.zero,
+                        //     onPressed: () => context
+                        //         .push(FullAssetAllocationScreen.route),
+                        //     icon: Row(children: [
+                        //       Text(
+                        //         "See full asset allocation",
+                        //         style: theme.textTheme.bodyLarge,
+                        //       ),
+                        //       const Expanded(child: SizedBox()),
+                        //       const Icon(Icons.arrow_forward_ios, size: 14)
+                        //     ])),
+                        const SizedBox(height: Dimensions.l),
+                        Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: Dimensions.screenMargin),
+                          child: Text(
+                            "Monthly Gains/Losses",
+                            style: theme.textTheme.titleLarge
+                                ?.copyWith(fontWeight: FontWeight.bold),
+                          ),
+                        ),
+                        const SizedBox(height: Dimensions.s),
+                        if (state.startDateGainGraph != null &&
+                            state.endDateGainGraph != null)
+                          Row(
+                            mainAxisSize: MainAxisSize.max,
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              TextButton(
+                                  onPressed: () {
+                                    context
+                                        .read<InsightsCubit>()
+                                        .changeStartGainGraph();
+                                  },
+                                  child: Text(DateFormat("MMM yy")
+                                      .format(state.startDateGainGraph!))),
+                              const Text("-"),
+                              TextButton(
+                                  onPressed: () {
+                                    context
+                                        .read<InsightsCubit>()
+                                        .changeStartGainGraph();
+                                  },
+                                  child: Text(DateFormat("MMM yy")
+                                      .format(state.endDateGainGraph!))),
+                            ],
+                          ),
+                        const SizedBox(height: Dimensions.s),
+                        Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: Dimensions.screenMargin),
+                          child: GainLossesChart(
+                              state.gainLossData,
+                              state.startDateGainGraph,
+                              state.endDateGainGraph),
+                        ),
+                        const SizedBox(height: Dimensions.xl)
+                      ],
+                    );
+                  }
+                }
+              },
+            ),
+          ),
+        ),
       ),
     );
   }

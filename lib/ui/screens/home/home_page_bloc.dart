@@ -7,6 +7,7 @@ import 'package:net_worth_manager/domain/repository/asset/asset_repo.dart';
 import 'package:net_worth_manager/domain/repository/net_worth/net_worth_repo.dart';
 import 'package:net_worth_manager/models/obox/asset_obox.dart';
 import 'package:net_worth_manager/models/obox/net_worth_history.dart';
+import 'package:net_worth_manager/models/obox/settings_obox.dart';
 import 'package:net_worth_manager/models/ui/graph_data.dart';
 import 'package:net_worth_manager/ui/screens/home/home_page_event.dart';
 import 'package:net_worth_manager/ui/widgets/modal/loading_overlay.dart';
@@ -25,6 +26,14 @@ class HomePageBloc extends Bloc<HomePageEvent, HomePageState> {
     required this.netWorthRepo,
   }) : super(HomePageState()) {
     on<FetchHomePage>((event, emit) {
+      if (event.gap != null) {
+        // when event.gap != null means that the user changed the time of the graph,
+        // so let's save the preference
+        final settings = GetIt.I<Settings>();
+        settings.homeGraphIndex = GraphTime.values.indexOf(event.gap!);
+        GetIt.I<Store>().box<Settings>().put(settings);
+      }
+
       List<Asset> assets = assetRepo.getAssets();
 
       emit(state.copyWith(

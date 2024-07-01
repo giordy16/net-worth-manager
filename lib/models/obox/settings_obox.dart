@@ -14,4 +14,6 @@ class Settings {
 
   @Property(type: PropertyType.date)
   DateTime? endDateGainGraph;
+
+  int? homeGraphIndex;
 }

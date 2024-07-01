@@ -19,6 +19,7 @@ import 'package:net_worth_manager/utils/extensions/number_extension.dart';
 import '../../../app_images.dart';
 import '../../../main.dart';
 import '../../../models/obox/asset_obox.dart';
+import '../../../objectbox.g.dart';
 import '../../widgets/graph/line_graph.dart';
 import '../add_category/add_category_screen.dart';
 import '../add_selection/add_selection_screen.dart';
@@ -207,15 +208,14 @@ class _HomePageState extends State<HomePage>
 
     return SafeArea(
       child: SingleChildScrollView(
-        child: Container(
-          margin:
-              const EdgeInsets.symmetric(horizontal: Dimensions.screenMargin),
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              const SizedBox(height: Dimensions.xs),
-              Row(
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            const SizedBox(height: Dimensions.xs),
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: Dimensions.screenMargin),
+              child: Row(
                 children: [
                   Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
@@ -253,60 +253,67 @@ class _HomePageState extends State<HomePage>
                     ),
                 ],
               ),
-              const SizedBox(height: Dimensions.m),
-              LineGraph(
+            ),
+            const SizedBox(height: Dimensions.m),
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: Dimensions.screenMargin),
+              child: LineGraph(
                 showGapSelection: true,
                 graphData: state.graphData ?? [],
+                initialGap: state.graphGap,
                 onGraphTimeChange: (graphGap) {
                   context
                       .read<HomePageBloc>()
                       .add(FetchHomePage(gap: graphGap));
                 },
               ),
-              const SizedBox(height: Dimensions.m),
-              ListView.separated(
-                itemCount: categories.length,
-                shrinkWrap: true,
-                physics: const NeverScrollableScrollPhysics(),
-                itemBuilder: (context, index) {
-                  var category = categories.toList()[index];
-                  var assetsOfCategory = state.assets
-                          ?.where(
-                              (element) => element.category.target == category)
-                          .toList() ??
-                      [];
+            ),
+            const SizedBox(height: Dimensions.m),
+            ListView.separated(
+              itemCount: categories.length,
+              shrinkWrap: true,
+              physics: const NeverScrollableScrollPhysics(),
+              itemBuilder: (context, index) {
+                var category = categories.toList()[index];
+                var assetsOfCategory = state.assets
+                        ?.where(
+                            (element) => element.category.target == category)
+                        .toList() ??
+                    [];
 
-                  assetsOfCategory.sort((a, b) => a.name.compareTo(b.name));
+                assetsOfCategory.sort((a, b) => a.name.compareTo(b.name));
 
-                  return HomePageCategory(
-                    category: category,
-                    assets: assetsOfCategory,
-                    onItemClick: (asset) async {
-                      await context.push(
-                        AssetDetailScreen.route,
-                        extra: asset,
-                      );
-                      context.read<HomePageBloc>().add(FetchHomePage());
-                    },
-                    onLongPress: (asset) => onAssetLongPress(context, asset),
-                    onMoreClick: (category) =>
-                        onShowMoreCategory(context, category),
-                  );
-                },
-                separatorBuilder: (BuildContext context, int index) {
-                  return const SizedBox(height: Dimensions.m);
-                },
-              ),
-              const SizedBox(height: 56),
-              Text(
+                return HomePageCategory(
+                  category: category,
+                  assets: assetsOfCategory,
+                  onItemClick: (asset) async {
+                    await context.push(
+                      AssetDetailScreen.route,
+                      extra: asset,
+                    );
+                    context.read<HomePageBloc>().add(FetchHomePage());
+                  },
+                  onLongPress: (asset) => onAssetLongPress(context, asset),
+                  onMoreClick: (category) =>
+                      onShowMoreCategory(context, category),
+                );
+              },
+              separatorBuilder: (BuildContext context, int index) {
+                return const SizedBox(height: Dimensions.m);
+              },
+            ),
+            const SizedBox(height: 56),
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: Dimensions.screenMargin),
+              child: Text(
                 "Prices are updated to the closing value of the previous day.\nThere may be a difference between the actual values and the values displayed in the app",
                 style: theme.textTheme.bodySmall
                     ?.copyWith(color: theme.colorScheme.onPrimaryContainer),
                 textAlign: TextAlign.center,
               ),
-              const SizedBox(height: 80)
-            ],
-          ),
+            ),
+            const SizedBox(height: 80)
+          ],
         ),
       ),
     );

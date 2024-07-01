@@ -154,7 +154,7 @@ final _entities = <obx_int.ModelEntity>[
   obx_int.ModelEntity(
       id: const obx_int.IdUid(6, 2549230891191389848),
       name: 'Settings',
-      lastPropertyId: const obx_int.IdUid(4, 4815485716240959814),
+      lastPropertyId: const obx_int.IdUid(5, 4316953084599786943),
       flags: 0,
       properties: <obx_int.ModelProperty>[
         obx_int.ModelProperty(
@@ -178,6 +178,11 @@ final _entities = <obx_int.ModelEntity>[
             id: const obx_int.IdUid(4, 4815485716240959814),
             name: 'endDateGainGraph',
             type: 10,
+            flags: 0),
+        obx_int.ModelProperty(
+            id: const obx_int.IdUid(5, 4316953084599786943),
+            name: 'homeGraphIndex',
+            type: 6,
             flags: 0)
       ],
       relations: <obx_int.ModelRelation>[],
@@ -548,11 +553,12 @@ obx_int.ModelDefinition getObjectBoxModel() {
           object.id = id;
         },
         objectToFB: (Settings object, fb.Builder fbb) {
-          fbb.startTable(5);
+          fbb.startTable(6);
           fbb.addInt64(0, object.id);
           fbb.addInt64(1, object.defaultCurrency.targetId);
           fbb.addInt64(2, object.startDateGainGraph?.millisecondsSinceEpoch);
           fbb.addInt64(3, object.endDateGainGraph?.millisecondsSinceEpoch);
+          fbb.addInt64(4, object.homeGraphIndex);
           fbb.finish(fbb.endTable());
           return object.id;
         },
@@ -570,7 +576,9 @@ obx_int.ModelDefinition getObjectBoxModel() {
                 : DateTime.fromMillisecondsSinceEpoch(startDateGainGraphValue)
             ..endDateGainGraph = endDateGainGraphValue == null
                 ? null
-                : DateTime.fromMillisecondsSinceEpoch(endDateGainGraphValue);
+                : DateTime.fromMillisecondsSinceEpoch(endDateGainGraphValue)
+            ..homeGraphIndex = const fb.Int64Reader()
+                .vTableGetNullable(buffer, rootOffset, 12);
           object.defaultCurrency.targetId =
               const fb.Int64Reader().vTableGet(buffer, rootOffset, 6, 0);
           object.defaultCurrency.attach(store);
@@ -854,6 +862,10 @@ class Settings_ {
   /// see [Settings.endDateGainGraph]
   static final endDateGainGraph =
       obx.QueryDateProperty<Settings>(_entities[4].properties[3]);
+
+  /// see [Settings.homeGraphIndex]
+  static final homeGraphIndex =
+      obx.QueryIntegerProperty<Settings>(_entities[4].properties[4]);
 }
 
 /// [MarketInfo] entity fields to define ObjectBox queries.

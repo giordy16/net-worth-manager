@@ -1,4 +1,6 @@
 import 'package:equatable/equatable.dart';
+import 'package:get_it/get_it.dart';
+import 'package:net_worth_manager/models/obox/settings_obox.dart';
 import 'package:net_worth_manager/utils/enum/graph_data_gap_enum.dart';
 
 import '../../../models/obox/asset_obox.dart';
@@ -16,10 +18,14 @@ class HomePageState extends Equatable {
     this.netWorthValue,
     this.assets,
     this.graphData,
-    this.graphGap = GraphTime.all,
     this.performance,
     this.performancePerc,
-  });
+    this.graphGap
+  }) {
+    graphGap = GetIt.I<Settings>().homeGraphIndex == null
+        ? GraphTime.all
+        : GraphTime.values[GetIt.I<Settings>().homeGraphIndex!];
+  }
 
   HomePageState copyWith({
     double? netWorthValue,

@@ -6,6 +6,7 @@ import 'package:net_worth_manager/ui/screens/add_category/add_category_screen.da
 import 'package:net_worth_manager/ui/screens/home/components/home_page_asset.dart';
 import 'package:net_worth_manager/utils/extensions/number_extension.dart';
 import '../../../../models/obox/asset_obox.dart';
+import '../../../widgets/app_divider.dart';
 import '../../../widgets/modal/bottom_sheet.dart';
 
 class HomePageCategory extends StatelessWidget {
@@ -36,38 +37,52 @@ class HomePageCategory extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Row(
-          children: [
-            Text(
-              category.name,
-              style: theme.textTheme.titleLarge
-                  ?.copyWith(fontWeight: FontWeight.bold),
-            ),
-            const Expanded(child: SizedBox()),
-            IconButton(
-                onPressed: () => onMoreClick(category),
-                icon: const Icon(Icons.more_vert))
-          ],
-        ),
-        ListView.separated(
-          shrinkWrap: true,
-          physics: const NeverScrollableScrollPhysics(),
-          itemBuilder: (context, index) {
-            var asset = assets[index];
-            return HomePageAsset(
-              asset,
-              (asset) => onItemClick(asset),
-              (asset) => onLongPress(asset),
-            );
-          },
-          separatorBuilder: (context, index) {
-            return const Divider(height: 1);
-          },
-          itemCount: assets.length,
-        ),
-        const Divider(height: 1),
         Padding(
-          padding: const EdgeInsets.symmetric(vertical: Dimensions.m),
+          padding: const EdgeInsets.only(left: Dimensions.screenMargin),
+          child: Row(
+            children: [
+              Text(
+                category.name,
+                style: theme.textTheme.titleLarge
+                    ?.copyWith(fontWeight: FontWeight.bold),
+              ),
+              const Expanded(child: SizedBox()),
+              IconButton(
+                  onPressed: () => onMoreClick(category),
+                  icon: const Icon(Icons.more_vert))
+            ],
+          ),
+        ),
+        Padding(
+          padding:
+              const EdgeInsets.symmetric(horizontal: Dimensions.screenMargin),
+          child: ListView.separated(
+            shrinkWrap: true,
+            physics: const NeverScrollableScrollPhysics(),
+            itemBuilder: (context, index) {
+              var asset = assets[index];
+              return HomePageAsset(
+                asset,
+                (asset) => onItemClick(asset),
+                (asset) => onLongPress(asset),
+              );
+            },
+            separatorBuilder: (context, index) {
+              return AppDivider();
+            },
+            itemCount: assets.length,
+          ),
+        ),
+        Padding(
+          padding:
+              const EdgeInsets.symmetric(horizontal: Dimensions.screenMargin),
+          child: AppDivider()
+        ),
+        Padding(
+          padding: const EdgeInsets.symmetric(
+            vertical: Dimensions.m,
+            horizontal: Dimensions.screenMargin,
+          ),
           child: Row(
             children: [
               Text("Total",

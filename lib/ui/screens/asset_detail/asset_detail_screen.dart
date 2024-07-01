@@ -13,6 +13,7 @@ import 'package:net_worth_manager/utils/extensions/number_extension.dart';
 import '../../../domain/repository/alphaVantage/alpha_vantage_repo.dart';
 import '../../../domain/repository/asset/asset_repo_impl.dart';
 import '../../../models/obox/asset_obox.dart';
+import '../../widgets/app_divider.dart';
 import '../../widgets/graph/line_graph.dart';
 import '../add_asset_position/add_asset_position_screen_params.dart';
 
@@ -221,7 +222,7 @@ class AssetDetailScreen extends StatelessWidget {
                               );
                             },
                             separatorBuilder: (context, index) {
-                              return const Divider(height: 1);
+                              return AppDivider();
                             },
                             itemCount: state.asset.timeValues.length,
                           )
