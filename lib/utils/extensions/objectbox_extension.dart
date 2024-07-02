@@ -17,7 +17,7 @@ import '../../models/obox/asset_time_value_obox.dart';
 import '../currency_enum.dart';
 
 extension ObjectBoxExtension on Store {
-  void initIfEmpty() {
+  void init() {
     // fill Currency table with all currencies
     var currency = box<Currency>().getAll();
     if (currency.isEmpty) {
@@ -29,8 +29,8 @@ extension ObjectBoxExtension on Store {
     }
 
     // init settings
-    var settings = box<Settings>().getAll();
-    if (settings.isEmpty) {
+    var settings = box<Settings>().getAll().firstOrNull;
+    if (settings == null) {
       // set defaultCurrency to the currency based on the phone's location
       var format = NumberFormat.simpleCurrency(locale: Platform.localeName);
       Currency currency = box<Currency>()
@@ -39,8 +39,14 @@ extension ObjectBoxExtension on Store {
               .findFirst() ??
           box<Currency>().getAll().first;
 
-      Settings settings = Settings();
+      settings = Settings(showTutorial: true);
       settings.defaultCurrency.target = currency;
+      box<Settings>().put(settings);
+    }
+
+    // if settings.showTutorial == null, put it to true
+    if (settings.showTutorial == null) {
+      settings.showTutorial = true;
       box<Settings>().put(settings);
     }
 

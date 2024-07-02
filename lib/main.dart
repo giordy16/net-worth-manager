@@ -21,7 +21,7 @@ Future<void> main() async {
 
 Future<void> initApp() async {
   final store = GetIt.I<Store>();
-  store.initIfEmpty();
+  store.init();
 
   GetIt.I.registerSingleton<Settings>(store.box<Settings>().getAll().first);
 

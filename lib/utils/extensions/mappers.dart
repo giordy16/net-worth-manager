@@ -18,7 +18,7 @@ extension MarketInfoMapper on MarketInfo {
       return asset;
     }
 
-    asset = Asset(name, true);
+    asset = Asset(name);
     asset.marketInfo.target = this;
     asset.category.target =
         GetIt.I<Store>().box<AssetCategory>().getAll().first;

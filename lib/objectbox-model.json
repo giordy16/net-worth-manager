@@ -136,7 +136,7 @@
     },
     {
       "id": "6:2549230891191389848",
-      "lastPropertyId": "5:4316953084599786943",
+      "lastPropertyId": "6:8785216237688213096",
       "name": "Settings",
       "properties": [
         {
@@ -167,6 +167,11 @@
           "id": "5:4316953084599786943",
           "name": "homeGraphIndex",
           "type": 6
+        },
+        {
+          "id": "6:8785216237688213096",
+          "name": "showTutorial",
+          "type": 1
         }
       ],
       "relations": []

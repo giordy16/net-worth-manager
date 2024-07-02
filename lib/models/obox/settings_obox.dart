@@ -16,4 +16,8 @@ class Settings {
   DateTime? endDateGainGraph;
 
   int? homeGraphIndex;
+
+  bool? showTutorial;
+
+  Settings({required this.showTutorial});
 }

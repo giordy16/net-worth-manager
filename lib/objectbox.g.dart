@@ -159,7 +159,7 @@ final _entities = <obx_int.ModelEntity>[
   obx_int.ModelEntity(
       id: const obx_int.IdUid(6, 2549230891191389848),
       name: 'Settings',
-      lastPropertyId: const obx_int.IdUid(5, 4316953084599786943),
+      lastPropertyId: const obx_int.IdUid(6, 8785216237688213096),
       flags: 0,
       properties: <obx_int.ModelProperty>[
         obx_int.ModelProperty(
@@ -188,6 +188,11 @@ final _entities = <obx_int.ModelEntity>[
             id: const obx_int.IdUid(5, 4316953084599786943),
             name: 'homeGraphIndex',
             type: 6,
+            flags: 0),
+        obx_int.ModelProperty(
+            id: const obx_int.IdUid(6, 8785216237688213096),
+            name: 'showTutorial',
+            type: 1,
             flags: 0)
       ],
       relations: <obx_int.ModelRelation>[],
@@ -440,10 +445,10 @@ obx_int.ModelDefinition getObjectBoxModel() {
           final rootOffset = buffer.derefObject(0);
           final nameParam = const fb.StringReader(asciiOptimization: true)
               .vTableGet(buffer, rootOffset, 6, '');
-          final excludeFromNWParam =
-              const fb.BoolReader().vTableGetNullable(buffer, rootOffset, 14);
-          final object = Asset(nameParam, excludeFromNWParam)
-            ..id = const fb.Int64Reader().vTableGet(buffer, rootOffset, 4, 0);
+          final object = Asset(nameParam)
+            ..id = const fb.Int64Reader().vTableGet(buffer, rootOffset, 4, 0)
+            ..excludeFromNW =
+                const fb.BoolReader().vTableGetNullable(buffer, rootOffset, 14);
           object.category.targetId =
               const fb.Int64Reader().vTableGet(buffer, rootOffset, 8, 0);
           object.category.attach(store);
@@ -562,12 +567,13 @@ obx_int.ModelDefinition getObjectBoxModel() {
           object.id = id;
         },
         objectToFB: (Settings object, fb.Builder fbb) {
-          fbb.startTable(6);
+          fbb.startTable(7);
           fbb.addInt64(0, object.id);
           fbb.addInt64(1, object.defaultCurrency.targetId);
           fbb.addInt64(2, object.startDateGainGraph?.millisecondsSinceEpoch);
           fbb.addInt64(3, object.endDateGainGraph?.millisecondsSinceEpoch);
           fbb.addInt64(4, object.homeGraphIndex);
+          fbb.addBool(5, object.showTutorial);
           fbb.finish(fbb.endTable());
           return object.id;
         },
@@ -578,7 +584,9 @@ obx_int.ModelDefinition getObjectBoxModel() {
               const fb.Int64Reader().vTableGetNullable(buffer, rootOffset, 8);
           final endDateGainGraphValue =
               const fb.Int64Reader().vTableGetNullable(buffer, rootOffset, 10);
-          final object = Settings()
+          final showTutorialParam =
+              const fb.BoolReader().vTableGetNullable(buffer, rootOffset, 14);
+          final object = Settings(showTutorial: showTutorialParam)
             ..id = const fb.Int64Reader().vTableGet(buffer, rootOffset, 4, 0)
             ..startDateGainGraph = startDateGainGraphValue == null
                 ? null
@@ -879,6 +887,10 @@ class Settings_ {
   /// see [Settings.homeGraphIndex]
   static final homeGraphIndex =
       obx.QueryIntegerProperty<Settings>(_entities[4].properties[4]);
+
+  /// see [Settings.showTutorial]
+  static final showTutorial =
+      obx.QueryBooleanProperty<Settings>(_entities[4].properties[5]);
 }
 
 /// [MarketInfo] entity fields to define ObjectBox queries.

@@ -26,7 +26,7 @@ class HomePageAsset extends StatelessWidget {
           padding: const EdgeInsets.symmetric(vertical: Dimensions.m),
           child: Row(
             children: [
-              Text(asset.name, style: theme.textTheme.bodyLarge),
+              Expanded(child: Text(asset.name, style: theme.textTheme.bodyLarge)),
               const Expanded(child: SizedBox()),
               Text(
                 asset.getCurrentValue().toStringWithCurrency(),

@@ -66,7 +66,7 @@ class TickerSearchScreen extends StatelessWidget {
                                     });
                                   },
                                   separatorBuilder: (context, index) {
-                                    return AppDivider();
+                                    return AppDivider(height: 16);
                                   },
                                   itemCount: state.assetList!.length),
                             )
