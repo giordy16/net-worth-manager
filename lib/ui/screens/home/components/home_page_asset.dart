@@ -27,7 +27,7 @@ class HomePageAsset extends StatelessWidget {
           child: Row(
             children: [
               Expanded(child: Text(asset.name, style: theme.textTheme.bodyLarge)),
-              const Expanded(child: SizedBox()),
+              const SizedBox(width: Dimensions.s),
               Text(
                 asset.getCurrentValue().toStringWithCurrency(),
                 style: theme.textTheme.bodyLarge,

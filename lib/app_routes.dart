@@ -16,6 +16,7 @@ import 'package:net_worth_manager/ui/screens/add_selection/add_selection_screen.
 import 'package:net_worth_manager/ui/screens/asset_detail/asset_detail_screen.dart';
 import 'package:net_worth_manager/ui/screens/currency_selection/currency_selection_params.dart';
 import 'package:net_worth_manager/ui/screens/currency_selection/currency_selection_screen.dart';
+import 'package:net_worth_manager/ui/screens/excluded_asset/excluded_asset_screen.dart';
 import 'package:net_worth_manager/ui/screens/import_export/import_export_screen.dart';
 import 'package:net_worth_manager/ui/screens/import_investments/import_investments_screen.dart';
 import 'package:net_worth_manager/ui/screens/full_asset_allocation/full_asset_allocation_screen.dart';
@@ -99,6 +100,10 @@ final appRoutes = GoRouter(
       GoRoute(
         path: OnboardingScreen.path,
         builder: (context, state) => OnboardingScreen(),
+      ),
+      GoRoute(
+        path: HiddenAssetScreen.path,
+        builder: (context, state) => HiddenAssetScreen(),
       ),
     ],
     redirect: (context, state) {

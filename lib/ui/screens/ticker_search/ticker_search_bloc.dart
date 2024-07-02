@@ -20,7 +20,7 @@ class TickerSearchBloc extends Bloc<TickerSearchEvent, TickerSearchState> {
 
       if (event.ticker.isEmpty) {
         emit(state.copyWith(assetList: [], showProgress: false));
-      } else if (event.ticker.length > 2) {
+      } else if (event.ticker.isNotEmpty) {
         _debounce = Timer(const Duration(milliseconds: 1000), () async {
           print(event.ticker);
 

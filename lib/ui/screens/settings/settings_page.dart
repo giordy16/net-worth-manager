@@ -13,6 +13,7 @@ import '../../../models/obox/currency_obox.dart';
 import '../../../objectbox.g.dart';
 import '../../widgets/modal/loading_overlay.dart';
 import '../currency_selection/currency_selection_screen.dart';
+import '../excluded_asset/excluded_asset_screen.dart';
 import '../import_export/import_export_screen.dart';
 
 class SettingsScreen extends StatefulWidget {
@@ -126,11 +127,11 @@ class _SettingsScreenState extends State<SettingsScreen> {
               padding: const EdgeInsets.symmetric(horizontal: Dimensions.xxs),
               child: IconButton(
                 onPressed: () {
-
+                  context.push(HiddenAssetScreen.path);
                 },
                 icon: Row(
                   children: [
-                    Text("Excluded assets", style: theme.textTheme.bodyLarge),
+                    Text("Hidden assets", style: theme.textTheme.bodyLarge),
                     Expanded(child: SizedBox()),
                     Icon(Icons.arrow_forward_ios, size: 14)
                   ],
