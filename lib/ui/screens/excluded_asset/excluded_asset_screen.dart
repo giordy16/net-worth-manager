@@ -35,7 +35,7 @@ class _HiddenAssetScreenState extends State<HiddenAssetScreen> {
         .find();
 
     return Scaffold(
-      appBar: AppBar(title: Text("Excluded assets")),
+      appBar: AppBar(title: Text("Hidden assets")),
       body: SafeArea(
         child: excludedAsset.isEmpty
             ? Center(child: Text("You don't have any hidden asset"))

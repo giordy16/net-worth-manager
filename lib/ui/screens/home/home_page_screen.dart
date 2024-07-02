@@ -114,7 +114,7 @@ class _HomePageState extends State<HomePage>
         ],
       ): () async {
         if ((await showDeleteConfirmSheet(context,
-            "Are you sure you want to hide this element from the Home?")) ==
+            "Are you sure you want to hide this element?\nYou can restore it from Settings page.")) ==
             true) {
           context.read<HomePageBloc>().add(HideAsset(asset));
         }
@@ -329,7 +329,7 @@ class _HomePageState extends State<HomePage>
               padding: const EdgeInsets.symmetric(
                   horizontal: Dimensions.screenMargin),
               child: Text(
-                "Prices are updated to the closing value of the previous day.\nThere may be a difference between the actual values and the values displayed in the app",
+                "Prices are updated to the closing value of the previous day.\nThere may be a difference between the actual value and the one displayed in the app",
                 style: theme.textTheme.bodySmall
                     ?.copyWith(color: theme.colorScheme.onPrimaryContainer),
                 textAlign: TextAlign.center,

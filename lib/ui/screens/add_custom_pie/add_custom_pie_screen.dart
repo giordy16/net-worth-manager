@@ -107,8 +107,8 @@ class _AddCustomPieScreenState extends State<AddCustomPieScreen> {
               ...categories
                   .map((cat) => Row(
                         children: [
-                          Text(cat.name),
-                          Expanded(child: SizedBox()),
+                          Expanded(child: Text(cat.name)),
+                          SizedBox(width: 4,),
                           Checkbox(
                               value: selectedCat.contains(cat),
                               onChanged: (value) {
@@ -129,8 +129,8 @@ class _AddCustomPieScreenState extends State<AddCustomPieScreen> {
               ...assets
                   .map((asset) => Row(
                         children: [
-                          Text(asset.name),
-                          Expanded(child: SizedBox()),
+                          Expanded(child: Text(asset.name)),
+                          SizedBox(width: 4,),
                           Checkbox(
                               value: selectedAsset.contains(asset),
                               onChanged: (value) {
