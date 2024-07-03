@@ -5,12 +5,13 @@ import 'package:net_worth_manager/app_dimensions.dart';
 class AppBottomFab extends StatelessWidget {
   String text;
   Function() onTap;
+  bool outlinedStyle;
 
-  AppBottomFab({
-    super.key,
-    required this.text,
-    required this.onTap,
-  });
+  AppBottomFab(
+      {super.key,
+      required this.text,
+      required this.onTap,
+      this.outlinedStyle = false});
 
   @override
   Widget build(BuildContext context) {
@@ -20,19 +21,31 @@ class AppBottomFab extends StatelessWidget {
       height: 60,
       margin: const EdgeInsets.symmetric(horizontal: Dimensions.m),
       child: ElevatedButton(
-        style: ButtonStyle(
-          backgroundColor:
-              MaterialStateProperty.all(theme.colorScheme.secondary),
-          shape: MaterialStateProperty.all<RoundedRectangleBorder>(
-              RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(Dimensions.cardCorner))),
-        ),
+        style: outlinedStyle
+            ? ButtonStyle(
+                shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                    RoundedRectangleBorder(
+                        side: BorderSide(
+                            color: theme.colorScheme.primary, width: 2),
+                        borderRadius:
+                            BorderRadius.circular(Dimensions.cardCorner))),
+              )
+            : ButtonStyle(
+                backgroundColor:
+                    MaterialStateProperty.all(theme.colorScheme.secondary),
+                shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                    RoundedRectangleBorder(
+                        borderRadius:
+                            BorderRadius.circular(Dimensions.cardCorner))),
+              ),
         onPressed: onTap,
         child: Center(
           child: Text(
-            'Save',
-            style: theme.textTheme.bodyLarge
-                ?.copyWith(color: theme.colorScheme.onSecondary),
+            text,
+            style: theme.textTheme.bodyLarge?.copyWith(
+                color: outlinedStyle
+                    ? theme.colorScheme.primary
+                    : theme.colorScheme.onSecondary),
           ),
         ),
       ),

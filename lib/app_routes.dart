@@ -21,6 +21,7 @@ import 'package:net_worth_manager/ui/screens/import_export/import_export_screen.
 import 'package:net_worth_manager/ui/screens/import_investments/import_investments_screen.dart';
 import 'package:net_worth_manager/ui/screens/full_asset_allocation/full_asset_allocation_screen.dart';
 import 'package:net_worth_manager/ui/screens/onboarding/onboarding_screen.dart';
+import 'package:net_worth_manager/ui/screens/sell_position/sell_position_screen.dart';
 import 'package:net_worth_manager/ui/screens/ticker_search/ticker_search_screen.dart';
 import 'package:net_worth_manager/ui/widgets/modal/loading_overlay.dart';
 import 'package:path/path.dart';
@@ -104,6 +105,12 @@ final appRoutes = GoRouter(
       GoRoute(
         path: HiddenAssetScreen.path,
         builder: (context, state) => HiddenAssetScreen(),
+      ),
+      GoRoute(
+        path: SellPositionScreen.path,
+        builder: (context, state) => LoadingOverlay(
+            child: SellPositionScreen(
+                state.extra as AddAssetPositionScreenParams)),
       ),
     ],
     redirect: (context, state) {

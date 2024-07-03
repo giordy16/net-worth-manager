@@ -30,6 +30,11 @@ class Asset {
     return getTimeValuesChronologicalOrder().lastOrNull?.date;
   }
 
+  @override
+  String toString() {
+    return name;
+  }
+
   /// Get current value at main currency
   ///
   /// for simple asset (marketInfo == null) the current value is just

@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:net_worth_manager/ui/screens/add_asset_position/add_position_bloc.dart';
 import 'package:net_worth_manager/ui/screens/add_asset_position/add_position_event.dart';
+import 'package:net_worth_manager/ui/screens/sell_position/sell_position_screen.dart';
 import 'package:net_worth_manager/ui/widgets/base_components/app_date_field.dart';
 import 'package:net_worth_manager/ui/widgets/base_components/app_numeric_text_field.dart';
 import 'package:net_worth_manager/utils/extensions/string_extension.dart';
@@ -87,17 +88,29 @@ class _AddAssetPositionScreenState extends State<AddAssetPositionScreen> {
                   ),
                   floatingActionButtonLocation:
                       FloatingActionButtonLocation.centerFloat,
-                  floatingActionButton: AppBottomFab(
-                    text: "Save",
-                    onTap: () async {
-                      if (_formKey.currentState!.validate()) {
-                        widget.params.justPopBack
-                            ? context.pop(position)
-                            : context
-                                .read<AddPositionBloc>()
-                                .add(SavePositionEvent(params.asset, position));
-                      }
-                    },
+                  floatingActionButton: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      // AppBottomFab(
+                      //   text: "Sell position",
+                      //   outlinedStyle: true,
+                      //   onTap: () {
+                      //     context.push(SellPositionScreen.path, extra: widget.params);
+                      //   },
+                      // ),
+                      // SizedBox(height: 8),
+                      AppBottomFab(
+                        text: "Save",
+                        onTap: () async {
+                          if (_formKey.currentState!.validate()) {
+                            widget.params.justPopBack
+                                ? context.pop(position)
+                                : context.read<AddPositionBloc>().add(
+                                    SavePositionEvent(params.asset, position));
+                          }
+                        },
+                      ),
+                    ],
                   ),
                   body: SafeArea(
                     child: Form(
@@ -157,7 +170,8 @@ class _AddAssetPositionScreenState extends State<AddAssetPositionScreen> {
                                   initialValue: position.quantity,
                                   isMandatory: true,
                                   onTextChange: (value) {
-                                    position.quantity = double.tryParse(value) ?? 0;
+                                    position.quantity =
+                                        double.tryParse(value) ?? 0;
                                   },
                                 ),
                               ),
