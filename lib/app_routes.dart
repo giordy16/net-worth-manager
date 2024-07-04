@@ -20,6 +20,7 @@ import 'package:net_worth_manager/ui/screens/excluded_asset/excluded_asset_scree
 import 'package:net_worth_manager/ui/screens/import_export/import_export_screen.dart';
 import 'package:net_worth_manager/ui/screens/import_investments/import_investments_screen.dart';
 import 'package:net_worth_manager/ui/screens/full_asset_allocation/full_asset_allocation_screen.dart';
+import 'package:net_worth_manager/ui/screens/manage_categories/manage_categories.dart';
 import 'package:net_worth_manager/ui/screens/onboarding/onboarding_screen.dart';
 import 'package:net_worth_manager/ui/screens/sell_position/sell_position_screen.dart';
 import 'package:net_worth_manager/ui/screens/ticker_search/ticker_search_screen.dart';
@@ -111,6 +112,10 @@ final appRoutes = GoRouter(
             child: SellPositionScreen(
                 state.extra as AddAssetPositionScreenParams)),
       ),
+      GoRoute(
+          path: ManageCategories.path,
+          builder: (context, state) =>
+              LoadingOverlay(child: ManageCategories())),
     ],
     redirect: (context, state) {
       if (GetIt.I<Settings>().showTutorial == true &&

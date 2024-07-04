@@ -7,6 +7,7 @@ import 'package:net_worth_manager/models/obox/settings_obox.dart';
 import 'package:net_worth_manager/ui/scaffold_with_bottom_navigation.dart';
 import 'package:net_worth_manager/ui/screens/currency_selection/currency_selection_params.dart';
 import 'package:net_worth_manager/ui/screens/home/home_page_bloc.dart';
+import 'package:net_worth_manager/ui/screens/manage_categories/manage_categories.dart';
 import 'package:net_worth_manager/ui/widgets/app_divider.dart';
 import 'package:net_worth_manager/utils/extensions/objectbox_extension.dart';
 import 'package:package_info_plus/package_info_plus.dart';
@@ -123,7 +124,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: Dimensions.screenMargin),
               child: Text(
-                "Net worth",
+                "Assets/Categories",
                 style: theme.textTheme.titleLarge
                     ?.copyWith(fontWeight: FontWeight.bold),
               ),
@@ -137,6 +138,23 @@ class _SettingsScreenState extends State<SettingsScreen> {
                 icon: Row(
                   children: [
                     Text("Hidden assets", style: theme.textTheme.bodyLarge),
+                    Expanded(child: SizedBox()),
+                    Icon(Icons.arrow_forward_ios, size: 14)
+                  ],
+                ),
+              ),
+            ),
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: Dimensions.screenMargin),
+              child: AppDivider(),
+            ),
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: Dimensions.xxs),
+              child: IconButton(
+                onPressed: () => context.push(ManageCategories.path),
+                icon: Row(
+                  children: [
+                    Text("Manage categories", style: theme.textTheme.bodyLarge),
                     Expanded(child: SizedBox()),
                     Icon(Icons.arrow_forward_ios, size: 14)
                   ],

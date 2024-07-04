@@ -41,13 +41,16 @@ class _HiddenAssetScreenState extends State<HiddenAssetScreen> {
       body: SafeArea(
         child: excludedAsset.isEmpty
             ? Center(child: Text("You don't have any hidden asset"))
-            : Padding(
-                padding: const EdgeInsets.all(Dimensions.screenMargin),
-                child: ListView.separated(
-                  itemBuilder: (BuildContext context, int index) {
-                    return IconButton(
-                        onPressed: () =>  onItemClick(excludedAsset[index]),
-                        icon: Row(
+            : ListView.separated(
+                itemBuilder: (BuildContext context, int index) {
+                  return IconButton(
+                      onPressed: () => onItemClick(excludedAsset[index]),
+                      icon: Padding(
+                        padding: EdgeInsets.symmetric(
+                          horizontal: Dimensions.screenMargin,
+                          vertical: 8,
+                        ),
+                        child: Row(
                           children: [
                             Expanded(
                                 child: Text(
@@ -57,13 +60,13 @@ class _HiddenAssetScreenState extends State<HiddenAssetScreen> {
                             SizedBox(width: Dimensions.s),
                             Icon(Icons.undo)
                           ],
-                        ));
-                  },
-                  separatorBuilder: (BuildContext context, int index) {
-                    return AppDivider();
-                  },
-                  itemCount: excludedAsset.length,
-                ),
+                        ),
+                      ));
+                },
+                separatorBuilder: (BuildContext context, int index) {
+                  return AppDivider();
+                },
+                itemCount: excludedAsset.length,
               ),
       ),
     );
