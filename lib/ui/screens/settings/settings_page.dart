@@ -171,6 +171,18 @@ class _SettingsScreenState extends State<SettingsScreen> {
                   ?.copyWith(color: theme.colorScheme.onPrimaryContainer),
               textAlign: TextAlign.center,
             ),
+            const SizedBox(
+              height: Dimensions.l,
+            ),
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 8.0),
+              child: Text(
+                "WARNING\nThe app is still in the first release phase and all the sections are accessible.\nIn the future some sections or new functionalities may be accessible only with a Premium account",
+                style: theme.textTheme.bodySmall
+                    ?.copyWith(color: theme.colorScheme.onPrimaryContainer),
+                textAlign: TextAlign.center,
+              ),
+            ),
           ],
         ),
       ),
