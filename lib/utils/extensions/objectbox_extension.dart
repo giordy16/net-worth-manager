@@ -50,11 +50,14 @@ extension ObjectBoxExtension on Store {
       box<Settings>().put(settings);
     }
 
-    // insert category for investments
+    // fill categories
     var categories = box<AssetCategory>().getAll();
     if (categories.isEmpty) {
       box<AssetCategory>()
           .put(AssetCategory("ETFs / Stocks", userCanSelect: false));
+      box<AssetCategory>().put(AssetCategory("Cash"));
+      box<AssetCategory>().put(AssetCategory("Debts"));
+      box<AssetCategory>().put(AssetCategory("Expected taxes"));
     }
   }
 

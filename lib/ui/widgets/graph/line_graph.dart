@@ -67,8 +67,11 @@ class _MarketAssetLineGraph extends State<LineGraph> {
     double maxX = currentGap.getEndDate().millisecondsSinceEpoch.toDouble();
 
     List<GraphData> visibleData = widget.graphData
-        .where((element) => element.x
-            .isAfter(currentGap.getStartDate(widget.graphData.firstOrNull?.x)))
+        .where((element) =>
+            element.x.isAfter(
+                currentGap.getStartDate(widget.graphData.firstOrNull?.x)) ||
+            element.x.isAtSameMomentAs(
+                currentGap.getStartDate(widget.graphData.firstOrNull?.x)))
         .toList();
 
     // add a new point at the end if the last one is not today, so the graph is plotted until the right edge

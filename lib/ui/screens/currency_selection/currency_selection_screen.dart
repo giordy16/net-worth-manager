@@ -57,7 +57,9 @@ class CurrencySelectionScreen extends StatelessWidget {
                                   params.onCurrencySelected!(
                                       state.currenciesList[index]);
                                 }
-                                context.pop(state.currenciesList[index]);
+                                if (context.canPop()) {
+                                  context.pop(state.currenciesList[index]);
+                                }
                               },
                               child: ListTile(
                                   trailing: (params.selectedCurrency != null &&
