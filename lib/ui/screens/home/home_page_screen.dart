@@ -8,6 +8,7 @@ import 'package:net_worth_manager/domain/repository/asset/asset_repo_impl.dart';
 import 'package:net_worth_manager/domain/repository/net_worth/net_worth_repo_impl.dart';
 import 'package:net_worth_manager/models/obox/asset_category_obox.dart';
 import 'package:net_worth_manager/models/obox/settings_obox.dart';
+import 'package:net_worth_manager/ui/scaffold_with_bottom_navigation.dart';
 import 'package:net_worth_manager/ui/screens/add_asset/add_asset_screen.dart';
 import 'package:net_worth_manager/ui/screens/asset_detail/asset_detail_screen.dart';
 import 'package:net_worth_manager/ui/screens/home/home_page_bloc.dart';
@@ -39,9 +40,8 @@ class HomePage extends StatefulWidget {
 
 class HomePageScreenState extends State<HomePage>
     with AutomaticKeepAliveClientMixin {
-
   @override
-  initState(){
+  initState() {
     if (GetIt.I.isRegistered(instance: this)) {
       GetIt.I.unregister(instance: this);
     } else {
@@ -74,6 +74,8 @@ class HomePageScreenState extends State<HomePage>
         ],
       ): () async {
         await context.push(AddAssetCategory.route, extra: category);
+        context.read<HomePageBloc>().add(FetchHomePage());
+        ScaffoldWithBottomNavigation.updateScreens();
       }
     });
 
@@ -121,6 +123,7 @@ class HomePageScreenState extends State<HomePage>
           await context.push(AddAssetScreen.route, extra: asset);
           if (!context.mounted) return;
           context.read<HomePageBloc>().add(FetchHomePage());
+          ScaffoldWithBottomNavigation.updateScreens();
         }
       });
     }
@@ -260,39 +263,43 @@ class HomePageScreenState extends State<HomePage>
                   horizontal: Dimensions.screenMargin),
               child: Row(
                 children: [
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      const Text("Your net worth"),
-                      Text(
-                        "${settings.defaultCurrency.target?.symbol} ${(state.netWorthValue ?? 0).toStringFormatted()}",
-                        style: theme.textTheme.titleLarge?.copyWith(
-                          fontWeight: FontWeight.bold,
-                          fontSize: 24,
-                        ),
-                      ),
-                    ],
-                  ),
-                  const Expanded(child: SizedBox()),
-                  if (state.graphGap != GraphTime.all &&
-                      state.performance != null)
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.end,
+                  Expanded(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        PerformanceText(
-                          performance: state.performancePerc!,
-                          textStyle: theme.textTheme.bodyMedium,
-                          type: PerformanceTextType.percentage,
-                        ),
-                        PerformanceText(
-                          performance: state.performance!,
-                          textStyle: theme.textTheme.titleLarge?.copyWith(
+                        const Text("Your net worth"),
+                        Text(
+                          (state.netWorthValue ?? 0).toStringWithCurrency(),
+                          style: theme.textTheme.titleLarge?.copyWith(
                             fontWeight: FontWeight.bold,
                             fontSize: 24,
                           ),
-                          type: PerformanceTextType.value,
-                        )
+                        ),
                       ],
+                    ),
+                  ),
+                  if (state.graphGap != GraphTime.all &&
+                      state.performance != null)
+                    Expanded(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.end,
+                        children: [
+                          PerformanceText(
+                            performance: state.performancePerc!,
+                            textStyle: theme.textTheme.bodyMedium,
+                            type: PerformanceTextType.percentage,
+                          ),
+                          PerformanceText(
+                            performance: state.performance!,
+                            textStyle: theme.textTheme.titleLarge?.copyWith(
+                              fontWeight: FontWeight.bold,
+                              fontSize: 24,
+                            ),
+                            textAlign: TextAlign.right,
+                            type: PerformanceTextType.value,
+                          )
+                        ],
+                      ),
                     ),
                 ],
               ),

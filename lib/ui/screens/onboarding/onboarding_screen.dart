@@ -30,12 +30,17 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
     OnboardingPage(
       AppImages.tutorial_2,
       "Monitor the performance of your investments",
-      "Keep track of your stock or ETF investments with interactive charts and valuable KPIs",
+      "Keep track of your stock or ETF investments with interactive charts and valuable KPIs.",
     ),
     OnboardingPage(
       AppImages.tutorial_3,
       "Get precious insights",
-      "View valuable insights into the status and performance of your net worth",
+      "View valuable insights into the status and performance of your net worth.",
+    ),
+    OnboardingPage(
+      AppImages.tutorial_4,
+      "Secure",
+      "Your data are stored inside the phone and they are not sent to any server.\nIf you want, you can easy share or backup your data with the Export function.",
     ),
   ];
 

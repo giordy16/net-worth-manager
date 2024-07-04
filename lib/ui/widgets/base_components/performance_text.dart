@@ -1,6 +1,3 @@
-import 'dart:ui';
-
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:net_worth_manager/utils/extensions/number_extension.dart';
 
@@ -8,13 +5,15 @@ enum PerformanceTextType { value, percentage }
 
 class PerformanceText extends StatelessWidget {
   double performance;
-  TextStyle? textStyle;
   PerformanceTextType type;
+  TextStyle? textStyle;
+  TextAlign? textAlign;
 
   PerformanceText({
     required this.performance,
-    this.textStyle,
     required this.type,
+    this.textStyle,
+    this.textAlign,
   });
 
   @override
@@ -25,6 +24,7 @@ class PerformanceText extends StatelessWidget {
             style: textStyle?.copyWith(
               color: performance >= 0 ? Colors.green : Colors.red,
             ),
+            textAlign: textAlign,
           )
         : Container(
             decoration: BoxDecoration(

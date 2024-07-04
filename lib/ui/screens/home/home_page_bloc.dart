@@ -13,6 +13,7 @@ import 'package:net_worth_manager/ui/screens/home/home_page_event.dart';
 import 'package:net_worth_manager/ui/widgets/modal/loading_overlay.dart';
 import 'package:net_worth_manager/utils/enum/graph_data_gap_enum.dart';
 import '../../../objectbox.g.dart';
+import '../../scaffold_with_bottom_navigation.dart';
 import 'home_page_state.dart';
 
 class HomePageBloc extends Bloc<HomePageEvent, HomePageState> {
@@ -93,6 +94,7 @@ class HomePageBloc extends Bloc<HomePageEvent, HomePageState> {
       }
 
       add(FetchHomePage());
+      ScaffoldWithBottomNavigation.updateScreens();
     });
 
     on<HideAsset>((event, emit) async {
@@ -100,6 +102,7 @@ class HomePageBloc extends Bloc<HomePageEvent, HomePageState> {
       GetIt.I<Store>().box<Asset>().put(event.asset);
 
       add(FetchHomePage());
+      ScaffoldWithBottomNavigation.updateScreens();
     });
 
     on<DeleteCategory>((event, emit) async {
@@ -121,6 +124,7 @@ class HomePageBloc extends Bloc<HomePageEvent, HomePageState> {
       }
 
       add(FetchHomePage());
+      ScaffoldWithBottomNavigation.updateScreens();
     });
   }
 }

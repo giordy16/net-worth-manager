@@ -32,7 +32,7 @@ class InsightsScreenState extends State<InsightsScreen>
     if (GetIt.I.isRegistered(instance: this)) {
       GetIt.I.unregister(instance: this);
     } else {
-      GetIt.I.registerSingleton(this, instanceName: "InsightsScreenState");
+      GetIt.I.registerSingleton<InsightsScreenState>(this);
     }
 
     super.initState();
