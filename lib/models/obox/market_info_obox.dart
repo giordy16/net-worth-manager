@@ -34,7 +34,7 @@ class MarketInfo {
   double getCurrentPrice() {
     return GetIt.I<Store>()
             .box<AssetHistoryTimeValue>()
-            .query()
+            .query(AssetHistoryTimeValue_.assetName.equals(symbol))
             .order(AssetHistoryTimeValue_.date, flags: Order.descending)
             .build()
             .findFirst()

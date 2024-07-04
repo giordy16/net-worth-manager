@@ -54,7 +54,7 @@ class Asset {
       // market asset, need to look to market value
       double value = GetIt.I<Store>()
               .box<AssetHistoryTimeValue>()
-              .query()
+              .query(AssetHistoryTimeValue_.assetName.equals(marketInfo.target!.symbol))
               .order(AssetHistoryTimeValue_.date, flags: Order.descending)
               .build()
               .findFirst()

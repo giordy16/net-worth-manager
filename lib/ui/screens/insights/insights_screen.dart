@@ -4,27 +4,47 @@ import 'package:flutter_svg/svg.dart';
 import 'package:get_it/get_it.dart';
 import 'package:go_router/go_router.dart';
 import 'package:intl/intl.dart';
-import 'package:net_worth_manager/domain/repository/net_worth/net_worth_repo.dart';
 import 'package:net_worth_manager/domain/repository/net_worth/net_worth_repo_impl.dart';
-import 'package:net_worth_manager/models/obox/asset_category_obox.dart';
 import 'package:net_worth_manager/models/obox/custom_pie_obox.dart';
-import 'package:net_worth_manager/models/obox/settings_obox.dart';
 import 'package:net_worth_manager/ui/screens/add_custom_pie/add_custom_pie_screen.dart';
-import 'package:net_worth_manager/ui/screens/full_asset_allocation/full_asset_allocation_screen.dart';
 import 'package:net_worth_manager/ui/screens/insights/insights_state.dart';
 import 'package:net_worth_manager/ui/widgets/graph/allocation_pie_chart.dart';
 import 'package:net_worth_manager/ui/widgets/graph/gain_losses_chart.dart';
-import 'package:net_worth_manager/utils/extensions/context_extensions.dart';
 
 import '../../../app_dimensions.dart';
 import '../../../app_images.dart';
-import '../../../models/obox/net_worth_history.dart';
-import '../../../objectbox.g.dart';
 import '../../widgets/modal/bottom_sheet.dart';
 import 'insights_cubit.dart';
 
-class InsightsScreen extends StatelessWidget {
+class InsightsScreen extends StatefulWidget {
   static String route = "/InsightsScreen";
+
+  static bool shouldUpdatePage = true;
+
+  @override
+  State<StatefulWidget> createState() => InsightsScreenState();
+}
+
+class InsightsScreenState extends State<InsightsScreen>
+    with AutomaticKeepAliveClientMixin {
+  @override
+  initState() {
+    if (GetIt.I.isRegistered(instance: this)) {
+      GetIt.I.unregister(instance: this);
+    } else {
+      GetIt.I.registerSingleton(this, instanceName: "InsightsScreenState");
+    }
+
+    super.initState();
+  }
+
+  @override
+  dispose() {
+    super.dispose();
+    if (GetIt.I.isRegistered(instance: this)) {
+      GetIt.I.unregister(instance: this);
+    }
+  }
 
   Future<void> onShowMoreAllocation(
     BuildContext context,
@@ -42,11 +62,8 @@ class InsightsScreen extends StatelessWidget {
           Text("Edit")
         ],
       ): () async {
-        await context
-            .push(AddCustomPieScreen.route, extra: customAllocation);
-        context
-            .read<InsightsCubit>()
-            .initCustomAllocationChart();
+        await context.push(AddCustomPieScreen.route, extra: customAllocation);
+        context.read<InsightsCubit>().initCustomAllocationChart();
       }
     });
 
@@ -77,6 +94,8 @@ class InsightsScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    super.build(context);
+
     ThemeData theme = Theme.of(context);
 
     return Scaffold(
@@ -99,7 +118,8 @@ class InsightsScreen extends StatelessWidget {
                   if (state.categoryAllocationData?.isEmpty == true) {
                     // there are no assets with > 0, build empty UI
                     return Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: Dimensions.screenMargin),
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: Dimensions.screenMargin),
                       child: Center(
                         child: Column(
                           mainAxisAlignment: MainAxisAlignment.center,
@@ -126,7 +146,8 @@ class InsightsScreen extends StatelessWidget {
                         Row(
                           children: [
                             Padding(
-                              padding: const EdgeInsets.only(left: Dimensions.screenMargin),
+                              padding: const EdgeInsets.only(
+                                  left: Dimensions.screenMargin),
                               child: Text(
                                 "Allocation",
                                 style: theme.textTheme.titleLarge
@@ -137,8 +158,7 @@ class InsightsScreen extends StatelessWidget {
                             IconButton(
                               padding: EdgeInsets.zero,
                               onPressed: () async {
-                                await context
-                                    .push(AddCustomPieScreen.route);
+                                await context.push(AddCustomPieScreen.route);
                                 context
                                     .read<InsightsCubit>()
                                     .initCustomAllocationChart();
@@ -148,50 +168,51 @@ class InsightsScreen extends StatelessWidget {
                           ],
                         ),
                         Padding(
-                          padding: const EdgeInsets.symmetric(horizontal: Dimensions.screenMargin),
-                          child: AllocationPieChart(state.categoryAllocationData),
+                          padding: const EdgeInsets.symmetric(
+                              horizontal: Dimensions.screenMargin),
+                          child:
+                              AllocationPieChart(state.categoryAllocationData),
                         ),
                         const SizedBox(height: Dimensions.xl),
                         if (state.customAllocationData?.isNotEmpty == true)
-                          ...state.customAllocationData!
-                              .map((element) => Column(
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
+                          ...state.customAllocationData!.map((element) =>
+                              Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Row(
                                     children: [
-                                      Row(
-                                        children: [
-                                          Padding(
-                                            padding: const EdgeInsets.only(left: Dimensions.screenMargin),
-                                            child: Text(
-                                              element.name,
-                                              style: theme
-                                                  .textTheme.titleLarge
-                                                  ?.copyWith(
-                                                      fontWeight:
-                                                          FontWeight.bold),
-                                            ),
-                                          ),
-                                          const Expanded(child: SizedBox()),
-                                          IconButton(
-                                            padding: EdgeInsets.zero,
-                                            onPressed: () async {
-                                              await onShowMoreAllocation(
-                                                context,
-                                                element,
-                                              );
-                                            },
-                                            icon: Icon(Icons.more_vert),
-                                          )
-                                        ],
-                                      ),
                                       Padding(
-                                        padding: const EdgeInsets.symmetric(horizontal: Dimensions.screenMargin),
-                                        child: AllocationPieChart(
-                                            element.getChartData()),
+                                        padding: const EdgeInsets.only(
+                                            left: Dimensions.screenMargin),
+                                        child: Text(
+                                          element.name,
+                                          style: theme.textTheme.titleLarge
+                                              ?.copyWith(
+                                                  fontWeight: FontWeight.bold),
+                                        ),
                                       ),
-                                      const SizedBox(height: Dimensions.xl),
+                                      const Expanded(child: SizedBox()),
+                                      IconButton(
+                                        padding: EdgeInsets.zero,
+                                        onPressed: () async {
+                                          await onShowMoreAllocation(
+                                            context,
+                                            element,
+                                          );
+                                        },
+                                        icon: Icon(Icons.more_vert),
+                                      )
                                     ],
-                                  )),
+                                  ),
+                                  Padding(
+                                    padding: const EdgeInsets.symmetric(
+                                        horizontal: Dimensions.screenMargin),
+                                    child: AllocationPieChart(
+                                        element.getChartData()),
+                                  ),
+                                  const SizedBox(height: Dimensions.xl),
+                                ],
+                              )),
                         // IconButton(
                         //     padding: EdgeInsets.zero,
                         //     onPressed: () => context
@@ -206,7 +227,8 @@ class InsightsScreen extends StatelessWidget {
                         //     ])),
                         const SizedBox(height: Dimensions.l),
                         Padding(
-                          padding: const EdgeInsets.symmetric(horizontal: Dimensions.screenMargin),
+                          padding: const EdgeInsets.symmetric(
+                              horizontal: Dimensions.screenMargin),
                           child: Text(
                             "Monthly Gains/Losses",
                             style: theme.textTheme.titleLarge
@@ -241,11 +263,10 @@ class InsightsScreen extends StatelessWidget {
                           ),
                         const SizedBox(height: Dimensions.s),
                         Padding(
-                          padding: const EdgeInsets.symmetric(horizontal: Dimensions.screenMargin),
-                          child: GainLossesChart(
-                              state.gainLossData,
-                              state.startDateGainGraph,
-                              state.endDateGainGraph),
+                          padding: const EdgeInsets.symmetric(
+                              horizontal: Dimensions.screenMargin),
+                          child: GainLossesChart(state.gainLossData,
+                              state.startDateGainGraph, state.endDateGainGraph),
                         ),
                         const SizedBox(height: Dimensions.xl)
                       ],
@@ -258,5 +279,12 @@ class InsightsScreen extends StatelessWidget {
         ),
       ),
     );
+  }
+
+  @override
+  bool get wantKeepAlive {
+    bool val = InsightsScreen.shouldUpdatePage;
+    InsightsScreen.shouldUpdatePage = false;
+    return !val;
   }
 }

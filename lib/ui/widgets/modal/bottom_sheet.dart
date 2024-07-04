@@ -1,11 +1,65 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:go_router/go_router.dart';
 import 'package:net_worth_manager/app_dimensions.dart';
 
-Future<bool?> showDeleteConfirmSheet(
-    BuildContext context, [String? message]) async {
+Future<bool?> showDeleteConfirmSheet(BuildContext context,
+    [String? message]) async {
   return await showYesNoBottomSheet(
       context, message ?? "Are you sure you want to delete this?");
+}
+
+Future<bool?> showOkOnlyBottomSheet(BuildContext context, String message,
+    {String? imageAboveMessage}) async {
+  ThemeData theme = Theme.of(context);
+  return await showModalBottomSheet(
+      context: context,
+      builder: (context) {
+        return Container(
+          padding: EdgeInsets.all(Dimensions.l),
+          width: double.infinity,
+          child: Column(mainAxisSize: MainAxisSize.min, children: [
+            if (imageAboveMessage != null) ...[
+              SvgPicture.asset(
+                imageAboveMessage,
+                height: 50,
+                colorFilter: ColorFilter.mode(Colors.white, BlendMode.srcIn),
+              ),
+              SizedBox(height: Dimensions.m),
+            ],
+            Text(
+              message,
+              textAlign: TextAlign.center,
+            ),
+            const SizedBox(height: Dimensions.xl),
+            SizedBox(
+              height: 60,
+              width: double.infinity,
+              child: ElevatedButton(
+                style: ButtonStyle(
+                  backgroundColor:
+                      MaterialStateProperty.all(theme.colorScheme.secondary),
+                  shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                      RoundedRectangleBorder(
+                          borderRadius:
+                              BorderRadius.circular(Dimensions.cardCorner))),
+                ),
+                onPressed: () {
+                  context.pop(true);
+                },
+                child: Center(
+                  child: Text(
+                    'Ok',
+                    style: theme.textTheme.bodyLarge
+                        ?.copyWith(color: theme.colorScheme.onSecondary),
+                  ),
+                ),
+              ),
+            ),
+            SizedBox(height: MediaQuery.paddingOf(context).bottom)
+          ]),
+        );
+      });
 }
 
 Future<bool?> showYesNoBottomSheet(BuildContext context, String message) async {
@@ -17,7 +71,10 @@ Future<bool?> showYesNoBottomSheet(BuildContext context, String message) async {
           padding: EdgeInsets.all(Dimensions.l),
           width: double.infinity,
           child: Column(mainAxisSize: MainAxisSize.min, children: [
-            Text(message, textAlign: TextAlign.center,),
+            Text(
+              message,
+              textAlign: TextAlign.center,
+            ),
             SizedBox(height: Dimensions.xl),
             Row(
               children: [

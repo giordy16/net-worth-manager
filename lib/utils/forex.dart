@@ -15,8 +15,6 @@ class Forex {
 
     date ??= DateTime.now().keepOnlyYMD();
 
-    print("getting CurrencyChange for the date $date");
-
     double? change = GetIt.instance<Store>()
         .box<CurrencyForexChange>()
         .query(CurrencyForexChange_.date.equalsDate(date) &

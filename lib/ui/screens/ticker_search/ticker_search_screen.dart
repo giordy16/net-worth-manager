@@ -24,7 +24,7 @@ class TickerSearchScreen extends StatelessWidget {
     ThemeData theme = Theme.of(context);
 
     return RepositoryProvider(
-        create: (_) => AlphaVantageRepImp(),
+        create: (context) => AlphaVantageRepImp(context: context),
         child: BlocProvider(
             create: (context) => TickerSearchBloc(
                   avRepo: context.read<AlphaVantageRepImp>(),

@@ -24,7 +24,6 @@ import 'package:net_worth_manager/ui/screens/onboarding/onboarding_screen.dart';
 import 'package:net_worth_manager/ui/screens/sell_position/sell_position_screen.dart';
 import 'package:net_worth_manager/ui/screens/ticker_search/ticker_search_screen.dart';
 import 'package:net_worth_manager/ui/widgets/modal/loading_overlay.dart';
-import 'package:path/path.dart';
 
 final appRoutes = GoRouter(
     initialLocation: ScaffoldWithBottomNavigation.path,

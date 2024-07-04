@@ -4,7 +4,6 @@ import 'package:get_it/get_it.dart';
 import 'package:intl/intl.dart';
 import 'package:net_worth_manager/models/obox/settings_obox.dart';
 import 'package:net_worth_manager/ui/screens/insights/insights_state.dart';
-import 'package:net_worth_manager/utils/background_thread.dart';
 
 import '../../../domain/repository/net_worth/net_worth_repo.dart';
 import '../../../models/obox/asset_category_obox.dart';

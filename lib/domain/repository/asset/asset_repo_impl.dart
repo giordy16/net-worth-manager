@@ -2,6 +2,7 @@ import 'package:get_it/get_it.dart';
 import 'package:net_worth_manager/models/obox/asset_category_obox.dart';
 import 'package:net_worth_manager/models/obox/asset_time_value_obox.dart';
 import 'package:net_worth_manager/models/obox/market_info_obox.dart';
+import 'package:net_worth_manager/ui/scaffold_with_bottom_navigation.dart';
 import 'package:net_worth_manager/utils/extensions/number_extension.dart';
 import 'package:net_worth_manager/utils/extensions/objectbox_extension.dart';
 

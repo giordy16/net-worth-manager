@@ -5,6 +5,7 @@ import 'package:intl/intl.dart';
 import 'package:net_worth_manager/app_dimensions.dart';
 import 'package:net_worth_manager/domain/repository/alphaVantage/alpha_vantage_repo.dart';
 import 'package:net_worth_manager/domain/repository/net_worth/net_worth_repo_impl.dart';
+import 'package:net_worth_manager/ui/scaffold_with_bottom_navigation.dart';
 import 'package:net_worth_manager/ui/screens/add_market_asset/add_market_asset_bloc.dart';
 import 'package:net_worth_manager/ui/screens/add_market_asset/add_market_asset_event.dart';
 import 'package:net_worth_manager/ui/screens/add_market_asset/add_market_asset_state.dart';
@@ -49,7 +50,7 @@ class _AddMarketAssetScreenState extends State<AddMarketAssetScreen> {
         RepositoryProvider<NetWorthRepoImpl>(
             create: (context) => NetWorthRepoImpl()),
         RepositoryProvider<AlphaVantageRepImp>(
-            create: (context) => AlphaVantageRepImp()),
+            create: (context) => AlphaVantageRepImp(context: context)),
       ],
       child: BlocProvider(
           create: (context) => AddMarketAssetBloc(
@@ -85,6 +86,7 @@ class _AddMarketAssetScreenState extends State<AddMarketAssetScreen> {
                   context
                       .read<AddMarketAssetBloc>()
                       .add(SaveMarketAssetEvent(widget.params.asset));
+                  ScaffoldWithBottomNavigation.updateScreens();
                 },
               ),
               body: SafeArea(

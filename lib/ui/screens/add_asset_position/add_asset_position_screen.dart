@@ -11,6 +11,7 @@ import '../../../app_dimensions.dart';
 import '../../../domain/repository/asset/asset_repo_impl.dart';
 import '../../../domain/repository/net_worth/net_worth_repo_impl.dart';
 import '../../../models/obox/asset_time_value_obox.dart';
+import '../../scaffold_with_bottom_navigation.dart';
 import '../../widgets/base_components/app_bottom_fab.dart';
 import '../../widgets/base_components/app_text_field.dart';
 import '../../widgets/modal/bottom_sheet.dart';
@@ -51,6 +52,8 @@ class _AddAssetPositionScreenState extends State<AddAssetPositionScreen> {
       context
           .read<AddPositionBloc>()
           .add(DeletePositionEvent(params.asset, params.timeValue!));
+
+      ScaffoldWithBottomNavigation.updateScreens();
     }
   }
 
@@ -103,10 +106,13 @@ class _AddAssetPositionScreenState extends State<AddAssetPositionScreen> {
                         text: "Save",
                         onTap: () async {
                           if (_formKey.currentState!.validate()) {
-                            widget.params.justPopBack
-                                ? context.pop(position)
-                                : context.read<AddPositionBloc>().add(
-                                    SavePositionEvent(params.asset, position));
+                            if (widget.params.justPopBack) {
+                              context.pop(position);
+                            } else {
+                              context.read<AddPositionBloc>().add(
+                                  SavePositionEvent(params.asset, position));
+                              ScaffoldWithBottomNavigation.updateScreens();
+                            }
                           }
                         },
                       ),

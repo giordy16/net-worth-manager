@@ -1,39 +1,72 @@
 import 'package:dio/dio.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:get_it/get_it.dart';
 import 'package:intl/intl.dart';
+import 'package:net_worth_manager/app_images.dart';
 import 'package:net_worth_manager/domain/repository/stock/stock_api.dart';
 import 'package:net_worth_manager/models/obox/asset_history_time_value.dart';
 import 'package:net_worth_manager/models/obox/main_currency_forex_change.dart';
 import 'package:net_worth_manager/models/obox/settings_obox.dart';
+import 'package:net_worth_manager/ui/widgets/modal/bottom_sheet.dart';
 import 'package:net_worth_manager/utils/extensions/date_time_extension.dart';
 
+import '../../../main.dart';
 import '../../../models/network/av_ticker_search.dart';
 import '../../../models/obox/market_info_obox.dart';
 import '../../../objectbox.g.dart';
+import '../../../ui/scaffold_with_bottom_navigation.dart';
 import '../../../utils/Constants.dart';
 
 class AlphaVantageRepImp implements StockApi {
-  final _client = Dio(BaseOptions(
-      baseUrl: Constants.ALPHA_VANTAGE_BASE_URL,
-      connectTimeout: Duration(seconds: 10)))
-    ..interceptors.add(InterceptorsWrapper(onRequest: (options, handler) {
-      print("= DioRequest ===================================================");
-      print(options.uri);
-      print("Headers: ${options.headers}");
-      print("================================================================");
-      return handler.next(options);
-    }, onResponse: (response, handler) {
-      print("= DioResponse ==================================================");
-      print("Code: ${response.statusCode}");
-      print("Data: ${response.data}");
-      print("================================================================");
-      return handler.next(response);
-    }, onError: (DioException e, handler) {
-      print("= DioException =================================================");
-      print(e);
-      print("================================================================");
-      return handler.next(e);
-    }));
+  final BuildContext? context;
+  late Dio _client;
+
+  AlphaVantageRepImp({this.context}) {
+    _client = Dio(BaseOptions(
+        baseUrl: Constants.ALPHA_VANTAGE_BASE_URL,
+        connectTimeout: Duration(seconds: 10)))
+      ..interceptors.add(InterceptorsWrapper(onRequest: (options, handler) {
+        print(
+            "= DioRequest ===================================================");
+        print(options.uri);
+        print("Headers: ${options.headers}");
+        print(
+            "================================================================");
+        return handler.next(options);
+      }, onResponse: (response, handler) {
+        print(
+            "= DioResponse ==================================================");
+        print("Code: ${response.statusCode}");
+        print("Data: ${response.data}");
+        print(
+            "================================================================");
+        return handler.next(response);
+      }, onError: (DioException e, handler) {
+        if (e.type == DioExceptionType.connectionError ||
+            e.type == DioExceptionType.connectionTimeout) {
+          // no internet
+          if (context != null) {
+            showOkOnlyBottomSheet(
+              context!,
+              "It seems that you are offline.\nTo have updated values, please turn on mobile data or Wi-Fi and reopen the app.",
+              imageAboveMessage: AppImages.noConnection,
+            );
+          } else {
+            // the only case when context == null is during the call on the splash,
+            // where there is no context. For this reason, I set to true a flag on the
+            // first app route
+            ScaffoldWithBottomNavigation.noInternetConnection = true;
+          }
+        }
+
+        print(
+            "= DioException =================================================");
+        print(e);
+        print(
+            "================================================================");
+        return handler.next(e);
+      }));
+  }
 
   @override
   Future<List<MarketInfo>> searchTicker(String text) async {

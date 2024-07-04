@@ -20,6 +20,8 @@ class HomePageBloc extends Bloc<HomePageEvent, HomePageState> {
   final NetWorthRepo netWorthRepo;
   final BuildContext context;
 
+  bool shouldUpdatePage = true;
+
   HomePageBloc({
     required this.context,
     required this.assetRepo,

@@ -29,14 +29,36 @@ import 'home_page_state.dart';
 class HomePage extends StatefulWidget {
   static const route = "/HomePage";
 
+  static bool shouldUpdatePage = true;
+
   const HomePage({super.key});
 
   @override
-  State<HomePage> createState() => _HomePageState();
+  State<HomePage> createState() => HomePageScreenState();
 }
 
-class _HomePageState extends State<HomePage>
+class HomePageScreenState extends State<HomePage>
     with AutomaticKeepAliveClientMixin {
+
+  @override
+  initState(){
+    if (GetIt.I.isRegistered(instance: this)) {
+      GetIt.I.unregister(instance: this);
+    } else {
+      GetIt.I.registerSingleton<HomePageScreenState>(this);
+    }
+
+    super.initState();
+  }
+
+  @override
+  dispose() {
+    super.dispose();
+    if (GetIt.I.isRegistered(instance: this)) {
+      GetIt.I.unregister(instance: this);
+    }
+  }
+
   Future<void> onShowMoreCategory(
       BuildContext context, AssetCategory category) async {
     Map<Widget, Function> selections = {};
@@ -114,7 +136,7 @@ class _HomePageState extends State<HomePage>
         ],
       ): () async {
         if ((await showDeleteConfirmSheet(context,
-            "Are you sure you want to hide this element?\nYou can restore it from Settings page.")) ==
+                "Are you sure you want to hide this element?\nYou can restore it from Settings page.")) ==
             true) {
           context.read<HomePageBloc>().add(HideAsset(asset));
         }
@@ -343,5 +365,9 @@ class _HomePageState extends State<HomePage>
   }
 
   @override
-  bool get wantKeepAlive => true;
+  bool get wantKeepAlive {
+    bool val = HomePage.shouldUpdatePage;
+    HomePage.shouldUpdatePage = false;
+    return !val;
+  }
 }

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
 import 'package:net_worth_manager/app_dimensions.dart';
+import 'package:net_worth_manager/ui/scaffold_with_bottom_navigation.dart';
 import 'package:net_worth_manager/ui/widgets/app_divider.dart';
 import 'package:net_worth_manager/ui/widgets/modal/bottom_sheet.dart';
 
@@ -23,6 +24,7 @@ class _HiddenAssetScreenState extends State<HiddenAssetScreen> {
       asset.excludeFromNW = false;
       GetIt.I<Store>().box<Asset>().put(asset);
       setState(() {});
+      ScaffoldWithBottomNavigation.updateScreens();
     }
   }
 

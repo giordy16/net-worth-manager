@@ -33,7 +33,7 @@ class AssetDetailScreen extends StatelessWidget {
           RepositoryProvider<AssetRepoImpl>(
               create: (context) => AssetRepoImpl()),
           RepositoryProvider<AlphaVantageRepImp>(
-              create: (context) => AlphaVantageRepImp()),
+              create: (context) => AlphaVantageRepImp(context: context)),
         ],
         child: BlocProvider(
           create: (context) => AssetDetailBloc(
