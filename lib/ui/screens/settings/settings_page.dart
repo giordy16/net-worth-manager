@@ -6,6 +6,7 @@ import 'package:net_worth_manager/domain/repository/net_worth/net_worth_repo_imp
 import 'package:net_worth_manager/models/obox/settings_obox.dart';
 import 'package:net_worth_manager/ui/scaffold_with_bottom_navigation.dart';
 import 'package:net_worth_manager/ui/screens/currency_selection/currency_selection_params.dart';
+import 'package:net_worth_manager/ui/screens/firebase_contacts/firebase_contacts_screen.dart';
 import 'package:net_worth_manager/ui/screens/home/home_page_bloc.dart';
 import 'package:net_worth_manager/ui/screens/manage_categories/manage_categories.dart';
 import 'package:net_worth_manager/ui/widgets/app_divider.dart';
@@ -74,7 +75,8 @@ class _SettingsScreenState extends State<SettingsScreen> {
           children: [
             SizedBox(height: Dimensions.s),
             Padding(
-              padding: const EdgeInsets.symmetric(horizontal: Dimensions.screenMargin),
+              padding: const EdgeInsets.symmetric(
+                  horizontal: Dimensions.screenMargin),
               child: Text(
                 "Settings",
                 style: theme.textTheme.titleLarge
@@ -104,7 +106,8 @@ class _SettingsScreenState extends State<SettingsScreen> {
               ),
             ),
             Padding(
-              padding: const EdgeInsets.symmetric(horizontal: Dimensions.screenMargin),
+              padding: const EdgeInsets.symmetric(
+                  horizontal: Dimensions.screenMargin),
               child: AppDivider(),
             ),
             Padding(
@@ -122,7 +125,8 @@ class _SettingsScreenState extends State<SettingsScreen> {
             ),
             SizedBox(height: Dimensions.l),
             Padding(
-              padding: const EdgeInsets.symmetric(horizontal: Dimensions.screenMargin),
+              padding: const EdgeInsets.symmetric(
+                  horizontal: Dimensions.screenMargin),
               child: Text(
                 "Assets/Categories",
                 style: theme.textTheme.titleLarge
@@ -145,7 +149,8 @@ class _SettingsScreenState extends State<SettingsScreen> {
               ),
             ),
             Padding(
-              padding: const EdgeInsets.symmetric(horizontal: Dimensions.screenMargin),
+              padding: const EdgeInsets.symmetric(
+                  horizontal: Dimensions.screenMargin),
               child: AppDivider(),
             ),
             Padding(
@@ -161,7 +166,69 @@ class _SettingsScreenState extends State<SettingsScreen> {
                 ),
               ),
             ),
-
+            SizedBox(height: Dimensions.l),
+            Padding(
+              padding: const EdgeInsets.symmetric(
+                  horizontal: Dimensions.screenMargin),
+              child: Text(
+                "Feedback",
+                style: theme.textTheme.titleLarge
+                    ?.copyWith(fontWeight: FontWeight.bold),
+              ),
+            ),
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: Dimensions.xxs),
+              child: IconButton(
+                onPressed: () => context.push(FirebaseContactsScreen.path,
+                    extra: FirebaseScreenType.reports),
+                icon: Row(
+                  children: [
+                    Text("Report a problem", style: theme.textTheme.bodyLarge),
+                    Expanded(child: SizedBox()),
+                    Icon(Icons.arrow_forward_ios, size: 14)
+                  ],
+                ),
+              ),
+            ),
+            Padding(
+              padding: const EdgeInsets.symmetric(
+                  horizontal: Dimensions.screenMargin),
+              child: AppDivider(),
+            ),
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: Dimensions.xxs),
+              child: IconButton(
+                onPressed: () => context.push(FirebaseContactsScreen.path,
+                    extra: FirebaseScreenType.suggestions),
+                icon: Row(
+                  children: [
+                    Text("Suggest a new feature",
+                        style: theme.textTheme.bodyLarge),
+                    Expanded(child: SizedBox()),
+                    Icon(Icons.arrow_forward_ios, size: 14)
+                  ],
+                ),
+              ),
+            ),
+            Padding(
+              padding: const EdgeInsets.symmetric(
+                  horizontal: Dimensions.screenMargin),
+              child: AppDivider(),
+            ),
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: Dimensions.xxs),
+              child: IconButton(
+                onPressed: () => context.push(FirebaseContactsScreen.path,
+                    extra: FirebaseScreenType.contacts),
+                icon: Row(
+                  children: [
+                    Text("Contact us", style: theme.textTheme.bodyLarge),
+                    Expanded(child: SizedBox()),
+                    Icon(Icons.arrow_forward_ios, size: 14)
+                  ],
+                ),
+              ),
+            ),
             const SizedBox(
               height: Dimensions.xl,
             ),

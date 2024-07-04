@@ -17,6 +17,7 @@ import 'package:net_worth_manager/ui/screens/asset_detail/asset_detail_screen.da
 import 'package:net_worth_manager/ui/screens/currency_selection/currency_selection_params.dart';
 import 'package:net_worth_manager/ui/screens/currency_selection/currency_selection_screen.dart';
 import 'package:net_worth_manager/ui/screens/excluded_asset/excluded_asset_screen.dart';
+import 'package:net_worth_manager/ui/screens/firebase_contacts/firebase_contacts_screen.dart';
 import 'package:net_worth_manager/ui/screens/import_export/import_export_screen.dart';
 import 'package:net_worth_manager/ui/screens/import_investments/import_investments_screen.dart';
 import 'package:net_worth_manager/ui/screens/full_asset_allocation/full_asset_allocation_screen.dart';
@@ -107,11 +108,15 @@ final appRoutes = GoRouter(
         builder: (context, state) => HiddenAssetScreen(),
       ),
       GoRoute(
-        path: SellPositionScreen.path,
-        builder: (context, state) => LoadingOverlay(
-            child: SellPositionScreen(
-                state.extra as AddAssetPositionScreenParams)),
-      ),
+          path: SellPositionScreen.path,
+          builder: (context, state) => LoadingOverlay(
+              child: SellPositionScreen(
+                  state.extra as AddAssetPositionScreenParams))),
+      GoRoute(
+          path: FirebaseContactsScreen.path,
+          builder: (context, state) => LoadingOverlay(
+              child:
+                  FirebaseContactsScreen(state.extra as FirebaseScreenType))),
       GoRoute(
           path: ManageCategories.path,
           builder: (context, state) =>

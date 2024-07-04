@@ -10,6 +10,7 @@ class AppTextField extends StatelessWidget {
   IconData? prefixIcon;
   bool isMandatory;
   bool readOnly;
+  bool expandedMode;
   TextEditingController controller;
 
   AppTextField({
@@ -21,6 +22,7 @@ class AppTextField extends StatelessWidget {
     this.prefixIcon,
     this.isMandatory = false,
     this.readOnly = false,
+    this.expandedMode = false,
   }) : controller = TextEditingController(text: initialValue);
 
   @override
@@ -35,8 +37,12 @@ class AppTextField extends StatelessWidget {
       onTapOutside: (_) => FocusScope.of(context).unfocus(),
       keyboardType: keyboardType,
       textCapitalization: TextCapitalization.sentences,
+      textAlignVertical: TextAlignVertical.top,
+      expands: expandedMode,
+      maxLines: expandedMode ? null : 1,
       decoration: InputDecoration(
         label: Text(title),
+        alignLabelWithHint: true,
         prefixIcon: prefixIcon != null ? Icon(prefixIcon) : null,
         labelStyle: TextStyle(color: theme.colorScheme.secondary),
         errorBorder: formErrorBorder(context),
