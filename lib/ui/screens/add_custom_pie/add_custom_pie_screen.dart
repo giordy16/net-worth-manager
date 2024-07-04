@@ -97,7 +97,7 @@ class _AddCustomPieScreenState extends State<AddCustomPieScreen> {
                   }),
               SizedBox(height: Dimensions.xl),
               Text(
-                "Select the categories or assets you want to add to the chart",
+                "Select the categories or assets you want to add to the pie chart",
                 style: theme.textTheme.bodyMedium,
               ),
               SizedBox(height: Dimensions.s),

@@ -50,7 +50,7 @@ class AddAssetCategory extends StatelessWidget {
                 Padding(
                     padding: const EdgeInsets.only(top: Dimensions.xs),
                     child: Text(
-                        "Create a new category for your assets, for example \"Liquidity\", \"Passivity\", ...")),
+                        "Create a new category for your assets, for example \"Liquidity\", \"Bank accounts\", \"Expected taxes\" ...")),
                 Padding(
                   padding: const EdgeInsets.only(top: Dimensions.m),
                   child: AppTextField(

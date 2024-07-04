@@ -113,7 +113,8 @@ final appRoutes = GoRouter(
       ),
     ],
     redirect: (context, state) {
-      if (GetIt.I<Settings>().showTutorial == true) {
+      if (GetIt.I<Settings>().showTutorial == true &&
+          state.fullPath != CurrencySelectionScreen.route) {
         return OnboardingScreen.path;
       }
       return null;

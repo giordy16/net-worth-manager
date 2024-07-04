@@ -3,6 +3,8 @@ import 'package:get_it/get_it.dart';
 import 'package:go_router/go_router.dart';
 import 'package:net_worth_manager/app_images.dart';
 import 'package:net_worth_manager/ui/scaffold_with_bottom_navigation.dart';
+import 'package:net_worth_manager/ui/screens/currency_selection/currency_selection_params.dart';
+import 'package:net_worth_manager/ui/screens/currency_selection/currency_selection_screen.dart';
 import 'package:net_worth_manager/utils/extensions/context_extensions.dart';
 
 import '../../../app_dimensions.dart';
@@ -45,6 +47,20 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
     context.clearStackAndReplace(ScaffoldWithBottomNavigation.path);
   }
 
+  void chooseMainCurrency() {
+    context.push(CurrencySelectionScreen.route,
+        extra: CurrencySelectionParams(
+          selectedCurrency: GetIt.I<Settings>().defaultCurrency.target,
+          onCurrencySelected: (c) {
+            Settings settings = GetIt.I<Settings>();
+            settings.defaultCurrency.target = c;
+            GetIt.I<Store>().box<Settings>().put(settings);
+
+            openApp();
+          },
+        ));
+  }
+
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
@@ -62,7 +78,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
               child: ElevatedButton(
                 onPressed: () {
                   if (controller.page!.toInt() == pages.length - 1) {
-                    openApp();
+                    chooseMainCurrency();
                   } else {
                     controller.animateToPage(
                       (controller.page! + 1).toInt(),
