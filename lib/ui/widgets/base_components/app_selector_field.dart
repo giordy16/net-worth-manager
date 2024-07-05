@@ -56,6 +56,7 @@ class AppSelectorField<T> extends StatelessWidget {
         menuItemStyleData: const MenuItemStyleData(
           padding: EdgeInsets.symmetric(horizontal: 12),
         ),
+        dropdownStyleData: DropdownStyleData(maxHeight: 300),
         customButton: Container(
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,

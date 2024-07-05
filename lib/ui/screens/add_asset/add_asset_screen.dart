@@ -127,7 +127,7 @@ class AddAssetScreen extends StatelessWidget {
                           Padding(
                               padding: const EdgeInsets.only(top: Dimensions.l),
                               child: Text(
-                                "If you want to add investments on stocks or ETFs, choose \"Market Investment (ETF/Stock)\" from the previuos screen. In this way, they will be tracked automatically.",
+                                "If you want to add investments, choose \"Market Investment (ETF/Stock/Crypto)\" from the previous screen. In this way, they will be tracked automatically.",
                                 style: Theme.of(context)
                                     .textTheme
                                     .bodySmall

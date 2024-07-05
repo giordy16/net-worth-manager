@@ -21,6 +21,7 @@ class MarketInfo {
   String? type;
   String? region;
   String? exchangeName;
+  String? exchangeNameShort;
 
   @Property(type: PropertyType.date)
   DateTime? dateLastPriceFetch;
@@ -32,6 +33,7 @@ class MarketInfo {
     this.type,
     this.region,
     this.exchangeName,
+    this.exchangeNameShort,
   });
 
   double getCurrentPrice() {

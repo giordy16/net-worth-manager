@@ -29,7 +29,7 @@ class AddSelectionScreen extends StatelessWidget {
               const Text("Select which kind of asset you want to add:"),
               const SizedBox(height: Dimensions.m),
               AddSelectionItem(
-                "Market Investment (ETF/Stock)",
+                "Market Investment (ETF/Stock/Crypto)",
                 "Add your investments in the stock market.\nTheir value will be automatically calculated day by day",
                 () {
                   context.push(TickerSearchScreen.route);

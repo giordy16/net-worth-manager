@@ -11,7 +11,7 @@ FMPTickerSearch _$FMPTickerSearchFromJson(Map<String, dynamic> json) =>
       json['symbol'] as String,
       json['name'] as String,
       json['currency'] as String,
-      json['stockExchange'] as String,
+      json['stockExchange'] as String?,
       json['exchangeShortName'] as String,
     );
 

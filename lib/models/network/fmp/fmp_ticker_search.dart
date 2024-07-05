@@ -7,7 +7,7 @@ class FMPTickerSearch {
   String symbol;
   String name;
   String currency;
-  String stockExchange;
+  String? stockExchange;
   String exchangeShortName;
 
   FMPTickerSearch(this.symbol, this.name, this.currency, this.stockExchange,

@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:get_it/get_it.dart';
 import 'package:net_worth_manager/domain/repository/asset/asset_repo_impl.dart';
 import 'package:net_worth_manager/models/obox/net_worth_history.dart';
@@ -27,6 +28,7 @@ class NetWorthRepoImpl extends NetWorthRepo {
   /// from @updateStartingDate, so the values before are not updated
   @override
   Future<void> updateNetWorth({DateTime? updateStartingDate}) async {
+    debugPrint("updateNetWorth START");
     var assets = GetIt.I<Store>().box<Asset>().getAll();
 
     // contains the date of the first AssetTimeValue for each asset
@@ -110,6 +112,7 @@ class NetWorthRepoImpl extends NetWorthRepo {
         .getAll()
         .where((element) => element.date.isBefore(oldestAssetDate));
     nwBox.removeMany(valuesToDelete.map((e) => e.id!).toList());
+    debugPrint("updateNetWorth END");
   }
 
   @override

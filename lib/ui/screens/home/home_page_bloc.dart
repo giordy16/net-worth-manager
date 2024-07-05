@@ -29,6 +29,8 @@ class HomePageBloc extends Bloc<HomePageEvent, HomePageState> {
     required this.netWorthRepo,
   }) : super(HomePageState()) {
     on<FetchHomePage>((event, emit) {
+      debugPrint("FetchHomePage START");
+
       if (event.gap != null) {
         // when event.gap != null means that the user changed the time of the graph,
         // so let's save the preference
@@ -80,9 +82,11 @@ class HomePageBloc extends Bloc<HomePageEvent, HomePageState> {
           ));
         }
       }
+      debugPrint("FetchHomePage END");
     });
 
     on<DeleteAsset>((event, emit) async {
+      debugPrint("DeleteAsset START");
       DateTime? oldestDate = event.asset.getOldestTimeValueDate();
 
       assetRepo.deleteAsset(event.asset);
@@ -95,6 +99,7 @@ class HomePageBloc extends Bloc<HomePageEvent, HomePageState> {
 
       add(FetchHomePage());
       ScaffoldWithBottomNavigation.updateScreens();
+      debugPrint("DeleteAsset END");
     });
 
     on<HideAsset>((event, emit) async {

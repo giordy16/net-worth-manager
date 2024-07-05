@@ -55,6 +55,21 @@ class AddMarketAssetBloc
           startFetchDate: oldestDate,
         );
         await netWorthRepo.updateNetWorth(updateStartingDate: oldestDate);
+      } else {
+        // fetch either way the price of the assets
+        await GetIt.I<Store>().syncForexPrices(
+          fetchType: FMPFetchType.addPosition,
+          currencyToFetch: marketInfo.currency,
+          startFetchDate:
+              DateTime.now().copyWith(year: DateTime.now().year - 5),
+        );
+
+        await stockApi.fetchPriceHistoryBySymbol(
+          marketInfo,
+          fetchType: FMPFetchType.addPosition,
+          startFetchDate:
+              DateTime.now().copyWith(year: DateTime.now().year - 5),
+        );
       }
 
       LoadingOverlay.of(context).hide();

@@ -75,7 +75,6 @@ class FinancialModelingRepoImpl implements StockApi {
     required FMPFetchType fetchType,
     DateTime? startFetchDate,
   }) async {
-
     String mainCurrencySymbol =
         GetIt.I<Settings>().defaultCurrency.target!.name;
 
@@ -248,12 +247,16 @@ class FinancialModelingRepoImpl implements StockApi {
 
     switch (fetchType) {
       case FMPFetchType.appStart:
-        DateTime dateLastValue = historyBox
+        DateTime? dateLastValue = historyBox
             .query(AssetHistoryTimeValue_.assetName.equals(marketInfo.symbol))
             .order(AssetHistoryTimeValue_.date, flags: Order.descending)
             .build()
-            .findFirst()!
-            .date;
+            .findFirst()
+            ?.date;
+
+        if (dateLastValue == null) {
+          return;
+        }
 
         DateTime start = dateLastValue.copyWith(day: dateLastValue.day + 1);
         DateTime end = start.copyWith(year: start.year + 5);
@@ -365,10 +368,12 @@ class FinancialModelingRepoImpl implements StockApi {
       return (response.data as List<dynamic>)
           .map((e) => FMPTickerSearch.fromJson(e as Map<String, dynamic>))
           .map((e) => MarketInfo(
-              symbol: e.symbol,
-              name: e.name,
-              currency: e.currency,
-              exchangeName: e.stockExchange))
+                symbol: e.symbol,
+                name: e.name,
+                currency: e.currency,
+                exchangeName: e.stockExchange ?? e.exchangeShortName,
+                exchangeNameShort: e.exchangeShortName,
+              ))
           .toList();
     } catch (e) {
       print("searchTicker error: $e");

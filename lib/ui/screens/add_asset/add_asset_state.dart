@@ -7,6 +7,7 @@ class AddAssetState extends Equatable {
   final List<AssetCategory> assetCategorySelectable;
   final AssetCategory? assetCategory;
 
+
   const AddAssetState.empty()
       : assetName = "",
         assetCategorySelectable = const [],
