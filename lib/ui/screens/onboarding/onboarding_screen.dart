@@ -6,6 +6,7 @@ import 'package:net_worth_manager/ui/scaffold_with_bottom_navigation.dart';
 import 'package:net_worth_manager/ui/screens/currency_selection/currency_selection_params.dart';
 import 'package:net_worth_manager/ui/screens/currency_selection/currency_selection_screen.dart';
 import 'package:net_worth_manager/utils/extensions/context_extensions.dart';
+import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 
 import '../../../app_dimensions.dart';
 import '../../../models/obox/settings_obox.dart';
@@ -38,8 +39,13 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
       "View valuable insights into the status and performance of your net worth.",
     ),
     OnboardingPage(
+      AppImages.tutorial_1,
+      "How should you use the app?",
+      "Periodically remember to open the app ad update the value of your assets, for example at the end of each month.",
+    ),
+    OnboardingPage(
       AppImages.tutorial_4,
-      "Secure",
+      "You data will not be shared to anyone",
       "Your data are stored inside the phone and they are not sent to any server.\nIf you want, you can easy share or backup your data with the Export function.",
     ),
   ];
@@ -79,6 +85,17 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
               children: pages,
               controller: controller,
             )),
+            SmoothPageIndicator(
+              controller: controller,
+              count: pages.length,
+              effect: const WormEffect(
+                dotHeight: 8,
+                dotWidth: 8,
+                type: WormType.thinUnderground,
+                activeDotColor: Colors.white
+              ),
+            ),
+            SizedBox(height: 32,),
             Center(
               child: ElevatedButton(
                 onPressed: () {
