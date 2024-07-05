@@ -13,6 +13,7 @@ import '../../../domain/repository/asset/asset_repo.dart';
 import '../../../domain/repository/stock/stock_api.dart';
 import '../../../models/obox/asset_obox.dart';
 import '../../../objectbox.g.dart';
+import '../../../utils/enum/fetch_forex_type.dart';
 
 class AddMarketAssetBloc
     extends Bloc<AddMarketAssetEvent, AddMarketAssetState> {
@@ -33,17 +34,26 @@ class AddMarketAssetBloc
 
       LoadingOverlay.of(context).show();
 
-      await GetIt.I<Store>().syncForexPrices(currencyToFetch: marketInfo.currency);
-      await stockApi.fetchPriceHistoryBySymbol(marketInfo);
-
       assetRepo.saveMarketValue(marketInfo);
       assetRepo.saveAsset(asset);
 
       var assetPositionsDate =
-      asset.timeValues.map((element) => element.date).toList();
+          asset.timeValues.map((element) => element.date).toList();
       if (assetPositionsDate.isNotEmpty) {
         DateTime oldestDate =
-        assetPositionsDate.reduce((a, b) => a.isBefore(b) ? a : b);
+            assetPositionsDate.reduce((a, b) => a.isBefore(b) ? a : b);
+
+        await GetIt.I<Store>().syncForexPrices(
+          fetchType: FMPFetchType.addPosition,
+          currencyToFetch: marketInfo.currency,
+          startFetchDate: oldestDate,
+        );
+
+        await stockApi.fetchPriceHistoryBySymbol(
+          marketInfo,
+          fetchType: FMPFetchType.addPosition,
+          startFetchDate: oldestDate,
+        );
         await netWorthRepo.updateNetWorth(updateStartingDate: oldestDate);
       }
 

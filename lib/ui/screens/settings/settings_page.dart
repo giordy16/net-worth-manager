@@ -16,6 +16,7 @@ import 'package:package_info_plus/package_info_plus.dart';
 import '../../../app_dimensions.dart';
 import '../../../models/obox/currency_obox.dart';
 import '../../../objectbox.g.dart';
+import '../../../utils/enum/fetch_forex_type.dart';
 import '../../widgets/modal/loading_overlay.dart';
 import '../currency_selection/currency_selection_screen.dart';
 import '../excluded_asset/excluded_asset_screen.dart';
@@ -54,14 +55,15 @@ class _SettingsScreenState extends State<SettingsScreen> {
       Settings settings = GetIt.I<Settings>();
       settings.defaultCurrency.target = selectedCurrency;
       GetIt.I<Store>().box<Settings>().put(settings);
-      setState(() {});
 
-      await GetIt.I<Store>().syncForexPrices();
+      await GetIt.I<Store>()
+          .syncForexPrices(fetchType: FMPFetchType.mainCurrencyChange);
       await NetWorthRepoImpl().updateNetWorth();
 
       ScaffoldWithBottomNavigation.updateScreens();
 
       LoadingOverlay.of(context).hide();
+      setState(() {});
     }
   }
 

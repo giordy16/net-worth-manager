@@ -13,6 +13,7 @@ import 'package:net_worth_manager/ui/widgets/base_components/app_text_field.dart
 import 'package:net_worth_manager/ui/widgets/modal/bottom_sheet.dart';
 import 'package:net_worth_manager/utils/extensions/number_extension.dart';
 import '../../../domain/repository/asset/asset_repo_impl.dart';
+import '../../../domain/repository/stock/financial_modeling_repo.dart';
 import '../../../models/obox/asset_time_value_obox.dart';
 import '../../widgets/app_divider.dart';
 import '../../widgets/base_components/app_bottom_fab.dart';
@@ -49,14 +50,14 @@ class _AddMarketAssetScreenState extends State<AddMarketAssetScreen> {
         RepositoryProvider<AssetRepoImpl>(create: (context) => AssetRepoImpl()),
         RepositoryProvider<NetWorthRepoImpl>(
             create: (context) => NetWorthRepoImpl()),
-        RepositoryProvider<AlphaVantageRepImp>(
-            create: (context) => AlphaVantageRepImp(context: context)),
+        RepositoryProvider<FinancialModelingRepoImpl>(
+            create: (context) => FinancialModelingRepoImpl(context: context)),
       ],
       child: BlocProvider(
           create: (context) => AddMarketAssetBloc(
                 context,
                 context.read<AssetRepoImpl>(),
-                context.read<AlphaVantageRepImp>(),
+                context.read<FinancialModelingRepoImpl>(),
                 context.read<NetWorthRepoImpl>(),
               ),
           child: BlocBuilder<AddMarketAssetBloc, AddMarketAssetState>(

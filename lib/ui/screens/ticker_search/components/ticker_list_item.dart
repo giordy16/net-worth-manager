@@ -12,35 +12,33 @@ class TickerListItem extends StatelessWidget {
     return Material(
       child: InkWell(
         onTap: () => onTap(info),
-        child: Column(
+        child: Row(
           children: [
-            Row(
+            Expanded(
+                child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Expanded(
-                  child: Text(
-                    info.name,
-                    style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                          fontWeight: FontWeight.bold,
-                        ),
+                Text(
+                  info.name,
+                  style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                        fontWeight: FontWeight.bold,
+                      ),
+                ),
+                if (info.type != null) Text(info.type!)
+              ],
+            )),
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.end,
+                children: [
+                  Text(info.symbol),
+                  Text(
+                    "${info.currency} - ${info.region ?? info.exchangeName}",
+                    textAlign: TextAlign.end,
                   ),
-                ),
-                const Expanded(child: SizedBox()),
-                Text(
-                  info.symbol,
-                ),
-              ],
-            ),
-            Row(
-              children: [
-                Text(
-                  info.type,
-                ),
-                const Expanded(child: SizedBox()),
-                Text(
-                  "${info.currency} - ${info.region}",
-                ),
-              ],
-            ),
+                ],
+              ),
+            )
           ],
         ),
       ),

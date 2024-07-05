@@ -11,11 +11,12 @@ import 'package:net_worth_manager/ui/widgets/modal/bottom_sheet.dart';
 import 'package:net_worth_manager/utils/extensions/date_time_extension.dart';
 
 import '../../../main.dart';
-import '../../../models/network/av_ticker_search.dart';
+import '../../../models/network/av/av_ticker_search.dart';
 import '../../../models/obox/market_info_obox.dart';
 import '../../../objectbox.g.dart';
 import '../../../ui/scaffold_with_bottom_navigation.dart';
 import '../../../utils/Constants.dart';
+import '../../../utils/enum/fetch_forex_type.dart';
 
 class AlphaVantageRepImp implements StockApi {
   final BuildContext? context;
@@ -81,8 +82,13 @@ class AlphaVantageRepImp implements StockApi {
 
       return AVTickerSearch.fromJson(response.data)
           .bestMatches
-          .map(
-              (e) => MarketInfo(e.symbol, e.name, e.type, e.currency, e.region))
+          .map((e) => MarketInfo(
+                symbol: e.symbol,
+                name: e.name,
+                type: e.type,
+                currency: e.currency,
+                region: e.region,
+              ))
           .toList();
     } catch (e) {
       print("searchTicker error: $e");
@@ -123,8 +129,10 @@ class AlphaVantageRepImp implements StockApi {
 
   @override
   Future<void> fetchForexChange(
-    String originCurrencyName,
-  ) async {
+    String originCurrencyName, {
+    required FMPFetchType fetchType,
+    DateTime? startFetchDate,
+  }) async {
     String mainCurrencySymbol = GetIt.I<Store>()
         .box<Settings>()
         .getAll()
@@ -214,7 +222,11 @@ class AlphaVantageRepImp implements StockApi {
   ///  the object with key == today-i. the loop will end when for DAYS_STOP days in
   ///  a row no value will be found
   @override
-  Future<void> fetchPriceHistoryBySymbol(MarketInfo marketInfo) async {
+  Future<void> fetchPriceHistoryBySymbol(
+    MarketInfo marketInfo, {
+    required FMPFetchType fetchType,
+    DateTime? startFetchDate,
+  }) async {
     const int DAYS_STOP = 10;
 
     // if already fetch today, not fetching anymore

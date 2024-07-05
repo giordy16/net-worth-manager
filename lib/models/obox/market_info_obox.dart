@@ -16,20 +16,23 @@ class MarketInfo {
 
   String symbol;
   String name;
-  String type;
   String currency;
-  String region;
+
+  String? type;
+  String? region;
+  String? exchangeName;
 
   @Property(type: PropertyType.date)
   DateTime? dateLastPriceFetch;
 
-  MarketInfo(
-    this.symbol,
-    this.name,
+  MarketInfo({
+    required this.symbol,
+    required this.name,
+    required this.currency,
     this.type,
-    this.currency,
     this.region,
-  );
+    this.exchangeName,
+  });
 
   double getCurrentPrice() {
     return GetIt.I<Store>()

@@ -21,53 +21,56 @@ class ImportExportScreen extends StatelessWidget {
   static String path = "/ImportExportScreen";
 
   Future<void> exportDB(BuildContext context) async {
-    var dbData = await ObjectBox.getDBData();
-    String? outputPath = await FilePicker.platform.saveFile(
-        dialogTitle: 'Please select an output file:',
-        fileName: 'data.mdb',
-        bytes: dbData);
+    try {
+      var dbData = await ObjectBox.getDBData();
+      String? outputPath = await FilePicker.platform.saveFile(
+          dialogTitle: 'Please select an output file:',
+          fileName: 'data.mdb',
+          bytes: dbData);
 
-    if (outputPath != null) {
-      UserMessage.showMessage(context, "The file has been saved successfully!");
-    }
+      if (outputPath != null) {
+        UserMessage.showMessage(
+            context, "The file has been saved successfully!");
+      }
+    } catch (e) {}
   }
 
   Future<void> importDB(BuildContext context) async {
-    FilePickerResult? result = await FilePicker.platform.pickFiles();
+    try {
+      FilePickerResult? result = await FilePicker.platform.pickFiles();
 
-    if (result != null) {
-      LoadingOverlay.of(context).show();
-      var yes = await showYesNoBottomSheet(
-        context,
-        "Are you sure you want to import this file?\nAll current data will be overwritten",
-      );
-      if (yes == true) {
-        if (p.extension(result.files.single.path!) != ".mdb") {
-          UserMessage.showMessage(context,
-              "The selected file is not correct. Please select a .mdb file");
-          LoadingOverlay.of(context).hide();
-          return;
-        }
+      if (result != null) {
+        LoadingOverlay.of(context).show();
+        var yes = await showYesNoBottomSheet(
+          context,
+          "Are you sure you want to import this file?\nAll current data will be overwritten",
+        );
+        if (yes == true) {
+          if (p.extension(result.files.single.path!) != ".mdb") {
+            UserMessage.showMessage(context,
+                "The selected file is not correct. Please select a .mdb file");
+            LoadingOverlay.of(context).hide();
+            return;
+          }
 
-        try {
           File file = File(result.files.single.path!);
 
           GetIt.I<Store>().close();
 
           GetIt.I.unregister(instance: GetIt.I<Store>());
           GetIt.I.unregister(instance: GetIt.I<Settings>());
+          ScaffoldWithBottomNavigation.unregisterScreenStates();
 
           await ObjectBox.importDatabase(file);
           await initApp();
 
           context.clearStackAndReplace(ScaffoldWithBottomNavigation.path);
-        } catch (e) {
-          print(e);
-          UserMessage.showMessage(
-              context, "An error occurred, please try again");
         }
       }
+    } catch (e) {
       LoadingOverlay.of(context).hide();
+      print(e);
+      UserMessage.showMessage(context, "An error occurred, please try again");
     }
   }
 

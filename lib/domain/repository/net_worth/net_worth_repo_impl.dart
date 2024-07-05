@@ -115,7 +115,6 @@ class NetWorthRepoImpl extends NetWorthRepo {
   @override
   Future<Map<DateTime, double>> getNetWorthsAtTheEndOfMonths() async {
     return await runInDifferentThread(() {
-
       Map<DateTime, double> nw = {};
 
       final nwBox = GetIt.I<Store>().box<NetWorthHistory>();
@@ -131,19 +130,33 @@ class NetWorthRepoImpl extends NetWorthRepo {
 
       while (lastDayOfTheMonth.isBefore(DateTime.now())) {
         double nwValue = nwBox
-            .query(NetWorthHistory_.date.lessOrEqualDate(lastDayOfTheMonth))
-            .order(NetWorthHistory_.date, flags: Order.descending)
-            .build()
-            .findFirst()
-            ?.value ??
+                .query(NetWorthHistory_.date.lessOrEqualDate(lastDayOfTheMonth))
+                .order(NetWorthHistory_.date, flags: Order.descending)
+                .build()
+                .findFirst()
+                ?.value ??
             0;
 
         nw.addAll({lastDayOfTheMonth: nwValue});
 
-        lastDayOfTheMonth = (lastDayOfTheMonth.copyWith(day: lastDayOfTheMonth.day + 1)).keepOnlyYMD().lastDayOfTheMonth;
+        lastDayOfTheMonth =
+            (lastDayOfTheMonth.copyWith(day: lastDayOfTheMonth.day + 1))
+                .keepOnlyYMD()
+                .lastDayOfTheMonth;
       }
 
       return nw;
     });
+  }
+
+  @override
+  DateTime? getDateFirstNWValue() {
+    return GetIt.I<Store>()
+        .box<NetWorthHistory>()
+        .query()
+        .order(NetWorthHistory_.date)
+        .build()
+        .findFirst()
+        ?.date;
   }
 }

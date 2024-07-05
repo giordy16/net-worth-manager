@@ -11,6 +11,7 @@ import 'package:net_worth_manager/utils/extensions/objectbox_extension.dart';
 import '../../../domain/repository/asset/asset_repo.dart';
 import '../../../models/obox/asset_obox.dart';
 import '../../../objectbox.g.dart';
+import '../../../utils/enum/fetch_forex_type.dart';
 
 class AddPositionBloc extends Bloc<AddPositionEvent, AddPositionState> {
   BuildContext context;
@@ -30,7 +31,7 @@ class AddPositionBloc extends Bloc<AddPositionEvent, AddPositionState> {
         event.asset,
       );
 
-      await GetIt.I<Store>().syncForexPrices();
+      await GetIt.I<Store>().syncForexPrices(fetchType: FMPFetchType.addPosition, startFetchDate: event.position.date);
 
       var assetPositionsDate = GetIt.I<Store>()
               .box<Asset>()

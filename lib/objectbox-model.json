@@ -178,7 +178,7 @@
     },
     {
       "id": "7:8021363571026158853",
-      "lastPropertyId": "9:1088568014202407642",
+      "lastPropertyId": "10:1646195304153299437",
       "name": "MarketInfo",
       "properties": [
         {
@@ -216,6 +216,11 @@
           "id": "9:1088568014202407642",
           "name": "dateLastPriceFetch",
           "type": 10
+        },
+        {
+          "id": "10:1646195304153299437",
+          "name": "exchangeName",
+          "type": 9
         }
       ],
       "relations": []

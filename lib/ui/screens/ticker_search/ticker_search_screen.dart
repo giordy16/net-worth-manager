@@ -9,6 +9,7 @@ import 'package:net_worth_manager/ui/widgets/base_components/app_text_field.dart
 import 'package:net_worth_manager/utils/extensions/mappers.dart';
 
 import '../../../domain/repository/alphaVantage/alpha_vantage_repo.dart';
+import '../../../domain/repository/stock/financial_modeling_repo.dart';
 import '../../widgets/app_divider.dart';
 import '../add_market_asset/add_market_asset_screen.dart';
 import '../add_market_asset/add_market_asset_screen_params.dart';
@@ -24,10 +25,10 @@ class TickerSearchScreen extends StatelessWidget {
     ThemeData theme = Theme.of(context);
 
     return RepositoryProvider(
-        create: (context) => AlphaVantageRepImp(context: context),
+        create: (context) => FinancialModelingRepoImpl(context: context),
         child: BlocProvider(
             create: (context) => TickerSearchBloc(
-                  avRepo: context.read<AlphaVantageRepImp>(),
+                  avRepo: context.read<FinancialModelingRepoImpl>(),
                 ),
             child: BlocBuilder<TickerSearchBloc, TickerSearchState>(
                 builder: (context, state) {

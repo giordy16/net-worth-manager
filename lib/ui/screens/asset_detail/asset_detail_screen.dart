@@ -12,6 +12,7 @@ import 'package:net_worth_manager/utils/extensions/number_extension.dart';
 
 import '../../../domain/repository/alphaVantage/alpha_vantage_repo.dart';
 import '../../../domain/repository/asset/asset_repo_impl.dart';
+import '../../../domain/repository/stock/financial_modeling_repo.dart';
 import '../../../models/obox/asset_obox.dart';
 import '../../widgets/app_divider.dart';
 import '../../widgets/graph/line_graph.dart';
@@ -32,14 +33,14 @@ class AssetDetailScreen extends StatelessWidget {
         providers: [
           RepositoryProvider<AssetRepoImpl>(
               create: (context) => AssetRepoImpl()),
-          RepositoryProvider<AlphaVantageRepImp>(
-              create: (context) => AlphaVantageRepImp(context: context)),
+          RepositoryProvider<FinancialModelingRepoImpl>(
+              create: (context) => FinancialModelingRepoImpl(context: context)),
         ],
         child: BlocProvider(
           create: (context) => AssetDetailBloc(
             asset,
             context.read<AssetRepoImpl>(),
-            context.read<AlphaVantageRepImp>(),
+            context.read<FinancialModelingRepoImpl>(),
           )..add(FetchGraphDataEvent()),
           child: BlocBuilder<AssetDetailBloc, AssetDetailState>(
             builder: (BuildContext context, state) {

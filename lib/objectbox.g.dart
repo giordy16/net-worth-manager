@@ -200,7 +200,7 @@ final _entities = <obx_int.ModelEntity>[
   obx_int.ModelEntity(
       id: const obx_int.IdUid(7, 8021363571026158853),
       name: 'MarketInfo',
-      lastPropertyId: const obx_int.IdUid(9, 1088568014202407642),
+      lastPropertyId: const obx_int.IdUid(10, 1646195304153299437),
       flags: 0,
       properties: <obx_int.ModelProperty>[
         obx_int.ModelProperty(
@@ -237,6 +237,11 @@ final _entities = <obx_int.ModelEntity>[
             id: const obx_int.IdUid(9, 1088568014202407642),
             name: 'dateLastPriceFetch',
             type: 10,
+            flags: 0),
+        obx_int.ModelProperty(
+            id: const obx_int.IdUid(10, 1646195304153299437),
+            name: 'exchangeName',
+            type: 9,
             flags: 0)
       ],
       relations: <obx_int.ModelRelation>[],
@@ -612,10 +617,15 @@ obx_int.ModelDefinition getObjectBoxModel() {
         objectToFB: (MarketInfo object, fb.Builder fbb) {
           final symbolOffset = fbb.writeString(object.symbol);
           final nameOffset = fbb.writeString(object.name);
-          final typeOffset = fbb.writeString(object.type);
+          final typeOffset =
+              object.type == null ? null : fbb.writeString(object.type!);
           final currencyOffset = fbb.writeString(object.currency);
-          final regionOffset = fbb.writeString(object.region);
-          fbb.startTable(10);
+          final regionOffset =
+              object.region == null ? null : fbb.writeString(object.region!);
+          final exchangeNameOffset = object.exchangeName == null
+              ? null
+              : fbb.writeString(object.exchangeName!);
+          fbb.startTable(11);
           fbb.addInt64(0, object.id ?? 0);
           fbb.addOffset(1, symbolOffset);
           fbb.addOffset(2, nameOffset);
@@ -623,6 +633,7 @@ obx_int.ModelDefinition getObjectBoxModel() {
           fbb.addOffset(4, currencyOffset);
           fbb.addOffset(5, regionOffset);
           fbb.addInt64(8, object.dateLastPriceFetch?.millisecondsSinceEpoch);
+          fbb.addOffset(9, exchangeNameOffset);
           fbb.finish(fbb.endTable());
           return object.id ?? 0;
         },
@@ -635,14 +646,22 @@ obx_int.ModelDefinition getObjectBoxModel() {
               .vTableGet(buffer, rootOffset, 6, '');
           final nameParam = const fb.StringReader(asciiOptimization: true)
               .vTableGet(buffer, rootOffset, 8, '');
-          final typeParam = const fb.StringReader(asciiOptimization: true)
-              .vTableGet(buffer, rootOffset, 10, '');
           final currencyParam = const fb.StringReader(asciiOptimization: true)
               .vTableGet(buffer, rootOffset, 12, '');
+          final typeParam = const fb.StringReader(asciiOptimization: true)
+              .vTableGetNullable(buffer, rootOffset, 10);
           final regionParam = const fb.StringReader(asciiOptimization: true)
-              .vTableGet(buffer, rootOffset, 14, '');
+              .vTableGetNullable(buffer, rootOffset, 14);
+          final exchangeNameParam =
+              const fb.StringReader(asciiOptimization: true)
+                  .vTableGetNullable(buffer, rootOffset, 22);
           final object = MarketInfo(
-              symbolParam, nameParam, typeParam, currencyParam, regionParam)
+              symbol: symbolParam,
+              name: nameParam,
+              currency: currencyParam,
+              type: typeParam,
+              region: regionParam,
+              exchangeName: exchangeNameParam)
             ..id =
                 const fb.Int64Reader().vTableGetNullable(buffer, rootOffset, 4)
             ..dateLastPriceFetch = dateLastPriceFetchValue == null
@@ -922,6 +941,10 @@ class MarketInfo_ {
   /// see [MarketInfo.dateLastPriceFetch]
   static final dateLastPriceFetch =
       obx.QueryDateProperty<MarketInfo>(_entities[5].properties[6]);
+
+  /// see [MarketInfo.exchangeName]
+  static final exchangeName =
+      obx.QueryStringProperty<MarketInfo>(_entities[5].properties[7]);
 }
 
 /// [AssetHistoryTimeValue] entity fields to define ObjectBox queries.

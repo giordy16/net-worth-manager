@@ -13,8 +13,10 @@ import 'package:net_worth_manager/utils/extensions/date_time_extension.dart';
 import 'package:net_worth_manager/utils/forex.dart';
 
 import '../../domain/repository/alphaVantage/alpha_vantage_repo.dart';
+import '../../domain/repository/stock/financial_modeling_repo.dart';
 import '../../models/obox/asset_time_value_obox.dart';
 import '../currency_enum.dart';
+import '../enum/fetch_forex_type.dart';
 
 extension ObjectBoxExtension on Store {
   void init() {
@@ -62,15 +64,22 @@ extension ObjectBoxExtension on Store {
   }
 
   Future<void> syncAssetPrices() async {
-    final repo = AlphaVantageRepImp();
+    final repo = FinancialModelingRepoImpl();
     var marketInfos = box<MarketInfo>().getAll();
     for (var info in marketInfos) {
-      repo.fetchPriceHistoryBySymbol(info);
+      repo.fetchPriceHistoryBySymbol(
+        info,
+        fetchType: FMPFetchType.appStart,
+      );
     }
   }
 
-  Future<void> syncForexPrices({String? currencyToFetch}) async {
-    final repo = AlphaVantageRepImp();
+  Future<void> syncForexPrices({
+    String? currencyToFetch,
+    required FMPFetchType fetchType,
+    DateTime? startFetchDate,
+  }) async {
+    final repo = FinancialModelingRepoImpl();
     String mainCurrencySymbol =
         GetIt.instance<Settings>().defaultCurrency.target!.name;
 
@@ -93,7 +102,11 @@ extension ObjectBoxExtension on Store {
     assetCurrencies.remove(mainCurrencySymbol);
 
     for (String currency in assetCurrencies) {
-      await repo.fetchForexChange(currency);
+      await repo.fetchForexChange(
+        currency,
+        fetchType: fetchType,
+        startFetchDate: startFetchDate,
+      );
     }
   }
 }

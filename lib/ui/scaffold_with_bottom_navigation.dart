@@ -25,6 +25,15 @@ class ScaffoldWithBottomNavigation extends StatefulWidget {
     }
   }
 
+  static void unregisterScreenStates() {
+    if (GetIt.I.isRegistered<HomePageScreenState>()) {
+      GetIt.I.unregister(instance: GetIt.I<HomePageScreenState>());
+    }
+    if (GetIt.I.isRegistered<InsightsScreenState>()) {
+      GetIt.I.unregister(instance: GetIt.I<InsightsScreenState>());
+    }
+  }
+
   @override
   State<StatefulWidget> createState() => _ScaffoldWithBottomNavigationState();
 }

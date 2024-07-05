@@ -1,6 +1,4 @@
 import 'package:get_it/get_it.dart';
-import 'package:intl/intl.dart';
-import 'package:net_worth_manager/main.dart';
 import 'package:net_worth_manager/models/obox/main_currency_forex_change.dart';
 import 'package:net_worth_manager/models/obox/settings_obox.dart';
 import 'package:net_worth_manager/objectbox.g.dart';

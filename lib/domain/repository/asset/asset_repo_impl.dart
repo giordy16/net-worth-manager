@@ -86,7 +86,6 @@ class AssetRepoImpl implements AssetRepo {
   @override
   Future<void> saveMarketValue(MarketInfo info) async {
     GetIt.I<Store>().box<MarketInfo>().put(info);
-    await GetIt.I<Store>().syncForexPrices();
   }
 
   /// Returning the value of the @asset at the specified @dateTime at the mainCurrency

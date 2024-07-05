@@ -6,4 +6,6 @@ abstract class NetWorthRepo {
 
   Future<Map<DateTime, double>> getNetWorthsAtTheEndOfMonths();
 
+  DateTime? getDateFirstNWValue();
+
 }
