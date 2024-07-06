@@ -19,6 +19,7 @@ class LineGraph extends StatefulWidget {
   List<GraphData>? secondaryGraphData;
   Function(GraphTime)? onGraphTimeChange;
   GraphTime? initialGap;
+  bool showLoading;
 
   LineGraph({
     super.key,
@@ -27,6 +28,7 @@ class LineGraph extends StatefulWidget {
     this.showGapSelection = false,
     this.onGraphTimeChange,
     this.initialGap,
+    this.showLoading = false,
   });
 
   @override
@@ -47,6 +49,20 @@ class _MarketAssetLineGraph extends State<LineGraph> {
     ThemeData theme = Theme.of(context);
 
     if (widget.graphData.isEmpty) {
+      return const SizedBox(
+          height: 300,
+          child: Center(
+            child: Column(
+              mainAxisSize: MainAxisSize.max,
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                CircularProgressIndicator(),
+                SizedBox(height: 8),
+                Text("Building the chart...")
+              ],
+            ),
+          ));
+    } else if (widget.graphData.isEmpty) {
       return Padding(
         padding: const EdgeInsets.fromLTRB(
             Dimensions.screenMargin, Dimensions.l, Dimensions.screenMargin, 0),

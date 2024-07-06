@@ -5,7 +5,7 @@ import '../../../models/ui/graph_data.dart';
 
 class AssetDetailState extends Equatable {
   Asset asset;
-  List<GraphData> graphData;
+  List<GraphData>? graphData;
   List<GraphData>? secondGraphData;
   GraphTime graphTime;
   double? performance;
@@ -22,7 +22,7 @@ class AssetDetailState extends Equatable {
 
   AssetDetailState.empty(
     this.asset, {
-    this.graphData = const [],
+    this.graphData,
     this.secondGraphData,
     this.graphTime = GraphTime.all,
     this.performance,

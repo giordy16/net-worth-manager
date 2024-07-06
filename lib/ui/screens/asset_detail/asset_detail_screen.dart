@@ -95,7 +95,8 @@ class AssetDetailScreen extends StatelessWidget {
                           const SizedBox(height: Dimensions.m),
                           LineGraph(
                             showGapSelection: true,
-                            graphData: state.graphData,
+                            showLoading: state.graphData == null,
+                            graphData: state.graphData ?? [],
                             secondaryGraphData: state.secondGraphData,
                             initialGap: state.graphTime,
                             onGraphTimeChange: (gap) {

@@ -1,10 +1,13 @@
 import 'package:bloc/bloc.dart';
+import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
 import 'package:net_worth_manager/domain/repository/asset/asset_repo.dart';
+import 'package:net_worth_manager/domain/repository/asset/asset_repo_impl.dart';
 import 'package:net_worth_manager/domain/repository/stock/stock_api.dart';
 import 'package:net_worth_manager/models/ui/graph_data.dart';
 import 'package:net_worth_manager/ui/screens/asset_detail/asset_detail_event.dart';
 import 'package:net_worth_manager/ui/screens/asset_detail/asset_detail_state.dart';
+import 'package:net_worth_manager/utils/background_thread.dart';
 import 'package:net_worth_manager/utils/extensions/date_time_extension.dart';
 
 import '../../../models/obox/asset_obox.dart';
@@ -28,7 +31,7 @@ class AssetDetailBloc extends Bloc<AssetDetailEvent, AssetDetailState> {
         return;
       }
 
-      if (state.graphData.isNotEmpty) {
+      if (state.graphData!.isNotEmpty) {
         DateTime oldestDate = asset.getOldestTimeValueDate()!;
 
         double performance = asset.getPerformance(
@@ -65,17 +68,22 @@ class AssetDetailBloc extends Bloc<AssetDetailEvent, AssetDetailState> {
       return;
     }
 
-    List<GraphData> graphData = [];
-
     DateTime oldestDateTime =
         asset.getTimeValuesChronologicalOrder().first.date;
+    int daysToLoop =
+        DateTime.now().keepOnlyYMD().difference(oldestDateTime).inDays;
 
-    for (int i = 0;
-        i < DateTime.now().keepOnlyYMD().difference(oldestDateTime).inDays;
-        i++) {
-      DateTime date = oldestDateTime.add(Duration(days: i)).keepOnlyYMD();
-      graphData.add(GraphData(date, assetRepo.getValueAtDateTime(asset, date)));
-    }
+    List<GraphData> graphData = await runInDifferentThread(() {
+      List<GraphData> _graphData = [];
+
+      for (int i = 0; i < daysToLoop; i++) {
+        DateTime date = oldestDateTime.add(Duration(days: i)).keepOnlyYMD();
+        _graphData
+            .add(GraphData(date, AssetRepoImpl().getValueAtDateTime(asset, date)));
+      }
+
+      return _graphData;
+    });
 
     // in case there is only 1 asset.timeValues and has the date of today,
     // the for above will not loop, so we need to out the data manually
