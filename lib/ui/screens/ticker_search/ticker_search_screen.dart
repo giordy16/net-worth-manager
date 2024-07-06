@@ -26,7 +26,7 @@ class TickerSearchScreen extends StatelessWidget {
     if (info.exchangeNameShort != "NASDAQ" &&
         info.exchangeNameShort != "CRYPTO") {
       showOkOnlyBottomSheet(context,
-          "At the moment only Crypto and assets exchanged on the US market are selectable.");
+          "At the moment only Crypto and assets exchanged on NASDAQ are selectable.");
     } else {
       context.push(AddMarketAssetScreen.route,
           extra: AddMarketAssetScreenParams(asset: info.convertToAsset()));

@@ -7,6 +7,12 @@ abstract class AssetDetailEvent {}
 
 class FetchGraphDataEvent extends AssetDetailEvent {}
 
+class UpdateAssetEvent extends AssetDetailEvent {
+  Asset assetUpdated;
+
+  UpdateAssetEvent(this.assetUpdated);
+}
+
 class UpdatePerformanceEvent extends AssetDetailEvent {
   GraphTime gap;
 

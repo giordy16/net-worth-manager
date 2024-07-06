@@ -73,7 +73,11 @@ class CurrencySelectionScreen extends StatelessWidget {
                           );
                         },
                         separatorBuilder: (context, index) {
-                          return AppDivider();
+                          return Padding(
+                            padding: const EdgeInsets.symmetric(
+                                horizontal: Dimensions.screenMargin),
+                            child: AppDivider(),
+                          );
                         },
                         itemCount: state.currenciesList.length),
                   ),

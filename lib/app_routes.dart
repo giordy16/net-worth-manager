@@ -18,6 +18,8 @@ import 'package:net_worth_manager/ui/screens/currency_selection/currency_selecti
 import 'package:net_worth_manager/ui/screens/currency_selection/currency_selection_screen.dart';
 import 'package:net_worth_manager/ui/screens/excluded_asset/excluded_asset_screen.dart';
 import 'package:net_worth_manager/ui/screens/firebase_contacts/firebase_contacts_screen.dart';
+import 'package:net_worth_manager/ui/screens/general_selection/general_selection.dart';
+import 'package:net_worth_manager/ui/screens/general_selection/general_selection_params.dart';
 import 'package:net_worth_manager/ui/screens/import_export/import_export_screen.dart';
 import 'package:net_worth_manager/ui/screens/import_investments/import_investments_screen.dart';
 import 'package:net_worth_manager/ui/screens/full_asset_allocation/full_asset_allocation_screen.dart';
@@ -121,6 +123,11 @@ final appRoutes = GoRouter(
           path: ManageCategories.path,
           builder: (context, state) =>
               LoadingOverlay(child: ManageCategories())),
+      GoRoute(
+        path: GeneralSelection.path,
+        builder: (context, state) =>
+            GeneralSelection(state.extra as GeneralSelectionParams),
+      ),
     ],
     redirect: (context, state) {
       if (GetIt.I<Settings>().showTutorial == true &&
