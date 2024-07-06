@@ -56,8 +56,8 @@ extension ObjectBoxExtension on Store {
     var categories = box<AssetCategory>().getAll();
     if (categories.isEmpty) {
       box<AssetCategory>().put(AssetCategory("Cash"));
+      box<AssetCategory>().put(AssetCategory("Car"));
       box<AssetCategory>().put(AssetCategory("Debts"));
-      box<AssetCategory>().put(AssetCategory("Expected taxes"));
       box<AssetCategory>().put(AssetCategory("ETFs"));
       box<AssetCategory>().put(AssetCategory("Stocks"));
       box<AssetCategory>().put(AssetCategory("Crypto"));

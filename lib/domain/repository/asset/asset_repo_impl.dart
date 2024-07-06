@@ -22,6 +22,7 @@ class AssetRepoImpl implements AssetRepo {
     return GetIt.I<Store>()
         .box<AssetCategory>()
         .query(AssetCategory_.userCanSelect.equals(true))
+        .order(AssetCategory_.name)
         .build()
         .find();
   }
@@ -103,14 +104,27 @@ class AssetRepoImpl implements AssetRepo {
     } else {
       // market asset
 
-      int i = 0;
       double marketValueAtTime = 0;
       final assetHistoryTimeValueBox =
           GetIt.I<Store>().box<AssetHistoryTimeValue>();
 
+      DateTime? firstHistoricalValue = assetHistoryTimeValueBox
+          .query(AssetHistoryTimeValue_.assetSymbol
+              .equals(asset.marketInfo.target!.symbol))
+          .order(AssetHistoryTimeValue_.date)
+          .build()
+          .findFirst()
+          ?.date;
+
+      if (firstHistoricalValue != null &&
+          dateTime.isBefore(firstHistoricalValue)) {
+        return marketValueAtTime;
+      }
+
+      int i = 0;
       while (marketValueAtTime == 0) {
         marketValueAtTime = assetHistoryTimeValueBox
-                .query(AssetHistoryTimeValue_.assetName
+                .query(AssetHistoryTimeValue_.assetSymbol
                         .equals(asset.marketInfo.target!.symbol) &
                     AssetHistoryTimeValue_.date
                         .equalsDate(dateTime.subtract(Duration(days: i))))
@@ -134,7 +148,7 @@ class AssetRepoImpl implements AssetRepo {
       MarketInfo marketInfo, DateTime startDate) {
     final historyBox = GetIt.I<Store>().box<AssetHistoryTimeValue>();
     return historyBox
-        .query(AssetHistoryTimeValue_.assetName.equals(marketInfo.symbol) &
+        .query(AssetHistoryTimeValue_.assetSymbol.equals(marketInfo.symbol) &
             AssetHistoryTimeValue_.date.greaterOrEqualDate(startDate))
         .order(AssetHistoryTimeValue_.date)
         .build()

@@ -22,7 +22,12 @@ class AddCustomPieScreen extends StatefulWidget {
 }
 
 class _AddCustomPieScreenState extends State<AddCustomPieScreen> {
-  final categories = GetIt.I<Store>().box<AssetCategory>().getAll();
+  final categories = GetIt.I<Store>()
+      .box<AssetCategory>()
+      .query()
+      .order(AssetCategory_.name)
+      .build()
+      .find();
   final assets = GetIt.I<Store>().box<Asset>().getAll();
 
   Set<AssetCategory> selectedCat = {};
@@ -108,7 +113,9 @@ class _AddCustomPieScreenState extends State<AddCustomPieScreen> {
                   .map((cat) => Row(
                         children: [
                           Expanded(child: Text(cat.name)),
-                          SizedBox(width: 4,),
+                          SizedBox(
+                            width: 4,
+                          ),
                           Checkbox(
                               value: selectedCat.contains(cat),
                               onChanged: (value) {
@@ -130,7 +137,9 @@ class _AddCustomPieScreenState extends State<AddCustomPieScreen> {
                   .map((asset) => Row(
                         children: [
                           Expanded(child: Text(asset.name)),
-                          SizedBox(width: 4,),
+                          SizedBox(
+                            width: 4,
+                          ),
                           Checkbox(
                               value: selectedAsset.contains(asset),
                               onChanged: (value) {

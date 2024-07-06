@@ -41,12 +41,12 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
     OnboardingPage(
       AppImages.tutorial_1,
       "How should you use the app?",
-      "Periodically remember to open the app ad update the value of your assets, for example at the end of each month.",
+      "Periodically remember to open the app and update the value of your assets, for example at the end every month.",
     ),
     OnboardingPage(
       AppImages.tutorial_4,
       "You data will not be shared to anyone",
-      "Your data are stored inside the phone and they are not sent to any server.\nIf you want, you can easy share or backup your data with the Export function.",
+      "Your data are stored inside the phone and they are not sent to any server.\nIf you want, you can share/backup your data with the \"Export\" function.",
     ),
   ];
 

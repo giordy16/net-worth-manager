@@ -28,9 +28,9 @@ class NetWorthRepoImpl extends NetWorthRepo {
   /// from @updateStartingDate, so the values before are not updated
   @override
   Future<void> updateNetWorth({DateTime? updateStartingDate}) async {
-    debugPrint("updateNetWorth START");
+    debugPrint("updateNetWorth START ${DateTime.now()}");
     var assets = GetIt.I<Store>().box<Asset>().getAll();
-
+    //debugPrint("updateNetWorth 1");
     // contains the date of the first AssetTimeValue for each asset
     List<DateTime> oldestAssetsFirstBuys = assets
         .map((asset) =>
@@ -38,21 +38,25 @@ class NetWorthRepoImpl extends NetWorthRepo {
         .nonNulls
         .toList();
 
+    //debugPrint("updateNetWorth 2");
     // empty asset
     if (oldestAssetsFirstBuys.isEmpty) {
       GetIt.I<Store>().box<NetWorthHistory>().removeAll();
       return;
     }
 
+    //debugPrint("updateNetWorth 3");
     // oldest AssetTimeValue, from where the nw starts
     DateTime oldestAssetDate =
         oldestAssetsFirstBuys.reduce((a, b) => a.isBefore(b) ? a : b);
 
+    //debugPrint("updateNetWorth 4");
     // if updateStartingDate != null, use this as starting point
     if (updateStartingDate != null) {
       oldestAssetDate = updateStartingDate;
     }
 
+    //debugPrint("updateNetWorth 5");
     final nwBox = GetIt.I<Store>().box<NetWorthHistory>();
     List<NetWorthHistory> nwValues = nwBox
         .query(NetWorthHistory_.date.greaterOrEqualDate(oldestAssetDate))
@@ -61,25 +65,29 @@ class NetWorthRepoImpl extends NetWorthRepo {
         .find();
 
     // the current oldest nw value has a date grater than [oldestAssetDate], probably
-    // because we have just insert a new asset or position with a date < than current oldest nw.
+    // because we have just insert a new position with a date < than current oldest nw.
     // For this reason we have to add NetWorthHistory starting from [oldestAssetDate] until reaching nwValues.first
     if (nwValues.isEmpty ||
         (nwValues.firstOrNull != null &&
             nwValues.first.date.isAfter(oldestAssetDate))) {
+      //debugPrint("updateNetWorth 6");
       int daysToBuffer = 0;
 
       if (nwValues.isEmpty) {
+        //debugPrint("updateNetWorth 7.a");
         daysToBuffer =
             DateTime.now().keepOnlyYMD().difference(oldestAssetDate).inDays;
       } else {
         // we already have the value for nwValues.first, so we need to buffer
         // until nwValues.first.date - 1
+        //debugPrint("updateNetWorth 7.b");
         daysToBuffer = nwValues.first.date
             .subtract(Duration(days: 1))
             .difference(oldestAssetDate)
             .inDays;
       }
 
+      //debugPrint("updateNetWorth 8");
       List<NetWorthHistory> temp = [];
 
       for (int i = 0; i <= daysToBuffer; i++) {
@@ -94,25 +102,30 @@ class NetWorthRepoImpl extends NetWorthRepo {
       final _nwBox = GetIt.I<Store>().box<NetWorthHistory>();
 
       for (var element in nwValues) {
+        //debugPrint("${element.date}");
+
         double dayValue = 0;
         for (var asset in assets) {
-          // print("asset ${asset.name} at ${element.date} has value ${assetRepo.getValueAtDateTime(asset, element.date)}");
+          //debugPrint(
+          //     "asset ${asset.name} at ${element.date} has value ${assetRepo.getValueAtDateTime(asset, element.date)}");
           dayValue =
               dayValue + assetRepo.getValueAtDateTime(asset, element.date);
         }
         element.value = double.parse(dayValue.toStringAsFixed(2));
+        //debugPrint("NW at ${element.date} has value ${element.value}");
         _nwBox.put(element);
       }
     });
 
     // remove nwValues where date < oldestAssetsFirstBuy
+    //debugPrint("updateNetWorth removing START");
     oldestAssetDate =
         oldestAssetsFirstBuys.reduce((a, b) => a.isBefore(b) ? a : b);
     var valuesToDelete = nwBox
         .getAll()
         .where((element) => element.date.isBefore(oldestAssetDate));
     nwBox.removeMany(valuesToDelete.map((e) => e.id!).toList());
-    debugPrint("updateNetWorth END");
+    debugPrint("updateNetWorth END ${DateTime.now()}");
   }
 
   @override

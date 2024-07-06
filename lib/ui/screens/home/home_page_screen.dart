@@ -70,7 +70,7 @@ class HomePageScreenState extends State<HomePage>
           SizedBox(
             width: 4,
           ),
-          Text("Edit")
+          Text("Edit name")
         ],
       ): () async {
         await context.push(AddAssetCategory.route, extra: category);
@@ -117,7 +117,7 @@ class HomePageScreenState extends State<HomePage>
             SizedBox(
               width: 4,
             ),
-            Text("Edit")
+            Text("Edit name")
           ],
         ): () async {
           await context.push(AddAssetScreen.route, extra: asset);

@@ -109,7 +109,7 @@ class FinancialModelingRepoImpl implements StockApi {
         start = start.copyWith(day: start.day + 1);
         DateTime end = start.copyWith(year: start.year + 5);
 
-        while (end.isBefore(DateTime.now()) ||
+        while (end.isBefore(DateTime.now().keepOnlyYMD()) ||
             end.isAtSameMomentAs(DateTime.now().keepOnlyYMD())) {
           try {
             Map<String, String> queryData = {
@@ -138,7 +138,7 @@ class FinancialModelingRepoImpl implements StockApi {
             print("fetchForexChange error: $e");
           }
 
-          start = end;
+          start = end.copyWith(day: end.day + 1);
           end = end.copyWith(year: end.year + 5);
         }
         break;
@@ -154,7 +154,7 @@ class FinancialModelingRepoImpl implements StockApi {
         DateTime start = firstNWDate.copyWith(day: firstNWDate.day - 7);
         DateTime end = start.copyWith(year: start.year + 5);
 
-        while (start.isBefore(DateTime.now()) ||
+        while (start.isBefore(DateTime.now().keepOnlyYMD()) ||
             start.isAtSameMomentAs(DateTime.now().keepOnlyYMD())) {
           try {
             Map<String, String> queryData = {
@@ -183,7 +183,7 @@ class FinancialModelingRepoImpl implements StockApi {
             print("fetchForexChange error: $e");
           }
 
-          start = end;
+          start = end.copyWith(day: end.day + 1);
           end = end.copyWith(year: end.year + 5);
         }
         break;
@@ -196,11 +196,25 @@ class FinancialModelingRepoImpl implements StockApi {
           return;
         }
 
+        DateTime endLimit;
+        bool limitReached = false;
+
+        if (lastForex != null) {
+          endLimit = lastForex.date.copyWith(day: lastForex.date.day - 1);
+        } else {
+          endLimit = DateTime.now().keepOnlyYMD();
+        }
+
         DateTime start = startFetchDate!.copyWith(day: startFetchDate.day - 7);
         DateTime end = start.copyWith(year: start.year + 5);
 
-        while (start.isBefore(DateTime.now()) ||
-            start.isAtSameMomentAs(DateTime.now().keepOnlyYMD())) {
+        while (!limitReached) {
+
+          if (end.isAfter(endLimit) || end.isAtSameMomentAs(endLimit)) {
+            end = endLimit;
+            limitReached = true;
+          }
+
           try {
             Map<String, String> queryData = {
               "apikey": Constants.FMP_KEY,
@@ -228,7 +242,7 @@ class FinancialModelingRepoImpl implements StockApi {
             print("fetchForexChange error: $e");
           }
 
-          start = end;
+          start = end.copyWith(day: end.day + 1);
           end = end.copyWith(year: end.year + 5);
         }
         break;
@@ -248,7 +262,7 @@ class FinancialModelingRepoImpl implements StockApi {
     switch (fetchType) {
       case FMPFetchType.appStart:
         DateTime? dateLastValue = historyBox
-            .query(AssetHistoryTimeValue_.assetName.equals(marketInfo.symbol))
+            .query(AssetHistoryTimeValue_.assetSymbol.equals(marketInfo.symbol))
             .order(AssetHistoryTimeValue_.date, flags: Order.descending)
             .build()
             .findFirst()
@@ -261,7 +275,7 @@ class FinancialModelingRepoImpl implements StockApi {
         DateTime start = dateLastValue.copyWith(day: dateLastValue.day + 1);
         DateTime end = start.copyWith(year: start.year + 5);
 
-        while (end.isBefore(DateTime.now()) ||
+        while (end.isBefore(DateTime.now().keepOnlyYMD()) ||
             end.isAtSameMomentAs(DateTime.now().keepOnlyYMD())) {
           try {
             Map<String, String> queryData = {
@@ -290,18 +304,20 @@ class FinancialModelingRepoImpl implements StockApi {
             print("fetchForexChange error: $e");
           }
 
-          start = end;
+          start = end.copyWith(day: end.day + 1);
           end = end.copyWith(year: end.year + 5);
         }
 
         break;
       case FMPFetchType.addPosition:
-        DateTime? dateFirstValue = historyBox
-            .query(AssetHistoryTimeValue_.assetName.equals(marketInfo.symbol))
+        var historicalAssetValues = historyBox
+            .query(AssetHistoryTimeValue_.assetSymbol.equals(marketInfo.symbol))
             .order(AssetHistoryTimeValue_.date)
             .build()
-            .findFirst()
-            ?.date;
+            .find();
+
+        DateTime? dateFirstValue = historicalAssetValues.firstOrNull?.date;
+        DateTime? dateLastValue = historicalAssetValues.firstOrNull?.date;
 
         if (dateFirstValue != null &&
             (dateFirstValue.isAtSameMomentAs(startFetchDate!) ||
@@ -310,11 +326,25 @@ class FinancialModelingRepoImpl implements StockApi {
           return;
         }
 
+        DateTime endLimit;
+        bool limitReached = false;
+
+        if (dateLastValue != null) {
+          endLimit = dateLastValue.copyWith(day: dateLastValue.day - 1);
+        } else {
+          endLimit = DateTime.now().keepOnlyYMD();
+        }
+
         DateTime start = startFetchDate!.copyWith(day: startFetchDate.day - 7);
         DateTime end = start.copyWith(year: start.year + 5);
 
-        while (start.isBefore(DateTime.now()) ||
-            start.isAtSameMomentAs(DateTime.now().keepOnlyYMD())) {
+        while (!limitReached) {
+
+          if (end.isAfter(endLimit) || end.isAtSameMomentAs(endLimit)) {
+            end = endLimit;
+            limitReached = true;
+          }
+
           try {
             Map<String, String> queryData = {
               "apikey": Constants.FMP_KEY,
@@ -342,8 +372,12 @@ class FinancialModelingRepoImpl implements StockApi {
             print("fetchForexChange error: $e");
           }
 
-          start = end;
+          start = end.copyWith(day: end.day + 1);
           end = end.copyWith(year: end.year + 5);
+
+          if (end.isAfter(endLimit)) {
+            end = endLimit;
+          }
         }
 
         break;

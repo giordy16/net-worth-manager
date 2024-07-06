@@ -287,7 +287,7 @@ class AlphaVantageRepImp implements StockApi {
 
       final historyBox = GetIt.I<Store>().box<AssetHistoryTimeValue>();
       var dbHistory = historyBox
-          .query(AssetHistoryTimeValue_.assetName.equals(marketInfo.symbol))
+          .query(AssetHistoryTimeValue_.assetSymbol.equals(marketInfo.symbol))
           .build()
           .find();
 

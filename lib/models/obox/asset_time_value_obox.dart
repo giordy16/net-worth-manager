@@ -58,7 +58,7 @@ class AssetTimeValue {
       // market asset
       double symbolValue = GetIt.I<Store>()
               .box<AssetHistoryTimeValue>()
-              .query(AssetHistoryTimeValue_.assetName.equals(marketInfo.symbol))
+              .query(AssetHistoryTimeValue_.assetSymbol.equals(marketInfo.symbol))
               .order(AssetHistoryTimeValue_.date, flags: Order.descending)
               .build()
               .findFirst()
@@ -79,7 +79,7 @@ class AssetTimeValue {
 
     double symbolValue = GetIt.I<Store>()
             .box<AssetHistoryTimeValue>()
-            .query(AssetHistoryTimeValue_.assetName.equals(symbol))
+            .query(AssetHistoryTimeValue_.assetSymbol.equals(symbol))
             .order(AssetHistoryTimeValue_.date, flags: Order.descending)
             .build()
             .findFirst()
@@ -104,7 +104,7 @@ class AssetTimeValue {
 
     double symbolValue = GetIt.I<Store>()
             .box<AssetHistoryTimeValue>()
-            .query(AssetHistoryTimeValue_.assetName.equals(symbol))
+            .query(AssetHistoryTimeValue_.assetSymbol.equals(symbol))
             .order(AssetHistoryTimeValue_.date, flags: Order.descending)
             .build()
             .findFirst()

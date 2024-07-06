@@ -10,10 +10,10 @@ class AssetHistoryTimeValue {
   @Property(type: PropertyType.date)
   DateTime date;
 
-  String assetName;
+  String assetSymbol;
 
   double value;
 
-  AssetHistoryTimeValue(this.date, this.value, this.assetName);
+  AssetHistoryTimeValue(this.date, this.value, this.assetSymbol);
 
 }

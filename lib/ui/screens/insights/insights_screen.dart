@@ -59,7 +59,7 @@ class InsightsScreenState extends State<InsightsScreen>
           SizedBox(
             width: 4,
           ),
-          Text("Edit")
+          Text("Edit name")
         ],
       ): () async {
         await context.push(AddCustomPieScreen.route, extra: customAllocation);

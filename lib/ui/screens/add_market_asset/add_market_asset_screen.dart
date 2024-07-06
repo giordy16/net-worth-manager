@@ -130,7 +130,12 @@ class _AddMarketAssetScreenState extends State<AddMarketAssetScreen> {
                             title: "Category",
                             initialValue: assetCategory,
                             values: [
-                              ...GetIt.I<Store>().box<AssetCategory>().getAll(),
+                              ...GetIt.I<Store>()
+                                  .box<AssetCategory>()
+                                  .query()
+                                  .order(AssetCategory_.name)
+                                  .build()
+                                  .find(),
                               ...[AppSelectorField.addNewCategory]
                             ],
                             onItemSelected: (value) => onCategoryChange(value),
@@ -178,7 +183,7 @@ class _AddMarketAssetScreenState extends State<AddMarketAssetScreen> {
                                                         FontWeight.bold),
                                           ),
                                           Text(
-                                              "${position.getTotalPurchaseValue().toStringWithCurrency()} | QT. ${position.quantity.toStringFormatted()}"),
+                                              "${position.quantity.toStringFormatted()} @ ${position.value.toStringWithCurrency()} (${position.getTotalPurchaseValue().toStringWithCurrency()})"),
                                         ],
                                       ),
                                       const Expanded(child: SizedBox()),

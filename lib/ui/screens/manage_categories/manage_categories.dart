@@ -29,7 +29,7 @@ class _ManageCategoriesState extends State<ManageCategories> {
           SizedBox(
             width: 4,
           ),
-          Text("Edit")
+          Text("Edit name")
         ],
       ): () async {
         await context.push(AddAssetCategory.route, extra: category);

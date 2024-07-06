@@ -200,7 +200,7 @@ final _entities = <obx_int.ModelEntity>[
   obx_int.ModelEntity(
       id: const obx_int.IdUid(7, 8021363571026158853),
       name: 'MarketInfo',
-      lastPropertyId: const obx_int.IdUid(10, 1646195304153299437),
+      lastPropertyId: const obx_int.IdUid(11, 7451116347729291637),
       flags: 0,
       properties: <obx_int.ModelProperty>[
         obx_int.ModelProperty(
@@ -242,6 +242,11 @@ final _entities = <obx_int.ModelEntity>[
             id: const obx_int.IdUid(10, 1646195304153299437),
             name: 'exchangeName',
             type: 9,
+            flags: 0),
+        obx_int.ModelProperty(
+            id: const obx_int.IdUid(11, 7451116347729291637),
+            name: 'exchangeNameShort',
+            type: 9,
             flags: 0)
       ],
       relations: <obx_int.ModelRelation>[],
@@ -249,7 +254,7 @@ final _entities = <obx_int.ModelEntity>[
   obx_int.ModelEntity(
       id: const obx_int.IdUid(8, 7487394912198200723),
       name: 'AssetHistoryTimeValue',
-      lastPropertyId: const obx_int.IdUid(4, 7977442837461885490),
+      lastPropertyId: const obx_int.IdUid(5, 2451439975966992036),
       flags: 0,
       properties: <obx_int.ModelProperty>[
         obx_int.ModelProperty(
@@ -268,8 +273,8 @@ final _entities = <obx_int.ModelEntity>[
             type: 8,
             flags: 0),
         obx_int.ModelProperty(
-            id: const obx_int.IdUid(4, 7977442837461885490),
-            name: 'assetName',
+            id: const obx_int.IdUid(5, 2451439975966992036),
+            name: 'assetSymbol',
             type: 9,
             flags: 0)
       ],
@@ -417,7 +422,8 @@ obx_int.ModelDefinition getObjectBoxModel() {
         3509591852082565968,
         5451300475036688041,
         8954571008166053623,
-        9168322847315820519
+        9168322847315820519,
+        7977442837461885490
       ],
       retiredRelationUids: const [4132757054122527006],
       modelVersion: 5,
@@ -625,7 +631,10 @@ obx_int.ModelDefinition getObjectBoxModel() {
           final exchangeNameOffset = object.exchangeName == null
               ? null
               : fbb.writeString(object.exchangeName!);
-          fbb.startTable(11);
+          final exchangeNameShortOffset = object.exchangeNameShort == null
+              ? null
+              : fbb.writeString(object.exchangeNameShort!);
+          fbb.startTable(12);
           fbb.addInt64(0, object.id ?? 0);
           fbb.addOffset(1, symbolOffset);
           fbb.addOffset(2, nameOffset);
@@ -634,6 +643,7 @@ obx_int.ModelDefinition getObjectBoxModel() {
           fbb.addOffset(5, regionOffset);
           fbb.addInt64(8, object.dateLastPriceFetch?.millisecondsSinceEpoch);
           fbb.addOffset(9, exchangeNameOffset);
+          fbb.addOffset(10, exchangeNameShortOffset);
           fbb.finish(fbb.endTable());
           return object.id ?? 0;
         },
@@ -655,13 +665,17 @@ obx_int.ModelDefinition getObjectBoxModel() {
           final exchangeNameParam =
               const fb.StringReader(asciiOptimization: true)
                   .vTableGetNullable(buffer, rootOffset, 22);
+          final exchangeNameShortParam =
+              const fb.StringReader(asciiOptimization: true)
+                  .vTableGetNullable(buffer, rootOffset, 24);
           final object = MarketInfo(
               symbol: symbolParam,
               name: nameParam,
               currency: currencyParam,
               type: typeParam,
               region: regionParam,
-              exchangeName: exchangeNameParam)
+              exchangeName: exchangeNameParam,
+              exchangeNameShort: exchangeNameShortParam)
             ..id =
                 const fb.Int64Reader().vTableGetNullable(buffer, rootOffset, 4)
             ..dateLastPriceFetch = dateLastPriceFetchValue == null
@@ -679,12 +693,12 @@ obx_int.ModelDefinition getObjectBoxModel() {
           object.id = id;
         },
         objectToFB: (AssetHistoryTimeValue object, fb.Builder fbb) {
-          final assetNameOffset = fbb.writeString(object.assetName);
-          fbb.startTable(5);
+          final assetSymbolOffset = fbb.writeString(object.assetSymbol);
+          fbb.startTable(6);
           fbb.addInt64(0, object.id ?? 0);
           fbb.addInt64(1, object.date.millisecondsSinceEpoch);
           fbb.addFloat64(2, object.value);
-          fbb.addOffset(3, assetNameOffset);
+          fbb.addOffset(4, assetSymbolOffset);
           fbb.finish(fbb.endTable());
           return object.id ?? 0;
         },
@@ -695,10 +709,11 @@ obx_int.ModelDefinition getObjectBoxModel() {
               const fb.Int64Reader().vTableGet(buffer, rootOffset, 6, 0));
           final valueParam =
               const fb.Float64Reader().vTableGet(buffer, rootOffset, 8, 0);
-          final assetNameParam = const fb.StringReader(asciiOptimization: true)
-              .vTableGet(buffer, rootOffset, 10, '');
+          final assetSymbolParam =
+              const fb.StringReader(asciiOptimization: true)
+                  .vTableGet(buffer, rootOffset, 12, '');
           final object = AssetHistoryTimeValue(
-              dateParam, valueParam, assetNameParam)
+              dateParam, valueParam, assetSymbolParam)
             ..id =
                 const fb.Int64Reader().vTableGetNullable(buffer, rootOffset, 4);
 
@@ -945,6 +960,10 @@ class MarketInfo_ {
   /// see [MarketInfo.exchangeName]
   static final exchangeName =
       obx.QueryStringProperty<MarketInfo>(_entities[5].properties[7]);
+
+  /// see [MarketInfo.exchangeNameShort]
+  static final exchangeNameShort =
+      obx.QueryStringProperty<MarketInfo>(_entities[5].properties[8]);
 }
 
 /// [AssetHistoryTimeValue] entity fields to define ObjectBox queries.
@@ -961,8 +980,8 @@ class AssetHistoryTimeValue_ {
   static final value = obx.QueryDoubleProperty<AssetHistoryTimeValue>(
       _entities[6].properties[2]);
 
-  /// see [AssetHistoryTimeValue.assetName]
-  static final assetName = obx.QueryStringProperty<AssetHistoryTimeValue>(
+  /// see [AssetHistoryTimeValue.assetSymbol]
+  static final assetSymbol = obx.QueryStringProperty<AssetHistoryTimeValue>(
       _entities[6].properties[3]);
 }
 
