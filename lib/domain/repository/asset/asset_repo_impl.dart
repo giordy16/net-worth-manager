@@ -97,43 +97,26 @@ class AssetRepoImpl implements AssetRepo {
       AssetTimeValue? lastTimeValue = asset
           .getTimeValuesChronologicalOrder()
           .where((element) =>
-              element.date.isBefore(dateTime.add(const Duration(days: 1))))
+          element.date.isBefore(dateTime.add(const Duration(days: 1))))
           .lastOrNull;
 
       return lastTimeValue?.getCurrentValue(date: dateTime) ?? 0;
     } else {
       // market asset
+      final assetHistoryTimeValueBox =
+      GetIt.I<Store>().box<AssetHistoryTimeValue>();
 
       double marketValueAtTime = 0;
-      final assetHistoryTimeValueBox =
-          GetIt.I<Store>().box<AssetHistoryTimeValue>();
 
-      DateTime? firstHistoricalValue = assetHistoryTimeValueBox
+      List<AssetHistoryTimeValue> unsortedList = assetHistoryTimeValueBox
           .query(AssetHistoryTimeValue_.assetSymbol
-              .equals(asset.marketInfo.target!.symbol))
-          .order(AssetHistoryTimeValue_.date)
+          .equals(asset.marketInfo.target!.symbol) &
+      AssetHistoryTimeValue_.date.lessOrEqualDate(dateTime))
           .build()
-          .findFirst()
-          ?.date;
+          .find();
 
-      if (firstHistoricalValue != null &&
-          dateTime.isBefore(firstHistoricalValue)) {
-        return marketValueAtTime;
-      }
-
-      int i = 0;
-      while (marketValueAtTime == 0) {
-        marketValueAtTime = assetHistoryTimeValueBox
-                .query(AssetHistoryTimeValue_.assetSymbol
-                        .equals(asset.marketInfo.target!.symbol) &
-                    AssetHistoryTimeValue_.date
-                        .equalsDate(dateTime.subtract(Duration(days: i))))
-                .build()
-                .findFirst()
-                ?.value ??
-            0;
-        i++;
-      }
+      unsortedList.sort((a,b) => b.date.compareTo(a.date));
+      marketValueAtTime = unsortedList.firstOrNull?.value ?? 0;
 
       return (marketValueAtTime * asset.getQuantityAtDateTime(dateTime))
           .atMainCurrency(
@@ -144,12 +127,12 @@ class AssetRepoImpl implements AssetRepo {
   }
 
   @override
-  List<AssetHistoryTimeValue> getValueHistoryBySymbol(
-      MarketInfo marketInfo, DateTime startDate) {
+  List<AssetHistoryTimeValue> getValueHistoryBySymbol(MarketInfo marketInfo,
+      DateTime startDate) {
     final historyBox = GetIt.I<Store>().box<AssetHistoryTimeValue>();
     return historyBox
         .query(AssetHistoryTimeValue_.assetSymbol.equals(marketInfo.symbol) &
-            AssetHistoryTimeValue_.date.greaterOrEqualDate(startDate))
+    AssetHistoryTimeValue_.date.greaterOrEqualDate(startDate))
         .order(AssetHistoryTimeValue_.date)
         .build()
         .find();

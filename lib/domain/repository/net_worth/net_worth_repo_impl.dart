@@ -98,11 +98,12 @@ class NetWorthRepoImpl extends NetWorthRepo {
       nwValues = temp + nwValues;
     }
 
-    await runInDifferentThread(() {
-      final _nwBox = GetIt.I<Store>().box<NetWorthHistory>();
+    debugPrint("entering runInDifferentThread ${DateTime.now()}");
+    final newNWValues = await runInDifferentThread(() {
+      List<NetWorthHistory> history = [];
 
       for (var element in nwValues) {
-        //debugPrint("${element.date}");
+        ////debugPrint("${element.date}");
 
         double dayValue = 0;
         for (var asset in assets) {
@@ -113,9 +114,14 @@ class NetWorthRepoImpl extends NetWorthRepo {
         }
         element.value = double.parse(dayValue.toStringAsFixed(2));
         //debugPrint("NW at ${element.date} has value ${element.value}");
-        _nwBox.put(element);
+        history.add(element);
       }
+      return history;
     });
+
+    GetIt.I<Store>().box<NetWorthHistory>().putMany(newNWValues);
+
+    debugPrint("finish runInDifferentThread ${DateTime.now()}");
 
     // remove nwValues where date < oldestAssetsFirstBuy
     //debugPrint("updateNetWorth removing START");
