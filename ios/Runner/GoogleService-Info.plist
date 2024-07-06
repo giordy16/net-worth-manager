@@ -3,17 +3,17 @@
 <plist version="1.0">
 <dict>
 	<key>API_KEY</key>
-	<string>AIzaSyABZKljNTqX0iXtupJd6dT1_81TSrOEdA8</string>
+	<string>AIzaSyCjAgX1oqIJNS5o3cjoDLHKI6bc910B6T4</string>
 	<key>GCM_SENDER_ID</key>
-	<string>282249185523</string>
+	<string>290000045685</string>
 	<key>PLIST_VERSION</key>
 	<string>1</string>
 	<key>BUNDLE_ID</key>
-	<string>com.networth.manager.app</string>
+	<string>com.wealthguard.app</string>
 	<key>PROJECT_ID</key>
-	<string>wealth-guard</string>
+	<string>wealth-guard-fa252</string>
 	<key>STORAGE_BUCKET</key>
-	<string>wealth-guard.appspot.com</string>
+	<string>wealth-guard-fa252.appspot.com</string>
 	<key>IS_ADS_ENABLED</key>
 	<false></false>
 	<key>IS_ANALYTICS_ENABLED</key>
@@ -25,6 +25,6 @@
 	<key>IS_SIGNIN_ENABLED</key>
 	<true></true>
 	<key>GOOGLE_APP_ID</key>
-	<string>1:282249185523:ios:8efc1e981d27eb70d70f86</string>
+	<string>1:290000045685:ios:662e6b573f9186b0d6da3c</string>
 </dict>
 </plist>

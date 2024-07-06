@@ -50,20 +50,20 @@ class DefaultFirebaseOptions {
   }
 
   static const FirebaseOptions android = FirebaseOptions(
-    apiKey: 'AIzaSyBFLJSCeTQ6Z0FZkbRAk7NqRwmosmgE05U',
-    appId: '1:282249185523:android:53402c554249fa17d70f86',
-    messagingSenderId: '282249185523',
-    projectId: 'wealth-guard',
-    storageBucket: 'wealth-guard.appspot.com',
+    apiKey: 'AIzaSyAbBQiCEixySWS4H8u4xpBlvVlWDclNdZE',
+    appId: '1:290000045685:android:b2bf12c4593a0259d6da3c',
+    messagingSenderId: '290000045685',
+    projectId: 'wealth-guard-fa252',
+    storageBucket: 'wealth-guard-fa252.appspot.com',
   );
 
   static const FirebaseOptions ios = FirebaseOptions(
-    apiKey: 'AIzaSyABZKljNTqX0iXtupJd6dT1_81TSrOEdA8',
-    appId: '1:282249185523:ios:8efc1e981d27eb70d70f86',
-    messagingSenderId: '282249185523',
-    projectId: 'wealth-guard',
-    storageBucket: 'wealth-guard.appspot.com',
-    iosBundleId: 'com.networth.manager.app',
+    apiKey: 'AIzaSyCjAgX1oqIJNS5o3cjoDLHKI6bc910B6T4',
+    appId: '1:290000045685:ios:662e6b573f9186b0d6da3c',
+    messagingSenderId: '290000045685',
+    projectId: 'wealth-guard-fa252',
+    storageBucket: 'wealth-guard-fa252.appspot.com',
+    iosBundleId: 'com.wealthguard.app',
   );
 
 }

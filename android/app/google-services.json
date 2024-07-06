@@ -1,21 +1,21 @@
 {
   "project_info": {
-    "project_number": "282249185523",
-    "project_id": "wealth-guard",
-    "storage_bucket": "wealth-guard.appspot.com"
+    "project_number": "290000045685",
+    "project_id": "wealth-guard-fa252",
+    "storage_bucket": "wealth-guard-fa252.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:282249185523:android:53402c554249fa17d70f86",
+        "mobilesdk_app_id": "1:290000045685:android:b2bf12c4593a0259d6da3c",
         "android_client_info": {
-          "package_name": "com.networth.manager.app.net_worth_manager"
+          "package_name": "com.wealthguard.app"
         }
       },
       "oauth_client": [],
       "api_key": [
         {
-          "current_key": "AIzaSyBFLJSCeTQ6Z0FZkbRAk7NqRwmosmgE05U"
+          "current_key": "AIzaSyAbBQiCEixySWS4H8u4xpBlvVlWDclNdZE"
         }
       ],
       "services": {
