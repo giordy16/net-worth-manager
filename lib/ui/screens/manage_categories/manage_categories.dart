@@ -103,7 +103,8 @@ class _ManageCategoriesState extends State<ManageCategories> {
                       ));
                 },
                 separatorBuilder: (BuildContext context, int index) {
-                  return AppDivider();
+                  return Padding(
+                      padding: EdgeInsets.symmetric(horizontal: Dimensions.screenMargin), child: AppDivider());
                 },
                 itemCount: categories.length,
               ),

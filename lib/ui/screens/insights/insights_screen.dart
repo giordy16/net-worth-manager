@@ -255,7 +255,7 @@ class InsightsScreenState extends State<InsightsScreen>
                                   onPressed: () {
                                     context
                                         .read<InsightsCubit>()
-                                        .changeStartGainGraph();
+                                        .changeEndGainGraph();
                                   },
                                   child: Text(DateFormat("MMM yy")
                                       .format(state.endDateGainGraph!))),
