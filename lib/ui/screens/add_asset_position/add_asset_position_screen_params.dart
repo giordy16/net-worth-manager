@@ -6,9 +6,13 @@ class AddAssetPositionScreenParams {
   AssetTimeValue? timeValue;
   bool justPopBack;
 
+  // the sell button will be visible only for asset investments
+  bool showSellButton;
+
   AddAssetPositionScreenParams({
     required this.asset,
     this.timeValue,
     this.justPopBack = false,
+    this.showSellButton = false,
   });
 }

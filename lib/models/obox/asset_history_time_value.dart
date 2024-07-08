@@ -1,6 +1,5 @@
 import 'package:objectbox/objectbox.dart';
 
-import '../../utils/forex.dart';
 
 @Entity()
 class AssetHistoryTimeValue {

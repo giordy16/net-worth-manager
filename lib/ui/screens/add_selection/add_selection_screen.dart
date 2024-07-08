@@ -1,17 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:net_worth_manager/app_dimensions.dart';
-import 'package:net_worth_manager/models/obox/market_info_obox.dart';
 import 'package:net_worth_manager/ui/screens/add_asset/add_asset_screen.dart';
-import 'package:net_worth_manager/ui/screens/add_market_asset/add_market_asset_screen.dart';
 import 'package:net_worth_manager/ui/screens/add_selection/component/add_selection_item.dart';
 import 'package:net_worth_manager/ui/screens/ticker_search/ticker_search_screen.dart';
-import 'package:net_worth_manager/utils/extensions/mappers.dart';
 
-import '../add_market_asset/add_market_asset_screen_params.dart';
+import '../../../models/obox/asset_obox.dart';
 
 class AddSelectionScreen extends StatelessWidget {
   static const route = "/AddSelectionScreen";
+  static Asset addNewAsset = Asset("+ Create new asset/liability");
 
   const AddSelectionScreen({super.key});
 

@@ -1,10 +1,9 @@
 import 'dart:io';
 import 'dart:math';
 
+import 'package:decimal/decimal.dart';
 import 'package:get_it/get_it.dart';
 import 'package:intl/intl.dart';
-import 'package:intl/number_symbols_data.dart';
-import 'package:net_worth_manager/main.dart';
 import 'package:net_worth_manager/models/obox/currency_obox.dart';
 import 'package:net_worth_manager/models/obox/settings_obox.dart';
 
@@ -26,7 +25,12 @@ extension DoubleHelper on double {
 
     String string = formatter.format(this);
 
-    return string;
+    if (this - truncate() == 0) {
+      // the number is an int
+      return truncate().toString();
+    } else {
+      return string;
+    }
   }
 
   String toStringWithCurrency({String? currency}) {
@@ -50,6 +54,14 @@ extension DoubleHelper on double {
     return double.parse((change * this).toStringAsFixed(2));
   }
 
+  double fixDouble() {
+    return Decimal.parse(toString()).toDouble();
+  }
+
+  Decimal toDecimal() {
+    return Decimal.parse(toString());
+  }
+
   double roundToClosestMultiple(double multiple) {
     return ((this + (multiple / 2)) ~/ multiple) * multiple;
   }
@@ -64,13 +76,13 @@ extension DoubleHelper on double {
 
   double roundMinGraph() {
     int numberOfDigits = abs().toInt().toString().length;
-    int multiple = pow(10, numberOfDigits-1).toInt();
+    int multiple = pow(10, numberOfDigits - 1).toInt();
     return roundRoundUoToPreviousMultiple(multiple.toDouble());
   }
 
   double roundMaxGraph() {
     int numberOfDigits = abs().toInt().toString().length;
-    int multiple = pow(10, numberOfDigits-1).toInt();
+    int multiple = pow(10, numberOfDigits - 1).toInt();
     return roundRoundUoToNextMultiple(multiple.toDouble());
   }
 }

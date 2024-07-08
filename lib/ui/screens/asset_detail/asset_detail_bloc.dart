@@ -13,8 +13,6 @@ import 'package:net_worth_manager/utils/extensions/date_time_extension.dart';
 import '../../../models/obox/asset_obox.dart';
 import '../../../objectbox.g.dart';
 import '../../../utils/enum/graph_data_gap_enum.dart';
-import '../../scaffold_with_bottom_navigation.dart';
-import '../../widgets/modal/loading_overlay.dart';
 
 class AssetDetailBloc extends Bloc<AssetDetailEvent, AssetDetailState> {
   final Asset asset;
@@ -73,7 +71,7 @@ class AssetDetailBloc extends Bloc<AssetDetailEvent, AssetDetailState> {
     emit(state.copyWith(asset: asset));
 
     if (asset.timeValues.isEmpty) {
-      emit(AssetDetailState.empty(asset));
+      emit(AssetDetailState.empty(asset).copyWith(graphData: []));
       return;
     }
 

@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
 import 'package:go_router/go_router.dart';
 import 'package:net_worth_manager/app_dimensions.dart';
-import 'package:net_worth_manager/main.dart';
 import 'package:net_worth_manager/models/obox/asset_category_obox.dart';
 import 'package:net_worth_manager/ui/widgets/base_components/app_bottom_fab.dart';
 

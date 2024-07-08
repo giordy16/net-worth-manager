@@ -13,11 +13,9 @@ import 'package:net_worth_manager/ui/screens/asset_detail/asset_detail_state.dar
 import 'package:net_worth_manager/ui/screens/asset_detail/components/asset_detail_history_item.dart';
 import 'package:net_worth_manager/ui/screens/general_selection/general_selection.dart';
 import 'package:net_worth_manager/ui/screens/general_selection/general_selection_params.dart';
-import 'package:net_worth_manager/ui/screens/home/home_page_event.dart';
 import 'package:net_worth_manager/ui/widgets/base_components/performance_text.dart';
 import 'package:net_worth_manager/utils/extensions/number_extension.dart';
 
-import '../../../domain/repository/alphaVantage/alpha_vantage_repo.dart';
 import '../../../domain/repository/asset/asset_repo_impl.dart';
 import '../../../domain/repository/stock/financial_modeling_repo.dart';
 import '../../../models/obox/asset_obox.dart';
@@ -242,7 +240,7 @@ class AssetDetailScreen extends StatelessWidget {
                           Row(
                             children: [
                               Text(
-                                "Value history",
+                                "History",
                                 style: theme.textTheme.titleMedium
                                     ?.copyWith(fontWeight: FontWeight.bold),
                               ),
@@ -252,7 +250,8 @@ class AssetDetailScreen extends StatelessWidget {
                                     await context.push(
                                       AddAssetPositionScreen.route,
                                       extra: AddAssetPositionScreenParams(
-                                          asset: state.asset),
+                                        asset: state.asset,
+                                      ),
                                     );
                                     context
                                         .read<AssetDetailBloc>()

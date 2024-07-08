@@ -10,7 +10,6 @@ import 'package:net_worth_manager/models/obox/settings_obox.dart';
 import 'package:net_worth_manager/ui/widgets/modal/bottom_sheet.dart';
 import 'package:net_worth_manager/utils/extensions/date_time_extension.dart';
 
-import '../../../main.dart';
 import '../../../models/network/av/av_ticker_search.dart';
 import '../../../models/obox/market_info_obox.dart';
 import '../../../objectbox.g.dart';

@@ -7,7 +7,6 @@ import 'package:net_worth_manager/ui/widgets/app_divider.dart';
 import 'package:net_worth_manager/ui/widgets/modal/bottom_sheet.dart';
 
 import '../../../models/obox/asset_category_obox.dart';
-import '../../../models/obox/asset_obox.dart';
 import '../../../objectbox.g.dart';
 import '../add_category/add_category_screen.dart';
 

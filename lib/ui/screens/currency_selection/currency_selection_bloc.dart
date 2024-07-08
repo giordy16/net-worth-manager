@@ -1,6 +1,5 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get_it/get_it.dart';
-import 'package:net_worth_manager/main.dart';
 import 'package:net_worth_manager/models/obox/currency_obox.dart';
 import 'package:net_worth_manager/objectbox.g.dart';
 import 'package:net_worth_manager/ui/screens/currency_selection/currency_selection_event.dart';

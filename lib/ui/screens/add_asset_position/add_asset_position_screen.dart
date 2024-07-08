@@ -6,7 +6,6 @@ import 'package:net_worth_manager/ui/screens/add_asset_position/add_position_eve
 import 'package:net_worth_manager/ui/screens/sell_position/sell_position_screen.dart';
 import 'package:net_worth_manager/ui/widgets/base_components/app_date_field.dart';
 import 'package:net_worth_manager/ui/widgets/base_components/app_numeric_text_field.dart';
-import 'package:net_worth_manager/utils/extensions/string_extension.dart';
 import '../../../app_dimensions.dart';
 import '../../../domain/repository/asset/asset_repo_impl.dart';
 import '../../../domain/repository/net_worth/net_worth_repo_impl.dart';
@@ -94,14 +93,17 @@ class _AddAssetPositionScreenState extends State<AddAssetPositionScreen> {
                   floatingActionButton: Column(
                     mainAxisSize: MainAxisSize.min,
                     children: [
-                      // AppBottomFab(
-                      //   text: "Sell position",
-                      //   outlinedStyle: true,
-                      //   onTap: () {
-                      //     context.push(SellPositionScreen.path, extra: widget.params);
-                      //   },
-                      // ),
-                      // SizedBox(height: 8),
+                      if (widget.params.showSellButton) ...[
+                        AppBottomFab(
+                          text: "Report a sell",
+                          outlinedStyle: true,
+                          onTap: () {
+                            context.push(SellPositionScreen.path,
+                                extra: widget.params);
+                          },
+                        ),
+                        SizedBox(height: 8),
+                      ],
                       AppBottomFab(
                         text: "Save",
                         onTap: () async {

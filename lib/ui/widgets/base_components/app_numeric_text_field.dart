@@ -1,17 +1,13 @@
-import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get_it/get_it.dart';
 import 'package:go_router/go_router.dart';
-import 'package:intl/number_symbols_data.dart';
 import 'package:net_worth_manager/ui/screens/currency_selection/currency_selection_screen.dart';
 import 'package:net_worth_manager/utils/extensions/number_extension.dart';
 
-import '../../../main.dart';
 import '../../../models/obox/currency_obox.dart';
 import '../../../models/obox/settings_obox.dart';
-import '../../../objectbox.g.dart';
 import '../../../utils/form_component_border.dart';
 import '../../../utils/form_validators.dart';
 import '../../screens/currency_selection/currency_selection_params.dart';

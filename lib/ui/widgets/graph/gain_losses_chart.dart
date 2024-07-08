@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
-import 'package:net_worth_manager/domain/repository/net_worth/net_worth_repo_impl.dart';
 import 'package:net_worth_manager/utils/extensions/number_extension.dart';
 import 'package:syncfusion_flutter_charts/charts.dart';
 

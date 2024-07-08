@@ -4,7 +4,6 @@ import 'package:bloc/bloc.dart';
 import 'package:net_worth_manager/ui/screens/ticker_search/ticker_search_event.dart';
 import 'package:net_worth_manager/ui/screens/ticker_search/tikcer_search_state.dart';
 
-import '../../../domain/repository/alphaVantage/alpha_vantage_repo.dart';
 import '../../../domain/repository/stock/financial_modeling_repo.dart';
 
 class TickerSearchBloc extends Bloc<TickerSearchEvent, TickerSearchState> {

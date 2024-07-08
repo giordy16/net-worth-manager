@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get_it/get_it.dart';
 import 'package:go_router/go_router.dart';
 import 'package:net_worth_manager/domain/repository/net_worth/net_worth_repo_impl.dart';
@@ -7,7 +6,6 @@ import 'package:net_worth_manager/models/obox/settings_obox.dart';
 import 'package:net_worth_manager/ui/scaffold_with_bottom_navigation.dart';
 import 'package:net_worth_manager/ui/screens/currency_selection/currency_selection_params.dart';
 import 'package:net_worth_manager/ui/screens/firebase_contacts/firebase_contacts_screen.dart';
-import 'package:net_worth_manager/ui/screens/home/home_page_bloc.dart';
 import 'package:net_worth_manager/ui/screens/manage_categories/manage_categories.dart';
 import 'package:net_worth_manager/ui/widgets/app_divider.dart';
 import 'package:net_worth_manager/utils/extensions/objectbox_extension.dart';

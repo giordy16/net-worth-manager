@@ -4,7 +4,6 @@ import 'package:get_it/get_it.dart';
 import 'package:go_router/go_router.dart';
 import 'package:intl/intl.dart';
 import 'package:net_worth_manager/app_dimensions.dart';
-import 'package:net_worth_manager/domain/repository/alphaVantage/alpha_vantage_repo.dart';
 import 'package:net_worth_manager/domain/repository/net_worth/net_worth_repo_impl.dart';
 import 'package:net_worth_manager/ui/scaffold_with_bottom_navigation.dart';
 import 'package:net_worth_manager/ui/screens/add_market_asset/add_market_asset_bloc.dart';

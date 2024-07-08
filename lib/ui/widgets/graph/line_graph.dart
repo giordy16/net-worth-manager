@@ -1,4 +1,3 @@
-import 'dart:math';
 
 import 'package:custom_sliding_segmented_control/custom_sliding_segmented_control.dart';
 import 'package:flutter/material.dart';
@@ -48,7 +47,7 @@ class _MarketAssetLineGraph extends State<LineGraph> {
   Widget build(BuildContext context) {
     ThemeData theme = Theme.of(context);
 
-    if (widget.graphData.isEmpty) {
+    if (widget.showLoading) {
       return const SizedBox(
           height: 300,
           child: Center(

@@ -9,7 +9,6 @@ import 'package:net_worth_manager/ui/widgets/base_components/app_text_field.dart
 import 'package:net_worth_manager/ui/widgets/modal/bottom_sheet.dart';
 import 'package:net_worth_manager/utils/extensions/mappers.dart';
 
-import '../../../domain/repository/alphaVantage/alpha_vantage_repo.dart';
 import '../../../domain/repository/stock/financial_modeling_repo.dart';
 import '../../../models/obox/market_info_obox.dart';
 import '../../widgets/app_divider.dart';

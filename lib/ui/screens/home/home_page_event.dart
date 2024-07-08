@@ -1,5 +1,4 @@
 import 'package:net_worth_manager/models/obox/asset_category_obox.dart';
-import 'package:net_worth_manager/models/ui/graph_data.dart';
 import 'package:net_worth_manager/utils/enum/graph_data_gap_enum.dart';
 
 import '../../../models/obox/asset_obox.dart';

@@ -84,6 +84,7 @@ class AssetDetailHistoryItem extends StatelessWidget {
               extra: AddAssetPositionScreenParams(
                 asset: asset,
                 timeValue: timeValue,
+                showSellButton: true
               ));
           context.read<AssetDetailBloc>().add(FetchGraphDataEvent());
         },

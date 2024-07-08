@@ -310,6 +310,7 @@ class HomePageScreenState extends State<HomePage>
                   horizontal: Dimensions.screenMargin),
               child: LineGraph(
                 showGapSelection: true,
+                showLoading: state.graphData == null,
                 graphData: state.graphData ?? [],
                 initialGap: state.graphGap,
                 onGraphTimeChange: (graphGap) {

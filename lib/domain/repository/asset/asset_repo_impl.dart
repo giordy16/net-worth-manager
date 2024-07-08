@@ -2,9 +2,7 @@ import 'package:get_it/get_it.dart';
 import 'package:net_worth_manager/models/obox/asset_category_obox.dart';
 import 'package:net_worth_manager/models/obox/asset_time_value_obox.dart';
 import 'package:net_worth_manager/models/obox/market_info_obox.dart';
-import 'package:net_worth_manager/ui/scaffold_with_bottom_navigation.dart';
 import 'package:net_worth_manager/utils/extensions/number_extension.dart';
-import 'package:net_worth_manager/utils/extensions/objectbox_extension.dart';
 
 import '../../../models/obox/asset_history_time_value.dart';
 import '../../../models/obox/asset_obox.dart';
@@ -29,7 +27,12 @@ class AssetRepoImpl implements AssetRepo {
 
   @override
   List<Asset> getAssets() {
-    return GetIt.I<Store>().box<Asset>().getAll();
+    return GetIt.I<Store>()
+        .box<Asset>()
+        .query()
+        .order(Asset_.name)
+        .build()
+        .find();
   }
 
   @override
@@ -97,25 +100,25 @@ class AssetRepoImpl implements AssetRepo {
       AssetTimeValue? lastTimeValue = asset
           .getTimeValuesChronologicalOrder()
           .where((element) =>
-          element.date.isBefore(dateTime.add(const Duration(days: 1))))
+              element.date.isBefore(dateTime.add(const Duration(days: 1))))
           .lastOrNull;
 
       return lastTimeValue?.getCurrentValue(date: dateTime) ?? 0;
     } else {
       // market asset
       final assetHistoryTimeValueBox =
-      GetIt.I<Store>().box<AssetHistoryTimeValue>();
+          GetIt.I<Store>().box<AssetHistoryTimeValue>();
 
       double marketValueAtTime = 0;
 
       List<AssetHistoryTimeValue> unsortedList = assetHistoryTimeValueBox
           .query(AssetHistoryTimeValue_.assetSymbol
-          .equals(asset.marketInfo.target!.symbol) &
-      AssetHistoryTimeValue_.date.lessOrEqualDate(dateTime))
+                  .equals(asset.marketInfo.target!.symbol) &
+              AssetHistoryTimeValue_.date.lessOrEqualDate(dateTime))
           .build()
           .find();
 
-      unsortedList.sort((a,b) => b.date.compareTo(a.date));
+      unsortedList.sort((a, b) => b.date.compareTo(a.date));
       marketValueAtTime = unsortedList.firstOrNull?.value ?? 0;
 
       return (marketValueAtTime * asset.getQuantityAtDateTime(dateTime))
@@ -127,12 +130,12 @@ class AssetRepoImpl implements AssetRepo {
   }
 
   @override
-  List<AssetHistoryTimeValue> getValueHistoryBySymbol(MarketInfo marketInfo,
-      DateTime startDate) {
+  List<AssetHistoryTimeValue> getValueHistoryBySymbol(
+      MarketInfo marketInfo, DateTime startDate) {
     final historyBox = GetIt.I<Store>().box<AssetHistoryTimeValue>();
     return historyBox
         .query(AssetHistoryTimeValue_.assetSymbol.equals(marketInfo.symbol) &
-    AssetHistoryTimeValue_.date.greaterOrEqualDate(startDate))
+            AssetHistoryTimeValue_.date.greaterOrEqualDate(startDate))
         .order(AssetHistoryTimeValue_.date)
         .build()
         .find();

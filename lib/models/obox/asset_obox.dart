@@ -1,3 +1,4 @@
+import 'package:decimal/decimal.dart';
 import 'package:get_it/get_it.dart';
 import 'package:net_worth_manager/domain/repository/asset/asset_repo_impl.dart';
 import 'package:net_worth_manager/models/obox/asset_history_time_value.dart';
@@ -70,7 +71,7 @@ class Asset {
     double q = 0;
     var timeValues = GetIt.I<Store>().box<Asset>().get(id)!.timeValues;
     for (var element in timeValues) {
-      q = q + element.quantity;
+      q = Decimal.parse(q.toString()).toDouble() + Decimal.parse(element.quantity.toString()).toDouble();
     }
     return q;
   }

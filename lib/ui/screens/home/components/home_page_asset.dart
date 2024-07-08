@@ -2,9 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:net_worth_manager/utils/extensions/number_extension.dart';
 import '../../../../app_dimensions.dart';
-import '../../../../main.dart';
 import '../../../../models/obox/asset_obox.dart';
-import '../../../../models/obox/settings_obox.dart';
 
 class HomePageAsset extends StatelessWidget {
   Asset asset;

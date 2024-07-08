@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 
 import '../../app_routes.dart';
-import '../../ui/scaffold_with_bottom_navigation.dart';
 
 extension ContextExtensions on BuildContext {
   void clearStackAndReplace(String path) {
@@ -11,4 +11,13 @@ extension ContextExtensions on BuildContext {
     appRoutes.pushReplacement(path);
   }
 
+  void popUntilPath(String routePath) {
+    while (appRoutes
+            .routerDelegate.currentConfiguration.matches.last.matchedLocation !=
+        routePath) {
+      if (!canPop()) return;
+
+      pop();
+    }
+  }
 }

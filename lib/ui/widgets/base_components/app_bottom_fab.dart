@@ -6,12 +6,15 @@ class AppBottomFab extends StatelessWidget {
   String text;
   Function() onTap;
   bool outlinedStyle;
+  bool enable;
 
-  AppBottomFab(
-      {super.key,
-      required this.text,
-      required this.onTap,
-      this.outlinedStyle = false});
+  AppBottomFab({
+    super.key,
+    required this.text,
+    required this.onTap,
+    this.outlinedStyle = false,
+    this.enable = true,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -31,8 +34,9 @@ class AppBottomFab extends StatelessWidget {
                             BorderRadius.circular(Dimensions.cardCorner))),
               )
             : ButtonStyle(
-                backgroundColor:
-                    MaterialStateProperty.all(theme.colorScheme.secondary),
+                backgroundColor: MaterialStateProperty.all(enable
+                    ? theme.colorScheme.secondary
+                    : theme.colorScheme.secondary.withOpacity(0.3)),
                 shape: MaterialStateProperty.all<RoundedRectangleBorder>(
                     RoundedRectangleBorder(
                         borderRadius:
