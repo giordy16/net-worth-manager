@@ -35,7 +35,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
     ),
     OnboardingPage(
       AppImages.tutorial_3,
-      "Get precious insights",
+      "Get valuable insights",
       "View valuable insights into the status and performance of your net worth.",
     ),
     OnboardingPage(

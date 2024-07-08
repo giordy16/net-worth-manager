@@ -255,7 +255,6 @@ class HomePageScreenState extends State<HomePage>
       child: SingleChildScrollView(
         child: Column(
           mainAxisSize: MainAxisSize.min,
-          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             const SizedBox(height: Dimensions.xs),
             Padding(
