@@ -184,6 +184,18 @@ class _AddAssetPositionScreenState extends State<AddAssetPositionScreen> {
                                 ),
                               ),
                             ),
+                            Padding(
+                              padding: const EdgeInsets.only(top: Dimensions.m),
+                              child: AppTextField(
+                                initialValue: params.timeValue?.note,
+                                title: "Note",
+                                onTextChange: (text) {
+                                  position.note = text;
+                                },
+                                maxLines: null,
+                                keyboardType: TextInputType.multiline,
+                              ),
+                            ),
                           ],
                         ),
                       ),

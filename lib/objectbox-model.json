@@ -75,7 +75,7 @@
     },
     {
       "id": "3:1310094772467892797",
-      "lastPropertyId": "5:3193434996408047750",
+      "lastPropertyId": "6:7259667017279786511",
       "name": "AssetTimeValue",
       "properties": [
         {
@@ -106,6 +106,11 @@
           "flags": 520,
           "indexId": "4:2434188033820685796",
           "relationTarget": "Currency"
+        },
+        {
+          "id": "6:7259667017279786511",
+          "name": "note",
+          "type": 9
         }
       ],
       "relations": []

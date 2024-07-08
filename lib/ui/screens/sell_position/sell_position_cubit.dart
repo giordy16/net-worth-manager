@@ -70,7 +70,7 @@ class SellPositionCubit extends Cubit<SellPositionState> {
   }
 
   void onTaxChange(double value) {
-    emit(state.copyWith(taxAmount: value));
+    emit(state.copyWith(taxPercentage: value));
     calcPositionValue();
   }
 
@@ -91,10 +91,13 @@ class SellPositionCubit extends Cubit<SellPositionState> {
         asset.marketInfo.target!
             .getCurrentPrice()
             .atMainCurrency(fromCurrency: asset.marketInfo.target!.currency);
-    double netValue = positionValue - (state.taxAmount * positionValue / 100);
+    double netValue =
+        positionValue - (state.taxPercentage * positionValue / 100);
 
     emit(state.copyWith(
-        positionValue: double.parse(netValue.toStringAsFixed(2))));
+      positionGrossValue: double.parse(positionValue.toStringAsFixed(2)),
+      positionNetValue: double.parse(netValue.toStringAsFixed(2)),
+    ));
   }
 
   void sell() {
@@ -115,11 +118,12 @@ class SellPositionCubit extends Cubit<SellPositionState> {
 
       assetRepo.saveAssetPosition(
           AssetTimeValue(
-            date: state.sellDate!,
-            value:
-                (valueAtDateTime.toDecimal() + state.positionValue.toDecimal())
-                    .toDouble(),
-          ),
+              date: state.sellDate!,
+              value: (valueAtDateTime.toDecimal() +
+                      state.positionGrossValue.toDecimal())
+                  .toDouble(),
+              note:
+                  "${asset.marketInfo.target!.name} sold for ${state.positionGrossValue.toStringWithCurrency()}"),
           state.selectedAsset!);
     }
 
@@ -131,14 +135,15 @@ class SellPositionCubit extends Cubit<SellPositionState> {
           asset.marketInfo.target!
               .getCurrentPrice()
               .atMainCurrency(fromCurrency: asset.marketInfo.target!.currency);
-      double taxValue = state.taxAmount * positionValue / 100;
+      double taxValue = state.taxPercentage * positionValue / 100;
 
       assetRepo.saveAssetPosition(
           AssetTimeValue(
-            date: state.sellDate!,
-            value:
-                (valueAtDateTime.toDecimal() - taxValue.toDecimal()).toDouble(),
-          ),
+              date: state.sellDate!,
+              value: (valueAtDateTime.toDecimal() - taxValue.toDecimal())
+                  .toDouble(),
+              note:
+                  "From ${asset.marketInfo.target!.name} selling\n\nGross value: ${state.positionGrossValue.toStringWithCurrency()}\nTax percentage applied: ${state.taxPercentage.toStringFormatted()}%"),
           state.selectedTaxAsset!);
     }
   }

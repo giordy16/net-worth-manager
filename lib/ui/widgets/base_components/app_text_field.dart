@@ -12,6 +12,7 @@ class AppTextField extends StatelessWidget {
   bool readOnly;
   bool expandedMode;
   TextEditingController controller;
+  int? maxLines;
 
   AppTextField({
     super.key,
@@ -23,6 +24,7 @@ class AppTextField extends StatelessWidget {
     this.isMandatory = false,
     this.readOnly = false,
     this.expandedMode = false,
+    this.maxLines = 1,
   }) : controller = TextEditingController(text: initialValue);
 
   @override
@@ -39,7 +41,7 @@ class AppTextField extends StatelessWidget {
       textCapitalization: TextCapitalization.sentences,
       textAlignVertical: TextAlignVertical.top,
       expands: expandedMode,
-      maxLines: expandedMode ? null : 1,
+      maxLines: expandedMode ? null : maxLines,
       decoration: InputDecoration(
         label: Text(title),
         alignLabelWithHint: true,

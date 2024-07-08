@@ -99,7 +99,7 @@ final _entities = <obx_int.ModelEntity>[
   obx_int.ModelEntity(
       id: const obx_int.IdUid(3, 1310094772467892797),
       name: 'AssetTimeValue',
-      lastPropertyId: const obx_int.IdUid(5, 3193434996408047750),
+      lastPropertyId: const obx_int.IdUid(6, 7259667017279786511),
       flags: 0,
       properties: <obx_int.ModelProperty>[
         obx_int.ModelProperty(
@@ -128,7 +128,12 @@ final _entities = <obx_int.ModelEntity>[
             type: 11,
             flags: 520,
             indexId: const obx_int.IdUid(4, 2434188033820685796),
-            relationTarget: 'Currency')
+            relationTarget: 'Currency'),
+        obx_int.ModelProperty(
+            id: const obx_int.IdUid(6, 7259667017279786511),
+            name: 'note',
+            type: 9,
+            flags: 0)
       ],
       relations: <obx_int.ModelRelation>[],
       backlinks: <obx_int.ModelBacklink>[]),
@@ -509,12 +514,15 @@ obx_int.ModelDefinition getObjectBoxModel() {
           object.id = id;
         },
         objectToFB: (AssetTimeValue object, fb.Builder fbb) {
-          fbb.startTable(6);
+          final noteOffset =
+              object.note == null ? null : fbb.writeString(object.note!);
+          fbb.startTable(7);
           fbb.addInt64(0, object.id);
           fbb.addInt64(1, object.date.millisecondsSinceEpoch);
           fbb.addFloat64(2, object.value);
           fbb.addFloat64(3, object.quantity);
           fbb.addInt64(4, object.currency.targetId);
+          fbb.addOffset(5, noteOffset);
           fbb.finish(fbb.endTable());
           return object.id;
         },
@@ -529,11 +537,14 @@ obx_int.ModelDefinition getObjectBoxModel() {
               const fb.Float64Reader().vTableGet(buffer, rootOffset, 8, 0);
           final quantityParam =
               const fb.Float64Reader().vTableGet(buffer, rootOffset, 10, 0);
+          final noteParam = const fb.StringReader(asciiOptimization: true)
+              .vTableGetNullable(buffer, rootOffset, 14);
           final object = AssetTimeValue(
               id: idParam,
               date: dateParam,
               value: valueParam,
-              quantity: quantityParam);
+              quantity: quantityParam,
+              note: noteParam);
           object.currency.targetId =
               const fb.Int64Reader().vTableGet(buffer, rootOffset, 12, 0);
           object.currency.attach(store);
@@ -883,6 +894,10 @@ class AssetTimeValue_ {
   /// see [AssetTimeValue.currency]
   static final currency = obx.QueryRelationToOne<AssetTimeValue, Currency>(
       _entities[2].properties[4]);
+
+  /// see [AssetTimeValue.note]
+  static final note =
+      obx.QueryStringProperty<AssetTimeValue>(_entities[2].properties[5]);
 }
 
 /// [Currency] entity fields to define ObjectBox queries.

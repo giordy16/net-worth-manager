@@ -21,13 +21,17 @@ class AssetTimeValue {
 
   double quantity;
 
+  String? note;
+
   ToOne<Currency> currency = ToOne<Currency>();
 
-  AssetTimeValue(
-      {this.id = 0,
-      required this.date,
-      required this.value,
-      this.quantity = 1}) {
+  AssetTimeValue({
+    this.id = 0,
+    required this.date,
+    required this.value,
+    this.quantity = 1,
+    this.note,
+  }) {
     currency.target = GetIt.instance<Settings>().defaultCurrency.target;
   }
 
@@ -35,7 +39,8 @@ class AssetTimeValue {
       : id = 0,
         date = DateTime.now().keepOnlyYMD(),
         value = 0,
-        quantity = 1 {
+        quantity = 1,
+        note = null {
     currency.target = GetIt.instance<Settings>().defaultCurrency.target;
   }
 

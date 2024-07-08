@@ -10,14 +10,15 @@ class SellPositionState extends Equatable {
   DateTime? sellDate;
 
   double? quantityToSell;
-  double positionValue;
+  double positionGrossValue;
+  double positionNetValue;
 
   bool shouldMoveToAsset;
   Asset? selectedAsset;
   List<Asset> selectableAssets;
 
   bool shouldApplyTax;
-  double taxAmount;
+  double taxPercentage;
   bool shouldAddTaxToAsset;
   Asset? selectedTaxAsset;
 
@@ -26,11 +27,12 @@ class SellPositionState extends Equatable {
     required this.position,
     required this.sellDate,
     required this.quantityToSell,
-    required this.positionValue,
+    required this.positionGrossValue,
+    required this.positionNetValue,
     required this.shouldMoveToAsset,
     required this.selectableAssets,
     required this.shouldApplyTax,
-    required this.taxAmount,
+    required this.taxPercentage,
     required this.shouldAddTaxToAsset,
     this.selectedAsset,
     this.selectedTaxAsset,
@@ -41,11 +43,12 @@ class SellPositionState extends Equatable {
     required this.position,
     this.sellDate,
     this.quantityToSell,
-    this.positionValue = 0,
+    this.positionGrossValue = 0,
+    this.positionNetValue = 0,
     this.shouldMoveToAsset = false,
     this.selectableAssets = const [],
     this.shouldApplyTax = false,
-    this.taxAmount = 0,
+    this.taxPercentage = 0,
     this.shouldAddTaxToAsset = false,
     this.selectedTaxAsset,
     this.selectedAsset,
@@ -53,12 +56,13 @@ class SellPositionState extends Equatable {
 
   SellPositionState copyWith({
     double? quantityToSell,
-    double? positionValue,
+    double? positionGrossValue,
+    double? positionNetValue,
     bool? shouldMoveToAsset,
     Asset? selectedAsset,
     List<Asset>? selectableAssets,
     bool? shouldApplyTax,
-    double? taxAmount,
+    double? taxPercentage,
     Asset? selectedTaxAsset,
     bool? shouldAddTaxToAsset,
     DateTime? sellDate,
@@ -68,12 +72,13 @@ class SellPositionState extends Equatable {
         position: position,
         sellDate: sellDate ?? this.sellDate,
         quantityToSell: quantityToSell ?? this.quantityToSell,
-        positionValue: positionValue ?? this.positionValue,
+        positionGrossValue: positionGrossValue ?? this.positionGrossValue,
+        positionNetValue: positionNetValue ?? this.positionNetValue,
         shouldMoveToAsset: shouldMoveToAsset ?? this.shouldMoveToAsset,
         selectedAsset: selectedAsset ?? this.selectedAsset,
         selectableAssets: selectableAssets ?? this.selectableAssets,
         shouldApplyTax: shouldApplyTax ?? this.shouldApplyTax,
-        taxAmount: taxAmount ?? this.taxAmount,
+        taxPercentage: taxPercentage ?? this.taxPercentage,
         shouldAddTaxToAsset: shouldAddTaxToAsset ?? this.shouldAddTaxToAsset,
         selectedTaxAsset: selectedTaxAsset ?? this.selectedTaxAsset);
   }
@@ -84,12 +89,13 @@ class SellPositionState extends Equatable {
         position,
         sellDate,
         quantityToSell,
-        positionValue,
+        positionGrossValue,
+        positionNetValue,
         shouldMoveToAsset,
         selectedAsset,
         selectableAssets,
         shouldApplyTax,
-        taxAmount,
+        taxPercentage,
         shouldAddTaxToAsset,
         selectedTaxAsset,
       ];

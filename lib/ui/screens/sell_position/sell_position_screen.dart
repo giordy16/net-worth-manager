@@ -68,7 +68,7 @@ class SellPositionScreen extends StatelessWidget {
                       FloatingActionButtonLocation.centerFloat,
                   floatingActionButton: AppBottomFab(
                     text:
-                        "Confirm sell (${state.positionValue.toStringWithCurrency()})",
+                        "Confirm sell (${state.positionGrossValue.toStringWithCurrency()})",
                     enable: state.quantityToSell! <= state.position.quantity,
                     onTap: () {
                       if (state.quantityToSell! <= state.position.quantity &&
@@ -172,7 +172,7 @@ class SellPositionScreen extends StatelessWidget {
                               SizedBox(height: Dimensions.s),
                               AppNumericTextField(
                                 title: "Tax (%)",
-                                initialValue: state.taxAmount,
+                                initialValue: state.taxPercentage,
                                 moneyBehavior: false,
                                 isMandatory: true,
                                 onTextChange: (value) {
