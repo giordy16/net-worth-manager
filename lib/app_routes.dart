@@ -26,6 +26,7 @@ import 'package:net_worth_manager/ui/screens/full_asset_allocation/full_asset_al
 import 'package:net_worth_manager/ui/screens/manage_categories/manage_categories.dart';
 import 'package:net_worth_manager/ui/screens/onboarding/onboarding_screen.dart';
 import 'package:net_worth_manager/ui/screens/sell_position/sell_position_screen.dart';
+import 'package:net_worth_manager/ui/screens/soon_available/soon_available_screen.dart';
 import 'package:net_worth_manager/ui/screens/ticker_search/ticker_search_screen.dart';
 import 'package:net_worth_manager/ui/widgets/modal/loading_overlay.dart';
 
@@ -128,6 +129,9 @@ final appRoutes = GoRouter(
         builder: (context, state) =>
             GeneralSelection(state.extra as GeneralSelectionParams),
       ),
+      GoRoute(
+          path: SoonAvailableScreen.path,
+          builder: (context, state) => SoonAvailableScreen()),
     ],
     redirect: (context, state) {
       if (GetIt.I<Settings>().showTutorial == true &&

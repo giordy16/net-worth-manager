@@ -7,6 +7,7 @@ import 'package:net_worth_manager/ui/scaffold_with_bottom_navigation.dart';
 import 'package:net_worth_manager/ui/screens/currency_selection/currency_selection_params.dart';
 import 'package:net_worth_manager/ui/screens/firebase_contacts/firebase_contacts_screen.dart';
 import 'package:net_worth_manager/ui/screens/manage_categories/manage_categories.dart';
+import 'package:net_worth_manager/ui/screens/soon_available/soon_available_screen.dart';
 import 'package:net_worth_manager/ui/widgets/app_divider.dart';
 import 'package:net_worth_manager/utils/extensions/objectbox_extension.dart';
 import 'package:package_info_plus/package_info_plus.dart';
@@ -218,6 +219,24 @@ class _SettingsScreenState extends State<SettingsScreen> {
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: Dimensions.xxs),
               child: IconButton(
+                onPressed: () => context.push(SoonAvailableScreen.path),
+                icon: Row(
+                  children: [
+                    Text("Soon available", style: theme.textTheme.bodyLarge),
+                    Expanded(child: SizedBox()),
+                    Icon(Icons.arrow_forward_ios, size: 14)
+                  ],
+                ),
+              ),
+            ),
+            Padding(
+              padding: const EdgeInsets.symmetric(
+                  horizontal: Dimensions.screenMargin),
+              child: AppDivider(),
+            ),
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: Dimensions.xxs),
+              child: IconButton(
                 onPressed: () => context.push(FirebaseContactsScreen.path,
                     extra: FirebaseScreenType.contacts),
                 icon: Row(
@@ -244,7 +263,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 8.0),
               child: Text(
-                "WARNING\nThe app is still in the first release phase and all the sections are accessible.\nIn the future some sections or new functionalities may be accessible only with a Premium account",
+                "DISCLAIMER\nThe app is still in the first release phase and all the sections are accessible.\nIn the future some sections or new functionalities may be accessible only with a Premium account",
                 style: theme.textTheme.bodySmall
                     ?.copyWith(color: theme.colorScheme.onPrimaryContainer),
                 textAlign: TextAlign.center,

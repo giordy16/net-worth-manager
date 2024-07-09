@@ -24,6 +24,11 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
 
   final pages = [
     OnboardingPage(
+        AppImages.tutorial_1,
+        "Why should you track your net worth?",
+        "Tracking net worth provides a clear snapshot of your overall financial health. It helps you to:\n1. Understand your true financial position\n2. Set and monitor progress toward financial goals\n3. Identify areas for improvement in saving or investing\n4. Plan more effectively for retirement.",
+    ),
+    OnboardingPage(
       AppImages.tutorial_1,
       "Keep track of your net worth easily",
       "Add your assets, liabilities and investments to know the value of your net worth in real time.",
@@ -61,7 +66,10 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
   void chooseMainCurrency() {
     context.push(CurrencySelectionScreen.route,
         extra: CurrencySelectionParams(
-          selectedCurrency: GetIt.I<Settings>().defaultCurrency.target,
+          selectedCurrency: GetIt
+              .I<Settings>()
+              .defaultCurrency
+              .target,
           onCurrencySelected: (c) {
             Settings settings = GetIt.I<Settings>();
             settings.defaultCurrency.target = c;
@@ -82,17 +90,17 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
           children: [
             Expanded(
                 child: PageView(
-              children: pages,
-              controller: controller,
-            )),
+                  children: pages,
+                  controller: controller,
+                )),
             SmoothPageIndicator(
               controller: controller,
               count: pages.length,
               effect: const WormEffect(
-                dotHeight: 8,
-                dotWidth: 8,
-                type: WormType.thinUnderground,
-                activeDotColor: Colors.white
+                  dotHeight: 8,
+                  dotWidth: 8,
+                  type: WormType.thinUnderground,
+                  activeDotColor: Colors.white
               ),
             ),
             SizedBox(height: 32,),
@@ -149,9 +157,9 @@ class OnboardingPage extends StatelessWidget {
           children: [
             Expanded(
                 child: Padding(
-              padding: const EdgeInsets.all(16),
-              child: Image.asset(imagePath),
-            )),
+                  padding: const EdgeInsets.all(16),
+                  child: Image.asset(imagePath),
+                )),
             SizedBox(height: Dimensions.l),
             Text(
               title,
