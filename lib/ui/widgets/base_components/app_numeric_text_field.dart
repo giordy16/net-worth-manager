@@ -1,4 +1,3 @@
-
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get_it/get_it.dart';
@@ -48,7 +47,10 @@ class _AppNumericTextFieldState extends State<AppNumericTextField> {
   void initController() {
     controller = TextEditingController(
         text: widget.initialValue != null
-            ? widget.initialValue!.toStringFormatted(removeGroupSeparator: true)
+            ? widget.initialValue!.toStringFormatted(
+                removeGroupSeparator: true,
+                removeDecimalPartIfZero: true,
+              )
             : "");
     oldText = controller.text;
 

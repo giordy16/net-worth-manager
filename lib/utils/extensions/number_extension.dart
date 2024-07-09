@@ -11,13 +11,17 @@ import '../../objectbox.g.dart';
 import '../forex.dart';
 
 extension DoubleHelper on double {
-  String toStringFormatted({
-    bool removeGroupSeparator = false,
-  }) {
+  String toStringFormatted(
+      {bool removeGroupSeparator = false,
+      bool removeDecimalPartIfZero = false}) {
     var decimalDigits = toString().length - toString().indexOf(".") - 1;
 
     final formatter = NumberFormat.decimalPatternDigits(
-        locale: Platform.localeName, decimalDigits: decimalDigits);
+      locale: Platform.localeName,
+      decimalDigits: (removeDecimalPartIfZero && this - truncate() == 0)
+          ? 0
+          : decimalDigits,
+    );
 
     if (removeGroupSeparator) {
       formatter.turnOffGrouping();
@@ -25,12 +29,7 @@ extension DoubleHelper on double {
 
     String string = formatter.format(this);
 
-    if (this - truncate() == 0) {
-      // the number is an int
-      return truncate().toString();
-    } else {
-      return string;
-    }
+    return string;
   }
 
   String toStringWithCurrency({String? currency}) {
