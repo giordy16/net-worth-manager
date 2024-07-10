@@ -253,6 +253,8 @@ class HomePageScreenState extends State<HomePage>
         .toSet()
         .toList();
 
+    categories.sort((a,b) => a.name.compareTo(b.name));
+
     return SafeArea(
       child: SingleChildScrollView(
         child: Column(
