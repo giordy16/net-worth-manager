@@ -46,7 +46,10 @@ class AddAssetBloc extends Bloc<AddAssetEvent, AddAssetState> {
 
       assetRepo.saveAsset(asset);
       context.pushReplacement(AddAssetPositionScreen.route,
-          extra: AddAssetPositionScreenParams(asset: asset));
+          extra: AddAssetPositionScreenParams(
+            asset: asset,
+            mode: AddAssetPositionScreenMode.add,
+          ));
     });
 
     on<FetchAddAssetData>((event, emit) {

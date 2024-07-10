@@ -10,6 +10,7 @@ import 'package:net_worth_manager/models/obox/market_info_obox.dart';
 import 'package:net_worth_manager/utils/extensions/date_time_extension.dart';
 
 import '../../../app_images.dart';
+import '../../../models/network/fmp/fmp_split_historical.dart';
 import '../../../models/obox/asset_history_time_value.dart';
 import '../../../models/obox/main_currency_forex_change.dart';
 import '../../../models/obox/settings_obox.dart';
@@ -209,7 +210,6 @@ class FinancialModelingRepoImpl implements StockApi {
         DateTime end = start.copyWith(year: start.year + 5);
 
         while (!limitReached) {
-
           if (end.isAfter(endLimit) || end.isAtSameMomentAs(endLimit)) {
             end = endLimit;
             limitReached = true;
@@ -339,7 +339,6 @@ class FinancialModelingRepoImpl implements StockApi {
         DateTime end = start.copyWith(year: start.year + 5);
 
         while (!limitReached) {
-
           if (end.isAfter(endLimit) || end.isAtSameMomentAs(endLimit)) {
             end = endLimit;
             limitReached = true;
@@ -409,6 +408,22 @@ class FinancialModelingRepoImpl implements StockApi {
                 exchangeNameShort: e.exchangeShortName,
               ))
           .toList();
+    } catch (e) {
+      print("searchTicker error: $e");
+      return [];
+    }
+  }
+
+  @override
+  Future<List<FmpSplitHistoricalItem>> getSplitHistorical(String symbol) async {
+    try {
+      dynamic queryData = {"apikey": Constants.FMP_KEY};
+
+      var response = await _client.get(
+          "api/v3/historical-price-full/stock_split/$symbol",
+          queryParameters: queryData);
+
+      return FmpSplitHistorical.fromJson(response.data).historical;
     } catch (e) {
       print("searchTicker error: $e");
       return [];

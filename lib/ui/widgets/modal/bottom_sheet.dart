@@ -64,10 +64,11 @@ Future<bool?> showOkOnlyBottomSheet(BuildContext context, String message,
       });
 }
 
-Future<bool?> showYesNoBottomSheet(BuildContext context, String message) async {
+Future<bool?> showYesNoBottomSheet(BuildContext context, String message, {bool isDismissible = true}) async {
   ThemeData theme = Theme.of(context);
   return await showModalBottomSheet(
       context: context,
+      isDismissible: isDismissible,
       builder: (context) {
         return Container(
           padding: EdgeInsets.all(Dimensions.l),

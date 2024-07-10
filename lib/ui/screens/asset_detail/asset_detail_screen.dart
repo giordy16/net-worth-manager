@@ -267,6 +267,7 @@ class AssetDetailScreen extends StatelessWidget {
                                       AddAssetPositionScreen.route,
                                       extra: AddAssetPositionScreenParams(
                                         asset: state.asset,
+                                        mode: AddAssetPositionScreenMode.add
                                       ),
                                     );
                                     context

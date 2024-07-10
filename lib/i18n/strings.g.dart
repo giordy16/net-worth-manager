@@ -4,9 +4,9 @@
 /// To regenerate, run: `dart run slang`
 ///
 /// Locales: 2
-/// Strings: 292 (146 per locale)
+/// Strings: 298 (149 per locale)
 ///
-/// Built on 2024-07-10 at 09:54 UTC
+/// Built on 2024-07-10 at 20:21 UTC
 
 // coverage:ignore-file
 // ignore_for_file: type=lint
@@ -296,6 +296,9 @@ class Translations implements BaseTranslations<AppLocale, Translations> {
 	String get add_position_question => 'Do you want to give a value to this asset?';
 	String get add_asset_subtitle => 'Add a new asset or liability. After saving it, you can add its value.';
 	String get add_asset_disclaimer => 'If you want to add investments, choose "Market Investment (ETF/Stock/Crypto)" from the previous screen. In this way, they will be tracked automatically.';
+	String get stock_split_message_position => 'The position is influenced by a stock splits:\n\nEntered quantity is <qt> → Quantity after split is <qtSplit>\n\nDo you want to use the quantity after split?';
+	String get stock_split_message_positions => 'The following positions are influenced by a stock splits:\n\n<message>\n\nDo you want to use the quantity after split?';
+	String get stock_split_message_single => '• <date> - Entered quantity: <qt> → Quantity after split: <qtSplit>';
 }
 
 // Path: <root>
@@ -452,7 +455,7 @@ class _StringsIt implements Translations {
 	@override String get yes => 'Sì';
 	@override String get no => 'No';
 	@override String get choose_an_option => 'Scegli un\'opzione';
-	@override String get just_a_moment => 'Un momento...';
+	@override String get just_a_moment => 'Solo un momento...';
 	@override String get offline_message => 'Sembra che tu sia offline.\nPer avere valori aggiornati, attiva i dati mobili o il Wi-Fi e riapri l\'app.';
 	@override String get home => 'Home';
 	@override String get insights => 'Approfondimenti';
@@ -470,6 +473,9 @@ class _StringsIt implements Translations {
 	@override String get add_position_question => 'Vuoi assegnare un valore a questo asset?';
 	@override String get add_asset_subtitle => 'Aggiungi un nuovo asset o passività. Dopo averlo salvato, potrai aggiungere il suo valore.';
 	@override String get add_asset_disclaimer => 'Se vuoi aggiungere investimenti, scegli "Investimento di mercato (ETF/Stocks/Cripto)" dalla schermata precedente. In questo modo, saranno tracciati automaticamente.';
+	@override String get stock_split_message_position => 'La posizione è influenzata da uno split azionario:\n\nQuantità inserita <qt> → Quantita dopo lo split <qtSplit>\n\nVuoi utilizzare la quantità dopo lo split?';
+	@override String get stock_split_message_positions => 'Le seguenti posizioni sono influenzate da uno split azionario:\n\n<message>\n\nVuoi utilizzare la quantità dopo lo split?';
+	@override String get stock_split_message_single => '• <date> - Quantità inserita: <qt> → Quantita dopo lo split: <qtSplit>';
 }
 
 /// Flat map(s) containing all translations.
@@ -624,6 +630,9 @@ extension on Translations {
 			case 'add_position_question': return 'Do you want to give a value to this asset?';
 			case 'add_asset_subtitle': return 'Add a new asset or liability. After saving it, you can add its value.';
 			case 'add_asset_disclaimer': return 'If you want to add investments, choose "Market Investment (ETF/Stock/Crypto)" from the previous screen. In this way, they will be tracked automatically.';
+			case 'stock_split_message_position': return 'The position is influenced by a stock splits:\n\nEntered quantity is <qt> → Quantity after split is <qtSplit>\n\nDo you want to use the quantity after split?';
+			case 'stock_split_message_positions': return 'The following positions are influenced by a stock splits:\n\n<message>\n\nDo you want to use the quantity after split?';
+			case 'stock_split_message_single': return '• <date> - Entered quantity: <qt> → Quantity after split: <qtSplit>';
 			default: return null;
 		}
 	}
@@ -760,7 +769,7 @@ extension on _StringsIt {
 			case 'yes': return 'Sì';
 			case 'no': return 'No';
 			case 'choose_an_option': return 'Scegli un\'opzione';
-			case 'just_a_moment': return 'Un momento...';
+			case 'just_a_moment': return 'Solo un momento...';
 			case 'offline_message': return 'Sembra che tu sia offline.\nPer avere valori aggiornati, attiva i dati mobili o il Wi-Fi e riapri l\'app.';
 			case 'home': return 'Home';
 			case 'insights': return 'Approfondimenti';
@@ -778,6 +787,9 @@ extension on _StringsIt {
 			case 'add_position_question': return 'Vuoi assegnare un valore a questo asset?';
 			case 'add_asset_subtitle': return 'Aggiungi un nuovo asset o passività. Dopo averlo salvato, potrai aggiungere il suo valore.';
 			case 'add_asset_disclaimer': return 'Se vuoi aggiungere investimenti, scegli "Investimento di mercato (ETF/Stocks/Cripto)" dalla schermata precedente. In questo modo, saranno tracciati automaticamente.';
+			case 'stock_split_message_position': return 'La posizione è influenzata da uno split azionario:\n\nQuantità inserita <qt> → Quantita dopo lo split <qtSplit>\n\nVuoi utilizzare la quantità dopo lo split?';
+			case 'stock_split_message_positions': return 'Le seguenti posizioni sono influenzate da uno split azionario:\n\n<message>\n\nVuoi utilizzare la quantità dopo lo split?';
+			case 'stock_split_message_single': return '• <date> - Quantità inserita: <qt> → Quantita dopo lo split: <qtSplit>';
 			default: return null;
 		}
 	}

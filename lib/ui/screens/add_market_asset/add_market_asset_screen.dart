@@ -104,9 +104,13 @@ class _AddMarketAssetScreenState extends State<AddMarketAssetScreen> {
                 onTap: () async {
                   if (_formKey.currentState!.validate()) {
                     widget.params.asset.category.target = assetCategory!;
-                    context
-                        .read<AddMarketAssetBloc>()
-                        .add(SaveMarketAssetEvent(widget.params.asset));
+                    context.read<AddMarketAssetBloc>().add(SaveMarketAssetEvent(
+                          widget.params.asset,
+                          widget.params.asset.timeValues.sublist(
+                            lastIndexToHide + 1,
+                            widget.params.asset.timeValues.length,
+                          ),
+                        ));
                     ScaffoldWithBottomNavigation.updateScreens();
                   }
                 },
@@ -221,6 +225,7 @@ class _AddMarketAssetScreenState extends State<AddMarketAssetScreen> {
                                   extra: AddAssetPositionScreenParams(
                                     asset: widget.params.asset,
                                     justPopBack: true,
+                                    mode: AddAssetPositionScreenMode.add
                                   ));
                               if (position != null) {
                                 widget.params.asset.timeValues.add(position);

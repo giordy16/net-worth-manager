@@ -1,4 +1,5 @@
 
+import '../../../models/network/fmp/fmp_split_historical.dart';
 import '../../../models/obox/market_info_obox.dart';
 import '../../../utils/enum/fetch_forex_type.dart';
 
@@ -18,4 +19,7 @@ abstract class StockApi {
     required FMPFetchType fetchType,
         DateTime? startFetchDate,
   });
+
+  Future<List<FmpSplitHistoricalItem>> getSplitHistorical(String symbol);
+
 }

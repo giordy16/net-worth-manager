@@ -2,17 +2,21 @@ import 'package:bloc/bloc.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:get_it/get_it.dart';
 import 'package:go_router/go_router.dart';
+import 'package:intl/intl.dart';
 import 'package:net_worth_manager/domain/repository/net_worth/net_worth_repo.dart';
 import 'package:net_worth_manager/models/obox/market_info_obox.dart';
 import 'package:net_worth_manager/ui/screens/add_market_asset/add_market_asset_event.dart';
 import 'package:net_worth_manager/ui/screens/add_market_asset/add_market_asset_state.dart';
+import 'package:net_worth_manager/ui/widgets/modal/bottom_sheet.dart';
 import 'package:net_worth_manager/ui/widgets/modal/loading_overlay.dart';
+import 'package:net_worth_manager/utils/extensions/number_extension.dart';
 import 'package:net_worth_manager/utils/extensions/objectbox_extension.dart';
 
 import '../../../domain/repository/asset/asset_repo.dart';
 import '../../../domain/repository/stock/stock_api.dart';
 import '../../../i18n/strings.g.dart';
 import '../../../models/obox/asset_obox.dart';
+import '../../../models/obox/asset_time_value_obox.dart';
 import '../../../objectbox.g.dart';
 import '../../../utils/enum/fetch_forex_type.dart';
 import '../../widgets/modal/user_message.dart';
@@ -36,11 +40,26 @@ class AddMarketAssetBloc
 
       LoadingOverlay.of(context).show();
 
+      var positionsInfluencedBySplit =
+          await checkSharesSplit(marketInfo.symbol, event.newPositions);
+
+      if (positionsInfluencedBySplit != null) {
+        // there are some position influenced by split
+        for (var posInfluenced in positionsInfluencedBySplit.entries) {
+          for (var pos in asset.timeValues) {
+            if (pos == posInfluenced.key) {
+              pos.quantity = posInfluenced.value;
+            }
+          }
+        }
+      }
+
       assetRepo.saveMarketValue(marketInfo);
       assetRepo.saveAsset(asset);
 
       var assetPositionsDate =
           asset.timeValues.map((element) => element.date).toList();
+
       if (assetPositionsDate.isNotEmpty) {
         DateTime oldestDate =
             assetPositionsDate.reduce((a, b) => a.isBefore(b) ? a : b);
@@ -78,5 +97,47 @@ class AddMarketAssetBloc
       LoadingOverlay.of(context).hide();
       context.pop();
     });
+  }
+
+  Future<Map<AssetTimeValue, double>?> checkSharesSplit(
+      String symbol, List<AssetTimeValue> positions) async {
+    if (positions.isEmpty) return null;
+
+    final splitHistory = await stockApi.getSplitHistorical(symbol);
+    if (splitHistory.isEmpty) return null;
+
+    Map<AssetTimeValue, double> positionsInfluencedBySplit = {};
+
+    for (var pos in positions) {
+      double qtX = 1;
+      for (var split in splitHistory) {
+        if (pos.date.isBefore(split.dateFormatted)) {
+          qtX = qtX * split.numerator / split.denominator;
+        }
+      }
+      if (qtX != 1) {
+        positionsInfluencedBySplit.addAll({pos: qtX});
+      }
+    }
+
+    if (positionsInfluencedBySplit.isNotEmpty) {
+      var message = positionsInfluencedBySplit.entries
+          .map((entry) => t.stock_split_message_single
+              .replaceAll("<date>", DateFormat("dd/MM/yyyy").format(entry.key.date))
+              .replaceAll("<qt>", entry.key.quantity.toStringFormatted())
+              .replaceAll("<qtSplit>", entry.value.toStringFormatted()))
+          .join("\n");
+
+      bool? yes = await showYesNoBottomSheet(
+        context,
+        t.stock_split_message_positions.replaceAll("<message>", message),
+        isDismissible: false,
+      );
+
+      if (yes == true) {
+        return positionsInfluencedBySplit;
+      }
+    }
+    return null;
   }
 }

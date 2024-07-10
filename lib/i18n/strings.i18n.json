@@ -146,5 +146,8 @@
   "asset_liability": "Asset/Liability",
   "add_position_question": "Do you want to give a value to this asset?",
   "add_asset_subtitle": "Add a new asset or liability. After saving it, you can add its value.",
-  "add_asset_disclaimer": "If you want to add investments, choose \"Market Investment (ETF/Stock/Crypto)\" from the previous screen. In this way, they will be tracked automatically."
+  "add_asset_disclaimer": "If you want to add investments, choose \"Market Investment (ETF/Stock/Crypto)\" from the previous screen. In this way, they will be tracked automatically.",
+  "stock_split_message_position": "The position is influenced by a stock splits:\n\nEntered quantity is <qt> → Quantity after split is <qtSplit>\n\nDo you want to use the quantity after split?",
+  "stock_split_message_positions": "The following positions are influenced by a stock splits:\n\n<message>\n\nDo you want to use the quantity after split?",
+  "stock_split_message_single": "\u2022 <date> - Entered quantity: <qt> → Quantity after split: <qtSplit>"
 }

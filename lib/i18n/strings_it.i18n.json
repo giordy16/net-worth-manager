@@ -146,5 +146,8 @@
   "asset_liability": "Asset/Passività",
   "add_position_question": "Vuoi assegnare un valore a questo asset?",
   "add_asset_subtitle": "Aggiungi un nuovo asset o passività. Dopo averlo salvato, potrai aggiungere il suo valore.",
-  "add_asset_disclaimer": "Se vuoi aggiungere investimenti, scegli \"Investimento di mercato (ETF/Stocks/Cripto)\" dalla schermata precedente. In questo modo, saranno tracciati automaticamente."
+  "add_asset_disclaimer": "Se vuoi aggiungere investimenti, scegli \"Investimento di mercato (ETF/Stocks/Cripto)\" dalla schermata precedente. In questo modo, saranno tracciati automaticamente.",
+  "stock_split_message_position": "La posizione è influenzata da uno split azionario:\n\nQuantità inserita <qt> → Quantita dopo lo split <qtSplit>\n\nVuoi utilizzare la quantità dopo lo split?",
+  "stock_split_message_positions": "Le seguenti posizioni sono influenzate da uno split azionario:\n\n<message>\n\nVuoi utilizzare la quantità dopo lo split?",
+  "stock_split_message_single": "\u2022 <date> - Quantità inserita: <qt> → Quantita dopo lo split: <qtSplit>"
 }

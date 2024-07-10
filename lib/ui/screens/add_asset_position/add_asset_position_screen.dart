@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
+import 'package:net_worth_manager/domain/repository/stock/financial_modeling_repo.dart';
 import 'package:net_worth_manager/ui/screens/add_asset_position/add_position_bloc.dart';
 import 'package:net_worth_manager/ui/screens/add_asset_position/add_position_event.dart';
 import 'package:net_worth_manager/ui/screens/sell_position/sell_position_screen.dart';
@@ -17,6 +18,8 @@ import '../../widgets/base_components/app_text_field.dart';
 import '../../widgets/modal/bottom_sheet.dart';
 import 'add_asset_position_screen_params.dart';
 import 'add_position_state.dart';
+
+enum AddAssetPositionScreenMode { add, edit }
 
 class AddAssetPositionScreen extends StatefulWidget {
   static const route = "/AddAssetPositionScreen";
@@ -65,12 +68,16 @@ class _AddAssetPositionScreenState extends State<AddAssetPositionScreen> {
               create: (context) => AssetRepoImpl()),
           RepositoryProvider<NetWorthRepoImpl>(
               create: (context) => NetWorthRepoImpl()),
+          RepositoryProvider<FinancialModelingRepoImpl>(
+              create: (context) => FinancialModelingRepoImpl()),
         ],
         child: BlocProvider(
             create: (context) => AddPositionBloc(
                   context: context,
                   assetRepo: context.read<AssetRepoImpl>(),
+                  stockApi: context.read<FinancialModelingRepoImpl>(),
                   netWorthRepo: context.read<NetWorthRepoImpl>(),
+                  mode: widget.params.mode,
                 ),
             child: BlocBuilder<AddPositionBloc, AddPositionState>(
                 builder: (context, state) {
