@@ -128,15 +128,13 @@ class _AddMarketAssetScreenState extends State<AddMarketAssetScreen> {
                           AppSelectorField<AssetCategory>(
                             title: "Category",
                             initialValue: assetCategory,
-                            values: [
-                              ...GetIt.I<Store>()
-                                  .box<AssetCategory>()
-                                  .query()
-                                  .order(AssetCategory_.name)
-                                  .build()
-                                  .find(),
-                              ...[AppSelectorField.addNewCategory]
-                            ],
+                            values: GetIt.I<Store>()
+                                .box<AssetCategory>()
+                                .query(
+                                    AssetCategory_.userCanSelect.equals(false))
+                                .order(AssetCategory_.name)
+                                .build()
+                                .find(),
                             onItemSelected: (value) => onCategoryChange(value),
                             isMandatory: true,
                           ),

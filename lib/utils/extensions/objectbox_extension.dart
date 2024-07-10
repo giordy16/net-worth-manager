@@ -50,12 +50,50 @@ extension ObjectBoxExtension on Store {
     // fill categories
     var categories = box<AssetCategory>().getAll();
     if (categories.isEmpty) {
-      box<AssetCategory>().put(AssetCategory("Cash"));
-      box<AssetCategory>().put(AssetCategory("Car"));
+      box<AssetCategory>().put(AssetCategory("Bank accounts"));
+      box<AssetCategory>().put(AssetCategory("Vehicles"));
+      box<AssetCategory>().put(AssetCategory("Real estate / House"));
       box<AssetCategory>().put(AssetCategory("Debts"));
-      box<AssetCategory>().put(AssetCategory("ETFs"));
-      box<AssetCategory>().put(AssetCategory("Stocks"));
-      box<AssetCategory>().put(AssetCategory("Crypto"));
+      box<AssetCategory>().put(AssetCategory("Watches"));
+      box<AssetCategory>().put(AssetCategory("Other"));
+    }
+
+    // check if there are the notSelectable asset categories: if not, add them
+    if (categories
+        .where((e) => e.marketAssetCategory == MarketAssetCategory.etfs)
+        .isEmpty) {
+      box<AssetCategory>().put(AssetCategory(
+        "ETFs",
+        userCanSelect: false,
+        marketAssetCategory: MarketAssetCategory.etfs,
+      ));
+    }
+    if (categories
+        .where((e) => e.marketAssetCategory == MarketAssetCategory.stocks)
+        .isEmpty) {
+      box<AssetCategory>().put(AssetCategory(
+        "Stocks",
+        userCanSelect: false,
+        marketAssetCategory: MarketAssetCategory.stocks,
+      ));
+    }
+    if (categories
+        .where((e) => e.marketAssetCategory == MarketAssetCategory.commodities)
+        .isEmpty) {
+      box<AssetCategory>().put(AssetCategory(
+        "Commodities",
+        userCanSelect: false,
+        marketAssetCategory: MarketAssetCategory.commodities,
+      ));
+    }
+    if (categories
+        .where((e) => e.marketAssetCategory == MarketAssetCategory.crypto)
+        .isEmpty) {
+      box<AssetCategory>().put(AssetCategory(
+        "Crypto",
+        userCanSelect: false,
+        marketAssetCategory: MarketAssetCategory.crypto,
+      ));
     }
   }
 

@@ -1,5 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:net_worth_manager/app_dimensions.dart';
+
+import '../../widgets/base_components/app_bottom_fab.dart';
+import '../firebase_contacts/firebase_contacts_screen.dart';
 
 class SoonAvailableScreen extends StatelessWidget {
   static String path = "/SoonAvailableScreen";
@@ -12,12 +16,19 @@ class SoonAvailableScreen extends StatelessWidget {
       "Automatic backup",
       "Automatic management of shares due to share splits",
       "Widgets for home screen",
-      "Bug fix, of course :)",
+      "Automatic tracking for commodities",
+      "Bug fixes, of course :)",
     ];
 
     return Scaffold(
       appBar: AppBar(
         title: Text("Soon available"),
+      ),
+      floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
+      floatingActionButton: AppBottomFab(
+        text: "Suggest a new feature",
+        onTap: () => context.push(FirebaseContactsScreen.path,
+            extra: FirebaseScreenType.suggestions),
       ),
       body: SafeArea(
         child: Padding(

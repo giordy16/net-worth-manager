@@ -16,10 +16,19 @@ class AssetRepoImpl implements AssetRepo {
   }
 
   @override
-  List<AssetCategory> getAssetCategories() {
+  List<AssetCategory> getAssetCategories({
+    bool onlyMarketAssetCat = false,
+    bool onlyManualAssetCat = false,
+  }) {
+    var condition = onlyMarketAssetCat
+        ? AssetCategory_.userCanSelect.equals(false)
+        : onlyManualAssetCat
+            ? AssetCategory_.userCanSelect.equals(true)
+            : null;
+
     return GetIt.I<Store>()
         .box<AssetCategory>()
-        .query(AssetCategory_.userCanSelect.equals(true))
+        .query(condition)
         .order(AssetCategory_.name)
         .build()
         .find();

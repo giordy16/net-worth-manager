@@ -37,30 +37,32 @@ class _ManageCategoriesState extends State<ManageCategories> {
       }
     });
 
-    selections.addAll({
-      const Row(
-        children: [
-          Icon(Icons.delete_outlined),
-          SizedBox(
-            width: 4,
-          ),
-          Text("Delete")
-        ],
-      ): () async {
-        if (category.getAssets().isEmpty) {
-          if ((await showDeleteConfirmSheet(context,
-                  "Are you sure you want to delete this category?\nAll its asset and positions will be deleted.")) ==
-              true) {
-            GetIt.I<Store>().box<AssetCategory>().remove(category.id);
-            setState(() {});
-            ScaffoldWithBottomNavigation.updateScreens();
+    if (category.userCanSelect) {
+      selections.addAll({
+        const Row(
+          children: [
+            Icon(Icons.delete_outlined),
+            SizedBox(
+              width: 4,
+            ),
+            Text("Delete")
+          ],
+        ): () async {
+          if (category.getAssets().isEmpty) {
+            if ((await showDeleteConfirmSheet(context,
+                    "Are you sure you want to delete this category?\nAll its asset and positions will be deleted.")) ==
+                true) {
+              GetIt.I<Store>().box<AssetCategory>().remove(category.id);
+              setState(() {});
+              ScaffoldWithBottomNavigation.updateScreens();
+            }
+          } else {
+            showOkOnlyBottomSheet(context,
+                "This category has some assets under it. Only empty categories can be removed. Please, remove the assets from the Home.");
           }
-        } else {
-          showOkOnlyBottomSheet(context,
-              "This category has some assets under it. Only empty categories can be removed. Please, remove the assets from the Home.");
         }
-      }
-    });
+      });
+    }
 
     var selectedOption =
         await showSelectionSheet(context, selections.keys.toList());
@@ -71,7 +73,8 @@ class _ManageCategoriesState extends State<ManageCategories> {
   Widget build(BuildContext context) {
     final categories = GetIt.I<Store>()
         .box<AssetCategory>()
-        .query(AssetCategory_.userCanSelect.equals(true))
+        .query()
+        .order(AssetCategory_.name)
         .build()
         .find();
 
@@ -104,7 +107,9 @@ class _ManageCategoriesState extends State<ManageCategories> {
                 },
                 separatorBuilder: (BuildContext context, int index) {
                   return Padding(
-                      padding: EdgeInsets.symmetric(horizontal: Dimensions.screenMargin), child: AppDivider());
+                      padding: EdgeInsets.symmetric(
+                          horizontal: Dimensions.screenMargin),
+                      child: AppDivider());
                 },
                 itemCount: categories.length,
               ),

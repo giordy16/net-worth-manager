@@ -69,8 +69,10 @@ final appRoutes = GoRouter(
       ),
       GoRoute(
         path: AssetDetailScreen.route,
-        builder: (context, state) => AssetDetailScreen(
-          asset: state.extra as Asset,
+        builder: (context, state) => LoadingOverlay(
+          child: AssetDetailScreen(
+            asset: state.extra as Asset,
+          ),
         ),
       ),
       GoRoute(

@@ -4,6 +4,8 @@ import 'package:objectbox/objectbox.dart';
 import '../../objectbox.g.dart';
 import 'asset_obox.dart';
 
+enum MarketAssetCategory { stocks, etfs, crypto, commodities, }
+
 @Entity()
 class AssetCategory {
   @Id()
@@ -13,7 +15,13 @@ class AssetCategory {
 
   bool userCanSelect;
 
-  AssetCategory(this.name, {this.userCanSelect = true});
+  MarketAssetCategory? marketAssetCategory;
+
+  AssetCategory(
+    this.name, {
+    this.userCanSelect = true,
+    this.marketAssetCategory,
+  });
 
   @override
   String toString() {
@@ -21,7 +29,7 @@ class AssetCategory {
   }
 
   bool operator ==(dynamic other) =>
-      other != null && other is AssetCategory && name == other.name;
+      other != null && other is AssetCategory && name == other.name && marketAssetCategory == other.marketAssetCategory;
 
   @override
   int get hashCode => id.hashCode;
@@ -41,5 +49,4 @@ class AssetCategory {
     }
     return double.parse(value.toStringAsFixed(2));
   }
-
 }

@@ -191,26 +191,26 @@ class _SettingsScreenState extends State<SettingsScreen> {
                 ),
               ),
             ),
-            Padding(
-              padding: const EdgeInsets.symmetric(
-                  horizontal: Dimensions.screenMargin),
-              child: AppDivider(),
-            ),
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: Dimensions.xxs),
-              child: IconButton(
-                onPressed: () => context.push(FirebaseContactsScreen.path,
-                    extra: FirebaseScreenType.suggestions),
-                icon: Row(
-                  children: [
-                    Text("Suggest a new feature",
-                        style: theme.textTheme.bodyLarge),
-                    Expanded(child: SizedBox()),
-                    Icon(Icons.arrow_forward_ios, size: 14)
-                  ],
-                ),
-              ),
-            ),
+            // Padding(
+            //   padding: const EdgeInsets.symmetric(
+            //       horizontal: Dimensions.screenMargin),
+            //   child: AppDivider(),
+            // ),
+            // Padding(
+            //   padding: const EdgeInsets.symmetric(horizontal: Dimensions.xxs),
+            //   child: IconButton(
+            //     onPressed: () => context.push(FirebaseContactsScreen.path,
+            //         extra: FirebaseScreenType.suggestions),
+            //     icon: Row(
+            //       children: [
+            //         Text("Suggest a new feature",
+            //             style: theme.textTheme.bodyLarge),
+            //         Expanded(child: SizedBox()),
+            //         Icon(Icons.arrow_forward_ios, size: 14)
+            //       ],
+            //     ),
+            //   ),
+            // ),
             Padding(
               padding: const EdgeInsets.symmetric(
                   horizontal: Dimensions.screenMargin),

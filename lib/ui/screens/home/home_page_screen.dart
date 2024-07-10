@@ -79,23 +79,25 @@ class HomePageScreenState extends State<HomePage>
       }
     });
 
-    selections.addAll({
-      const Row(
-        children: [
-          Icon(Icons.delete_outlined),
-          SizedBox(
-            width: 4,
-          ),
-          Text("Delete")
-        ],
-      ): () async {
-        if ((await showDeleteConfirmSheet(context,
-                "Are you sure you want to delete this category?\nAll its asset and positions will be deleted.")) ==
-            true) {
-          context.read<HomePageBloc>().add(DeleteCategory(category));
+    if (category.userCanSelect) {
+      selections.addAll({
+        const Row(
+          children: [
+            Icon(Icons.delete_outlined),
+            SizedBox(
+              width: 4,
+            ),
+            Text("Delete")
+          ],
+        ): () async {
+          if ((await showDeleteConfirmSheet(context,
+                  "Are you sure you want to delete this category?\nAll its asset and positions will be deleted.")) ==
+              true) {
+            context.read<HomePageBloc>().add(DeleteCategory(category));
+          }
         }
-      }
-    });
+      });
+    }
 
     var selectedOption =
         await showSelectionSheet(context, selections.keys.toList());

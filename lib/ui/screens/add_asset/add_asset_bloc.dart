@@ -47,7 +47,7 @@ class AddAssetBloc extends Bloc<AddAssetEvent, AddAssetState> {
     });
 
     on<FetchAddAssetData>((event, emit) {
-      var categories = assetRepo.getAssetCategories();
+      var categories = assetRepo.getAssetCategories(onlyManualAssetCat: true);
       emit(state.copyWith(assetCategorySelectable: categories));
     });
 

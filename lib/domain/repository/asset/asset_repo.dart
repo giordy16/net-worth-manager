@@ -18,7 +18,10 @@ abstract class AssetRepo {
 
   void deletePosition(Asset asset, AssetTimeValue timeValue);
 
-  List<AssetCategory> getAssetCategories();
+  List<AssetCategory> getAssetCategories({
+    bool onlyMarketAssetCat = false,
+    bool onlyManualAssetCat = false,
+  });
 
   List<Asset> getAssets();
 
