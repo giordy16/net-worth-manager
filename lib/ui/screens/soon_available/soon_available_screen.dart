@@ -15,8 +15,9 @@ class SoonAvailableScreen extends StatelessWidget {
     final features = [
       "Automatic backup",
       "Automatic management of shares due to share splits",
-      "Widgets for home screen",
       "Automatic tracking for commodities",
+      "Sorting of categories in home screen",
+      "Home widgets for iPhone/Android",
       "Bug fixes, of course :)",
     ];
 
