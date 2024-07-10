@@ -8,6 +8,7 @@ import 'package:net_worth_manager/ui/widgets/modal/bottom_sheet.dart';
 
 import '../../../models/obox/asset_category_obox.dart';
 import '../../../objectbox.g.dart';
+import '../../widgets/modal/user_message.dart';
 import '../add_category/add_category_screen.dart';
 
 class ManageCategories extends StatefulWidget {
@@ -50,15 +51,16 @@ class _ManageCategoriesState extends State<ManageCategories> {
         ): () async {
           if (category.getAssets().isEmpty) {
             if ((await showDeleteConfirmSheet(context,
-                    "Are you sure you want to delete this category?\nAll its asset and positions will be deleted.")) ==
+                    "Are you sure you want to delete this category?")) ==
                 true) {
               GetIt.I<Store>().box<AssetCategory>().remove(category.id);
               setState(() {});
               ScaffoldWithBottomNavigation.updateScreens();
+              UserMessage.showMessage(context, "Deleted!");
             }
           } else {
             showOkOnlyBottomSheet(context,
-                "This category has some assets under it. Only empty categories can be removed. Please, remove the assets from the Home.");
+                "This category contains some assets. Only empty categories can be removed. Please, remove the assets from the Home.");
           }
         }
       });

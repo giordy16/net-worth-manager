@@ -14,6 +14,7 @@ import '../../../domain/repository/stock/stock_api.dart';
 import '../../../models/obox/asset_obox.dart';
 import '../../../objectbox.g.dart';
 import '../../../utils/enum/fetch_forex_type.dart';
+import '../../widgets/modal/user_message.dart';
 
 class AddMarketAssetBloc
     extends Bloc<AddMarketAssetEvent, AddMarketAssetState> {
@@ -72,6 +73,7 @@ class AddMarketAssetBloc
         );
       }
 
+      UserMessage.showMessage(context, "Done!");
       LoadingOverlay.of(context).hide();
       context.pop();
     });

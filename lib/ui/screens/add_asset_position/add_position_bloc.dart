@@ -12,6 +12,7 @@ import '../../../domain/repository/asset/asset_repo.dart';
 import '../../../models/obox/asset_obox.dart';
 import '../../../objectbox.g.dart';
 import '../../../utils/enum/fetch_forex_type.dart';
+import '../../widgets/modal/user_message.dart';
 
 class AddPositionBloc extends Bloc<AddPositionEvent, AddPositionState> {
   BuildContext context;
@@ -48,6 +49,7 @@ class AddPositionBloc extends Bloc<AddPositionEvent, AddPositionState> {
       }
 
       LoadingOverlay.of(context).hide();
+      UserMessage.showMessage(context, "Done!");
       context.pop();
     });
 
@@ -62,6 +64,7 @@ class AddPositionBloc extends Bloc<AddPositionEvent, AddPositionState> {
         await LoadingOverlay.of(context).hide();
       }
 
+      UserMessage.showMessage(context, "Position deleted!");
       context.pop();
 
     });

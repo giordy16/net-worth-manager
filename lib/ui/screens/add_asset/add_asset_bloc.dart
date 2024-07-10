@@ -6,6 +6,7 @@ import 'package:net_worth_manager/models/obox/asset_obox.dart';
 import 'package:net_worth_manager/ui/screens/add_asset/add_asset_state.dart';
 import 'package:net_worth_manager/ui/screens/add_asset_position/add_asset_position_screen.dart';
 import 'package:net_worth_manager/ui/screens/add_asset_position/add_asset_position_screen_params.dart';
+import 'package:net_worth_manager/ui/widgets/modal/user_message.dart';
 import 'add_asset_events.dart';
 
 class AddAssetBloc extends Bloc<AddAssetEvent, AddAssetState> {
@@ -35,6 +36,7 @@ class AddAssetBloc extends Bloc<AddAssetEvent, AddAssetState> {
         asset.category.target = state.assetCategory;
       }
       assetRepo.saveAsset(asset);
+      UserMessage.showMessage(context, "Done!");
     });
 
     on<SaveAssetAndOpenPositionEvent>((event, emit) {

@@ -17,6 +17,7 @@ import '../../../models/obox/currency_obox.dart';
 import '../../../objectbox.g.dart';
 import '../../../utils/enum/fetch_forex_type.dart';
 import '../../widgets/modal/loading_overlay.dart';
+import '../../widgets/modal/user_message.dart';
 import '../currency_selection/currency_selection_screen.dart';
 import '../excluded_asset/excluded_asset_screen.dart';
 import '../import_export/import_export_screen.dart';
@@ -61,6 +62,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
 
       ScaffoldWithBottomNavigation.updateScreens();
 
+      UserMessage.showMessage(context, "Main currency has been changed!");
       LoadingOverlay.of(context).hide();
       setState(() {});
     }

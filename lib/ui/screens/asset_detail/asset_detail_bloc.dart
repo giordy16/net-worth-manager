@@ -16,6 +16,7 @@ import '../../../objectbox.g.dart';
 import '../../../utils/enum/graph_data_gap_enum.dart';
 import '../../scaffold_with_bottom_navigation.dart';
 import '../../widgets/modal/loading_overlay.dart';
+import '../../widgets/modal/user_message.dart';
 
 class AssetDetailBloc extends Bloc<AssetDetailEvent, AssetDetailState> {
   final Asset asset;
@@ -75,6 +76,7 @@ class AssetDetailBloc extends Bloc<AssetDetailEvent, AssetDetailState> {
         LoadingOverlay.of(context).hide();
       }
 
+      UserMessage.showMessage(context, "Deleted!");
       context.pop();
       ScaffoldWithBottomNavigation.updateScreens();
       debugPrint("DeleteAsset END");

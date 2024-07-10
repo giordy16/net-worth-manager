@@ -15,6 +15,7 @@ import '../../../models/obox/asset_obox.dart';
 import '../../widgets/base_components/app_bottom_fab.dart';
 import '../../widgets/base_components/app_numeric_text_field.dart';
 import '../../widgets/base_components/app_selector_field.dart';
+import '../../widgets/modal/user_message.dart';
 import '../add_asset_position/add_asset_position_screen_params.dart';
 
 class SellPositionScreen extends StatelessWidget {
@@ -76,6 +77,7 @@ class SellPositionScreen extends StatelessWidget {
                         context.read<SellPositionCubit>().sell();
 
                         // back to asset detail
+                        UserMessage.showMessage(context, "Position sold!");
                         context.popUntilPath(AssetDetailScreen.route);
                       }
                     },
