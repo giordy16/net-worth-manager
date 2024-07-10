@@ -63,8 +63,11 @@ class ImportExportScreen extends StatelessWidget {
 
           await ObjectBox.importDatabase(file);
           await initApp();
+          LoadingOverlay.of(context).hide();
 
           context.clearStackAndReplace(ScaffoldWithBottomNavigation.path);
+        } else {
+          LoadingOverlay.of(context).hide();
         }
       }
     } catch (e) {
