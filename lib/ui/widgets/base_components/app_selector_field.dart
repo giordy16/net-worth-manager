@@ -2,11 +2,12 @@ import 'package:dropdown_button2/dropdown_button2.dart';
 import 'package:flutter/material.dart';
 import 'package:net_worth_manager/models/obox/asset_category_obox.dart';
 
+import '../../../i18n/strings.g.dart';
 import '../../../utils/form_component_border.dart';
 import '../../../utils/form_validators.dart';
 
 class AppSelectorField<T> extends StatelessWidget {
-  static AssetCategory addNewCategory = AssetCategory("+ Create new category");
+  static AssetCategory addNewCategory = AssetCategory(t.create_new_category);
 
   T? initialValue;
   List<T> values;

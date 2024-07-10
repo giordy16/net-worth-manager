@@ -12,6 +12,7 @@ import 'package:net_worth_manager/ui/widgets/base_components/app_bottom_fab.dart
 import 'package:net_worth_manager/ui/widgets/base_components/app_selector_field.dart';
 import 'package:net_worth_manager/ui/widgets/modal/bottom_sheet.dart';
 
+import '../../../i18n/strings.g.dart';
 import '../../../models/obox/asset_obox.dart';
 import '../../widgets/base_components/app_text_field.dart';
 
@@ -44,8 +45,7 @@ class AddAssetScreen extends StatelessWidget {
       return;
     }
 
-    bool? yes = await showYesNoBottomSheet(
-        context, "Do you want to give a value to this asset?");
+    bool? yes = await showYesNoBottomSheet(context, t.add_position_question);
 
     if (yes == null) return;
 
@@ -72,12 +72,12 @@ class AddAssetScreen extends StatelessWidget {
               builder: (context, state) {
             return Scaffold(
                 appBar: AppBar(
-                  title: Text("Asset/Liability"),
+                  title: Text(t.asset_liability),
                 ),
                 floatingActionButtonLocation:
                     FloatingActionButtonLocation.centerFloat,
                 floatingActionButton: AppBottomFab(
-                  text: "Save",
+                  text: t.save,
                   onTap: () async {
                     if (_formKey.currentState!.validate()) {
                       saveAsset(context);
@@ -95,13 +95,12 @@ class AddAssetScreen extends StatelessWidget {
                           Padding(
                               padding:
                                   const EdgeInsets.only(top: Dimensions.xs),
-                              child: Text(
-                                  "Add a new asset or liability. After saving it, you can add its value.")),
+                              child: Text(t.add_asset_subtitle)),
                           Padding(
                             padding: const EdgeInsets.only(top: Dimensions.m),
                             child: AppTextField(
                               initialValue: state.assetName,
-                              title: "Name",
+                              title: t.name,
                               onTextChange: (value) {
                                 context
                                     .read<AddAssetBloc>()
@@ -113,7 +112,7 @@ class AddAssetScreen extends StatelessWidget {
                           Padding(
                             padding: const EdgeInsets.only(top: Dimensions.m),
                             child: AppSelectorField<AssetCategory>(
-                              title: "Category",
+                              title: t.category,
                               initialValue: state.assetCategory,
                               values: [
                                 ...state.assetCategorySelectable,
@@ -127,7 +126,7 @@ class AddAssetScreen extends StatelessWidget {
                           Padding(
                               padding: const EdgeInsets.only(top: Dimensions.l),
                               child: Text(
-                                "If you want to add investments, choose \"Market Investment (ETF/Stock/Crypto)\" from the previous screen. In this way, they will be tracked automatically.",
+                                t.add_asset_disclaimer,
                                 style: Theme.of(context)
                                     .textTheme
                                     .bodySmall

@@ -5,6 +5,7 @@ import 'package:net_worth_manager/app_dimensions.dart';
 import 'package:net_worth_manager/models/obox/asset_category_obox.dart';
 import 'package:net_worth_manager/ui/widgets/base_components/app_bottom_fab.dart';
 
+import '../../../i18n/strings.g.dart';
 import '../../../objectbox.g.dart';
 import '../../widgets/base_components/app_text_field.dart';
 
@@ -33,11 +34,11 @@ class AddAssetCategory extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
-          title: Text("Add category"),
+          title: Text(t.add_category),
         ),
         floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
         floatingActionButton: AppBottomFab(
-          text: "Save",
+          text: t.save,
           onTap: () => saveCategory(context),
         ),
         body: SafeArea(
@@ -48,13 +49,12 @@ class AddAssetCategory extends StatelessWidget {
               children: [
                 Padding(
                     padding: const EdgeInsets.only(top: Dimensions.xs),
-                    child: Text(
-                        "Create a new category for your assets, for example \"Liquidity\", \"Bank accounts\", \"Expected taxes\" ...")),
+                    child: Text(t.add_category_message)),
                 Padding(
                   padding: const EdgeInsets.only(top: Dimensions.m),
                   child: AppTextField(
                     initialValue: category?.name,
-                    title: "Name",
+                    title: t.name,
                     onTextChange: (value) {
                       categoryName = value;
                     },

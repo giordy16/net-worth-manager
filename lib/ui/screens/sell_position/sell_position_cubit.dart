@@ -1,11 +1,13 @@
 import 'package:bloc/bloc.dart';
 import 'package:decimal/decimal.dart';
+import 'package:go_router/go_router.dart';
 import 'package:net_worth_manager/models/obox/asset_time_value_obox.dart';
 import 'package:net_worth_manager/objectbox.g.dart';
 import 'package:net_worth_manager/ui/screens/sell_position/sell_position_state.dart';
 import 'package:net_worth_manager/utils/extensions/number_extension.dart';
 
 import '../../../domain/repository/asset/asset_repo.dart';
+import '../../../i18n/strings.g.dart';
 import '../../../models/obox/asset_obox.dart';
 
 class SellPositionCubit extends Cubit<SellPositionState> {
@@ -123,7 +125,7 @@ class SellPositionCubit extends Cubit<SellPositionState> {
                       state.positionGrossValue.toDecimal())
                   .toDouble(),
               note:
-                  "${asset.marketInfo.target!.name} sold for ${state.positionGrossValue.toStringWithCurrency()}"),
+                  "${asset.marketInfo.target!.name} ${t.sold_for} ${state.positionGrossValue.toStringWithCurrency()}"),
           state.selectedAsset!);
     }
 
@@ -142,8 +144,10 @@ class SellPositionCubit extends Cubit<SellPositionState> {
               date: state.sellDate!,
               value: (valueAtDateTime.toDecimal() - taxValue.toDecimal())
                   .toDouble(),
-              note:
-                  "From ${asset.marketInfo.target!.name} selling\n\nGross value: ${state.positionGrossValue.toStringWithCurrency()}\nTax percentage applied: ${state.taxPercentage.toStringFormatted()}%"),
+              note: t.note_tax
+                  .replaceAll("<asset>", asset.marketInfo.target!.name)
+                  .replaceAll("<grossValue>", state.positionGrossValue.toStringWithCurrency())
+                  .replaceAll("<taxPercentage>", state.taxPercentage.toStringFormatted())),
           state.selectedTaxAsset!);
     }
   }

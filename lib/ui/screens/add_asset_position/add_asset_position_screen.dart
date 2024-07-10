@@ -9,6 +9,7 @@ import 'package:net_worth_manager/ui/widgets/base_components/app_numeric_text_fi
 import '../../../app_dimensions.dart';
 import '../../../domain/repository/asset/asset_repo_impl.dart';
 import '../../../domain/repository/net_worth/net_worth_repo_impl.dart';
+import '../../../i18n/strings.g.dart';
 import '../../../models/obox/asset_time_value_obox.dart';
 import '../../scaffold_with_bottom_navigation.dart';
 import '../../widgets/base_components/app_bottom_fab.dart';
@@ -76,7 +77,7 @@ class _AddAssetPositionScreenState extends State<AddAssetPositionScreen> {
               return Scaffold(
                   resizeToAvoidBottomInset: false,
                   appBar: AppBar(
-                    title: Text("Position"),
+                    title: Text(t.position),
                     actions: [
                       if (params.timeValue != null)
                         IconButton(
@@ -95,7 +96,7 @@ class _AddAssetPositionScreenState extends State<AddAssetPositionScreen> {
                     children: [
                       if (widget.params.showSellButton) ...[
                         AppBottomFab(
-                          text: "Report a sell",
+                          text: t.report_a_sell,
                           outlinedStyle: true,
                           onTap: () {
                             context.push(SellPositionScreen.path,
@@ -105,7 +106,7 @@ class _AddAssetPositionScreenState extends State<AddAssetPositionScreen> {
                         SizedBox(height: 8),
                       ],
                       AppBottomFab(
-                        text: "Save",
+                        text: t.save,
                         onTap: () async {
                           if (_formKey.currentState!.validate()) {
                             if (widget.params.justPopBack) {
@@ -132,7 +133,7 @@ class _AddAssetPositionScreenState extends State<AddAssetPositionScreen> {
                               padding: const EdgeInsets.only(top: Dimensions.m),
                               child: AppTextField(
                                 initialValue: params.asset.name,
-                                title: "Asset",
+                                title: t.asset,
                                 readOnly: true,
                                 isMandatory: true,
                               ),
@@ -141,7 +142,7 @@ class _AddAssetPositionScreenState extends State<AddAssetPositionScreen> {
                               padding: const EdgeInsets.only(top: Dimensions.m),
                               child: AppDateField(
                                 initialValue: position.date,
-                                title: "Date",
+                                title: t.date,
                                 isMandatory: true,
                                 onDatePicked: (date) {
                                   position.date = date;
@@ -152,7 +153,7 @@ class _AddAssetPositionScreenState extends State<AddAssetPositionScreen> {
                               padding: const EdgeInsets.only(top: Dimensions.m),
                               child: AppNumericTextField(
                                 moneyBehavior: true,
-                                title: "Value",
+                                title: t.value,
                                 initialValue: position.value,
                                 currency: position.currency.target,
                                 userCanChangeCurrency:
@@ -174,7 +175,7 @@ class _AddAssetPositionScreenState extends State<AddAssetPositionScreen> {
                                     const EdgeInsets.only(top: Dimensions.m),
                                 child: AppNumericTextField(
                                   moneyBehavior: false,
-                                  title: "Quantity",
+                                  title: t.quantity,
                                   initialValue: position.quantity,
                                   isMandatory: true,
                                   onTextChange: (value) {
@@ -188,7 +189,7 @@ class _AddAssetPositionScreenState extends State<AddAssetPositionScreen> {
                               padding: const EdgeInsets.only(top: Dimensions.m),
                               child: AppTextField(
                                 initialValue: params.timeValue?.note,
-                                title: "Note",
+                                title: t.note,
                                 onTextChange: (text) {
                                   position.note = text;
                                 },

@@ -14,6 +14,7 @@ import 'package:net_worth_manager/ui/widgets/modal/bottom_sheet.dart';
 import 'package:net_worth_manager/utils/extensions/number_extension.dart';
 import '../../../domain/repository/asset/asset_repo_impl.dart';
 import '../../../domain/repository/stock/financial_modeling_repo.dart';
+import '../../../i18n/strings.g.dart';
 import '../../../models/obox/asset_category_obox.dart';
 import '../../../models/obox/asset_time_value_obox.dart';
 import '../../../objectbox.g.dart';
@@ -81,7 +82,7 @@ class _AddMarketAssetScreenState extends State<AddMarketAssetScreen> {
               builder: (context, state) {
             return Scaffold(
               appBar: AppBar(
-                title: const Text("Market asset"),
+                title: Text(t.market_asset),
                 actions: [
                   // IconButton(
                   //     onPressed: () {
@@ -99,7 +100,7 @@ class _AddMarketAssetScreenState extends State<AddMarketAssetScreen> {
               floatingActionButtonLocation:
                   FloatingActionButtonLocation.centerFloat,
               floatingActionButton: AppBottomFab(
-                text: "Save",
+                text: t.save,
                 onTap: () async {
                   if (_formKey.currentState!.validate()) {
                     widget.params.asset.category.target = assetCategory!;
@@ -120,13 +121,13 @@ class _AddMarketAssetScreenState extends State<AddMarketAssetScreen> {
                         crossAxisAlignment: CrossAxisAlignment.center,
                         children: [
                           AppTextField(
-                            title: "Asset",
+                            title: t.asset,
                             initialValue: widget.params.asset.name,
                             readOnly: true,
                           ),
                           const SizedBox(height: Dimensions.m),
                           AppSelectorField<AssetCategory>(
-                            title: "Category",
+                            title: t.category,
                             initialValue: assetCategory,
                             values: GetIt.I<Store>()
                                 .box<AssetCategory>()
@@ -211,7 +212,7 @@ class _AddMarketAssetScreenState extends State<AddMarketAssetScreen> {
                             itemCount: widget.params.asset.timeValues.length,
                           ),
                           const SizedBox(height: Dimensions.m),
-                          const Text("Add position"),
+                          Text(t.add_position),
                           const SizedBox(height: Dimensions.xxs),
                           IconButton(
                             onPressed: () async {

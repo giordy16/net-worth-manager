@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
+import 'package:go_router/go_router.dart';
 import 'package:net_worth_manager/app_dimensions.dart';
 import 'package:net_worth_manager/ui/scaffold_with_bottom_navigation.dart';
 import 'package:net_worth_manager/ui/widgets/app_divider.dart';
 import 'package:net_worth_manager/ui/widgets/modal/bottom_sheet.dart';
 
+import '../../../i18n/strings.g.dart';
 import '../../../models/obox/asset_obox.dart';
 import '../../../objectbox.g.dart';
 
@@ -18,7 +20,7 @@ class HiddenAssetScreen extends StatefulWidget {
 class _HiddenAssetScreenState extends State<HiddenAssetScreen> {
   Future<void> onItemClick(Asset asset) async {
     bool? yes = await showYesNoBottomSheet(
-        context, "Do you want to make ${asset.name} visible again?");
+        context, t.asset_visible_again_message.replaceAll("<asset>", asset.name));
 
     if (yes == true) {
       asset.excludeFromNW = false;
@@ -37,10 +39,10 @@ class _HiddenAssetScreenState extends State<HiddenAssetScreen> {
         .find();
 
     return Scaffold(
-      appBar: AppBar(title: Text("Hidden assets")),
+      appBar: AppBar(title: Text(t.hidde_asset)),
       body: SafeArea(
         child: excludedAsset.isEmpty
-            ? Center(child: Text("You don't have any hidden asset"))
+            ? Center(child: Text(t.hidde_asset_empty))
             : ListView.separated(
                 itemBuilder: (BuildContext context, int index) {
                   return IconButton(

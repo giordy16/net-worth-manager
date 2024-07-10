@@ -11,6 +11,7 @@ import 'package:net_worth_manager/ui/widgets/base_components/app_date_field.dart
 import 'package:net_worth_manager/utils/extensions/context_extensions.dart';
 import 'package:net_worth_manager/utils/extensions/number_extension.dart';
 
+import '../../../i18n/strings.g.dart';
 import '../../../models/obox/asset_obox.dart';
 import '../../widgets/base_components/app_bottom_fab.dart';
 import '../../widgets/base_components/app_numeric_text_field.dart';
@@ -63,13 +64,13 @@ class SellPositionScreen extends StatelessWidget {
 
               return Scaffold(
                   appBar: AppBar(
-                    title: Text("Sell position"),
+                    title: Text(t.sell_position),
                   ),
                   floatingActionButtonLocation:
                       FloatingActionButtonLocation.centerFloat,
                   floatingActionButton: AppBottomFab(
                     text:
-                        "Confirm sell (${state.positionGrossValue.toStringWithCurrency()})",
+                        "${t.confirm_sell} (${state.positionGrossValue.toStringWithCurrency()})",
                     enable: state.quantityToSell! <= state.position.quantity,
                     onTap: () {
                       if (state.quantityToSell! <= state.position.quantity &&
@@ -77,7 +78,7 @@ class SellPositionScreen extends StatelessWidget {
                         context.read<SellPositionCubit>().sell();
 
                         // back to asset detail
-                        UserMessage.showMessage(context, "Position sold!");
+                        UserMessage.showMessage(context, t.position_sold);
                         context.popUntilPath(AssetDetailScreen.route);
                       }
                     },
@@ -92,7 +93,7 @@ class SellPositionScreen extends StatelessWidget {
                           children: [
                             SizedBox(height: Dimensions.s),
                             AppDateField(
-                              title: "Sell date",
+                              title: t.sell_date,
                               isMandatory: true,
                               initialValue: state.sellDate,
                               onDatePicked: (date) {
@@ -104,8 +105,8 @@ class SellPositionScreen extends StatelessWidget {
                             SizedBox(height: Dimensions.m),
                             AppNumericTextField(
                               moneyBehavior: false,
-                              title:
-                                  "Quantity to sell (max ${state.position.quantity.toStringFormatted()})",
+                              title: t.sell_quantity.replaceAll("<qt>",
+                                  state.position.quantity.toStringFormatted()),
                               initialValue: state.quantityToSell,
                               isMandatory: true,
                               onTextChange: (value) {
@@ -122,7 +123,7 @@ class SellPositionScreen extends StatelessWidget {
                               children: [
                                 Expanded(
                                     child: Text(
-                                  "Add position value to an other asset?",
+                                  t.sell_add_asset_value,
                                   style: theme.textTheme.bodyMedium
                                       ?.copyWith(fontWeight: FontWeight.bold),
                                 )),
@@ -136,11 +137,10 @@ class SellPositionScreen extends StatelessWidget {
                               ],
                             ),
                             if (state.shouldMoveToAsset) ...[
-                              Text(
-                                  "You can select to which asset the value of the position should be added, for example a bank account."),
+                              Text(t.sell_add_asset_value_message),
                               SizedBox(height: Dimensions.s),
                               AppSelectorField<Asset>(
-                                title: "Asset",
+                                title: t.asset,
                                 initialValue: state.selectedAsset,
                                 values: [
                                   ...state.selectableAssets,
@@ -155,7 +155,7 @@ class SellPositionScreen extends StatelessWidget {
                             Row(
                               children: [
                                 Expanded(
-                                    child: Text("Apply tax?",
+                                    child: Text(t.sell_apply_tax,
                                         style: theme.textTheme.bodyMedium
                                             ?.copyWith(
                                                 fontWeight: FontWeight.bold))),
@@ -169,11 +169,10 @@ class SellPositionScreen extends StatelessWidget {
                               ],
                             ),
                             if (state.shouldApplyTax) ...[
-                              Text(
-                                  "Enter the tax percentage you will pay based on your contry."),
+                              Text(t.sell_apply_tax_message),
                               SizedBox(height: Dimensions.s),
                               AppNumericTextField(
-                                title: "Tax (%)",
+                                title: t.tax_placeholder,
                                 initialValue: state.taxPercentage,
                                 moneyBehavior: false,
                                 isMandatory: true,
@@ -189,8 +188,7 @@ class SellPositionScreen extends StatelessWidget {
                               Row(
                                 children: [
                                   Expanded(
-                                      child: Text(
-                                          "Add tax value to a liability?",
+                                      child: Text(t.sell_tax_add_liability,
                                           style: theme.textTheme.bodyMedium
                                               ?.copyWith(
                                                   fontWeight:
@@ -206,7 +204,7 @@ class SellPositionScreen extends StatelessWidget {
                               ),
                               if (state.shouldAddTaxToAsset) ...[
                                 AppSelectorField<Asset>(
-                                  title: "Asset",
+                                  title: t.asset,
                                   isMandatory: true,
                                   initialValue: state.selectedTaxAsset,
                                   values: [

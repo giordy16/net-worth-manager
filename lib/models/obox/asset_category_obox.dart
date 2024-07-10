@@ -4,7 +4,7 @@ import 'package:objectbox/objectbox.dart';
 import '../../objectbox.g.dart';
 import 'asset_obox.dart';
 
-enum MarketAssetCategory { stocks, etfs, crypto, commodities, }
+enum MarketAssetCategory { stocks, etfs, crypto, commodities }
 
 @Entity()
 class AssetCategory {
@@ -15,12 +15,22 @@ class AssetCategory {
 
   bool userCanSelect;
 
-  MarketAssetCategory? marketAssetCategory;
+  int? marketAssetCategoryEnumId;
+
+  MarketAssetCategory? get marketAssetCategory {
+    return marketAssetCategoryEnumId == null
+        ? null
+        : MarketAssetCategory.values[marketAssetCategoryEnumId!];
+  }
+
+  void setMarketAssetCategory(MarketAssetCategory category) {
+    marketAssetCategoryEnumId = MarketAssetCategory.values.indexOf(category);
+  }
 
   AssetCategory(
     this.name, {
     this.userCanSelect = true,
-    this.marketAssetCategory,
+    this.marketAssetCategoryEnumId,
   });
 
   @override
@@ -29,7 +39,10 @@ class AssetCategory {
   }
 
   bool operator ==(dynamic other) =>
-      other != null && other is AssetCategory && name == other.name && marketAssetCategory == other.marketAssetCategory;
+      other != null &&
+      other is AssetCategory &&
+      name == other.name &&
+      marketAssetCategory == other.marketAssetCategory;
 
   @override
   int get hashCode => id.hashCode;

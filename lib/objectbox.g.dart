@@ -75,7 +75,7 @@ final _entities = <obx_int.ModelEntity>[
   obx_int.ModelEntity(
       id: const obx_int.IdUid(2, 4698624914262505470),
       name: 'AssetCategory',
-      lastPropertyId: const obx_int.IdUid(3, 1481975311493388480),
+      lastPropertyId: const obx_int.IdUid(4, 8651819588305649932),
       flags: 0,
       properties: <obx_int.ModelProperty>[
         obx_int.ModelProperty(
@@ -92,6 +92,11 @@ final _entities = <obx_int.ModelEntity>[
             id: const obx_int.IdUid(3, 1481975311493388480),
             name: 'userCanSelect',
             type: 1,
+            flags: 0),
+        obx_int.ModelProperty(
+            id: const obx_int.IdUid(4, 8651819588305649932),
+            name: 'marketAssetCategoryEnumId',
+            type: 6,
             flags: 0)
       ],
       relations: <obx_int.ModelRelation>[],
@@ -485,10 +490,11 @@ obx_int.ModelDefinition getObjectBoxModel() {
         },
         objectToFB: (AssetCategory object, fb.Builder fbb) {
           final nameOffset = fbb.writeString(object.name);
-          fbb.startTable(4);
+          fbb.startTable(5);
           fbb.addInt64(0, object.id);
           fbb.addOffset(1, nameOffset);
           fbb.addBool(2, object.userCanSelect);
+          fbb.addInt64(3, object.marketAssetCategoryEnumId);
           fbb.finish(fbb.endTable());
           return object.id;
         },
@@ -499,8 +505,11 @@ obx_int.ModelDefinition getObjectBoxModel() {
               .vTableGet(buffer, rootOffset, 6, '');
           final userCanSelectParam =
               const fb.BoolReader().vTableGet(buffer, rootOffset, 8, false);
+          final marketAssetCategoryEnumIdParam =
+              const fb.Int64Reader().vTableGetNullable(buffer, rootOffset, 10);
           final object = AssetCategory(nameParam,
-              userCanSelect: userCanSelectParam)
+              userCanSelect: userCanSelectParam,
+              marketAssetCategoryEnumId: marketAssetCategoryEnumIdParam)
             ..id = const fb.Int64Reader().vTableGet(buffer, rootOffset, 4, 0);
 
           return object;
@@ -871,6 +880,10 @@ class AssetCategory_ {
   /// see [AssetCategory.userCanSelect]
   static final userCanSelect =
       obx.QueryBooleanProperty<AssetCategory>(_entities[1].properties[2]);
+
+  /// see [AssetCategory.marketAssetCategoryEnumId]
+  static final marketAssetCategoryEnumId =
+      obx.QueryIntegerProperty<AssetCategory>(_entities[1].properties[3]);
 }
 
 /// [AssetTimeValue] entity fields to define ObjectBox queries.

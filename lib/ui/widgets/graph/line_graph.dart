@@ -1,4 +1,3 @@
-
 import 'package:custom_sliding_segmented_control/custom_sliding_segmented_control.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
@@ -7,6 +6,7 @@ import 'package:net_worth_manager/utils/extensions/date_time_extension.dart';
 import 'package:net_worth_manager/utils/extensions/number_extension.dart';
 import 'package:syncfusion_flutter_charts/charts.dart';
 
+import '../../../i18n/strings.g.dart';
 import '../../../models/ui/graph_data.dart';
 import '../../../utils/enum/graph_data_gap_enum.dart';
 
@@ -48,7 +48,7 @@ class _MarketAssetLineGraph extends State<LineGraph> {
     ThemeData theme = Theme.of(context);
 
     if (widget.showLoading) {
-      return const SizedBox(
+      return SizedBox(
           height: 300,
           child: Center(
             child: Column(
@@ -57,7 +57,7 @@ class _MarketAssetLineGraph extends State<LineGraph> {
               children: [
                 CircularProgressIndicator(),
                 SizedBox(height: 8),
-                Text("Building the chart...")
+                Text(t.building_chart)
               ],
             ),
           ));
@@ -68,8 +68,8 @@ class _MarketAssetLineGraph extends State<LineGraph> {
         child: Container(
             height: 200,
             alignment: Alignment.center,
-            child: const Text(
-              "Not enough data to plot the chart",
+            child: Text(
+              t.line_graph_empty,
               textAlign: TextAlign.center,
             )),
       );

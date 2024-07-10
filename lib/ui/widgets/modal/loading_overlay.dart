@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 
 import '../../../app_dimensions.dart';
+import '../../../i18n/strings.g.dart';
 
 class LoadingOverlay extends StatefulWidget {
   const LoadingOverlay({super.key, required this.child});
@@ -59,7 +60,7 @@ class LoadingOverlayState extends State<LoadingOverlay> {
                 CircularProgressIndicator(color: colorScheme.onSurface),
                 const SizedBox(height: Dimensions.m),
                 Text(
-                  _text ?? "Just a moment...",
+                  _text ?? t.just_a_moment,
                   maxLines: 3,
                   textAlign: TextAlign.center,
                   style: textTheme.bodyMedium!.copyWith(color: colorScheme.onSurface),

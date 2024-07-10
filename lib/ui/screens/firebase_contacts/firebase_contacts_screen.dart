@@ -4,6 +4,7 @@ import 'package:go_router/go_router.dart';
 import 'package:net_worth_manager/app_dimensions.dart';
 import 'package:net_worth_manager/ui/widgets/base_components/app_text_field.dart';
 
+import '../../../i18n/strings.g.dart';
 import '../../widgets/base_components/app_bottom_fab.dart';
 import '../../widgets/modal/user_message.dart';
 
@@ -13,11 +14,11 @@ extension FirebaseType on FirebaseScreenType {
   String get title {
     switch (this) {
       case FirebaseScreenType.suggestions:
-        return "Suggest feature";
+        return t.suggest_feature;
       case FirebaseScreenType.reports:
-        return "Report a problem";
+        return t.report_a_problem;
       case FirebaseScreenType.contacts:
-        return "Contact us";
+        return t.contact_us;
     }
   }
 
@@ -56,7 +57,7 @@ class FirebaseContactsScreen extends StatelessWidget {
       db.collection(type.firebaseCollection).add(firebaseModel);
 
       UserMessage.showMessage(
-          context, "Message has been sent.\nThank you for contacting us!");
+          context, t.firebase_feedback_message);
       context.pop();
     }
   }
@@ -67,7 +68,7 @@ class FirebaseContactsScreen extends StatelessWidget {
         appBar: AppBar(title: Text(type.title)),
         floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
         floatingActionButton:
-            AppBottomFab(text: "Send", onTap: () => sendMessage(context)),
+            AppBottomFab(text: t.send, onTap: () => sendMessage(context)),
         body: Form(
           key: _formKey,
           child: SafeArea(
@@ -76,7 +77,7 @@ class FirebaseContactsScreen extends StatelessWidget {
               child: Column(
                 children: [
                   AppTextField(
-                      title: "Your email",
+                      title: t.your_email,
                       isMandatory: true,
                       keyboardType: TextInputType.emailAddress,
                       onTextChange: (message) {
@@ -85,7 +86,7 @@ class FirebaseContactsScreen extends StatelessWidget {
                   SizedBox(height: 16),
                   Expanded(
                     child: AppTextField(
-                        title: "Message",
+                        title: t.message,
                         isMandatory: true,
                         expandedMode: true,
                         keyboardType: TextInputType.multiline,

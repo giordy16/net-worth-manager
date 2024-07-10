@@ -19,6 +19,7 @@ import 'package:net_worth_manager/utils/enum/graph_data_gap_enum.dart';
 import 'package:net_worth_manager/utils/extensions/number_extension.dart';
 
 import '../../../app_images.dart';
+import '../../../i18n/strings.g.dart';
 import '../../../models/obox/asset_obox.dart';
 import '../../../objectbox.g.dart';
 import '../../widgets/graph/line_graph.dart';
@@ -64,13 +65,13 @@ class HomePageScreenState extends State<HomePage>
     Map<Widget, Function> selections = {};
 
     selections.addAll({
-      const Row(
+      Row(
         children: [
           Icon(Icons.edit),
           SizedBox(
             width: 4,
           ),
-          Text("Edit name")
+          Text(t.edit_name)
         ],
       ): () async {
         await context.push(AddAssetCategory.route, extra: category);
@@ -81,17 +82,17 @@ class HomePageScreenState extends State<HomePage>
 
     if (category.userCanSelect) {
       selections.addAll({
-        const Row(
+        Row(
           children: [
             Icon(Icons.delete_outlined),
             SizedBox(
               width: 4,
             ),
-            Text("Delete")
+            Text(t.delete)
           ],
         ): () async {
-          if ((await showDeleteConfirmSheet(context,
-                  "Are you sure you want to delete this category?\nAll its asset and positions will be deleted.")) ==
+          if ((await showDeleteConfirmSheet(
+                  context, t.delete_confirmation_category)) ==
               true) {
             context.read<HomePageBloc>().add(DeleteCategory(category));
           }
@@ -113,13 +114,13 @@ class HomePageScreenState extends State<HomePage>
     if (asset.marketInfo.target == null) {
       // only for simple asset
       selections.addAll({
-        const Row(
+        Row(
           children: [
             Icon(Icons.edit),
             SizedBox(
               width: 4,
             ),
-            Text("Edit name")
+            Text(t.edit_name)
           ],
         ): () async {
           await context.push(AddAssetScreen.route, extra: asset);
@@ -131,35 +132,33 @@ class HomePageScreenState extends State<HomePage>
     }
 
     selections.addAll({
-      const Row(
+      Row(
         children: [
           Icon(Icons.visibility_off),
           SizedBox(
             width: 4,
           ),
-          Text("Hide")
+          Text(t.hide)
         ],
       ): () async {
-        if ((await showDeleteConfirmSheet(context,
-                "Are you sure you want to hide this element?\nYou can restore it from Settings page.")) ==
-            true) {
+        if ((await showDeleteConfirmSheet(context, t.hide_message)) == true) {
           context.read<HomePageBloc>().add(HideAsset(asset));
         }
       }
     });
 
     selections.addAll({
-      const Row(
+      Row(
         children: [
           Icon(Icons.delete_outlined),
           SizedBox(
             width: 4,
           ),
-          Text("Delete")
+          Text(t.delete)
         ],
       ): () async {
-        if ((await showDeleteConfirmSheet(context,
-                "Are you sure you want to delete this element?\nAll its values will be deleted.")) ==
+        if ((await showDeleteConfirmSheet(
+                context, t.delete_confirmation_asset)) ==
             true) {
           context.read<HomePageBloc>().add(DeleteAsset(asset));
         }
@@ -232,10 +231,7 @@ class HomePageScreenState extends State<HomePage>
                   BlendMode.srcIn,
                 )),
             const SizedBox(height: Dimensions.l),
-            Text(
-              "You have not registered any assets yet.\n\nAdd your assets with the button below.",
-              textAlign: TextAlign.center,
-            ),
+            Text(t.home_empty, textAlign: TextAlign.center),
           ],
         ),
       ),
@@ -253,7 +249,7 @@ class HomePageScreenState extends State<HomePage>
         .toSet()
         .toList();
 
-    categories.sort((a,b) => a.name.compareTo(b.name));
+    categories.sort((a, b) => a.name.compareTo(b.name));
 
     return SafeArea(
       child: SingleChildScrollView(
@@ -270,7 +266,7 @@ class HomePageScreenState extends State<HomePage>
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        const Text("Your net worth"),
+                        Text(t.your_net_worth),
                         Text(
                           (state.netWorthValue ?? 0).toStringWithCurrency(),
                           style: theme.textTheme.titleLarge?.copyWith(
@@ -362,7 +358,7 @@ class HomePageScreenState extends State<HomePage>
               padding: const EdgeInsets.symmetric(
                   horizontal: Dimensions.screenMargin),
               child: Text(
-                "Prices are updated to the closing value of the previous day.\nThere may be a difference between the actual value and the one displayed in the app",
+                t.home_disclaimer,
                 style: theme.textTheme.bodySmall
                     ?.copyWith(color: theme.colorScheme.onPrimaryContainer),
                 textAlign: TextAlign.center,

@@ -3,6 +3,8 @@ import 'package:intl/intl.dart';
 import 'package:net_worth_manager/utils/extensions/number_extension.dart';
 import 'package:syncfusion_flutter_charts/charts.dart';
 
+import '../../../i18n/strings.g.dart';
+
 class ColumnGraphData {
   String x;
   double y;
@@ -21,9 +23,9 @@ class GainLossesChart extends StatelessWidget {
     if (chartData == null) {
       return const Center(child: CircularProgressIndicator());
     } else if (chartData!.isEmpty) {
-      return const Center(
+      return Center(
           child: Text(
-        "Not enough data to plot the chart.\n\nProbably you don't have data from the last month to evaluate gains or losses",
+        t.gain_losses_empty,
         textAlign: TextAlign.center,
       ));
     }

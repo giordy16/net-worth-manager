@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import '../../../app_dimensions.dart';
+import '../../../i18n/strings.g.dart';
 
 class ImportInvestmentsScreen extends StatefulWidget {
   static String route = "/ImportInvestmentsScreen";
@@ -16,7 +17,7 @@ class _ImportInvestmentsScreenState extends State<ImportInvestmentsScreen> {
 
     return Scaffold(
       appBar: AppBar(
-        title: Text("Import"),
+        title: Text(t.import_title),
       ),
       body: Padding(
         padding: const EdgeInsets.all(Dimensions.screenMargin),

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
 import 'package:net_worth_manager/app_dimensions.dart';
 
+import '../../../i18n/strings.g.dart';
 import '../../../models/obox/asset_category_obox.dart';
 import '../../../objectbox.g.dart';
 import '../../widgets/graph/allocation_pie_chart.dart';
@@ -18,7 +19,7 @@ class FullAssetAllocationScreen extends StatelessWidget {
         .toList();
 
     return Scaffold(
-      appBar: AppBar(title: Text("Asset allocation"),),
+      appBar: AppBar(title: Text(t.asset_allocation),),
       body: SafeArea(
         child: Padding(
           padding: EdgeInsets.symmetric(horizontal: Dimensions.screenMargin),

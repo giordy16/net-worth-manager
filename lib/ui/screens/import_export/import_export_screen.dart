@@ -8,6 +8,7 @@ import 'package:net_worth_manager/utils/extensions/context_extensions.dart';
 
 import '../../../app_dimensions.dart';
 import '../../../domain/database/objectbox.dart';
+import '../../../i18n/strings.g.dart';
 import '../../../main.dart';
 import '../../../models/obox/settings_obox.dart';
 import '../../../objectbox.g.dart';
@@ -24,13 +25,12 @@ class ImportExportScreen extends StatelessWidget {
     try {
       var dbData = await ObjectBox.getDBData();
       String? outputPath = await FilePicker.platform.saveFile(
-          dialogTitle: 'Please select an output file:',
+          dialogTitle: t.import_dialog_title,
           fileName: 'data.mdb',
           bytes: dbData);
 
       if (outputPath != null) {
-        UserMessage.showMessage(
-            context, "The file has been saved successfully!");
+        UserMessage.showMessage(context, t.import_successful);
       }
     } catch (e) {}
   }
@@ -43,12 +43,11 @@ class ImportExportScreen extends StatelessWidget {
         LoadingOverlay.of(context).show();
         var yes = await showYesNoBottomSheet(
           context,
-          "Are you sure you want to import this file?\nAll current data will be overwritten",
+          t.import_disclaimer,
         );
         if (yes == true) {
           if (p.extension(result.files.single.path!) != ".mdb") {
-            UserMessage.showMessage(context,
-                "The selected file is not correct. Please select a .mdb file");
+            UserMessage.showMessage(context, t.import_file_not_supported);
             LoadingOverlay.of(context).hide();
             return;
           }
@@ -73,7 +72,7 @@ class ImportExportScreen extends StatelessWidget {
     } catch (e) {
       LoadingOverlay.of(context).hide();
       print(e);
-      UserMessage.showMessage(context, "An error occurred, please try again");
+      UserMessage.showMessage(context, t.import_error);
     }
   }
 
@@ -81,7 +80,7 @@ class ImportExportScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("Import Export"),
+        title: Text(t.import_export),
       ),
       body: SafeArea(
         child: Padding(
@@ -89,14 +88,14 @@ class ImportExportScreen extends StatelessWidget {
           child: ListView(
             children: [
               AddSelectionItem(
-                "Export",
-                "Export your data and save wherever you want. You can use the file to restore data if you install the app from scratch",
+                t.export_title,
+                t.export_subtitle,
                 () => exportDB(context),
               ),
               const SizedBox(height: Dimensions.m),
               AddSelectionItem(
-                "Import",
-                "Select the .mdb file you generated via the Export feature to restore the data",
+                t.import_title,
+                t.import_subtitle,
                 () => importDB(context),
               )
             ],

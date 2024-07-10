@@ -8,6 +8,7 @@ import 'package:net_worth_manager/ui/screens/currency_selection/currency_selecti
 import 'package:net_worth_manager/ui/screens/currency_selection/currency_selection_state.dart';
 import 'package:net_worth_manager/ui/widgets/base_components/app_text_field.dart';
 
+import '../../../i18n/strings.g.dart';
 import '../../widgets/app_divider.dart';
 import 'currency_selection_params.dart';
 
@@ -31,13 +32,13 @@ class CurrencySelectionScreen extends StatelessWidget {
         child: BlocBuilder<CurrencySelectionBloc, CurrencySelectionState>(
           builder: (context, state) {
             return Scaffold(
-              appBar: AppBar(title: Text("Select currency")),
+              appBar: AppBar(title: Text(t.select_currency)),
               body: Column(
                 children: [
                   Padding(
                     padding: const EdgeInsets.all(Dimensions.screenMargin),
                     child: AppTextField(
-                      title: "Search",
+                      title: t.search,
                       initialValue: state.search,
                       prefixIcon: Icons.search,
                       onTextChange: (value) {

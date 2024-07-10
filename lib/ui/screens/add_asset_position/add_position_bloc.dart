@@ -9,6 +9,7 @@ import 'package:net_worth_manager/ui/widgets/modal/loading_overlay.dart';
 import 'package:net_worth_manager/utils/extensions/objectbox_extension.dart';
 
 import '../../../domain/repository/asset/asset_repo.dart';
+import '../../../i18n/strings.g.dart';
 import '../../../models/obox/asset_obox.dart';
 import '../../../objectbox.g.dart';
 import '../../../utils/enum/fetch_forex_type.dart';
@@ -49,7 +50,7 @@ class AddPositionBloc extends Bloc<AddPositionEvent, AddPositionState> {
       }
 
       LoadingOverlay.of(context).hide();
-      UserMessage.showMessage(context, "Done!");
+      UserMessage.showMessage(context, t.done);
       context.pop();
     });
 
@@ -64,7 +65,7 @@ class AddPositionBloc extends Bloc<AddPositionEvent, AddPositionState> {
         await LoadingOverlay.of(context).hide();
       }
 
-      UserMessage.showMessage(context, "Position deleted!");
+      UserMessage.showMessage(context, t.position_deleted);
       context.pop();
 
     });

@@ -12,6 +12,7 @@ import 'package:net_worth_manager/models/ui/graph_data.dart';
 import 'package:net_worth_manager/ui/screens/home/home_page_event.dart';
 import 'package:net_worth_manager/ui/widgets/modal/loading_overlay.dart';
 import 'package:net_worth_manager/utils/enum/graph_data_gap_enum.dart';
+import '../../../i18n/strings.g.dart';
 import '../../../objectbox.g.dart';
 import '../../scaffold_with_bottom_navigation.dart';
 import '../../widgets/modal/user_message.dart';
@@ -100,7 +101,7 @@ class HomePageBloc extends Bloc<HomePageEvent, HomePageState> {
 
       add(FetchHomePage());
       ScaffoldWithBottomNavigation.updateScreens();
-      UserMessage.showMessage(context, "Deleted!");
+      UserMessage.showMessage(context, t.deleted);
       debugPrint("DeleteAsset END");
     });
 
@@ -132,7 +133,7 @@ class HomePageBloc extends Bloc<HomePageEvent, HomePageState> {
 
       add(FetchHomePage());
       ScaffoldWithBottomNavigation.updateScreens();
-      UserMessage.showMessage(context, "Deleted!");
+      UserMessage.showMessage(context, t.deleted);
     });
   }
 }

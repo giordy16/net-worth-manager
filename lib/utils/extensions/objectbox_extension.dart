@@ -9,6 +9,7 @@ import 'package:net_worth_manager/models/obox/settings_obox.dart';
 import 'package:net_worth_manager/objectbox.g.dart';
 
 import '../../domain/repository/stock/financial_modeling_repo.dart';
+import '../../i18n/strings.g.dart';
 import '../../models/obox/asset_time_value_obox.dart';
 import '../currency_enum.dart';
 import '../enum/fetch_forex_type.dart';
@@ -50,50 +51,43 @@ extension ObjectBoxExtension on Store {
     // fill categories
     var categories = box<AssetCategory>().getAll();
     if (categories.isEmpty) {
-      box<AssetCategory>().put(AssetCategory("Bank accounts"));
-      box<AssetCategory>().put(AssetCategory("Vehicles"));
-      box<AssetCategory>().put(AssetCategory("Real estate / House"));
-      box<AssetCategory>().put(AssetCategory("Debts"));
-      box<AssetCategory>().put(AssetCategory("Watches"));
-      box<AssetCategory>().put(AssetCategory("Other"));
+      box<AssetCategory>().put(AssetCategory(t.bank_accounts));
+      box<AssetCategory>().put(AssetCategory(t.vehicles));
+      box<AssetCategory>().put(AssetCategory(t.real_estate));
+      box<AssetCategory>().put(AssetCategory(t.debts));
+      box<AssetCategory>().put(AssetCategory(t.watches));
+      box<AssetCategory>().put(AssetCategory(t.other));
     }
 
     // check if there are the notSelectable asset categories: if not, add them
     if (categories
         .where((e) => e.marketAssetCategory == MarketAssetCategory.etfs)
         .isEmpty) {
-      box<AssetCategory>().put(AssetCategory(
-        "ETFs",
-        userCanSelect: false,
-        marketAssetCategory: MarketAssetCategory.etfs,
-      ));
+      final category = AssetCategory("ETFs", userCanSelect: false);
+      category.setMarketAssetCategory(MarketAssetCategory.etfs);
+
+      box<AssetCategory>().put(category);
     }
     if (categories
         .where((e) => e.marketAssetCategory == MarketAssetCategory.stocks)
         .isEmpty) {
-      box<AssetCategory>().put(AssetCategory(
-        "Stocks",
-        userCanSelect: false,
-        marketAssetCategory: MarketAssetCategory.stocks,
-      ));
+      final category = AssetCategory(t.stocks, userCanSelect: false);
+      category.setMarketAssetCategory(MarketAssetCategory.stocks);
+      box<AssetCategory>().put(category);
     }
     if (categories
         .where((e) => e.marketAssetCategory == MarketAssetCategory.commodities)
         .isEmpty) {
-      box<AssetCategory>().put(AssetCategory(
-        "Commodities",
-        userCanSelect: false,
-        marketAssetCategory: MarketAssetCategory.commodities,
-      ));
+      final category = AssetCategory(t.commodities, userCanSelect: false);
+      category.setMarketAssetCategory(MarketAssetCategory.commodities);
+      box<AssetCategory>().put(category);
     }
     if (categories
         .where((e) => e.marketAssetCategory == MarketAssetCategory.crypto)
         .isEmpty) {
-      box<AssetCategory>().put(AssetCategory(
-        "Crypto",
-        userCanSelect: false,
-        marketAssetCategory: MarketAssetCategory.crypto,
-      ));
+      final category = AssetCategory("Crypto", userCanSelect: false);
+      category.setMarketAssetCategory(MarketAssetCategory.crypto);
+      box<AssetCategory>().put(category);
     }
   }
 

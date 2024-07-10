@@ -3,10 +3,12 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:go_router/go_router.dart';
 import 'package:net_worth_manager/app_dimensions.dart';
 
+import '../../../i18n/strings.g.dart';
+
 Future<bool?> showDeleteConfirmSheet(BuildContext context,
     [String? message]) async {
   return await showYesNoBottomSheet(
-      context, message ?? "Are you sure you want to delete this?");
+      context, message ?? t.delete_confirmation_default);
 }
 
 Future<bool?> showOkOnlyBottomSheet(BuildContext context, String message,
@@ -94,7 +96,7 @@ Future<bool?> showYesNoBottomSheet(BuildContext context, String message) async {
                       },
                       child: Center(
                         child: Text(
-                          'No',
+                          t.no,
                           style: theme.textTheme.bodyLarge,
                         ),
                       ),
@@ -120,7 +122,7 @@ Future<bool?> showYesNoBottomSheet(BuildContext context, String message) async {
                       },
                       child: Center(
                         child: Text(
-                          'Yes',
+                          t.yes,
                           style: theme.textTheme.bodyLarge
                               ?.copyWith(color: theme.colorScheme.onSecondary),
                         ),
@@ -146,7 +148,7 @@ Future<Widget?> showSelectionSheet(
               vertical: Dimensions.l, horizontal: Dimensions.s),
           width: double.infinity,
           child: Column(mainAxisSize: MainAxisSize.min, children: [
-            Text("Choose an option"),
+            Text(t.choose_an_option),
             SizedBox(height: Dimensions.s),
             ...widgets.map((e) => Material(
                   color: Colors.transparent,

@@ -11,6 +11,7 @@ import 'package:net_worth_manager/utils/extensions/objectbox_extension.dart';
 
 import '../../../domain/repository/asset/asset_repo.dart';
 import '../../../domain/repository/stock/stock_api.dart';
+import '../../../i18n/strings.g.dart';
 import '../../../models/obox/asset_obox.dart';
 import '../../../objectbox.g.dart';
 import '../../../utils/enum/fetch_forex_type.dart';
@@ -73,7 +74,7 @@ class AddMarketAssetBloc
         );
       }
 
-      UserMessage.showMessage(context, "Done!");
+      UserMessage.showMessage(context, t.done);
       LoadingOverlay.of(context).hide();
       context.pop();
     });

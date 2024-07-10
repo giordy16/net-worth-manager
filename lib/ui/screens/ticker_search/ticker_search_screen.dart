@@ -10,6 +10,7 @@ import 'package:net_worth_manager/ui/widgets/modal/bottom_sheet.dart';
 import 'package:net_worth_manager/utils/extensions/mappers.dart';
 
 import '../../../domain/repository/stock/financial_modeling_repo.dart';
+import '../../../i18n/strings.g.dart';
 import '../../../models/obox/market_info_obox.dart';
 import '../../widgets/app_divider.dart';
 import '../add_market_asset/add_market_asset_screen.dart';
@@ -46,7 +47,7 @@ class TickerSearchScreen extends StatelessWidget {
                 builder: (context, state) {
               return Scaffold(
                   appBar: AppBar(
-                    title: Text("Asset"),
+                    title: Text(t.asset),
                   ),
                   body: SafeArea(
                     child: Padding(
@@ -54,7 +55,7 @@ class TickerSearchScreen extends StatelessWidget {
                       child: Column(
                         children: [
                           AppTextField(
-                            title: "Ticker",
+                            title: t.ticker,
                             initialValue: state.searchedTicker,
                             onTextChange: (ticker) {
                               context

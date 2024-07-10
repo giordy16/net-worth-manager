@@ -18,6 +18,7 @@ import 'package:net_worth_manager/utils/extensions/number_extension.dart';
 
 import '../../../domain/repository/asset/asset_repo_impl.dart';
 import '../../../domain/repository/stock/financial_modeling_repo.dart';
+import '../../../i18n/strings.g.dart';
 import '../../../models/obox/asset_obox.dart';
 import '../../../objectbox.g.dart';
 import '../../widgets/app_divider.dart';
@@ -39,11 +40,11 @@ class AssetDetailScreen extends StatelessWidget {
     Map<Widget, Function> selections = {};
 
     selections.addAll({
-      const Row(
+      Row(
         children: [
           Icon(Icons.swap_horiz),
           SizedBox(width: 4),
-          Text("Change category"),
+          Text(t.change_category),
         ],
       ): () async {
         final categories = GetIt.I<Store>().box<AssetCategory>().getAll();
@@ -61,15 +62,14 @@ class AssetDetailScreen extends StatelessWidget {
     });
 
     selections.addAll({
-      const Row(
+      Row(
         children: [
           Icon(Icons.delete_outline),
           SizedBox(width: 4),
-          Text("Delete"),
+          Text(t.delete),
         ],
       ): () async {
-        if ((await showDeleteConfirmSheet(context,
-            "Are you sure you want to delete this element?\nAll its values will be deleted.")) ==
+        if ((await showDeleteConfirmSheet(context, t.delete_confirmation_asset)) ==
             true) {
           context.read<AssetDetailBloc>().add(DeleteAssetADEvent(asset));
         }
@@ -127,7 +127,7 @@ class AssetDetailScreen extends StatelessWidget {
                               Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
-                                  const Text("Current value"),
+                                  Text(t.current_value),
                                   Text(
                                     state.asset
                                         .getCurrentValue()
@@ -175,7 +175,7 @@ class AssetDetailScreen extends StatelessWidget {
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 Text(
-                                  "Investment info",
+                                  t.investment_info,
                                   style: theme.textTheme.titleMedium
                                       ?.copyWith(fontWeight: FontWeight.bold),
                                 ),
@@ -189,7 +189,7 @@ class AssetDetailScreen extends StatelessWidget {
                                             CrossAxisAlignment.start,
                                         children: [
                                           Text(
-                                              "${state.asset.marketInfo.target!.symbol} value",
+                                              "${state.asset.marketInfo.target!.symbol} ${t.value_lowercase}",
                                               style: theme.textTheme.bodyMedium
                                                   ?.copyWith(
                                                       fontWeight:
@@ -207,7 +207,7 @@ class AssetDetailScreen extends StatelessWidget {
                                         crossAxisAlignment:
                                             CrossAxisAlignment.start,
                                         children: [
-                                          Text("Quantity",
+                                          Text(t.quantity,
                                               style: theme.textTheme.bodyMedium
                                                   ?.copyWith(
                                                       fontWeight:
@@ -222,7 +222,7 @@ class AssetDetailScreen extends StatelessWidget {
                                         crossAxisAlignment:
                                             CrossAxisAlignment.start,
                                         children: [
-                                          Text("Invested",
+                                          Text(t.invested,
                                               style: theme.textTheme.bodyMedium
                                                   ?.copyWith(
                                                       fontWeight:
@@ -237,7 +237,7 @@ class AssetDetailScreen extends StatelessWidget {
                                         crossAxisAlignment:
                                             CrossAxisAlignment.start,
                                         children: [
-                                          Text("Avg. purchase price",
+                                          Text(t.avg_purchase_price,
                                               style: theme.textTheme.bodyMedium
                                                   ?.copyWith(
                                                       fontWeight:
@@ -256,7 +256,7 @@ class AssetDetailScreen extends StatelessWidget {
                           Row(
                             children: [
                               Text(
-                                "History",
+                                t.history,
                                 style: theme.textTheme.titleMedium
                                     ?.copyWith(fontWeight: FontWeight.bold),
                               ),

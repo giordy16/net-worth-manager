@@ -9,6 +9,7 @@ import 'package:net_worth_manager/utils/extensions/context_extensions.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 
 import '../../../app_dimensions.dart';
+import '../../../i18n/strings.g.dart';
 import '../../../models/obox/settings_obox.dart';
 import '../../../objectbox.g.dart';
 
@@ -24,34 +25,34 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
 
   final pages = [
     OnboardingPage(
-        AppImages.tutorial_1,
-        "Why should you track your net worth?",
-        "Tracking net worth provides a clear snapshot of your overall financial health. It helps you to:\n1. Understand your true financial position\n2. Set and monitor progress toward financial goals\n3. Identify areas for improvement in saving or investing\n4. Plan more effectively for retirement.",
+      AppImages.tutorial_1,
+      t.onboarding_1_title,
+      t.onboarding_1_subtitle,
     ),
     OnboardingPage(
       AppImages.tutorial_1,
-      "Keep track of your net worth easily",
-      "Add your assets, liabilities and investments to know the value of your net worth in real time.",
+      t.onboarding_2_title,
+      t.onboarding_2_subtitle,
     ),
     OnboardingPage(
       AppImages.tutorial_2,
-      "Monitor the performance of your investments",
-      "Keep track of your stock or ETF investments with interactive charts and valuable KPIs.",
+      t.onboarding_3_title,
+      t.onboarding_3_subtitle,
     ),
     OnboardingPage(
       AppImages.tutorial_3,
-      "Get valuable insights",
-      "View valuable insights into the status and performance of your net worth.",
+      t.onboarding_4_title,
+      t.onboarding_4_subtitle,
     ),
     OnboardingPage(
       AppImages.tutorial_1,
-      "How should you use the app?",
-      "Periodically remember to open the app and update the value of your assets, for example at the end every month.",
+      t.onboarding_5_title,
+      t.onboarding_5_subtitle,
     ),
     OnboardingPage(
       AppImages.tutorial_4,
-      "You data will not be shared to anyone",
-      "Your data are stored inside the phone and they are not sent to any server.\nIf you want, you can share/backup your data with the \"Export\" function.",
+      t.onboarding_6_title,
+      t.onboarding_6_subtitle,
     ),
   ];
 
@@ -66,10 +67,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
   void chooseMainCurrency() {
     context.push(CurrencySelectionScreen.route,
         extra: CurrencySelectionParams(
-          selectedCurrency: GetIt
-              .I<Settings>()
-              .defaultCurrency
-              .target,
+          selectedCurrency: GetIt.I<Settings>().defaultCurrency.target,
           onCurrencySelected: (c) {
             Settings settings = GetIt.I<Settings>();
             settings.defaultCurrency.target = c;
@@ -90,9 +88,9 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
           children: [
             Expanded(
                 child: PageView(
-                  children: pages,
-                  controller: controller,
-                )),
+              children: pages,
+              controller: controller,
+            )),
             SmoothPageIndicator(
               controller: controller,
               count: pages.length,
@@ -100,10 +98,11 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                   dotHeight: 8,
                   dotWidth: 8,
                   type: WormType.thinUnderground,
-                  activeDotColor: Colors.white
-              ),
+                  activeDotColor: Colors.white),
             ),
-            SizedBox(height: 32,),
+            SizedBox(
+              height: 32,
+            ),
             Center(
               child: ElevatedButton(
                 onPressed: () {
@@ -157,9 +156,9 @@ class OnboardingPage extends StatelessWidget {
           children: [
             Expanded(
                 child: Padding(
-                  padding: const EdgeInsets.all(16),
-                  child: Image.asset(imagePath),
-                )),
+              padding: const EdgeInsets.all(16),
+              child: Image.asset(imagePath),
+            )),
             SizedBox(height: Dimensions.l),
             Text(
               title,

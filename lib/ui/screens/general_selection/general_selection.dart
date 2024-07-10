@@ -4,6 +4,8 @@ import 'package:net_worth_manager/app_dimensions.dart';
 import 'package:net_worth_manager/ui/screens/general_selection/general_selection_params.dart';
 import 'package:net_worth_manager/ui/widgets/app_divider.dart';
 
+import '../../../i18n/strings.g.dart';
+
 class GeneralSelection extends StatelessWidget {
   static String path = "/GeneralSelection";
 
@@ -16,7 +18,7 @@ class GeneralSelection extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("Select"),
+        title: Text(t.select),
       ),
       body: SafeArea(
         child: ListView.separated(

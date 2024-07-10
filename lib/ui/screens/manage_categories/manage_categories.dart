@@ -6,6 +6,7 @@ import 'package:net_worth_manager/ui/scaffold_with_bottom_navigation.dart';
 import 'package:net_worth_manager/ui/widgets/app_divider.dart';
 import 'package:net_worth_manager/ui/widgets/modal/bottom_sheet.dart';
 
+import '../../../i18n/strings.g.dart';
 import '../../../models/obox/asset_category_obox.dart';
 import '../../../objectbox.g.dart';
 import '../../widgets/modal/user_message.dart';
@@ -23,13 +24,13 @@ class _ManageCategoriesState extends State<ManageCategories> {
     Map<Widget, Function> selections = {};
 
     selections.addAll({
-      const Row(
+      Row(
         children: [
           Icon(Icons.edit),
           SizedBox(
             width: 4,
           ),
-          Text("Edit name")
+          Text(t.edit_name)
         ],
       ): () async {
         await context.push(AddAssetCategory.route, extra: category);
@@ -40,27 +41,25 @@ class _ManageCategoriesState extends State<ManageCategories> {
 
     if (category.userCanSelect) {
       selections.addAll({
-        const Row(
+        Row(
           children: [
             Icon(Icons.delete_outlined),
             SizedBox(
               width: 4,
             ),
-            Text("Delete")
+            Text(t.delete)
           ],
         ): () async {
           if (category.getAssets().isEmpty) {
-            if ((await showDeleteConfirmSheet(context,
-                    "Are you sure you want to delete this category?")) ==
+            if ((await showDeleteConfirmSheet(context, t.delete_confirmation_category_short)) ==
                 true) {
               GetIt.I<Store>().box<AssetCategory>().remove(category.id);
               setState(() {});
               ScaffoldWithBottomNavigation.updateScreens();
-              UserMessage.showMessage(context, "Deleted!");
+              UserMessage.showMessage(context, t.deleted);
             }
           } else {
-            showOkOnlyBottomSheet(context,
-                "This category contains some assets. Only empty categories can be removed. Please, remove the assets from the Home.");
+            showOkOnlyBottomSheet(context, t.delete_cat_error);
           }
         }
       });
@@ -81,10 +80,10 @@ class _ManageCategoriesState extends State<ManageCategories> {
         .find();
 
     return Scaffold(
-      appBar: AppBar(title: Text("Categories")),
+      appBar: AppBar(title: Text(t.categories)),
       body: SafeArea(
         child: categories.isEmpty
-            ? Center(child: Text("You don't have any categories"))
+            ? Center(child: Text(t.empty_categories))
             : ListView.separated(
                 itemBuilder: (BuildContext context, int index) {
                   return IconButton(

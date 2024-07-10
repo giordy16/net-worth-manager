@@ -6,6 +6,7 @@ import 'package:net_worth_manager/ui/screens/settings/settings_page.dart';
 import 'package:net_worth_manager/ui/widgets/modal/bottom_sheet.dart';
 
 import '../app_images.dart';
+import '../i18n/strings.g.dart';
 
 class ScaffoldWithBottomNavigation extends StatefulWidget {
   const ScaffoldWithBottomNavigation({super.key});
@@ -50,7 +51,7 @@ class _ScaffoldWithBottomNavigationState
       if (ScaffoldWithBottomNavigation.noInternetConnection) {
         showOkOnlyBottomSheet(
           context,
-          "It seems that you are offline.\nTo have updated values, please turn on mobile data or Wi-Fi and reopen the app.",
+          t.offline_message,
           imageAboveMessage: AppImages.noConnection,
         );
       }
@@ -63,12 +64,12 @@ class _ScaffoldWithBottomNavigationState
     return Scaffold(
       bottomNavigationBar: BottomNavigationBar(
         type: BottomNavigationBarType.fixed,
-        items: const [
-          BottomNavigationBarItem(icon: Icon(Icons.home), label: "Home"),
+        items: [
+          BottomNavigationBarItem(icon: Icon(Icons.home), label: t.home),
           BottomNavigationBarItem(
-              icon: Icon(Icons.insights), label: "Insights"),
+              icon: Icon(Icons.insights), label: t.insights),
           BottomNavigationBarItem(
-              icon: Icon(Icons.settings), label: "Settings"),
+              icon: Icon(Icons.settings), label: t.settings),
         ],
         currentIndex: _selectedIndex,
         onTap: (index) {

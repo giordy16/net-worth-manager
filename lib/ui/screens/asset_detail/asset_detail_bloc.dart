@@ -11,6 +11,7 @@ import 'package:net_worth_manager/ui/screens/asset_detail/asset_detail_state.dar
 import 'package:net_worth_manager/utils/background_thread.dart';
 import 'package:net_worth_manager/utils/extensions/date_time_extension.dart';
 
+import '../../../i18n/strings.g.dart';
 import '../../../models/obox/asset_obox.dart';
 import '../../../objectbox.g.dart';
 import '../../../utils/enum/graph_data_gap_enum.dart';
@@ -76,7 +77,7 @@ class AssetDetailBloc extends Bloc<AssetDetailEvent, AssetDetailState> {
         LoadingOverlay.of(context).hide();
       }
 
-      UserMessage.showMessage(context, "Deleted!");
+      UserMessage.showMessage(context, t.deleted);
       context.pop();
       ScaffoldWithBottomNavigation.updateScreens();
       debugPrint("DeleteAsset END");

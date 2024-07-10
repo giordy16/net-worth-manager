@@ -13,6 +13,7 @@ import 'package:net_worth_manager/ui/widgets/graph/gain_losses_chart.dart';
 
 import '../../../app_dimensions.dart';
 import '../../../app_images.dart';
+import '../../../i18n/strings.g.dart';
 import '../../widgets/modal/bottom_sheet.dart';
 import 'insights_cubit.dart';
 
@@ -53,13 +54,13 @@ class InsightsScreenState extends State<InsightsScreen>
     Map<Widget, Function> selections = {};
 
     selections.addAll({
-      const Row(
+      Row(
         children: [
           Icon(Icons.edit),
           SizedBox(
             width: 4,
           ),
-          Text("Edit name")
+          Text(t.edit_name)
         ],
       ): () async {
         await context.push(AddCustomPieScreen.route, extra: customAllocation);
@@ -68,17 +69,16 @@ class InsightsScreenState extends State<InsightsScreen>
     });
 
     selections.addAll({
-      const Row(
+      Row(
         children: [
           Icon(Icons.delete_outlined),
           SizedBox(
             width: 4,
           ),
-          Text("Delete")
+          Text(t.delete)
         ],
       ): () async {
-        if ((await showDeleteConfirmSheet(
-                context, "Are you sure you want to delete this chart?")) ==
+        if ((await showDeleteConfirmSheet(context, t.delete_chart_message)) ==
             true) {
           context
               .read<InsightsCubit>()
@@ -133,7 +133,7 @@ class InsightsScreenState extends State<InsightsScreen>
                                 )),
                             const SizedBox(height: Dimensions.l),
                             Text(
-                              "You have not registered any assets yet.\n\nAdd your assets in the Home to have the insights.",
+                              t.insights_empty,
                               textAlign: TextAlign.center,
                             ),
                           ],
@@ -149,7 +149,7 @@ class InsightsScreenState extends State<InsightsScreen>
                               padding: const EdgeInsets.only(
                                   left: Dimensions.screenMargin),
                               child: Text(
-                                "Allocation",
+                                t.allocation,
                                 style: theme.textTheme.titleLarge
                                     ?.copyWith(fontWeight: FontWeight.bold),
                               ),
@@ -230,7 +230,7 @@ class InsightsScreenState extends State<InsightsScreen>
                           padding: const EdgeInsets.symmetric(
                               horizontal: Dimensions.screenMargin),
                           child: Text(
-                            "Monthly Gains/Losses",
+                            t.monthly_gain_loss,
                             style: theme.textTheme.titleLarge
                                 ?.copyWith(fontWeight: FontWeight.bold),
                           ),

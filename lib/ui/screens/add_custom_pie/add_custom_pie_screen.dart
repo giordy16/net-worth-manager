@@ -5,6 +5,7 @@ import 'package:net_worth_manager/app_dimensions.dart';
 import 'package:net_worth_manager/models/obox/custom_pie_obox.dart';
 import 'package:net_worth_manager/ui/widgets/base_components/app_text_field.dart';
 
+import '../../../i18n/strings.g.dart';
 import '../../../models/obox/asset_category_obox.dart';
 import '../../../models/obox/asset_obox.dart';
 import '../../../objectbox.g.dart';
@@ -72,13 +73,13 @@ class _AddCustomPieScreenState extends State<AddCustomPieScreen> {
 
     return Scaffold(
       appBar: AppBar(
-        title: Text("Create allocation chart"),
+        title: Text(t.create_allocation_chart),
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
       floatingActionButton: Visibility(
         visible: selectedCat.length + selectedAsset.length > 1,
         child: AppBottomFab(
-          text: "Save",
+          text: t.save,
           onTap: save,
         ),
       ),
@@ -88,25 +89,23 @@ class _AddCustomPieScreenState extends State<AddCustomPieScreen> {
           child: ListView(
             children: [
               SizedBox(height: Dimensions.s),
-              Text(
-                "Choose a name for this chart",
+              Text(t.create_allocation_chart_name_message,
                 style: theme.textTheme.bodyMedium,
               ),
               SizedBox(height: Dimensions.s),
               AppTextField(
                   isMandatory: true,
-                  title: "Name",
+                  title: t.name,
                   initialValue: allocationName,
                   onTextChange: (name) {
                     allocationName = name;
                   }),
               SizedBox(height: Dimensions.xl),
-              Text(
-                "Select the categories or assets you want to add to the pie chart",
+              Text(t.create_allocation_chart_select,
                 style: theme.textTheme.bodyMedium,
               ),
               SizedBox(height: Dimensions.s),
-              Text("Categories",
+              Text(t.categories,
                   style: theme.textTheme.titleMedium
                       ?.copyWith(fontWeight: FontWeight.bold)),
               ...categories
@@ -130,7 +129,7 @@ class _AddCustomPieScreenState extends State<AddCustomPieScreen> {
                       ))
                   .toList(),
               SizedBox(height: Dimensions.m),
-              Text("Assets",
+              Text(t.assets,
                   style: theme.textTheme.titleMedium
                       ?.copyWith(fontWeight: FontWeight.bold)),
               ...assets

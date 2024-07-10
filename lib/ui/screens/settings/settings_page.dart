@@ -13,6 +13,7 @@ import 'package:net_worth_manager/utils/extensions/objectbox_extension.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 
 import '../../../app_dimensions.dart';
+import '../../../i18n/strings.g.dart';
 import '../../../models/obox/currency_obox.dart';
 import '../../../objectbox.g.dart';
 import '../../../utils/enum/fetch_forex_type.dart';
@@ -62,7 +63,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
 
       ScaffoldWithBottomNavigation.updateScreens();
 
-      UserMessage.showMessage(context, "Main currency has been changed!");
+      UserMessage.showMessage(context, t.main_currency_changed);
       LoadingOverlay.of(context).hide();
       setState(() {});
     }
@@ -81,7 +82,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
               padding: const EdgeInsets.symmetric(
                   horizontal: Dimensions.screenMargin),
               child: Text(
-                "Settings",
+                t.settings,
                 style: theme.textTheme.titleLarge
                     ?.copyWith(fontWeight: FontWeight.bold),
               ),
@@ -98,7 +99,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                 },
                 icon: Row(
                   children: [
-                    Text("Main currency", style: theme.textTheme.bodyLarge),
+                    Text(t.main_currency, style: theme.textTheme.bodyLarge),
                     Expanded(child: SizedBox()),
                     Text(currentMainCurrency.name,
                         style: theme.textTheme.bodyLarge),
@@ -119,7 +120,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                 onPressed: () => context.push(ImportExportScreen.path),
                 icon: Row(
                   children: [
-                    Text("Import/Export", style: theme.textTheme.bodyLarge),
+                    Text(t.import_export, style: theme.textTheme.bodyLarge),
                     Expanded(child: SizedBox()),
                     Icon(Icons.arrow_forward_ios, size: 14)
                   ],
@@ -131,7 +132,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
               padding: const EdgeInsets.symmetric(
                   horizontal: Dimensions.screenMargin),
               child: Text(
-                "Assets/Categories",
+                t.assets_categories,
                 style: theme.textTheme.titleLarge
                     ?.copyWith(fontWeight: FontWeight.bold),
               ),
@@ -144,7 +145,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                 },
                 icon: Row(
                   children: [
-                    Text("Hidden assets", style: theme.textTheme.bodyLarge),
+                    Text(t.hidden_asset, style: theme.textTheme.bodyLarge),
                     Expanded(child: SizedBox()),
                     Icon(Icons.arrow_forward_ios, size: 14)
                   ],
@@ -162,7 +163,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                 onPressed: () => context.push(ManageCategories.path),
                 icon: Row(
                   children: [
-                    Text("Manage categories", style: theme.textTheme.bodyLarge),
+                    Text(t.manage_categories, style: theme.textTheme.bodyLarge),
                     Expanded(child: SizedBox()),
                     Icon(Icons.arrow_forward_ios, size: 14)
                   ],
@@ -174,7 +175,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
               padding: const EdgeInsets.symmetric(
                   horizontal: Dimensions.screenMargin),
               child: Text(
-                "Feedback",
+                t.feedback,
                 style: theme.textTheme.titleLarge
                     ?.copyWith(fontWeight: FontWeight.bold),
               ),
@@ -186,7 +187,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                     extra: FirebaseScreenType.reports),
                 icon: Row(
                   children: [
-                    Text("Report a problem", style: theme.textTheme.bodyLarge),
+                    Text(t.report_a_problem, style: theme.textTheme.bodyLarge),
                     Expanded(child: SizedBox()),
                     Icon(Icons.arrow_forward_ios, size: 14)
                   ],
@@ -224,7 +225,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                 onPressed: () => context.push(SoonAvailableScreen.path),
                 icon: Row(
                   children: [
-                    Text("Soon available", style: theme.textTheme.bodyLarge),
+                    Text(t.soon_available, style: theme.textTheme.bodyLarge),
                     Expanded(child: SizedBox()),
                     Icon(Icons.arrow_forward_ios, size: 14)
                   ],
@@ -243,7 +244,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                     extra: FirebaseScreenType.contacts),
                 icon: Row(
                   children: [
-                    Text("Contact us", style: theme.textTheme.bodyLarge),
+                    Text(t.contact_us, style: theme.textTheme.bodyLarge),
                     Expanded(child: SizedBox()),
                     Icon(Icons.arrow_forward_ios, size: 14)
                   ],
@@ -254,7 +255,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
               height: Dimensions.xl,
             ),
             Text(
-              "App version: $appVersion",
+              "${t.app_version} $appVersion",
               style: theme.textTheme.bodySmall
                   ?.copyWith(color: theme.colorScheme.onPrimaryContainer),
               textAlign: TextAlign.center,
@@ -265,7 +266,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 8.0),
               child: Text(
-                "DISCLAIMER\nThe app is still in the first release phase and all the sections are accessible.\nIn the future some sections or new functionalities may be accessible only with a Premium account",
+                t.settings_disclaimer,
                 style: theme.textTheme.bodySmall
                     ?.copyWith(color: theme.colorScheme.onPrimaryContainer),
                 textAlign: TextAlign.center,

@@ -1,7 +1,9 @@
+import '../i18n/strings.g.dart';
+
 String? Function(String? value) mandatoryField() {
   return (value) {
     if (value == null || value.isEmpty) {
-      return 'This field is mandatory';
+      return t.filed_mandatory;
     }
     return null;
   };
@@ -10,7 +12,7 @@ String? Function(String? value) mandatoryField() {
 String? Function(dynamic value) mandatoryFieldDynamic() {
   return (value) {
     if (value == null) {
-      return 'This field is mandatory';
+      return t.filed_mandatory;
     }
     return null;
   };
@@ -19,10 +21,10 @@ String? Function(dynamic value) mandatoryFieldDynamic() {
 String? Function(String? value) validNumber() {
   return (value) {
     if (value == null || value.isEmpty) {
-      return 'This field is mandatory';
+      return t.filed_mandatory;
     }
     if (double.tryParse(value) == null) {
-      return 'Please insert a valid number';
+      return t.filed_number_is_invalid;
     }
     return null;
   };

@@ -51,7 +51,7 @@
     },
     {
       "id": "2:4698624914262505470",
-      "lastPropertyId": "3:1481975311493388480",
+      "lastPropertyId": "4:8651819588305649932",
       "name": "AssetCategory",
       "properties": [
         {
@@ -69,6 +69,11 @@
           "id": "3:1481975311493388480",
           "name": "userCanSelect",
           "type": 1
+        },
+        {
+          "id": "4:8651819588305649932",
+          "name": "marketAssetCategoryEnumId",
+          "type": 6
         }
       ],
       "relations": []
