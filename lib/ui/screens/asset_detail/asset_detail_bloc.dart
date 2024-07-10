@@ -1,6 +1,7 @@
 import 'package:bloc/bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
+import 'package:go_router/go_router.dart';
 import 'package:net_worth_manager/domain/repository/asset/asset_repo.dart';
 import 'package:net_worth_manager/domain/repository/asset/asset_repo_impl.dart';
 import 'package:net_worth_manager/domain/repository/net_worth/net_worth_repo.dart';
@@ -13,6 +14,8 @@ import 'package:net_worth_manager/utils/extensions/date_time_extension.dart';
 import '../../../models/obox/asset_obox.dart';
 import '../../../objectbox.g.dart';
 import '../../../utils/enum/graph_data_gap_enum.dart';
+import '../../scaffold_with_bottom_navigation.dart';
+import '../../widgets/modal/loading_overlay.dart';
 
 class AssetDetailBloc extends Bloc<AssetDetailEvent, AssetDetailState> {
   final Asset asset;
@@ -58,6 +61,23 @@ class AssetDetailBloc extends Bloc<AssetDetailEvent, AssetDetailState> {
     on<UpdateAssetEvent>((event, emit) {
       assetRepo.saveAsset(event.assetUpdated);
       emit(state.copyWith(asset: event.assetUpdated));
+    });
+
+    on<DeleteAssetADEvent>((event, emit) async {
+      debugPrint("DeleteAsset START");
+      DateTime? oldestDate = event.asset.getOldestTimeValueDate();
+
+      assetRepo.deleteAsset(event.asset);
+
+      if (oldestDate != null) {
+        LoadingOverlay.of(context).show();
+        await netWorthRepo.updateNetWorth(updateStartingDate: oldestDate);
+        LoadingOverlay.of(context).hide();
+      }
+
+      context.pop();
+      ScaffoldWithBottomNavigation.updateScreens();
+      debugPrint("DeleteAsset END");
     });
 
   }

@@ -60,6 +60,22 @@ class AssetDetailScreen extends StatelessWidget {
       }
     });
 
+    selections.addAll({
+      const Row(
+        children: [
+          Icon(Icons.delete_outline),
+          SizedBox(width: 4),
+          Text("Delete"),
+        ],
+      ): () async {
+        if ((await showDeleteConfirmSheet(context,
+            "Are you sure you want to delete this element?\nAll its values will be deleted.")) ==
+            true) {
+          context.read<AssetDetailBloc>().add(DeleteAssetADEvent(asset));
+        }
+      }
+    });
+
     var selectedOption =
         await showSelectionSheet(context, selections.keys.toList());
     selections[selectedOption]?.call();

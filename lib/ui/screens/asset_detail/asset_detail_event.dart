@@ -26,3 +26,9 @@ class FetchGraphDataCompletedEvent extends AssetDetailEvent {
 
   FetchGraphDataCompletedEvent(this.asset, this.list, this.secondList);
 }
+
+class DeleteAssetADEvent extends AssetDetailEvent {
+  Asset asset;
+
+  DeleteAssetADEvent(this.asset);
+}
