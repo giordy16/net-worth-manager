@@ -277,8 +277,7 @@ class HomePageScreenState extends State<HomePage>
                       ],
                     ),
                   ),
-                  if (state.graphGap != GraphTime.all &&
-                      state.performance != null)
+                  if (state.performance != null)
                     Expanded(
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.end,
