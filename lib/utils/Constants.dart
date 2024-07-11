@@ -7,7 +7,8 @@ class Constants {
   static String YH_FINANCE_KEY = "bf934bf1a9msh4f5584d85a15a64p1731dbjsn3b1d81ff03cc";
   static String YH_FINANCE_BASE_URL = "https://twelve-data1.p.rapidapi.com/";
 
-  static String FMP_KEY = "ooQ8y1P2T36o80Czk2f8w87N0V66sQ3U";
+  // static String FMP_KEY = "Lm8J1kU0BSfOhvs7rncap7mx2ct5pjWM";
+  static String FMP_KEY = "XYlUcgrSf3yRbKcXbGQ4QPnGDFOcEajs";
   static String FMP_BASE_URL = "https://financialmodelingprep.com/";
 
 }

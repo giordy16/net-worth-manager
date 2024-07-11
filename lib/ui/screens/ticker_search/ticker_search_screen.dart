@@ -23,14 +23,14 @@ class TickerSearchScreen extends StatelessWidget {
   TickerSearchScreen({super.key});
 
   void onItemClick(BuildContext context, MarketInfo info) {
-    if (info.exchangeNameShort != "NASDAQ" &&
-        info.exchangeNameShort != "CRYPTO") {
-      showOkOnlyBottomSheet(context,
-          "At the moment only Crypto and assets exchanged on NASDAQ are selectable.");
-    } else {
+    // if (info.exchangeNameShort != "NASDAQ" &&
+    //     info.exchangeNameShort != "CRYPTO") {
+    //   showOkOnlyBottomSheet(context,
+    //       "At the moment only Crypto and assets exchanged on NASDAQ are selectable.");
+    // } else {
       context.push(AddMarketAssetScreen.route,
           extra: AddMarketAssetScreenParams(asset: info.convertToAsset()));
-    }
+    // }
   }
 
   @override
