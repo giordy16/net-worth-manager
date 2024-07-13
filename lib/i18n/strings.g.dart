@@ -6,7 +6,7 @@
 /// Locales: 2
 /// Strings: 304 (152 per locale)
 ///
-/// Built on 2024-07-13 at 15:24 UTC
+/// Built on 2024-07-13 at 16:40 UTC
 
 // coverage:ignore-file
 // ignore_for_file: type=lint
@@ -262,10 +262,8 @@ class Translations implements BaseTranslations<AppLocale, Translations> {
 	String get soon_available_message => 'This is what we are currently working on:';
 	List<String> get soon_available_task => [
 		'Automatic backup',
-		'Automatic management of shares due to share splits',
-		'Automatic tracking for commodities',
-		'Sorting of categories in home screen',
 		'Home widgets for iPhone/Android',
+		'You suggestions',
 		'Bug fixes, of course :)',
 	];
 	String get ticker => 'Ticker';
@@ -302,6 +300,8 @@ class Translations implements BaseTranslations<AppLocale, Translations> {
 	String get ticker_or_name => 'Name or ticker';
 	String get ticker_search_subtitle => 'Search by name, ticker or ISIN:';
 	String get no_result_found => 'No result found';
+	String get confirm_order => 'Confirm order';
+	String get reorder => 'Reorder';
 }
 
 // Path: <root>
@@ -442,10 +442,8 @@ class _StringsIt implements Translations {
 	@override String get soon_available_message => 'Ecco su cosa stiamo lavorando attualmente:';
 	@override List<String> get soon_available_task => [
 		'Backup automatico',
-		'Gestione automatica delle quote dovute a frazionamenti azionari',
-		'Tracciamento automatico per le materie prime',
-		'Ordinamento delle categorie nella schermata principale',
 		'Widget per la home di iPhone/Android',
+		'I vostri suggerimenti',
 		'Correzione di bug, ovviamente :)',
 	];
 	@override String get ticker => 'Ticker';
@@ -482,6 +480,8 @@ class _StringsIt implements Translations {
 	@override String get ticker_or_name => 'Nome o ticker';
 	@override String get ticker_search_subtitle => 'Cerca per nome, ticker o ISIN:';
 	@override String get no_result_found => 'Nessun risultato trovato';
+	@override String get confirm_order => 'Conferma ordine';
+	@override String get reorder => 'Riordina';
 }
 
 /// Flat map(s) containing all translations.
@@ -603,11 +603,9 @@ extension on Translations {
 			case 'settings_disclaimer': return 'DISCLAIMER\nThe app is still in the first release phase and all the sections are accessible.\nIn the future some sections or new functionalities may be accessible only with a Premium account.';
 			case 'soon_available_message': return 'This is what we are currently working on:';
 			case 'soon_available_task.0': return 'Automatic backup';
-			case 'soon_available_task.1': return 'Automatic management of shares due to share splits';
-			case 'soon_available_task.2': return 'Automatic tracking for commodities';
-			case 'soon_available_task.3': return 'Sorting of categories in home screen';
-			case 'soon_available_task.4': return 'Home widgets for iPhone/Android';
-			case 'soon_available_task.5': return 'Bug fixes, of course :)';
+			case 'soon_available_task.1': return 'Home widgets for iPhone/Android';
+			case 'soon_available_task.2': return 'You suggestions';
+			case 'soon_available_task.3': return 'Bug fixes, of course :)';
 			case 'ticker': return 'Ticker';
 			case 'create_new_category': return '+ Create new category';
 			case 'create_new_asset_liability': return '+ Create new asset/liability';
@@ -642,6 +640,8 @@ extension on Translations {
 			case 'ticker_or_name': return 'Name or ticker';
 			case 'ticker_search_subtitle': return 'Search by name, ticker or ISIN:';
 			case 'no_result_found': return 'No result found';
+			case 'confirm_order': return 'Confirm order';
+			case 'reorder': return 'Reorder';
 			default: return null;
 		}
 	}
@@ -763,11 +763,9 @@ extension on _StringsIt {
 			case 'settings_disclaimer': return 'DISCLAIMER\nL\'app è ancora nella prima fase di rilascio e tutte le sezioni sono accessibili.\nIn futuro alcune sezioni o nuove funzionalità potrebbero essere accessibili solo con un account Premium.';
 			case 'soon_available_message': return 'Ecco su cosa stiamo lavorando attualmente:';
 			case 'soon_available_task.0': return 'Backup automatico';
-			case 'soon_available_task.1': return 'Gestione automatica delle quote dovute a frazionamenti azionari';
-			case 'soon_available_task.2': return 'Tracciamento automatico per le materie prime';
-			case 'soon_available_task.3': return 'Ordinamento delle categorie nella schermata principale';
-			case 'soon_available_task.4': return 'Widget per la home di iPhone/Android';
-			case 'soon_available_task.5': return 'Correzione di bug, ovviamente :)';
+			case 'soon_available_task.1': return 'Widget per la home di iPhone/Android';
+			case 'soon_available_task.2': return 'I vostri suggerimenti';
+			case 'soon_available_task.3': return 'Correzione di bug, ovviamente :)';
 			case 'ticker': return 'Ticker';
 			case 'create_new_category': return '+ Crea nuova categoria';
 			case 'create_new_asset_liability': return '+ Crea nuovo asset/passività';
@@ -802,6 +800,8 @@ extension on _StringsIt {
 			case 'ticker_or_name': return 'Nome o ticker';
 			case 'ticker_search_subtitle': return 'Cerca per nome, ticker o ISIN:';
 			case 'no_result_found': return 'Nessun risultato trovato';
+			case 'confirm_order': return 'Conferma ordine';
+			case 'reorder': return 'Riordina';
 			default: return null;
 		}
 	}

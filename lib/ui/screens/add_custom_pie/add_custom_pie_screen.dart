@@ -26,7 +26,7 @@ class _AddCustomPieScreenState extends State<AddCustomPieScreen> {
   final categories = GetIt.I<Store>()
       .box<AssetCategory>()
       .query()
-      .order(AssetCategory_.name)
+      .order(AssetCategory_.order)
       .build()
       .find();
   final assets = GetIt.I<Store>().box<Asset>().getAll();

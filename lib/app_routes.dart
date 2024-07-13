@@ -124,8 +124,9 @@ final appRoutes = GoRouter(
                   FirebaseContactsScreen(state.extra as FirebaseScreenType))),
       GoRoute(
           path: ManageCategories.path,
-          builder: (context, state) =>
-              LoadingOverlay(child: ManageCategories())),
+          builder: (context, state) => LoadingOverlay(
+              child:
+                  ManageCategories(state.extra as ManageCategoriesViewType?))),
       GoRoute(
         path: GeneralSelection.path,
         builder: (context, state) =>

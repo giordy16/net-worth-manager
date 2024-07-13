@@ -17,6 +17,8 @@ class AssetCategory {
 
   int? marketAssetCategoryEnumId;
 
+  int order;
+
   MarketAssetCategory? get marketAssetCategory {
     return marketAssetCategoryEnumId == null
         ? null
@@ -29,6 +31,7 @@ class AssetCategory {
 
   AssetCategory(
     this.name, {
+    this.order = 99999,
     this.userCanSelect = true,
     this.marketAssetCategoryEnumId,
   });

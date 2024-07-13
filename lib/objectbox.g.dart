@@ -75,7 +75,7 @@ final _entities = <obx_int.ModelEntity>[
   obx_int.ModelEntity(
       id: const obx_int.IdUid(2, 4698624914262505470),
       name: 'AssetCategory',
-      lastPropertyId: const obx_int.IdUid(4, 8651819588305649932),
+      lastPropertyId: const obx_int.IdUid(5, 6320670018159142380),
       flags: 0,
       properties: <obx_int.ModelProperty>[
         obx_int.ModelProperty(
@@ -96,6 +96,11 @@ final _entities = <obx_int.ModelEntity>[
         obx_int.ModelProperty(
             id: const obx_int.IdUid(4, 8651819588305649932),
             name: 'marketAssetCategoryEnumId',
+            type: 6,
+            flags: 0),
+        obx_int.ModelProperty(
+            id: const obx_int.IdUid(5, 6320670018159142380),
+            name: 'order',
             type: 6,
             flags: 0)
       ],
@@ -490,11 +495,12 @@ obx_int.ModelDefinition getObjectBoxModel() {
         },
         objectToFB: (AssetCategory object, fb.Builder fbb) {
           final nameOffset = fbb.writeString(object.name);
-          fbb.startTable(5);
+          fbb.startTable(6);
           fbb.addInt64(0, object.id);
           fbb.addOffset(1, nameOffset);
           fbb.addBool(2, object.userCanSelect);
           fbb.addInt64(3, object.marketAssetCategoryEnumId);
+          fbb.addInt64(4, object.order);
           fbb.finish(fbb.endTable());
           return object.id;
         },
@@ -503,11 +509,14 @@ obx_int.ModelDefinition getObjectBoxModel() {
           final rootOffset = buffer.derefObject(0);
           final nameParam = const fb.StringReader(asciiOptimization: true)
               .vTableGet(buffer, rootOffset, 6, '');
+          final orderParam =
+              const fb.Int64Reader().vTableGet(buffer, rootOffset, 12, 0);
           final userCanSelectParam =
               const fb.BoolReader().vTableGet(buffer, rootOffset, 8, false);
           final marketAssetCategoryEnumIdParam =
               const fb.Int64Reader().vTableGetNullable(buffer, rootOffset, 10);
           final object = AssetCategory(nameParam,
+              order: orderParam,
               userCanSelect: userCanSelectParam,
               marketAssetCategoryEnumId: marketAssetCategoryEnumIdParam)
             ..id = const fb.Int64Reader().vTableGet(buffer, rootOffset, 4, 0);
@@ -884,6 +893,10 @@ class AssetCategory_ {
   /// see [AssetCategory.marketAssetCategoryEnumId]
   static final marketAssetCategoryEnumId =
       obx.QueryIntegerProperty<AssetCategory>(_entities[1].properties[3]);
+
+  /// see [AssetCategory.order]
+  static final order =
+      obx.QueryIntegerProperty<AssetCategory>(_entities[1].properties[4]);
 }
 
 /// [AssetTimeValue] entity fields to define ObjectBox queries.

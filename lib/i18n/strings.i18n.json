@@ -113,10 +113,8 @@
   "soon_available_message": "This is what we are currently working on:",
   "soon_available_task": [
     "Automatic backup",
-    "Automatic management of shares due to share splits",
-    "Automatic tracking for commodities",
-    "Sorting of categories in home screen",
     "Home widgets for iPhone/Android",
+    "You suggestions",
     "Bug fixes, of course :)"
   ],
   "ticker": "Ticker",
@@ -152,5 +150,7 @@
   "stock_split_message_single": "\u2022 <date> - Entered quantity: <qt> → Quantity after split: <qtSplit>",
   "ticker_or_name": "Name or ticker",
   "ticker_search_subtitle": "Search by name, ticker or ISIN:",
-  "no_result_found": "No result found"
+  "no_result_found": "No result found",
+  "confirm_order": "Confirm order",
+  "reorder": "Reorder"
 }

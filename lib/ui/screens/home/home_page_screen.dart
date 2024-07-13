@@ -13,6 +13,7 @@ import 'package:net_worth_manager/ui/screens/add_asset/add_asset_screen.dart';
 import 'package:net_worth_manager/ui/screens/asset_detail/asset_detail_screen.dart';
 import 'package:net_worth_manager/ui/screens/home/home_page_bloc.dart';
 import 'package:net_worth_manager/ui/screens/home/home_page_event.dart';
+import 'package:net_worth_manager/ui/screens/manage_categories/manage_categories.dart';
 import 'package:net_worth_manager/ui/widgets/base_components/performance_text.dart';
 import 'package:net_worth_manager/ui/widgets/modal/bottom_sheet.dart';
 import 'package:net_worth_manager/utils/enum/graph_data_gap_enum.dart';
@@ -75,6 +76,22 @@ class HomePageScreenState extends State<HomePage>
         ],
       ): () async {
         await context.push(AddAssetCategory.route, extra: category);
+        context.read<HomePageBloc>().add(FetchHomePage());
+        ScaffoldWithBottomNavigation.updateScreens();
+      }
+    });
+
+    selections.addAll({
+      Row(
+        children: [
+          const Icon(Icons.swap_vert),
+          const SizedBox(
+            width: 4,
+          ),
+          Text(t.reorder)
+        ],
+      ): () async {
+        await context.push(ManageCategories.path, extra: ManageCategoriesViewType.reorder);
         context.read<HomePageBloc>().add(FetchHomePage());
         ScaffoldWithBottomNavigation.updateScreens();
       }
@@ -241,15 +258,13 @@ class HomePageScreenState extends State<HomePage>
   Widget buildUI(BuildContext context, HomePageState state) {
     ThemeData theme = Theme.of(context);
 
-    Settings settings = GetIt.I<Store>().box<Settings>().getAll().first;
-
     List<AssetCategory> categories = (state.assets ?? [])
         .map((e) => e.category.target)
         .nonNulls
         .toSet()
         .toList();
 
-    categories.sort((a, b) => a.name.compareTo(b.name));
+    categories.sort((a, b) => (a.order).compareTo(b.order));
 
     return SafeArea(
       child: SingleChildScrollView(

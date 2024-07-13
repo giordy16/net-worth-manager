@@ -29,7 +29,7 @@ class AssetRepoImpl implements AssetRepo {
     return GetIt.I<Store>()
         .box<AssetCategory>()
         .query(condition)
-        .order(AssetCategory_.name)
+        .order(AssetCategory_.order)
         .build()
         .find();
   }

@@ -137,7 +137,7 @@ class _AddMarketAssetScreenState extends State<AddMarketAssetScreen> {
                                 .box<AssetCategory>()
                                 .query(
                                     AssetCategory_.userCanSelect.equals(false))
-                                .order(AssetCategory_.name)
+                                .order(AssetCategory_.order)
                                 .build()
                                 .find(),
                             onItemSelected: (value) => onCategoryChange(value),
