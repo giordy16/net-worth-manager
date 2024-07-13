@@ -10,6 +10,7 @@ import 'package:net_worth_manager/models/obox/market_info_obox.dart';
 import 'package:net_worth_manager/utils/extensions/date_time_extension.dart';
 
 import '../../../app_images.dart';
+import '../../../models/network/fmp/fmp_isin_search.dart';
 import '../../../models/network/fmp/fmp_split_historical.dart';
 import '../../../models/obox/asset_history_time_value.dart';
 import '../../../models/obox/main_currency_forex_change.dart';
@@ -391,7 +392,7 @@ class FinancialModelingRepoImpl implements StockApi {
   }
 
   @override
-  Future<List<MarketInfo>> searchTicker(String text) async {
+  Future<List<MarketInfo>> searchAssetByNameTicker(String text) async {
     try {
       dynamic queryData = {"query": text, "apikey": Constants.FMP_KEY};
 
@@ -405,6 +406,30 @@ class FinancialModelingRepoImpl implements StockApi {
                 name: e.name,
                 currency: e.currency,
                 exchangeName: e.stockExchange ?? e.exchangeShortName,
+                exchangeNameShort: e.exchangeShortName,
+              ))
+          .toList();
+    } catch (e) {
+      print("searchTicker error: $e");
+      return [];
+    }
+  }
+
+  @override
+  Future<List<MarketInfo>> searchAssetByIsin(String text) async {
+    try {
+      dynamic queryData = {"isin": text, "apikey": Constants.FMP_KEY};
+
+      var response =
+          await _client.get("api/v4/search/isin", queryParameters: queryData);
+
+      return (response.data as List<dynamic>)
+          .map((e) => FMPISINSearch.fromJson(e as Map<String, dynamic>))
+          .map((e) => MarketInfo(
+                symbol: e.symbol,
+                name: e.companyName,
+                currency: e.currency,
+                exchangeName: e.exchange ?? e.exchangeShortName,
                 exchangeNameShort: e.exchangeShortName,
               ))
           .toList();

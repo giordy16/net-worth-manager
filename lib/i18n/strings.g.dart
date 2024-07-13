@@ -4,9 +4,9 @@
 /// To regenerate, run: `dart run slang`
 ///
 /// Locales: 2
-/// Strings: 298 (149 per locale)
+/// Strings: 304 (152 per locale)
 ///
-/// Built on 2024-07-10 at 20:21 UTC
+/// Built on 2024-07-13 at 15:24 UTC
 
 // coverage:ignore-file
 // ignore_for_file: type=lint
@@ -299,6 +299,9 @@ class Translations implements BaseTranslations<AppLocale, Translations> {
 	String get stock_split_message_position => 'The position is influenced by a stock splits:\n\nEntered quantity is <qt> → Quantity after split is <qtSplit>\n\nDo you want to use the quantity after split?';
 	String get stock_split_message_positions => 'The following positions are influenced by a stock splits:\n\n<message>\n\nDo you want to use the quantity after split?';
 	String get stock_split_message_single => '• <date> - Entered quantity: <qt> → Quantity after split: <qtSplit>';
+	String get ticker_or_name => 'Name or ticker';
+	String get ticker_search_subtitle => 'Search by name, ticker or ISIN:';
+	String get no_result_found => 'No result found';
 }
 
 // Path: <root>
@@ -476,6 +479,9 @@ class _StringsIt implements Translations {
 	@override String get stock_split_message_position => 'La posizione è influenzata da uno split azionario:\n\nQuantità inserita <qt> → Quantita dopo lo split <qtSplit>\n\nVuoi utilizzare la quantità dopo lo split?';
 	@override String get stock_split_message_positions => 'Le seguenti posizioni sono influenzate da uno split azionario:\n\n<message>\n\nVuoi utilizzare la quantità dopo lo split?';
 	@override String get stock_split_message_single => '• <date> - Quantità inserita: <qt> → Quantita dopo lo split: <qtSplit>';
+	@override String get ticker_or_name => 'Nome o ticker';
+	@override String get ticker_search_subtitle => 'Cerca per nome, ticker o ISIN:';
+	@override String get no_result_found => 'Nessun risultato trovato';
 }
 
 /// Flat map(s) containing all translations.
@@ -633,6 +639,9 @@ extension on Translations {
 			case 'stock_split_message_position': return 'The position is influenced by a stock splits:\n\nEntered quantity is <qt> → Quantity after split is <qtSplit>\n\nDo you want to use the quantity after split?';
 			case 'stock_split_message_positions': return 'The following positions are influenced by a stock splits:\n\n<message>\n\nDo you want to use the quantity after split?';
 			case 'stock_split_message_single': return '• <date> - Entered quantity: <qt> → Quantity after split: <qtSplit>';
+			case 'ticker_or_name': return 'Name or ticker';
+			case 'ticker_search_subtitle': return 'Search by name, ticker or ISIN:';
+			case 'no_result_found': return 'No result found';
 			default: return null;
 		}
 	}
@@ -790,6 +799,9 @@ extension on _StringsIt {
 			case 'stock_split_message_position': return 'La posizione è influenzata da uno split azionario:\n\nQuantità inserita <qt> → Quantita dopo lo split <qtSplit>\n\nVuoi utilizzare la quantità dopo lo split?';
 			case 'stock_split_message_positions': return 'Le seguenti posizioni sono influenzate da uno split azionario:\n\n<message>\n\nVuoi utilizzare la quantità dopo lo split?';
 			case 'stock_split_message_single': return '• <date> - Quantità inserita: <qt> → Quantita dopo lo split: <qtSplit>';
+			case 'ticker_or_name': return 'Nome o ticker';
+			case 'ticker_search_subtitle': return 'Cerca per nome, ticker o ISIN:';
+			case 'no_result_found': return 'Nessun risultato trovato';
 			default: return null;
 		}
 	}

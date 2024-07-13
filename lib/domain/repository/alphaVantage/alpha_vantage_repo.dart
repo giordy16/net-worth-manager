@@ -70,7 +70,7 @@ class AlphaVantageRepImp implements StockApi {
   }
 
   @override
-  Future<List<MarketInfo>> searchTicker(String text) async {
+  Future<List<MarketInfo>> searchAssetByNameTicker(String text) async {
     try {
       dynamic queryData = {
         "function": "SYMBOL_SEARCH",
@@ -309,7 +309,11 @@ class AlphaVantageRepImp implements StockApi {
 
   @override
   Future<List<FmpSplitHistoricalItem>> getSplitHistorical(String symbol) {
-    // TODO: implement getSplitHistorical
+    throw UnimplementedError();
+  }
+
+  @override
+  Future<List<MarketInfo>> searchAssetByIsin(String text) {
     throw UnimplementedError();
   }
 

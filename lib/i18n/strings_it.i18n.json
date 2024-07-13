@@ -149,5 +149,8 @@
   "add_asset_disclaimer": "Se vuoi aggiungere investimenti, scegli \"Investimento di mercato (ETF/Stocks/Cripto)\" dalla schermata precedente. In questo modo, saranno tracciati automaticamente.",
   "stock_split_message_position": "La posizione è influenzata da uno split azionario:\n\nQuantità inserita <qt> → Quantita dopo lo split <qtSplit>\n\nVuoi utilizzare la quantità dopo lo split?",
   "stock_split_message_positions": "Le seguenti posizioni sono influenzate da uno split azionario:\n\n<message>\n\nVuoi utilizzare la quantità dopo lo split?",
-  "stock_split_message_single": "\u2022 <date> - Quantità inserita: <qt> → Quantita dopo lo split: <qtSplit>"
+  "stock_split_message_single": "\u2022 <date> - Quantità inserita: <qt> → Quantita dopo lo split: <qtSplit>",
+  "ticker_or_name": "Nome o ticker",
+  "ticker_search_subtitle": "Cerca per nome, ticker o ISIN:",
+  "no_result_found": "Nessun risultato trovato"
 }

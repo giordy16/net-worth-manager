@@ -149,5 +149,8 @@
   "add_asset_disclaimer": "If you want to add investments, choose \"Market Investment (ETF/Stock/Crypto)\" from the previous screen. In this way, they will be tracked automatically.",
   "stock_split_message_position": "The position is influenced by a stock splits:\n\nEntered quantity is <qt> → Quantity after split is <qtSplit>\n\nDo you want to use the quantity after split?",
   "stock_split_message_positions": "The following positions are influenced by a stock splits:\n\n<message>\n\nDo you want to use the quantity after split?",
-  "stock_split_message_single": "\u2022 <date> - Entered quantity: <qt> → Quantity after split: <qtSplit>"
+  "stock_split_message_single": "\u2022 <date> - Entered quantity: <qt> → Quantity after split: <qtSplit>",
+  "ticker_or_name": "Name or ticker",
+  "ticker_search_subtitle": "Search by name, ticker or ISIN:",
+  "no_result_found": "No result found"
 }

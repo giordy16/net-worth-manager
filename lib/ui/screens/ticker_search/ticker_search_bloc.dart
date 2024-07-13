@@ -1,43 +1,46 @@
 import 'dart:async';
 
 import 'package:bloc/bloc.dart';
-import 'package:net_worth_manager/ui/screens/ticker_search/ticker_search_event.dart';
 import 'package:net_worth_manager/ui/screens/ticker_search/tikcer_search_state.dart';
 
 import '../../../domain/repository/stock/financial_modeling_repo.dart';
 
-class TickerSearchBloc extends Bloc<TickerSearchEvent, TickerSearchState> {
+class TickerSearchCubit extends Cubit<TickerSearchState> {
   final FinancialModelingRepoImpl avRepo;
 
   Timer? _debounce;
 
-  TickerSearchBloc({
+  TickerSearchCubit({
     required this.avRepo,
-  }) : super(TickerSearchState(showProgress: false)) {
-    on<SearchTicker>((event, emit) {
-      _debounce?.cancel();
-      emit(state.copyWith(searchedTicker: event.ticker));
+  }) : super(TickerSearchState(showProgress: false));
 
-      if (event.ticker.isEmpty) {
-        emit(state.copyWith(assetList: [], showProgress: false));
-      } else if (event.ticker.isNotEmpty) {
-        _debounce = Timer(const Duration(milliseconds: 1000), () async {
-          print(event.ticker);
+  void searchAssetByName(String name) {
+    _debounce?.cancel();
+    emit(state.copyWith(searchedName: name, searchedISIN: ""));
 
-          add(SearchStartedEvent());
-          await avRepo.searchTicker(event.ticker).then((value) {
-            add(SearchCompletedEvent(value));
-          });
-        });
-      }
-    });
+    if (name.isEmpty) {
+      emit(state.copyWith(assetList: [], showProgress: false));
+    } else if (name.isNotEmpty) {
+      _debounce = Timer(const Duration(milliseconds: 1000), () async {
+        emit(state.copyWith(showProgress: true));
+        final result = await avRepo.searchAssetByNameTicker(name);
+        emit(state.copyWith(assetList: result, showProgress: false));
+      });
+    }
+  }
 
-    on<SearchCompletedEvent>((event, emit) {
-      emit(state.copyWith(assetList: event.list, showProgress: false));
-    });
+  void searchAssetByISIN(String isin) {
+    _debounce?.cancel();
+    emit(state.copyWith(searchedName: "", searchedISIN: isin));
 
-    on<SearchStartedEvent>((event, emit) {
-      emit(state.copyWith(showProgress: true));
-    });
+    if (isin.isEmpty) {
+      emit(state.copyWith(assetList: [], showProgress: false));
+    } else if (isin.isNotEmpty) {
+      _debounce = Timer(const Duration(milliseconds: 1000), () async {
+        emit(state.copyWith(showProgress: true));
+        final result = await avRepo.searchAssetByIsin(isin);
+        emit(state.copyWith(assetList: result, showProgress: false));
+      });
+    }
   }
 }
