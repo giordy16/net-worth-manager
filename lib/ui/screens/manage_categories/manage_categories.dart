@@ -34,12 +34,15 @@ class _ManageCategoriesState extends State<ManageCategories> {
   void initState() {
     viewType = widget.viewType ?? ManageCategoriesViewType.normal;
 
+    // show only categories with assets
     categories = GetIt.I<Store>()
         .box<AssetCategory>()
         .query()
         .order(AssetCategory_.order)
         .build()
-        .find();
+        .find()
+        .where((c) => c.getAssets().isNotEmpty)
+        .toList();
 
     super.initState();
   }
@@ -161,7 +164,7 @@ class _ManageCategoriesState extends State<ManageCategories> {
               onReorder: onReorder,
               children: categories.map((c) {
                 return Padding(
-                  key: Key(c.name),
+                  key: Key(c.hashCode.toString()),
                   padding: EdgeInsets.symmetric(
                     horizontal: Dimensions.screenMargin,
                   ),

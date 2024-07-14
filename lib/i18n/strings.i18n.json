@@ -74,7 +74,7 @@
   "allocation": "Allocation",
   "monthly_gain_loss": "Monthly Gains/Losses",
   "delete_cat_error": "This category contains some assets. Only empty categories can be removed. Please, remove the assets from the Home.",
-  "empty_categories": "You don't have any categories",
+  "empty_categories": "You don't have any categories with assets",
   "onboarding_1_title": "Why should you track your net worth?",
   "onboarding_1_subtitle": "Tracking net worth provides a clear snapshot of your overall financial health. It helps you to:\n1. Understand your true financial position\n2. Set and monitor progress toward financial goals\n3. Identify areas for improvement in saving or investing\n4. Plan more effectively for retirement.",
   "onboarding_2_title": "Keep track of your net worth easily",

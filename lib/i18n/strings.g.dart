@@ -6,7 +6,7 @@
 /// Locales: 2
 /// Strings: 304 (152 per locale)
 ///
-/// Built on 2024-07-13 at 16:40 UTC
+/// Built on 2024-07-14 at 08:28 UTC
 
 // coverage:ignore-file
 // ignore_for_file: type=lint
@@ -223,7 +223,7 @@ class Translations implements BaseTranslations<AppLocale, Translations> {
 	String get allocation => 'Allocation';
 	String get monthly_gain_loss => 'Monthly Gains/Losses';
 	String get delete_cat_error => 'This category contains some assets. Only empty categories can be removed. Please, remove the assets from the Home.';
-	String get empty_categories => 'You don\'t have any categories';
+	String get empty_categories => 'You don\'t have any categories with assets';
 	String get onboarding_1_title => 'Why should you track your net worth?';
 	String get onboarding_1_subtitle => 'Tracking net worth provides a clear snapshot of your overall financial health. It helps you to:\n1. Understand your true financial position\n2. Set and monitor progress toward financial goals\n3. Identify areas for improvement in saving or investing\n4. Plan more effectively for retirement.';
 	String get onboarding_2_title => 'Keep track of your net worth easily';
@@ -403,7 +403,7 @@ class _StringsIt implements Translations {
 	@override String get allocation => 'Allocazione';
 	@override String get monthly_gain_loss => 'Guadagni/Perdite Mensili';
 	@override String get delete_cat_error => 'Questa categoria contiene degli assets. Solo le categorie vuote possono essere rimosse. Per favore, rimuovi gli assets dalla Home.';
-	@override String get empty_categories => 'Non hai nessuna categoria';
+	@override String get empty_categories => 'Non hai nessuna categoria con asset';
 	@override String get onboarding_1_title => 'Perché dovresti tracciare il tuo patrimonio?';
 	@override String get onboarding_1_subtitle => 'Tracciare il patrimonio fornisce una chiara istantanea della tua salute finanziaria generale. Ti aiuta a:\n1. Comprendere la tua vera posizione finanziaria\n2. Impostare e monitorare i progressi verso gli obiettivi finanziari\n3. Identificare le aree di miglioramento nel risparmio o nell\'investimento\n4. Pianificare più efficacemente per la pensione.';
 	@override String get onboarding_2_title => 'Tieni traccia del tuo patrimonio facilmente';
@@ -565,7 +565,7 @@ extension on Translations {
 			case 'allocation': return 'Allocation';
 			case 'monthly_gain_loss': return 'Monthly Gains/Losses';
 			case 'delete_cat_error': return 'This category contains some assets. Only empty categories can be removed. Please, remove the assets from the Home.';
-			case 'empty_categories': return 'You don\'t have any categories';
+			case 'empty_categories': return 'You don\'t have any categories with assets';
 			case 'onboarding_1_title': return 'Why should you track your net worth?';
 			case 'onboarding_1_subtitle': return 'Tracking net worth provides a clear snapshot of your overall financial health. It helps you to:\n1. Understand your true financial position\n2. Set and monitor progress toward financial goals\n3. Identify areas for improvement in saving or investing\n4. Plan more effectively for retirement.';
 			case 'onboarding_2_title': return 'Keep track of your net worth easily';
@@ -725,7 +725,7 @@ extension on _StringsIt {
 			case 'allocation': return 'Allocazione';
 			case 'monthly_gain_loss': return 'Guadagni/Perdite Mensili';
 			case 'delete_cat_error': return 'Questa categoria contiene degli assets. Solo le categorie vuote possono essere rimosse. Per favore, rimuovi gli assets dalla Home.';
-			case 'empty_categories': return 'Non hai nessuna categoria';
+			case 'empty_categories': return 'Non hai nessuna categoria con asset';
 			case 'onboarding_1_title': return 'Perché dovresti tracciare il tuo patrimonio?';
 			case 'onboarding_1_subtitle': return 'Tracciare il patrimonio fornisce una chiara istantanea della tua salute finanziaria generale. Ti aiuta a:\n1. Comprendere la tua vera posizione finanziaria\n2. Impostare e monitorare i progressi verso gli obiettivi finanziari\n3. Identificare le aree di miglioramento nel risparmio o nell\'investimento\n4. Pianificare più efficacemente per la pensione.';
 			case 'onboarding_2_title': return 'Tieni traccia del tuo patrimonio facilmente';

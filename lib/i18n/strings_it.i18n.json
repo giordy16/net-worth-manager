@@ -74,7 +74,7 @@
   "allocation": "Allocazione",
   "monthly_gain_loss": "Guadagni/Perdite Mensili",
   "delete_cat_error": "Questa categoria contiene degli assets. Solo le categorie vuote possono essere rimosse. Per favore, rimuovi gli assets dalla Home.",
-  "empty_categories": "Non hai nessuna categoria",
+  "empty_categories": "Non hai nessuna categoria con asset",
   "onboarding_1_title": "Perché dovresti tracciare il tuo patrimonio?",
   "onboarding_1_subtitle": "Tracciare il patrimonio fornisce una chiara istantanea della tua salute finanziaria generale. Ti aiuta a:\n1. Comprendere la tua vera posizione finanziaria\n2. Impostare e monitorare i progressi verso gli obiettivi finanziari\n3. Identificare le aree di miglioramento nel risparmio o nell'investimento\n4. Pianificare più efficacemente per la pensione.",
   "onboarding_2_title": "Tieni traccia del tuo patrimonio facilmente",
