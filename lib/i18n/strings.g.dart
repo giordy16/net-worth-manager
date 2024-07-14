@@ -6,7 +6,7 @@
 /// Locales: 2
 /// Strings: 308 (154 per locale)
 ///
-/// Built on 2024-07-14 at 09:15 UTC
+/// Built on 2024-07-14 at 10:38 UTC
 
 // coverage:ignore-file
 // ignore_for_file: type=lint
@@ -161,7 +161,7 @@ class Translations implements BaseTranslations<AppLocale, Translations> {
 	String get note => 'Note';
 	String get position_deleted => 'Position deleted!';
 	String get add_category => 'Add category';
-	String get add_category_message => 'Create a new category for your assets, for example "Liquidity", "Bank accounts", "Expected taxes" ...';
+	String get add_category_message => 'Create a new category for your assets, for example "Liquidity", "Bank accounts", "Expected taxes", ...';
 	String get name => 'Name';
 	String get create_allocation_chart => 'Create allocation chart';
 	String get create_allocation_chart_name_message => 'Choose a name for this chart';
@@ -174,7 +174,7 @@ class Translations implements BaseTranslations<AppLocale, Translations> {
 	String get add_selection_market_title => 'Market Investment (ETF/Stock/Crypto)';
 	String get add_selection_market_subtitle => 'Add your investments in the stock market.\nTheir value will be automatically calculated day by day';
 	String get add_selection_manual_title => 'Manual Asset or Liability';
-	String get add_selection_manual_subtitle => 'Add your asset or liability that are part of the net worth.\nExample of assets are house, car, cash, valuable collections, watches, ...';
+	String get add_selection_manual_subtitle => 'Add your asset or liability that are part of your net worth, such as cash, real estate, valuable collections, ...';
 	String get deleted => 'Deleted!';
 	String get delete => 'Delete';
 	String get delete_confirmation_asset => 'Are you sure you want to delete this element?\nAll its values will be deleted.';
@@ -224,18 +224,16 @@ class Translations implements BaseTranslations<AppLocale, Translations> {
 	String get monthly_gain_loss => 'Monthly Gains/Losses';
 	String get delete_cat_error => 'This category contains some assets. Only empty categories can be removed. Please, remove the assets from the Home.';
 	String get empty_categories => 'You don\'t have any categories with assets';
-	String get onboarding_1_title => 'Why should you track your net worth?';
-	String get onboarding_1_subtitle => 'Tracking net worth provides a clear snapshot of your overall financial health. It helps you to:\n1. Understand your true financial position\n2. Set and monitor progress toward financial goals\n3. Identify areas for improvement in saving or investing\n4. Plan more effectively for retirement.';
-	String get onboarding_2_title => 'Keep track of your net worth easily';
-	String get onboarding_2_subtitle => 'Add your assets, liabilities and investments to know the value of your net worth in real time.';
-	String get onboarding_3_title => 'Monitor the performance of your investments';
-	String get onboarding_3_subtitle => 'Keep track of your stock or ETF investments with interactive charts and valuable KPIs.';
-	String get onboarding_4_title => 'Get valuable insights';
-	String get onboarding_4_subtitle => 'View valuable insights into the status and performance of your net worth.';
-	String get onboarding_5_title => 'How should you use the app?';
-	String get onboarding_5_subtitle => 'Periodically remember to open the app and update the value of your assets, for example at the end every month.';
-	String get onboarding_6_title => 'You data will not be shared to anyone';
-	String get onboarding_6_subtitle => 'Your data are stored inside the phone and they are not sent to any server.\nIf you want, you can share/backup your data with the "Export" function.';
+	String get onboarding_1_title => 'Keep track of your net worth easily';
+	String get onboarding_1_subtitle => 'Add your assets, liabilities and investments to know the value of your net worth in real time. With Wealth Guard, market investments are automatically tracked day by day';
+	String get onboarding_2_title => 'Monitor the performance of your investments';
+	String get onboarding_2_subtitle => 'Keep track of your stock or ETF investments with interactive charts and KPIs.';
+	String get onboarding_3_title => 'Get valuable insights';
+	String get onboarding_3_subtitle => 'Get valuable insights into the status and performance of your net worth.';
+	String get onboarding_4_title => 'Why should you track your net worth?';
+	String get onboarding_4_subtitle => 'Tracking net worth provides a clear snapshot of your overall financial situation. It helps you to:\n1. Achieve a clear overview of your financial position\n2. Set and monitor progress toward financial goals\n3. Identify areas for improvement in saving or investing\n4. Plan more effectively for retirement.';
+	String get onboarding_5_title => 'Your data does not leave your phone';
+	String get onboarding_5_subtitle => 'Your data are stored inside the phone and they are not sent to any server.\nIf you want, you can share/backup your data with the "Export" function.';
 	String get sold_for => 'sold for';
 	String get note_tax => 'From <asset> selling\n\nnGross value: <grossValue>\nTax percentage applied: <taxPercentage>%';
 	String get sell_position => 'Sell position';
@@ -262,6 +260,9 @@ class Translations implements BaseTranslations<AppLocale, Translations> {
 	String get soon_available_message => 'This is what we are currently working on:';
 	List<String> get soon_available_task => [
 		'Automatic backup',
+		'Categories performance',
+		'Light mode',
+		'Possibility to add an interest to manual asset',
 		'Home widgets for iPhone/Android',
 		'You suggestions',
 		'Bug fixes, of course :)',
@@ -282,9 +283,8 @@ class Translations implements BaseTranslations<AppLocale, Translations> {
 	String get insights => 'Insights';
 	String get bank_accounts => 'Bank accounts';
 	String get vehicles => 'Vehicles';
-	String get real_estate => 'Real estate / House';
+	String get real_estate => 'Real estate';
 	String get debts => 'Debts';
-	String get watches => 'Watches';
 	String get other => 'Other';
 	String get commodities => 'Commodities';
 	String get stocks => 'Stocks';
@@ -343,7 +343,7 @@ class _StringsIt implements Translations {
 	@override String get note => 'Nota';
 	@override String get position_deleted => 'Posizione eliminata!';
 	@override String get add_category => 'Aggiungi categoria';
-	@override String get add_category_message => 'Crea una nuova categoria per i tuoi assets, ad esempio "Liquidità", "Conti bancari", "Tasse previste" ...';
+	@override String get add_category_message => 'Crea una nuova categoria per i tuoi assets, ad esempio "Liquidità", "Conti bancari", "Tasse previste", ...';
 	@override String get name => 'Nome';
 	@override String get create_allocation_chart => 'Crea grafico di allocazione';
 	@override String get create_allocation_chart_name_message => 'Scegli un nome per questo grafico';
@@ -356,7 +356,7 @@ class _StringsIt implements Translations {
 	@override String get add_selection_market_title => 'Investimento di mercato (ETF/Stock/Crypto)';
 	@override String get add_selection_market_subtitle => 'Aggiungi i tuoi investimenti nel mercato azionario.\nIl loro valore sarà calcolato automaticamente giorno per giorno';
 	@override String get add_selection_manual_title => 'Asset o Passività Manuale';
-	@override String get add_selection_manual_subtitle => 'Aggiungi il tuo asset o passività che fa parte del patrimonio.\nEsempi di assets sono la casa, l\'auto, conti bancari, collezioni di valore, orologi, ...';
+	@override String get add_selection_manual_subtitle => 'Aggiungi i tuoi asset o passività che fanno parte del tuo patrimonio, come la liquidità, gli immobili, collezioni prestigiose, ...';
 	@override String get deleted => 'Eliminato!';
 	@override String get delete => 'Elimina';
 	@override String get delete_confirmation_asset => 'Sei sicuro di voler eliminare questo elemento?\nTutti i suoi valori saranno eliminati.';
@@ -406,18 +406,16 @@ class _StringsIt implements Translations {
 	@override String get monthly_gain_loss => 'Guadagni/Perdite Mensili';
 	@override String get delete_cat_error => 'Questa categoria contiene degli assets. Solo le categorie vuote possono essere rimosse. Per favore, rimuovi gli assets dalla Home.';
 	@override String get empty_categories => 'Non hai nessuna categoria con asset';
-	@override String get onboarding_1_title => 'Perché dovresti tracciare il tuo patrimonio?';
-	@override String get onboarding_1_subtitle => 'Tracciare il patrimonio fornisce una chiara istantanea della tua salute finanziaria generale. Ti aiuta a:\n1. Comprendere la tua vera posizione finanziaria\n2. Impostare e monitorare i progressi verso gli obiettivi finanziari\n3. Identificare le aree di miglioramento nel risparmio o nell\'investimento\n4. Pianificare più efficacemente per la pensione.';
-	@override String get onboarding_2_title => 'Tieni traccia del tuo patrimonio facilmente';
-	@override String get onboarding_2_subtitle => 'Aggiungi i tuoi assets, passività e investimenti per conoscere il valore del tuo patrimonio in tempo reale.';
-	@override String get onboarding_3_title => 'Monitora le prestazioni dei tuoi investimenti';
-	@override String get onboarding_3_subtitle => 'Tieni traccia dei tuoi investimenti in azioni o ETF con grafici interattivi e KPI preziosi.';
-	@override String get onboarding_4_title => 'Ottieni informazioni preziose';
-	@override String get onboarding_4_subtitle => 'Visualizza informazioni preziose sullo stato e le prestazioni del tuo patrimonio.';
-	@override String get onboarding_5_title => 'Come dovresti usare l\'app?';
-	@override String get onboarding_5_subtitle => 'Ricordati periodicamente di aprire l\'app e aggiornare il valore dei tuoi assets, ad esempio alla fine di ogni mese.';
-	@override String get onboarding_6_title => 'I tuoi dati non saranno condivisi con nessuno';
-	@override String get onboarding_6_subtitle => 'I tuoi dati sono memorizzati all\'interno del telefono e non vengono inviati a nessun server.\nSe vuoi, puoi condividere/fare un backup dei tuoi dati con la funzione "Esporta".';
+	@override String get onboarding_1_title => 'Tieni traccia del tuo patrimonio facilmente';
+	@override String get onboarding_1_subtitle => 'Aggiungi i tuoi assets, passività e investimenti per conoscere il valore del tuo patrimonio in tempo reale. Con Wealth Guard, i tuoi investimenti sono automaticamente tracciati giorno per giorno';
+	@override String get onboarding_2_title => 'Monitora le prestazioni dei tuoi investimenti';
+	@override String get onboarding_2_subtitle => 'Tieni traccia dei tuoi investimenti in azioni o ETF con grafici interattivi e KPI.';
+	@override String get onboarding_3_title => 'Ottieni informazioni preziose';
+	@override String get onboarding_3_subtitle => 'Ottieni preziose informazioni sullo stato e le prestazioni del tuo patrimonio.';
+	@override String get onboarding_4_title => 'Perché dovresti tracciare il tuo patrimonio?';
+	@override String get onboarding_4_subtitle => 'Tracciare il patrimonio fornisce una chiara istantanea della tua situazione finanziaria. Ti aiuta a:\n1. Ottenere una visione chiara della tua posizione finanziaria\n2. Impostare e monitorare i progressi verso gli obiettivi finanziari\n3. Identificare le aree di miglioramento nel risparmio o nell\'investimento\n4. Pianificare più efficacemente per la pensione.';
+	@override String get onboarding_5_title => 'I tuoi dati rimangono nel tuo telefono';
+	@override String get onboarding_5_subtitle => 'I tuoi dati sono memorizzati all\'interno del telefono e non vengono inviati a nessun server.\nSe vuoi, puoi condividere/fare un backup dei tuoi dati con la funzione "Esporta".';
 	@override String get sold_for => 'venduto per';
 	@override String get note_tax => 'Dalla vendita di <asset>\n\nValore lordo: <grossValue>\nPercentuale di tassa applicata: <taxPercentage>%';
 	@override String get sell_position => 'Vendi posizione';
@@ -444,6 +442,9 @@ class _StringsIt implements Translations {
 	@override String get soon_available_message => 'Ecco su cosa stiamo lavorando attualmente:';
 	@override List<String> get soon_available_task => [
 		'Backup automatico',
+		'Performance per categorie',
+		'Light mode',
+		'Possibilità di aggiungere un interesse per asset "manuali"',
 		'Widget per la home di iPhone/Android',
 		'I vostri suggerimenti',
 		'Correzione di bug, ovviamente :)',
@@ -464,9 +465,8 @@ class _StringsIt implements Translations {
 	@override String get insights => 'Approfondimenti';
 	@override String get bank_accounts => 'Conti bancari';
 	@override String get vehicles => 'Veicoli';
-	@override String get real_estate => 'Immobili / Casa';
+	@override String get real_estate => 'Immobili';
 	@override String get debts => 'Debiti';
-	@override String get watches => 'Orologi';
 	@override String get other => 'Altro';
 	@override String get commodities => 'Materie prime';
 	@override String get stocks => 'Stocks';
@@ -507,7 +507,7 @@ extension on Translations {
 			case 'note': return 'Note';
 			case 'position_deleted': return 'Position deleted!';
 			case 'add_category': return 'Add category';
-			case 'add_category_message': return 'Create a new category for your assets, for example "Liquidity", "Bank accounts", "Expected taxes" ...';
+			case 'add_category_message': return 'Create a new category for your assets, for example "Liquidity", "Bank accounts", "Expected taxes", ...';
 			case 'name': return 'Name';
 			case 'create_allocation_chart': return 'Create allocation chart';
 			case 'create_allocation_chart_name_message': return 'Choose a name for this chart';
@@ -520,7 +520,7 @@ extension on Translations {
 			case 'add_selection_market_title': return 'Market Investment (ETF/Stock/Crypto)';
 			case 'add_selection_market_subtitle': return 'Add your investments in the stock market.\nTheir value will be automatically calculated day by day';
 			case 'add_selection_manual_title': return 'Manual Asset or Liability';
-			case 'add_selection_manual_subtitle': return 'Add your asset or liability that are part of the net worth.\nExample of assets are house, car, cash, valuable collections, watches, ...';
+			case 'add_selection_manual_subtitle': return 'Add your asset or liability that are part of your net worth, such as cash, real estate, valuable collections, ...';
 			case 'deleted': return 'Deleted!';
 			case 'delete': return 'Delete';
 			case 'delete_confirmation_asset': return 'Are you sure you want to delete this element?\nAll its values will be deleted.';
@@ -570,18 +570,16 @@ extension on Translations {
 			case 'monthly_gain_loss': return 'Monthly Gains/Losses';
 			case 'delete_cat_error': return 'This category contains some assets. Only empty categories can be removed. Please, remove the assets from the Home.';
 			case 'empty_categories': return 'You don\'t have any categories with assets';
-			case 'onboarding_1_title': return 'Why should you track your net worth?';
-			case 'onboarding_1_subtitle': return 'Tracking net worth provides a clear snapshot of your overall financial health. It helps you to:\n1. Understand your true financial position\n2. Set and monitor progress toward financial goals\n3. Identify areas for improvement in saving or investing\n4. Plan more effectively for retirement.';
-			case 'onboarding_2_title': return 'Keep track of your net worth easily';
-			case 'onboarding_2_subtitle': return 'Add your assets, liabilities and investments to know the value of your net worth in real time.';
-			case 'onboarding_3_title': return 'Monitor the performance of your investments';
-			case 'onboarding_3_subtitle': return 'Keep track of your stock or ETF investments with interactive charts and valuable KPIs.';
-			case 'onboarding_4_title': return 'Get valuable insights';
-			case 'onboarding_4_subtitle': return 'View valuable insights into the status and performance of your net worth.';
-			case 'onboarding_5_title': return 'How should you use the app?';
-			case 'onboarding_5_subtitle': return 'Periodically remember to open the app and update the value of your assets, for example at the end every month.';
-			case 'onboarding_6_title': return 'You data will not be shared to anyone';
-			case 'onboarding_6_subtitle': return 'Your data are stored inside the phone and they are not sent to any server.\nIf you want, you can share/backup your data with the "Export" function.';
+			case 'onboarding_1_title': return 'Keep track of your net worth easily';
+			case 'onboarding_1_subtitle': return 'Add your assets, liabilities and investments to know the value of your net worth in real time. With Wealth Guard, market investments are automatically tracked day by day';
+			case 'onboarding_2_title': return 'Monitor the performance of your investments';
+			case 'onboarding_2_subtitle': return 'Keep track of your stock or ETF investments with interactive charts and KPIs.';
+			case 'onboarding_3_title': return 'Get valuable insights';
+			case 'onboarding_3_subtitle': return 'Get valuable insights into the status and performance of your net worth.';
+			case 'onboarding_4_title': return 'Why should you track your net worth?';
+			case 'onboarding_4_subtitle': return 'Tracking net worth provides a clear snapshot of your overall financial situation. It helps you to:\n1. Achieve a clear overview of your financial position\n2. Set and monitor progress toward financial goals\n3. Identify areas for improvement in saving or investing\n4. Plan more effectively for retirement.';
+			case 'onboarding_5_title': return 'Your data does not leave your phone';
+			case 'onboarding_5_subtitle': return 'Your data are stored inside the phone and they are not sent to any server.\nIf you want, you can share/backup your data with the "Export" function.';
 			case 'sold_for': return 'sold for';
 			case 'note_tax': return 'From <asset> selling\n\nnGross value: <grossValue>\nTax percentage applied: <taxPercentage>%';
 			case 'sell_position': return 'Sell position';
@@ -607,9 +605,12 @@ extension on Translations {
 			case 'settings_disclaimer': return 'DISCLAIMER\nThe app is still in the first release phase and all the sections are accessible.\nIn the future some sections or new functionalities may be accessible only with a Premium account.';
 			case 'soon_available_message': return 'This is what we are currently working on:';
 			case 'soon_available_task.0': return 'Automatic backup';
-			case 'soon_available_task.1': return 'Home widgets for iPhone/Android';
-			case 'soon_available_task.2': return 'You suggestions';
-			case 'soon_available_task.3': return 'Bug fixes, of course :)';
+			case 'soon_available_task.1': return 'Categories performance';
+			case 'soon_available_task.2': return 'Light mode';
+			case 'soon_available_task.3': return 'Possibility to add an interest to manual asset';
+			case 'soon_available_task.4': return 'Home widgets for iPhone/Android';
+			case 'soon_available_task.5': return 'You suggestions';
+			case 'soon_available_task.6': return 'Bug fixes, of course :)';
 			case 'ticker': return 'Ticker';
 			case 'create_new_category': return '+ Create new category';
 			case 'create_new_asset_liability': return '+ Create new asset/liability';
@@ -626,9 +627,8 @@ extension on Translations {
 			case 'insights': return 'Insights';
 			case 'bank_accounts': return 'Bank accounts';
 			case 'vehicles': return 'Vehicles';
-			case 'real_estate': return 'Real estate / House';
+			case 'real_estate': return 'Real estate';
 			case 'debts': return 'Debts';
-			case 'watches': return 'Watches';
 			case 'other': return 'Other';
 			case 'commodities': return 'Commodities';
 			case 'stocks': return 'Stocks';
@@ -669,7 +669,7 @@ extension on _StringsIt {
 			case 'note': return 'Nota';
 			case 'position_deleted': return 'Posizione eliminata!';
 			case 'add_category': return 'Aggiungi categoria';
-			case 'add_category_message': return 'Crea una nuova categoria per i tuoi assets, ad esempio "Liquidità", "Conti bancari", "Tasse previste" ...';
+			case 'add_category_message': return 'Crea una nuova categoria per i tuoi assets, ad esempio "Liquidità", "Conti bancari", "Tasse previste", ...';
 			case 'name': return 'Nome';
 			case 'create_allocation_chart': return 'Crea grafico di allocazione';
 			case 'create_allocation_chart_name_message': return 'Scegli un nome per questo grafico';
@@ -682,7 +682,7 @@ extension on _StringsIt {
 			case 'add_selection_market_title': return 'Investimento di mercato (ETF/Stock/Crypto)';
 			case 'add_selection_market_subtitle': return 'Aggiungi i tuoi investimenti nel mercato azionario.\nIl loro valore sarà calcolato automaticamente giorno per giorno';
 			case 'add_selection_manual_title': return 'Asset o Passività Manuale';
-			case 'add_selection_manual_subtitle': return 'Aggiungi il tuo asset o passività che fa parte del patrimonio.\nEsempi di assets sono la casa, l\'auto, conti bancari, collezioni di valore, orologi, ...';
+			case 'add_selection_manual_subtitle': return 'Aggiungi i tuoi asset o passività che fanno parte del tuo patrimonio, come la liquidità, gli immobili, collezioni prestigiose, ...';
 			case 'deleted': return 'Eliminato!';
 			case 'delete': return 'Elimina';
 			case 'delete_confirmation_asset': return 'Sei sicuro di voler eliminare questo elemento?\nTutti i suoi valori saranno eliminati.';
@@ -732,18 +732,16 @@ extension on _StringsIt {
 			case 'monthly_gain_loss': return 'Guadagni/Perdite Mensili';
 			case 'delete_cat_error': return 'Questa categoria contiene degli assets. Solo le categorie vuote possono essere rimosse. Per favore, rimuovi gli assets dalla Home.';
 			case 'empty_categories': return 'Non hai nessuna categoria con asset';
-			case 'onboarding_1_title': return 'Perché dovresti tracciare il tuo patrimonio?';
-			case 'onboarding_1_subtitle': return 'Tracciare il patrimonio fornisce una chiara istantanea della tua salute finanziaria generale. Ti aiuta a:\n1. Comprendere la tua vera posizione finanziaria\n2. Impostare e monitorare i progressi verso gli obiettivi finanziari\n3. Identificare le aree di miglioramento nel risparmio o nell\'investimento\n4. Pianificare più efficacemente per la pensione.';
-			case 'onboarding_2_title': return 'Tieni traccia del tuo patrimonio facilmente';
-			case 'onboarding_2_subtitle': return 'Aggiungi i tuoi assets, passività e investimenti per conoscere il valore del tuo patrimonio in tempo reale.';
-			case 'onboarding_3_title': return 'Monitora le prestazioni dei tuoi investimenti';
-			case 'onboarding_3_subtitle': return 'Tieni traccia dei tuoi investimenti in azioni o ETF con grafici interattivi e KPI preziosi.';
-			case 'onboarding_4_title': return 'Ottieni informazioni preziose';
-			case 'onboarding_4_subtitle': return 'Visualizza informazioni preziose sullo stato e le prestazioni del tuo patrimonio.';
-			case 'onboarding_5_title': return 'Come dovresti usare l\'app?';
-			case 'onboarding_5_subtitle': return 'Ricordati periodicamente di aprire l\'app e aggiornare il valore dei tuoi assets, ad esempio alla fine di ogni mese.';
-			case 'onboarding_6_title': return 'I tuoi dati non saranno condivisi con nessuno';
-			case 'onboarding_6_subtitle': return 'I tuoi dati sono memorizzati all\'interno del telefono e non vengono inviati a nessun server.\nSe vuoi, puoi condividere/fare un backup dei tuoi dati con la funzione "Esporta".';
+			case 'onboarding_1_title': return 'Tieni traccia del tuo patrimonio facilmente';
+			case 'onboarding_1_subtitle': return 'Aggiungi i tuoi assets, passività e investimenti per conoscere il valore del tuo patrimonio in tempo reale. Con Wealth Guard, i tuoi investimenti sono automaticamente tracciati giorno per giorno';
+			case 'onboarding_2_title': return 'Monitora le prestazioni dei tuoi investimenti';
+			case 'onboarding_2_subtitle': return 'Tieni traccia dei tuoi investimenti in azioni o ETF con grafici interattivi e KPI.';
+			case 'onboarding_3_title': return 'Ottieni informazioni preziose';
+			case 'onboarding_3_subtitle': return 'Ottieni preziose informazioni sullo stato e le prestazioni del tuo patrimonio.';
+			case 'onboarding_4_title': return 'Perché dovresti tracciare il tuo patrimonio?';
+			case 'onboarding_4_subtitle': return 'Tracciare il patrimonio fornisce una chiara istantanea della tua situazione finanziaria. Ti aiuta a:\n1. Ottenere una visione chiara della tua posizione finanziaria\n2. Impostare e monitorare i progressi verso gli obiettivi finanziari\n3. Identificare le aree di miglioramento nel risparmio o nell\'investimento\n4. Pianificare più efficacemente per la pensione.';
+			case 'onboarding_5_title': return 'I tuoi dati rimangono nel tuo telefono';
+			case 'onboarding_5_subtitle': return 'I tuoi dati sono memorizzati all\'interno del telefono e non vengono inviati a nessun server.\nSe vuoi, puoi condividere/fare un backup dei tuoi dati con la funzione "Esporta".';
 			case 'sold_for': return 'venduto per';
 			case 'note_tax': return 'Dalla vendita di <asset>\n\nValore lordo: <grossValue>\nPercentuale di tassa applicata: <taxPercentage>%';
 			case 'sell_position': return 'Vendi posizione';
@@ -769,9 +767,12 @@ extension on _StringsIt {
 			case 'settings_disclaimer': return 'DISCLAIMER\nL\'app è ancora nella prima fase di rilascio e tutte le sezioni sono accessibili.\nIn futuro alcune sezioni o nuove funzionalità potrebbero essere accessibili solo con un account Premium.';
 			case 'soon_available_message': return 'Ecco su cosa stiamo lavorando attualmente:';
 			case 'soon_available_task.0': return 'Backup automatico';
-			case 'soon_available_task.1': return 'Widget per la home di iPhone/Android';
-			case 'soon_available_task.2': return 'I vostri suggerimenti';
-			case 'soon_available_task.3': return 'Correzione di bug, ovviamente :)';
+			case 'soon_available_task.1': return 'Performance per categorie';
+			case 'soon_available_task.2': return 'Light mode';
+			case 'soon_available_task.3': return 'Possibilità di aggiungere un interesse per asset "manuali"';
+			case 'soon_available_task.4': return 'Widget per la home di iPhone/Android';
+			case 'soon_available_task.5': return 'I vostri suggerimenti';
+			case 'soon_available_task.6': return 'Correzione di bug, ovviamente :)';
 			case 'ticker': return 'Ticker';
 			case 'create_new_category': return '+ Crea nuova categoria';
 			case 'create_new_asset_liability': return '+ Crea nuovo asset/passività';
@@ -788,9 +789,8 @@ extension on _StringsIt {
 			case 'insights': return 'Approfondimenti';
 			case 'bank_accounts': return 'Conti bancari';
 			case 'vehicles': return 'Veicoli';
-			case 'real_estate': return 'Immobili / Casa';
+			case 'real_estate': return 'Immobili';
 			case 'debts': return 'Debiti';
-			case 'watches': return 'Orologi';
 			case 'other': return 'Altro';
 			case 'commodities': return 'Materie prime';
 			case 'stocks': return 'Stocks';

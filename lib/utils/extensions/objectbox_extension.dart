@@ -55,7 +55,6 @@ extension ObjectBoxExtension on Store {
       box<AssetCategory>().put(AssetCategory(t.vehicles));
       box<AssetCategory>().put(AssetCategory(t.real_estate));
       box<AssetCategory>().put(AssetCategory(t.debts));
-      box<AssetCategory>().put(AssetCategory(t.watches));
       box<AssetCategory>().put(AssetCategory(t.other));
     }
 
@@ -63,7 +62,7 @@ extension ObjectBoxExtension on Store {
     if (categories
         .where((e) => e.marketAssetCategory == MarketAssetCategory.etfs)
         .isEmpty) {
-      final category = AssetCategory("ETFs", userCanSelect: false);
+      final category = AssetCategory("ETFs", userCanSelect: false, order: 0);
       category.setMarketAssetCategory(MarketAssetCategory.etfs);
 
       box<AssetCategory>().put(category);
@@ -71,21 +70,21 @@ extension ObjectBoxExtension on Store {
     if (categories
         .where((e) => e.marketAssetCategory == MarketAssetCategory.stocks)
         .isEmpty) {
-      final category = AssetCategory(t.stocks, userCanSelect: false);
+      final category = AssetCategory(t.stocks, userCanSelect: false, order: 1);
       category.setMarketAssetCategory(MarketAssetCategory.stocks);
       box<AssetCategory>().put(category);
     }
     if (categories
         .where((e) => e.marketAssetCategory == MarketAssetCategory.commodities)
         .isEmpty) {
-      final category = AssetCategory(t.commodities, userCanSelect: false);
+      final category = AssetCategory(t.commodities, userCanSelect: false, order: 2);
       category.setMarketAssetCategory(MarketAssetCategory.commodities);
       box<AssetCategory>().put(category);
     }
     if (categories
         .where((e) => e.marketAssetCategory == MarketAssetCategory.crypto)
         .isEmpty) {
-      final category = AssetCategory("Crypto", userCanSelect: false);
+      final category = AssetCategory("Crypto", userCanSelect: false, order: 3);
       category.setMarketAssetCategory(MarketAssetCategory.crypto);
       box<AssetCategory>().put(category);
     }

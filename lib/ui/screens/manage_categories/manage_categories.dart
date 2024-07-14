@@ -30,19 +30,19 @@ class _ManageCategoriesState extends State<ManageCategories> {
   late ManageCategoriesViewType viewType;
   late List<AssetCategory> categories;
 
-  @override
-  void initState() {
-    viewType = widget.viewType ?? ManageCategoriesViewType.normal;
-
-    // show only categories with assets
+  void loadCategories() {
     categories = GetIt.I<Store>()
         .box<AssetCategory>()
         .query()
         .order(AssetCategory_.order)
         .build()
-        .find()
-        .where((c) => c.getAssets().isNotEmpty)
-        .toList();
+        .find();
+  }
+
+  @override
+  void initState() {
+    viewType = widget.viewType ?? ManageCategoriesViewType.normal;
+    loadCategories();
 
     super.initState();
   }
@@ -113,7 +113,16 @@ class _ManageCategoriesState extends State<ManageCategories> {
                 }
                 setState(() {});
               },
-              icon: Icon(Icons.swap_vert))
+              icon: Icon(Icons.swap_vert)),
+          if (viewType == ManageCategoriesViewType.normal)
+            IconButton(
+                onPressed: () async {
+                  await context.push(AddAssetCategory.route);
+                  setState(() {
+                    loadCategories();
+                  });
+                },
+                icon: Icon(Icons.add))
         ],
       ),
       body: SafeArea(

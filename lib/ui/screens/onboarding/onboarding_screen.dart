@@ -30,29 +30,24 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
       t.onboarding_1_subtitle,
     ),
     OnboardingPage(
-      AppImages.tutorial_1,
+      AppImages.tutorial_2,
       t.onboarding_2_title,
       t.onboarding_2_subtitle,
     ),
     OnboardingPage(
-      AppImages.tutorial_2,
+      AppImages.tutorial_3,
       t.onboarding_3_title,
       t.onboarding_3_subtitle,
     ),
     OnboardingPage(
-      AppImages.tutorial_3,
+      AppImages.tutorial_1,
       t.onboarding_4_title,
       t.onboarding_4_subtitle,
     ),
     OnboardingPage(
-      AppImages.tutorial_1,
+      AppImages.tutorial_4,
       t.onboarding_5_title,
       t.onboarding_5_subtitle,
-    ),
-    OnboardingPage(
-      AppImages.tutorial_4,
-      t.onboarding_6_title,
-      t.onboarding_6_subtitle,
     ),
   ];
 
