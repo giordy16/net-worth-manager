@@ -53,10 +53,6 @@ extension DoubleHelper on double {
     return double.parse((change * this).toStringAsFixed(2));
   }
 
-  double fixDouble() {
-    return Decimal.parse(toString()).toDouble();
-  }
-
   Decimal toDecimal() {
     return Decimal.parse(toString());
   }

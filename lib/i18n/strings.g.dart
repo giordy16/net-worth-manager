@@ -4,9 +4,9 @@
 /// To regenerate, run: `dart run slang`
 ///
 /// Locales: 2
-/// Strings: 304 (152 per locale)
+/// Strings: 308 (154 per locale)
 ///
-/// Built on 2024-07-14 at 08:28 UTC
+/// Built on 2024-07-14 at 09:15 UTC
 
 // coverage:ignore-file
 // ignore_for_file: type=lint
@@ -296,12 +296,14 @@ class Translations implements BaseTranslations<AppLocale, Translations> {
 	String get add_asset_disclaimer => 'If you want to add investments, choose "Market Investment (ETF/Stock/Crypto)" from the previous screen. In this way, they will be tracked automatically.';
 	String get stock_split_message_position => 'The position is influenced by a stock splits:\n\nEntered quantity is <qt> → Quantity after split is <qtSplit>\n\nDo you want to use the quantity after split?';
 	String get stock_split_message_positions => 'The following positions are influenced by a stock splits:\n\n<message>\n\nDo you want to use the quantity after split?';
-	String get stock_split_message_single => '• <date> - Entered quantity: <qt> → Quantity after split: <qtSplit>';
+	String get stock_split_message_single => '• <date>: Entered quantity: <qt> → Quantity after split: <qtSplit>';
 	String get ticker_or_name => 'Name or ticker';
 	String get ticker_search_subtitle => 'Search by name, ticker or ISIN:';
 	String get no_result_found => 'No result found';
 	String get confirm_order => 'Confirm order';
 	String get reorder => 'Reorder';
+	String get what_is_a_share_split => 'What is a share split?';
+	String get what_is_a_share_split_content => 'A stock split increases the number of shares in a company. For example, after a 2-for-1 split, each investor will own double the number of shares, and each share will be worth half as much.\n\nA company may split its stock when the market price per share is so high that it becomes unwieldy when traded. One of the reasons is that a very high share price may deter small investors from buying the shares. Stock splits are usually initiated after a large run up in share price.';
 }
 
 // Path: <root>
@@ -476,12 +478,14 @@ class _StringsIt implements Translations {
 	@override String get add_asset_disclaimer => 'Se vuoi aggiungere investimenti, scegli "Investimento di mercato (ETF/Stocks/Cripto)" dalla schermata precedente. In questo modo, saranno tracciati automaticamente.';
 	@override String get stock_split_message_position => 'La posizione è influenzata da uno split azionario:\n\nQuantità inserita <qt> → Quantita dopo lo split <qtSplit>\n\nVuoi utilizzare la quantità dopo lo split?';
 	@override String get stock_split_message_positions => 'Le seguenti posizioni sono influenzate da uno split azionario:\n\n<message>\n\nVuoi utilizzare la quantità dopo lo split?';
-	@override String get stock_split_message_single => '• <date> - Quantità inserita: <qt> → Quantita dopo lo split: <qtSplit>';
+	@override String get stock_split_message_single => '• <date>: Quantità inserita: <qt> → Quantita dopo lo split: <qtSplit>';
 	@override String get ticker_or_name => 'Nome o ticker';
 	@override String get ticker_search_subtitle => 'Cerca per nome, ticker o ISIN:';
 	@override String get no_result_found => 'Nessun risultato trovato';
 	@override String get confirm_order => 'Conferma ordine';
 	@override String get reorder => 'Riordina';
+	@override String get what_is_a_share_split => 'Che cos\'è uno split azionario?';
+	@override String get what_is_a_share_split_content => 'Un frazionamento azionario aumenta il numero di azioni di una società. Ad esempio, dopo un frazionamento 2 a 1, ogni investitore possiederà un numero doppio di azioni e ogni azione varrà la metà.\n\nUn\'azienda può dividere le proprie azioni quando il prezzo di mercato per azione è così alto che diventa ingombrante quando viene scambiato. Una delle ragioni è che un prezzo molto alto può scoraggiare i piccoli investitori dall\'acquistare le azioni. I frazionamenti azionari vengono solitamente avviati dopo una forte crescita del prezzo delle azioni.';
 }
 
 /// Flat map(s) containing all translations.
@@ -636,12 +640,14 @@ extension on Translations {
 			case 'add_asset_disclaimer': return 'If you want to add investments, choose "Market Investment (ETF/Stock/Crypto)" from the previous screen. In this way, they will be tracked automatically.';
 			case 'stock_split_message_position': return 'The position is influenced by a stock splits:\n\nEntered quantity is <qt> → Quantity after split is <qtSplit>\n\nDo you want to use the quantity after split?';
 			case 'stock_split_message_positions': return 'The following positions are influenced by a stock splits:\n\n<message>\n\nDo you want to use the quantity after split?';
-			case 'stock_split_message_single': return '• <date> - Entered quantity: <qt> → Quantity after split: <qtSplit>';
+			case 'stock_split_message_single': return '• <date>: Entered quantity: <qt> → Quantity after split: <qtSplit>';
 			case 'ticker_or_name': return 'Name or ticker';
 			case 'ticker_search_subtitle': return 'Search by name, ticker or ISIN:';
 			case 'no_result_found': return 'No result found';
 			case 'confirm_order': return 'Confirm order';
 			case 'reorder': return 'Reorder';
+			case 'what_is_a_share_split': return 'What is a share split?';
+			case 'what_is_a_share_split_content': return 'A stock split increases the number of shares in a company. For example, after a 2-for-1 split, each investor will own double the number of shares, and each share will be worth half as much.\n\nA company may split its stock when the market price per share is so high that it becomes unwieldy when traded. One of the reasons is that a very high share price may deter small investors from buying the shares. Stock splits are usually initiated after a large run up in share price.';
 			default: return null;
 		}
 	}
@@ -796,12 +802,14 @@ extension on _StringsIt {
 			case 'add_asset_disclaimer': return 'Se vuoi aggiungere investimenti, scegli "Investimento di mercato (ETF/Stocks/Cripto)" dalla schermata precedente. In questo modo, saranno tracciati automaticamente.';
 			case 'stock_split_message_position': return 'La posizione è influenzata da uno split azionario:\n\nQuantità inserita <qt> → Quantita dopo lo split <qtSplit>\n\nVuoi utilizzare la quantità dopo lo split?';
 			case 'stock_split_message_positions': return 'Le seguenti posizioni sono influenzate da uno split azionario:\n\n<message>\n\nVuoi utilizzare la quantità dopo lo split?';
-			case 'stock_split_message_single': return '• <date> - Quantità inserita: <qt> → Quantita dopo lo split: <qtSplit>';
+			case 'stock_split_message_single': return '• <date>: Quantità inserita: <qt> → Quantita dopo lo split: <qtSplit>';
 			case 'ticker_or_name': return 'Nome o ticker';
 			case 'ticker_search_subtitle': return 'Cerca per nome, ticker o ISIN:';
 			case 'no_result_found': return 'Nessun risultato trovato';
 			case 'confirm_order': return 'Conferma ordine';
 			case 'reorder': return 'Riordina';
+			case 'what_is_a_share_split': return 'Che cos\'è uno split azionario?';
+			case 'what_is_a_share_split_content': return 'Un frazionamento azionario aumenta il numero di azioni di una società. Ad esempio, dopo un frazionamento 2 a 1, ogni investitore possiederà un numero doppio di azioni e ogni azione varrà la metà.\n\nUn\'azienda può dividere le proprie azioni quando il prezzo di mercato per azione è così alto che diventa ingombrante quando viene scambiato. Una delle ragioni è che un prezzo molto alto può scoraggiare i piccoli investitori dall\'acquistare le azioni. I frazionamenti azionari vengono solitamente avviati dopo una forte crescita del prezzo delle azioni.';
 			default: return null;
 		}
 	}

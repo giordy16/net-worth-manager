@@ -1,5 +1,7 @@
 import 'package:bloc/bloc.dart';
+import 'package:decimal/decimal.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
 import 'package:go_router/go_router.dart';
 import 'package:intl/intl.dart';
@@ -112,7 +114,10 @@ class AddMarketAssetBloc
       double qtX = 1;
       for (var split in splitHistory) {
         if (pos.date.isBefore(split.dateFormatted)) {
-          qtX = qtX * split.numerator / split.denominator;
+          qtX = (qtX.toDecimal() *
+                  split.numerator.toDecimal() /
+                  split.denominator.toDecimal())
+              .toDouble();
         }
       }
       if (qtX != 1) {
@@ -123,16 +128,26 @@ class AddMarketAssetBloc
     if (positionsInfluencedBySplit.isNotEmpty) {
       var message = positionsInfluencedBySplit.entries
           .map((entry) => t.stock_split_message_single
-              .replaceAll("<date>", DateFormat("dd/MM/yyyy").format(entry.key.date))
+              .replaceAll(
+                  "<date>", DateFormat("dd/MM/yyyy").format(entry.key.date))
               .replaceAll("<qt>", entry.key.quantity.toStringFormatted())
               .replaceAll("<qtSplit>", entry.value.toStringFormatted()))
           .join("\n");
 
-      bool? yes = await showYesNoBottomSheet(
-        context,
-        t.stock_split_message_positions.replaceAll("<message>", message),
-        isDismissible: false,
-      );
+      bool? yes = await showYesNoBottomSheet(context,
+          t.stock_split_message_positions.replaceAll("<message>", message),
+          isDismissible: false,
+          widgetAboveSelection: IconButton(
+              onPressed: () {
+                showOkOnlyBottomSheet(context, t.what_is_a_share_split_content);
+              },
+              icon: Text(
+                t.what_is_a_share_split,
+                style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                    fontWeight: FontWeight.bold,
+                    decoration: TextDecoration.underline,
+                    decorationColor: Colors.white),
+              )));
 
       if (yes == true) {
         return positionsInfluencedBySplit;

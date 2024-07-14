@@ -401,10 +401,11 @@ class FinancialModelingRepoImpl implements StockApi {
 
       return (response.data as List<dynamic>)
           .map((e) => FMPTickerSearch.fromJson(e as Map<String, dynamic>))
+          .where((e) => e.currency != null).toList()
           .map((e) => MarketInfo(
                 symbol: e.symbol,
                 name: e.name,
-                currency: e.currency,
+                currency: e.currency!,
                 exchangeName: e.stockExchange ?? e.exchangeShortName,
                 exchangeNameShort: e.exchangeShortName,
               ))
@@ -425,10 +426,11 @@ class FinancialModelingRepoImpl implements StockApi {
 
       return (response.data as List<dynamic>)
           .map((e) => FMPISINSearch.fromJson(e as Map<String, dynamic>))
+          .where((e) => e.currency != null).toList()
           .map((e) => MarketInfo(
                 symbol: e.symbol,
                 name: e.companyName,
-                currency: e.currency,
+                currency: e.currency!,
                 exchangeName: e.exchange ?? e.exchangeShortName,
                 exchangeNameShort: e.exchangeShortName,
               ))

@@ -17,58 +17,66 @@ Future<bool?> showOkOnlyBottomSheet(BuildContext context, String message,
   return await showModalBottomSheet(
       context: context,
       builder: (context) {
-        return Container(
-          padding: EdgeInsets.all(Dimensions.l),
-          width: double.infinity,
-          child: Column(mainAxisSize: MainAxisSize.min, children: [
-            if (imageAboveMessage != null) ...[
-              SvgPicture.asset(
-                imageAboveMessage,
-                height: 50,
-                colorFilter: ColorFilter.mode(Colors.white, BlendMode.srcIn),
-              ),
-              SizedBox(height: Dimensions.m),
-            ],
-            Text(
-              message,
-              textAlign: TextAlign.center,
-            ),
-            const SizedBox(height: Dimensions.xl),
-            SizedBox(
-              height: 60,
-              width: double.infinity,
-              child: ElevatedButton(
-                style: ButtonStyle(
-                  backgroundColor:
-                      MaterialStateProperty.all(theme.colorScheme.secondary),
-                  shape: MaterialStateProperty.all<RoundedRectangleBorder>(
-                      RoundedRectangleBorder(
-                          borderRadius:
-                              BorderRadius.circular(Dimensions.cardCorner))),
+        return SingleChildScrollView(
+          child: Container(
+            padding: EdgeInsets.all(Dimensions.l),
+            width: double.infinity,
+            child: Column(mainAxisSize: MainAxisSize.min, children: [
+              if (imageAboveMessage != null) ...[
+                SvgPicture.asset(
+                  imageAboveMessage,
+                  height: 50,
+                  colorFilter: ColorFilter.mode(Colors.white, BlendMode.srcIn),
                 ),
-                onPressed: () {
-                  context.pop(true);
-                },
-                child: Center(
-                  child: Text(
-                    'Ok',
-                    style: theme.textTheme.bodyLarge
-                        ?.copyWith(color: theme.colorScheme.onSecondary),
+                SizedBox(height: Dimensions.m),
+              ],
+              Text(
+                message,
+                textAlign: TextAlign.center,
+              ),
+              const SizedBox(height: Dimensions.xl),
+              SizedBox(
+                height: 60,
+                width: double.infinity,
+                child: ElevatedButton(
+                  style: ButtonStyle(
+                    backgroundColor:
+                        MaterialStateProperty.all(theme.colorScheme.secondary),
+                    shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                        RoundedRectangleBorder(
+                            borderRadius:
+                                BorderRadius.circular(Dimensions.cardCorner))),
+                  ),
+                  onPressed: () {
+                    context.pop(true);
+                  },
+                  child: Center(
+                    child: Text(
+                      'Ok',
+                      style: theme.textTheme.bodyLarge
+                          ?.copyWith(color: theme.colorScheme.onSecondary),
+                    ),
                   ),
                 ),
               ),
-            ),
-            SizedBox(height: MediaQuery.paddingOf(context).bottom)
-          ]),
+              SizedBox(height: MediaQuery.paddingOf(context).bottom)
+            ]),
+          ),
         );
       });
 }
 
-Future<bool?> showYesNoBottomSheet(BuildContext context, String message, {bool isDismissible = true}) async {
+Future<bool?> showYesNoBottomSheet(
+  BuildContext context,
+  String message, {
+  bool isDismissible = true,
+  Widget? widgetAboveSelection,
+}) async {
   ThemeData theme = Theme.of(context);
   return await showModalBottomSheet(
       context: context,
       isDismissible: isDismissible,
+      enableDrag: isDismissible,
       builder: (context) {
         return Container(
           padding: EdgeInsets.all(Dimensions.l),
@@ -78,7 +86,11 @@ Future<bool?> showYesNoBottomSheet(BuildContext context, String message, {bool i
               message,
               textAlign: TextAlign.center,
             ),
-            SizedBox(height: Dimensions.xl),
+            if (widgetAboveSelection != null) ...[
+              SizedBox(height: Dimensions.m),
+              widgetAboveSelection
+            ],
+            SizedBox(height: Dimensions.l),
             Row(
               children: [
                 Expanded(

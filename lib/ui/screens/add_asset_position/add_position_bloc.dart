@@ -1,4 +1,5 @@
 import 'package:bloc/bloc.dart';
+import 'package:decimal/decimal.dart';
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
 import 'package:go_router/go_router.dart';
@@ -57,16 +58,17 @@ class AddPositionBloc extends Bloc<AddPositionEvent, AddPositionState> {
           fetchType: FMPFetchType.addPosition,
           startFetchDate: event.position.date);
 
-      var assetPositionsDate = GetIt.I<Store>()
-              .box<Asset>()
-              .get(event.asset.id)
-              ?.timeValues
-              .map((element) => element.date)
-              .toList() ??
+      var assetPositionsDate = GetIt
+          .I<Store>()
+          .box<Asset>()
+          .get(event.asset.id)
+          ?.timeValues
+          .map((element) => element.date)
+          .toList() ??
           [];
       if (assetPositionsDate.isNotEmpty) {
         DateTime oldestDate =
-            assetPositionsDate.reduce((a, b) => a.isBefore(b) ? a : b);
+        assetPositionsDate.reduce((a, b) => a.isBefore(b) ? a : b);
 
         await netWorthRepo.updateNetWorth(updateStartingDate: oldestDate);
       }
@@ -92,15 +94,17 @@ class AddPositionBloc extends Bloc<AddPositionEvent, AddPositionState> {
     });
   }
 
-  Future<double?> checkSharesSplit(
-      String symbol, AssetTimeValue position) async {
+  Future<double?> checkSharesSplit(String symbol,
+      AssetTimeValue position) async {
     final splitHistory = await stockApi.getSplitHistorical(symbol);
     if (splitHistory.isEmpty) return null;
 
     double qtX = 1;
     for (var split in splitHistory) {
       if (position.date.isBefore(split.dateFormatted)) {
-        qtX = qtX * split.numerator / split.denominator;
+        (qtX.toDecimal() *
+            split.numerator.toDecimal() /
+            split.denominator.toDecimal()).toDouble();
       }
     }
     if (qtX == 1) {
@@ -109,7 +113,9 @@ class AddPositionBloc extends Bloc<AddPositionEvent, AddPositionState> {
 
     bool? yes = await showYesNoBottomSheet(
       context,
-      t.stock_split_message_position.replaceAll("<qt>", position.quantity.toStringFormatted()).replaceAll("<qtSplit>", qtX.toStringFormatted()),
+      t.stock_split_message_position.replaceAll(
+          "<qt>", position.quantity.toStringFormatted()).replaceAll(
+          "<qtSplit>", qtX.toStringFormatted()),
       isDismissible: false,
     );
 

@@ -6,9 +6,9 @@ part 'fmp_ticker_search.g.dart';
 class FMPTickerSearch {
   String symbol;
   String name;
-  String currency;
+  String? currency;
   String? stockExchange;
-  String exchangeShortName;
+  String? exchangeShortName;
 
   FMPTickerSearch(this.symbol, this.name, this.currency, this.stockExchange,
       this.exchangeShortName);

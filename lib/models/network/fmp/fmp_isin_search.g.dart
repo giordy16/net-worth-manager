@@ -10,9 +10,9 @@ FMPISINSearch _$FMPISINSearchFromJson(Map<String, dynamic> json) =>
     FMPISINSearch(
       json['symbol'] as String,
       json['companyName'] as String,
-      json['currency'] as String,
+      json['currency'] as String?,
       json['exchange'] as String?,
-      json['exchangeShortName'] as String,
+      json['exchangeShortName'] as String?,
     );
 
 Map<String, dynamic> _$FMPISINSearchToJson(FMPISINSearch instance) =>

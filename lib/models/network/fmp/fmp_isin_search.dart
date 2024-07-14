@@ -6,9 +6,9 @@ part 'fmp_isin_search.g.dart';
 class FMPISINSearch {
   String symbol;
   String companyName;
-  String currency;
+  String? currency;
   String? exchange;
-  String exchangeShortName;
+  String? exchangeShortName;
 
   FMPISINSearch(this.symbol, this.companyName, this.currency, this.exchange,
       this.exchangeShortName);
