@@ -19,16 +19,16 @@ Future<bool?> showOkOnlyBottomSheet(BuildContext context, String message,
       builder: (context) {
         return SingleChildScrollView(
           child: Container(
-            padding: EdgeInsets.all(Dimensions.l),
+            padding: const EdgeInsets.all(Dimensions.l),
             width: double.infinity,
             child: Column(mainAxisSize: MainAxisSize.min, children: [
               if (imageAboveMessage != null) ...[
                 SvgPicture.asset(
                   imageAboveMessage,
                   height: 50,
-                  colorFilter: ColorFilter.mode(Colors.white, BlendMode.srcIn),
+                  colorFilter: const ColorFilter.mode(Colors.white, BlendMode.srcIn),
                 ),
-                SizedBox(height: Dimensions.m),
+                const SizedBox(height: Dimensions.m),
               ],
               Text(
                 message,
@@ -41,8 +41,8 @@ Future<bool?> showOkOnlyBottomSheet(BuildContext context, String message,
                 child: ElevatedButton(
                   style: ButtonStyle(
                     backgroundColor:
-                        MaterialStateProperty.all(theme.colorScheme.secondary),
-                    shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                        WidgetStateProperty.all(theme.colorScheme.secondary),
+                    shape: WidgetStateProperty.all<RoundedRectangleBorder>(
                         RoundedRectangleBorder(
                             borderRadius:
                                 BorderRadius.circular(Dimensions.cardCorner))),
@@ -79,7 +79,7 @@ Future<bool?> showYesNoBottomSheet(
       enableDrag: isDismissible,
       builder: (context) {
         return Container(
-          padding: EdgeInsets.all(Dimensions.l),
+          padding: const EdgeInsets.all(Dimensions.l),
           width: double.infinity,
           child: Column(mainAxisSize: MainAxisSize.min, children: [
             Text(
@@ -87,19 +87,19 @@ Future<bool?> showYesNoBottomSheet(
               textAlign: TextAlign.center,
             ),
             if (widgetAboveSelection != null) ...[
-              SizedBox(height: Dimensions.m),
+              const SizedBox(height: Dimensions.m),
               widgetAboveSelection
             ],
-            SizedBox(height: Dimensions.l),
+            const SizedBox(height: Dimensions.l),
             Row(
               children: [
                 Expanded(
-                  child: Container(
+                  child: SizedBox(
                     height: 60,
                     child: OutlinedButton(
                       style: ButtonStyle(
                         shape:
-                            MaterialStateProperty.all<RoundedRectangleBorder>(
+                            WidgetStateProperty.all<RoundedRectangleBorder>(
                                 RoundedRectangleBorder(
                                     borderRadius: BorderRadius.circular(
                                         Dimensions.cardCorner))),
@@ -116,16 +116,16 @@ Future<bool?> showYesNoBottomSheet(
                     ),
                   ),
                 ),
-                SizedBox(width: Dimensions.m),
+                const SizedBox(width: Dimensions.m),
                 Expanded(
-                  child: Container(
+                  child: SizedBox(
                     height: 60,
                     child: ElevatedButton(
                       style: ButtonStyle(
-                        backgroundColor: MaterialStateProperty.all(
+                        backgroundColor: WidgetStateProperty.all(
                             theme.colorScheme.secondary),
                         shape:
-                            MaterialStateProperty.all<RoundedRectangleBorder>(
+                            WidgetStateProperty.all<RoundedRectangleBorder>(
                                 RoundedRectangleBorder(
                                     borderRadius: BorderRadius.circular(
                                         Dimensions.cardCorner))),
@@ -162,13 +162,13 @@ Future<Widget?> showSelectionSheet(
           width: double.infinity,
           child: Column(mainAxisSize: MainAxisSize.min, children: [
             Text(t.choose_an_option),
-            SizedBox(height: Dimensions.s),
+            const SizedBox(height: Dimensions.s),
             ...widgets.map((e) => Material(
                   color: Colors.transparent,
                   child: InkWell(
                     onTap: () => context.pop(e),
                     child: Padding(
-                      padding: EdgeInsets.symmetric(vertical: 8),
+                      padding: const EdgeInsets.symmetric(vertical: 8),
                       child: e,
                     ),
                   ),

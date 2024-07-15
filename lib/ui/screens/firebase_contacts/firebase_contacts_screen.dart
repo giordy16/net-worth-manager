@@ -39,7 +39,7 @@ class FirebaseContactsScreen extends StatelessWidget {
 
   FirebaseScreenType type;
 
-  FirebaseContactsScreen(this.type);
+  FirebaseContactsScreen(this.type, {super.key});
 
   final _formKey = GlobalKey<FormState>();
 
@@ -73,7 +73,7 @@ class FirebaseContactsScreen extends StatelessWidget {
           key: _formKey,
           child: SafeArea(
             child: Padding(
-              padding: EdgeInsets.all(Dimensions.screenMargin),
+              padding: const EdgeInsets.all(Dimensions.screenMargin),
               child: Column(
                 children: [
                   AppTextField(
@@ -81,9 +81,9 @@ class FirebaseContactsScreen extends StatelessWidget {
                       isMandatory: true,
                       keyboardType: TextInputType.emailAddress,
                       onTextChange: (message) {
-                        this.userMail = message;
+                        userMail = message;
                       }),
-                  SizedBox(height: 16),
+                  const SizedBox(height: 16),
                   Expanded(
                     child: AppTextField(
                         title: t.message,
@@ -94,7 +94,7 @@ class FirebaseContactsScreen extends StatelessWidget {
                           this.message = message;
                         }),
                   ),
-                  SizedBox(height: 80)
+                  const SizedBox(height: 80)
                 ],
               ),
             ),

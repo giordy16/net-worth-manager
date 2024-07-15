@@ -16,7 +16,7 @@ class AddCustomPieScreen extends StatefulWidget {
 
   CustomPie? customPie;
 
-  AddCustomPieScreen(this.customPie);
+  AddCustomPieScreen(this.customPie, {super.key});
 
   @override
   State<StatefulWidget> createState() => _AddCustomPieScreenState();
@@ -85,14 +85,14 @@ class _AddCustomPieScreenState extends State<AddCustomPieScreen> {
       ),
       body: SafeArea(
         child: Padding(
-          padding: EdgeInsets.symmetric(horizontal: Dimensions.screenMargin),
+          padding: const EdgeInsets.symmetric(horizontal: Dimensions.screenMargin),
           child: ListView(
             children: [
-              SizedBox(height: Dimensions.s),
+              const SizedBox(height: Dimensions.s),
               Text(t.create_allocation_chart_name_message,
                 style: theme.textTheme.bodyMedium,
               ),
-              SizedBox(height: Dimensions.s),
+              const SizedBox(height: Dimensions.s),
               AppTextField(
                   isMandatory: true,
                   title: t.name,
@@ -100,11 +100,11 @@ class _AddCustomPieScreenState extends State<AddCustomPieScreen> {
                   onTextChange: (name) {
                     allocationName = name;
                   }),
-              SizedBox(height: Dimensions.xl),
+              const SizedBox(height: Dimensions.xl),
               Text(t.create_allocation_chart_select,
                 style: theme.textTheme.bodyMedium,
               ),
-              SizedBox(height: Dimensions.s),
+              const SizedBox(height: Dimensions.s),
               Text(t.categories,
                   style: theme.textTheme.titleMedium
                       ?.copyWith(fontWeight: FontWeight.bold)),
@@ -112,7 +112,7 @@ class _AddCustomPieScreenState extends State<AddCustomPieScreen> {
                   .map((cat) => Row(
                         children: [
                           Expanded(child: Text(cat.name)),
-                          SizedBox(
+                          const SizedBox(
                             width: 4,
                           ),
                           Checkbox(
@@ -128,7 +128,7 @@ class _AddCustomPieScreenState extends State<AddCustomPieScreen> {
                         ],
                       ))
                   .toList(),
-              SizedBox(height: Dimensions.m),
+              const SizedBox(height: Dimensions.m),
               Text(t.assets,
                   style: theme.textTheme.titleMedium
                       ?.copyWith(fontWeight: FontWeight.bold)),
@@ -136,7 +136,7 @@ class _AddCustomPieScreenState extends State<AddCustomPieScreen> {
                   .map((asset) => Row(
                         children: [
                           Expanded(child: Text(asset.name)),
-                          SizedBox(
+                          const SizedBox(
                             width: 4,
                           ),
                           Checkbox(

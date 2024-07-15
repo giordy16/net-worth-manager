@@ -83,7 +83,7 @@ class _AddMarketAssetScreenState extends State<AddMarketAssetScreen> {
             return Scaffold(
               appBar: AppBar(
                 title: Text(t.market_asset),
-                actions: [
+                actions: const [
                   // IconButton(
                   //     onPressed: () {
                   //       context.push(ImportInvestmentsScreen.route);
@@ -117,7 +117,7 @@ class _AddMarketAssetScreenState extends State<AddMarketAssetScreen> {
               ),
               body: SafeArea(
                 child: Padding(
-                  padding: EdgeInsets.all(Dimensions.screenMargin),
+                  padding: const EdgeInsets.all(Dimensions.screenMargin),
                   child: Form(
                     key: _formKey,
                     child: SingleChildScrollView(
@@ -233,8 +233,8 @@ class _AddMarketAssetScreenState extends State<AddMarketAssetScreen> {
                               }
                             },
                             style: ElevatedButton.styleFrom(
-                                shape: CircleBorder(),
-                                fixedSize: Size(24, 24),
+                                shape: const CircleBorder(),
+                                fixedSize: const Size(24, 24),
                                 backgroundColor: theme.colorScheme.secondary),
                             icon: const Icon(
                               Icons.add,

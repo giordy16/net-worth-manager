@@ -16,9 +16,9 @@ class AddSelectionItem extends StatelessWidget {
     return OutlinedButton(
         style: ButtonStyle(
           alignment: Alignment.centerLeft,
-          side: MaterialStateProperty.all(
+          side: WidgetStateProperty.all(
               BorderSide(color: theme.colorScheme.secondary)),
-          shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+          shape: WidgetStateProperty.all<RoundedRectangleBorder>(
               RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(Dimensions.cardCorner))),
         ),

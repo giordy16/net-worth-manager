@@ -4,9 +4,9 @@
 /// To regenerate, run: `dart run slang`
 ///
 /// Locales: 2
-/// Strings: 308 (154 per locale)
+/// Strings: 310 (155 per locale)
 ///
-/// Built on 2024-07-14 at 10:38 UTC
+/// Built on 2024-07-14 at 19:55 UTC
 
 // coverage:ignore-file
 // ignore_for_file: type=lint
@@ -304,6 +304,7 @@ class Translations implements BaseTranslations<AppLocale, Translations> {
 	String get reorder => 'Reorder';
 	String get what_is_a_share_split => 'What is a share split?';
 	String get what_is_a_share_split_content => 'A stock split increases the number of shares in a company. For example, after a 2-for-1 split, each investor will own double the number of shares, and each share will be worth half as much.\n\nA company may split its stock when the market price per share is so high that it becomes unwieldy when traded. One of the reasons is that a very high share price may deter small investors from buying the shares. Stock splits are usually initiated after a large run up in share price.';
+	String get push_notification => 'Push notification';
 }
 
 // Path: <root>
@@ -486,6 +487,7 @@ class _StringsIt implements Translations {
 	@override String get reorder => 'Riordina';
 	@override String get what_is_a_share_split => 'Che cos\'è uno split azionario?';
 	@override String get what_is_a_share_split_content => 'Un frazionamento azionario aumenta il numero di azioni di una società. Ad esempio, dopo un frazionamento 2 a 1, ogni investitore possiederà un numero doppio di azioni e ogni azione varrà la metà.\n\nUn\'azienda può dividere le proprie azioni quando il prezzo di mercato per azione è così alto che diventa ingombrante quando viene scambiato. Una delle ragioni è che un prezzo molto alto può scoraggiare i piccoli investitori dall\'acquistare le azioni. I frazionamenti azionari vengono solitamente avviati dopo una forte crescita del prezzo delle azioni.';
+	@override String get push_notification => 'Notifiche push';
 }
 
 /// Flat map(s) containing all translations.
@@ -648,6 +650,7 @@ extension on Translations {
 			case 'reorder': return 'Reorder';
 			case 'what_is_a_share_split': return 'What is a share split?';
 			case 'what_is_a_share_split_content': return 'A stock split increases the number of shares in a company. For example, after a 2-for-1 split, each investor will own double the number of shares, and each share will be worth half as much.\n\nA company may split its stock when the market price per share is so high that it becomes unwieldy when traded. One of the reasons is that a very high share price may deter small investors from buying the shares. Stock splits are usually initiated after a large run up in share price.';
+			case 'push_notification': return 'Push notification';
 			default: return null;
 		}
 	}
@@ -810,6 +813,7 @@ extension on _StringsIt {
 			case 'reorder': return 'Riordina';
 			case 'what_is_a_share_split': return 'Che cos\'è uno split azionario?';
 			case 'what_is_a_share_split_content': return 'Un frazionamento azionario aumenta il numero di azioni di una società. Ad esempio, dopo un frazionamento 2 a 1, ogni investitore possiederà un numero doppio di azioni e ogni azione varrà la metà.\n\nUn\'azienda può dividere le proprie azioni quando il prezzo di mercato per azione è così alto che diventa ingombrante quando viene scambiato. Una delle ragioni è che un prezzo molto alto può scoraggiare i piccoli investitori dall\'acquistare le azioni. I frazionamenti azionari vengono solitamente avviati dopo una forte crescita del prezzo delle azioni.';
+			case 'push_notification': return 'Notifiche push';
 			default: return null;
 		}
 	}

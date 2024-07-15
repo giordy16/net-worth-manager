@@ -18,7 +18,7 @@ import '../../../models/obox/settings_obox.dart';
 import '../../../objectbox.g.dart';
 import '../../../ui/scaffold_with_bottom_navigation.dart';
 import '../../../ui/widgets/modal/bottom_sheet.dart';
-import '../../../utils/Constants.dart';
+import '../../../utils/constants.dart';
 import '../../../utils/enum/fetch_forex_type.dart';
 
 class FinancialModelingRepoImpl implements StockApi {
@@ -27,7 +27,7 @@ class FinancialModelingRepoImpl implements StockApi {
 
   FinancialModelingRepoImpl({this.context}) {
     _client = Dio(BaseOptions(
-        baseUrl: Constants.FMP_BASE_URL, connectTimeout: Duration(seconds: 10)))
+        baseUrl: Constants.FMP_BASE_URL, connectTimeout: const Duration(seconds: 10)))
       ..interceptors.add(InterceptorsWrapper(onRequest: (options, handler) {
         print(
             "= DioRequest ===================================================");
@@ -121,14 +121,14 @@ class FinancialModelingRepoImpl implements StockApi {
             };
 
             var response = await _client.get(
-                "api/v3/historical-chart/1day/${originCurrencyName}${mainCurrencySymbol}",
+                "api/v3/historical-chart/1day/$originCurrencyName$mainCurrencySymbol",
                 queryParameters: queryData);
 
             List<CurrencyForexChange> forexHistory =
                 (response.data as List<dynamic>)
                     .map((e) => FMPForex.fromJson(e as Map<String, dynamic>))
                     .map((e) => CurrencyForexChange(
-                        "${originCurrencyName}${mainCurrencySymbol}",
+                        "$originCurrencyName$mainCurrencySymbol",
                         df.parse(e.date),
                         e.close,
                         DateTime.now().keepOnlyYMD()))
@@ -166,14 +166,14 @@ class FinancialModelingRepoImpl implements StockApi {
             };
 
             var response = await _client.get(
-                "api/v3/historical-chart/1day/${originCurrencyName}${mainCurrencySymbol}",
+                "api/v3/historical-chart/1day/$originCurrencyName$mainCurrencySymbol",
                 queryParameters: queryData);
 
             List<CurrencyForexChange> forexHistory =
                 (response.data as List<dynamic>)
                     .map((e) => FMPForex.fromJson(e as Map<String, dynamic>))
                     .map((e) => CurrencyForexChange(
-                        "${originCurrencyName}${mainCurrencySymbol}",
+                        "$originCurrencyName$mainCurrencySymbol",
                         df.parse(e.date),
                         e.close,
                         DateTime.now().keepOnlyYMD()))
@@ -224,14 +224,14 @@ class FinancialModelingRepoImpl implements StockApi {
             };
 
             var response = await _client.get(
-                "api/v3/historical-chart/1day/${originCurrencyName}${mainCurrencySymbol}",
+                "api/v3/historical-chart/1day/$originCurrencyName$mainCurrencySymbol",
                 queryParameters: queryData);
 
             List<CurrencyForexChange> forexHistory =
                 (response.data as List<dynamic>)
                     .map((e) => FMPForex.fromJson(e as Map<String, dynamic>))
                     .map((e) => CurrencyForexChange(
-                        "${originCurrencyName}${mainCurrencySymbol}",
+                        "$originCurrencyName$mainCurrencySymbol",
                         df.parse(e.date),
                         e.close,
                         DateTime.now().keepOnlyYMD()))

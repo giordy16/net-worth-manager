@@ -12,7 +12,7 @@ class InsightsState extends Equatable {
   final DateTime? startDateGainGraph;
   final DateTime? endDateGainGraph;
 
-  InsightsState({
+  const InsightsState({
     required this.categoryAllocationData,
     required this.gainLossData,
     required this.customAllocationData,
@@ -21,7 +21,7 @@ class InsightsState extends Equatable {
     required this.endDateGainGraph,
   });
 
-  InsightsState.initial({
+  const InsightsState.initial({
     this.categoryAllocationData,
     this.gainLossData,
     this.customAllocationData,

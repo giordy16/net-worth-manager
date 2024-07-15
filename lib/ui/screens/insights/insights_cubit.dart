@@ -16,7 +16,7 @@ class InsightsCubit extends Cubit<InsightsState> {
   InsightsCubit({
     required this.context,
     required this.nwRepo,
-  }) : super(InsightsState.initial()) {
+  }) : super(const InsightsState.initial()) {
     initPage();
   }
 

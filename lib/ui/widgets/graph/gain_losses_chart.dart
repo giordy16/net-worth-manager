@@ -17,8 +17,9 @@ class GainLossesChart extends StatelessWidget {
   DateTime? start;
   DateTime? end;
 
-  GainLossesChart(this.chartData, this.start, this.end);
+  GainLossesChart(this.chartData, this.start, this.end, {super.key});
 
+  @override
   Widget build(BuildContext context) {
     if (chartData == null) {
       return const Center(child: CircularProgressIndicator());
@@ -39,7 +40,7 @@ class GainLossesChart extends StatelessWidget {
       }).toList();
     }
 
-    return Container(
+    return SizedBox(
       height: 250,
       child: SfCartesianChart(
         margin: EdgeInsets.zero,
@@ -70,8 +71,8 @@ class GainLossesChart extends StatelessWidget {
                 data.y > 0 ? Colors.green : Colors.red,
           )
         ],
-        primaryXAxis: CategoryAxis(),
-        primaryYAxis: NumericAxis(anchorRangeToVisiblePoints: false),
+        primaryXAxis: const CategoryAxis(),
+        primaryYAxis: const NumericAxis(anchorRangeToVisiblePoints: false),
       ),
     );
   }

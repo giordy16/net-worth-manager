@@ -9,7 +9,7 @@
 	<key>PLIST_VERSION</key>
 	<string>1</string>
 	<key>BUNDLE_ID</key>
-	<string>com.wealthguard.app</string>
+	<string>com.wealth.guard.app</string>
 	<key>PROJECT_ID</key>
 	<string>wealth-guard-fa252</string>
 	<key>STORAGE_BUCKET</key>
@@ -25,6 +25,6 @@
 	<key>IS_SIGNIN_ENABLED</key>
 	<true></true>
 	<key>GOOGLE_APP_ID</key>
-	<string>1:290000045685:ios:662e6b573f9186b0d6da3c</string>
+	<string>1:290000045685:ios:314b16d316c2fe96d6da3c</string>
 </dict>
 </plist>

@@ -14,7 +14,7 @@ class HomePageCategory extends StatelessWidget {
   Function(Asset) onLongPress;
   Function(AssetCategory) onMoreClick;
 
-  HomePageCategory({
+  HomePageCategory({super.key, 
     required this.category,
     required this.assets,
     required this.onItemClick,

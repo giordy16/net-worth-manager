@@ -20,8 +20,12 @@ class CustomPie {
   double getTotalValue() {
     double value = 0.0;
 
-    assets.forEach((element) => value = value + element.getCurrentValue());
-    categories.forEach((element) => value = value + element.getValue());
+    for (var element in assets) {
+      value = value + element.getCurrentValue();
+    }
+    for (var element in categories) {
+      value = value + element.getValue();
+    }
 
     return double.parse(value.toStringAsFixed(2));
   }

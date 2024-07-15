@@ -5,7 +5,7 @@ class TickerListItem extends StatelessWidget {
   MarketInfo info;
   Function(MarketInfo) onTap;
 
-  TickerListItem(this.info, this.onTap);
+  TickerListItem(this.info, this.onTap, {super.key});
 
   @override
   Widget build(BuildContext context) {

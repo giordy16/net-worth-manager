@@ -15,7 +15,7 @@ import '../../../models/network/fmp/fmp_split_historical.dart';
 import '../../../models/obox/market_info_obox.dart';
 import '../../../objectbox.g.dart';
 import '../../../ui/scaffold_with_bottom_navigation.dart';
-import '../../../utils/Constants.dart';
+import '../../../utils/constants.dart';
 import '../../../utils/enum/fetch_forex_type.dart';
 
 class AlphaVantageRepImp implements StockApi {
@@ -25,7 +25,7 @@ class AlphaVantageRepImp implements StockApi {
   AlphaVantageRepImp({this.context}) {
     _client = Dio(BaseOptions(
         baseUrl: Constants.ALPHA_VANTAGE_BASE_URL,
-        connectTimeout: Duration(seconds: 10)))
+        connectTimeout: const Duration(seconds: 10)))
       ..interceptors.add(InterceptorsWrapper(onRequest: (options, handler) {
         print(
             "= DioRequest ===================================================");
@@ -200,7 +200,7 @@ class AlphaVantageRepImp implements StockApi {
       forexBox.putMany(forexHistory);
     } catch (e) {
       print("fetchForexChange error: $e");
-      return null;
+      return;
     }
   }
 
@@ -227,7 +227,7 @@ class AlphaVantageRepImp implements StockApi {
     required FMPFetchType fetchType,
     DateTime? startFetchDate,
   }) async {
-    const int DAYS_STOP = 10;
+    const int daysStop = 10;
 
     // if already fetch today, not fetching anymore
     if (marketInfo.dateLastPriceFetch != null &&
@@ -265,7 +265,7 @@ class AlphaVantageRepImp implements StockApi {
         int i = 0;
         int daysWithNoValue = 0;
 
-        while (daysWithNoValue < DAYS_STOP) {
+        while (daysWithNoValue < daysStop) {
           DateTime day =
               DateTime.now().subtract(Duration(days: i)).keepOnlyYMD();
           String key = df.format(day);
@@ -292,10 +292,10 @@ class AlphaVantageRepImp implements StockApi {
           .find();
 
       // remove from the data fetched the one already in the db
-      dbHistory.forEach((dbElement) {
+      for (var dbElement in dbHistory) {
         history.removeWhere(
             (element) => element.date.isAtSameMomentAs(dbElement.date));
-      });
+      }
 
       // save
       historyBox.putMany(history);

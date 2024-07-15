@@ -7,10 +7,13 @@ import 'package:net_worth_manager/ui/scaffold_with_bottom_navigation.dart';
 import 'package:net_worth_manager/ui/screens/currency_selection/currency_selection_params.dart';
 import 'package:net_worth_manager/ui/screens/firebase_contacts/firebase_contacts_screen.dart';
 import 'package:net_worth_manager/ui/screens/manage_categories/manage_categories.dart';
+import 'package:net_worth_manager/ui/screens/push_notification/push_notification_screen.dart';
 import 'package:net_worth_manager/ui/screens/soon_available/soon_available_screen.dart';
 import 'package:net_worth_manager/ui/widgets/app_divider.dart';
 import 'package:net_worth_manager/utils/extensions/objectbox_extension.dart';
+import 'package:net_worth_manager/utils/fcm_notification.dart';
 import 'package:package_info_plus/package_info_plus.dart';
+import 'package:permission_handler/permission_handler.dart';
 
 import '../../../app_dimensions.dart';
 import '../../../i18n/strings.g.dart';
@@ -25,6 +28,8 @@ import '../import_export/import_export_screen.dart';
 
 class SettingsScreen extends StatefulWidget {
   static String route = "/SettingsScreen";
+
+  const SettingsScreen({super.key});
 
   @override
   State<StatefulWidget> createState() => _SettingsScreenState();
@@ -72,12 +77,11 @@ class _SettingsScreenState extends State<SettingsScreen> {
   @override
   Widget build(BuildContext context) {
     ThemeData theme = Theme.of(context);
-
     return Scaffold(
       body: SafeArea(
         child: ListView(
           children: [
-            SizedBox(height: Dimensions.s),
+            const SizedBox(height: Dimensions.s),
             Padding(
               padding: const EdgeInsets.symmetric(
                   horizontal: Dimensions.screenMargin),
@@ -100,11 +104,11 @@ class _SettingsScreenState extends State<SettingsScreen> {
                 icon: Row(
                   children: [
                     Text(t.main_currency, style: theme.textTheme.bodyLarge),
-                    Expanded(child: SizedBox()),
+                    const Expanded(child: SizedBox()),
                     Text(currentMainCurrency.name,
                         style: theme.textTheme.bodyLarge),
-                    SizedBox(width: Dimensions.s),
-                    Icon(Icons.arrow_forward_ios, size: 14)
+                    const SizedBox(width: Dimensions.s),
+                    const Icon(Icons.arrow_forward_ios, size: 14)
                   ],
                 ),
               ),
@@ -121,13 +125,31 @@ class _SettingsScreenState extends State<SettingsScreen> {
                 icon: Row(
                   children: [
                     Text(t.import_export, style: theme.textTheme.bodyLarge),
-                    Expanded(child: SizedBox()),
-                    Icon(Icons.arrow_forward_ios, size: 14)
+                    const Expanded(child: SizedBox()),
+                    const Icon(Icons.arrow_forward_ios, size: 14)
                   ],
                 ),
               ),
             ),
-            SizedBox(height: Dimensions.l),
+            Padding(
+              padding: const EdgeInsets.symmetric(
+                  horizontal: Dimensions.screenMargin),
+              child: AppDivider(),
+            ),
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: Dimensions.xxs),
+              child: IconButton(
+                onPressed: () => context.push(PushNotificationScreen.route),
+                icon: Row(
+                  children: [
+                    Text(t.push_notification, style: theme.textTheme.bodyLarge),
+                    const Expanded(child: SizedBox()),
+                    const Icon(Icons.arrow_forward_ios, size: 14)
+                  ],
+                ),
+              ),
+            ),
+            const SizedBox(height: Dimensions.m),
             Padding(
               padding: const EdgeInsets.symmetric(
                   horizontal: Dimensions.screenMargin),
@@ -146,8 +168,8 @@ class _SettingsScreenState extends State<SettingsScreen> {
                 icon: Row(
                   children: [
                     Text(t.hidden_asset, style: theme.textTheme.bodyLarge),
-                    Expanded(child: SizedBox()),
-                    Icon(Icons.arrow_forward_ios, size: 14)
+                    const Expanded(child: SizedBox()),
+                    const Icon(Icons.arrow_forward_ios, size: 14)
                   ],
                 ),
               ),
@@ -164,13 +186,13 @@ class _SettingsScreenState extends State<SettingsScreen> {
                 icon: Row(
                   children: [
                     Text(t.manage_categories, style: theme.textTheme.bodyLarge),
-                    Expanded(child: SizedBox()),
-                    Icon(Icons.arrow_forward_ios, size: 14)
+                    const Expanded(child: SizedBox()),
+                    const Icon(Icons.arrow_forward_ios, size: 14)
                   ],
                 ),
               ),
             ),
-            SizedBox(height: Dimensions.l),
+            const SizedBox(height: Dimensions.l),
             Padding(
               padding: const EdgeInsets.symmetric(
                   horizontal: Dimensions.screenMargin),
@@ -188,8 +210,8 @@ class _SettingsScreenState extends State<SettingsScreen> {
                 icon: Row(
                   children: [
                     Text(t.report_a_problem, style: theme.textTheme.bodyLarge),
-                    Expanded(child: SizedBox()),
-                    Icon(Icons.arrow_forward_ios, size: 14)
+                    const Expanded(child: SizedBox()),
+                    const Icon(Icons.arrow_forward_ios, size: 14)
                   ],
                 ),
               ),
@@ -226,8 +248,8 @@ class _SettingsScreenState extends State<SettingsScreen> {
                 icon: Row(
                   children: [
                     Text(t.soon_available, style: theme.textTheme.bodyLarge),
-                    Expanded(child: SizedBox()),
-                    Icon(Icons.arrow_forward_ios, size: 14)
+                    const Expanded(child: SizedBox()),
+                    const Icon(Icons.arrow_forward_ios, size: 14)
                   ],
                 ),
               ),
@@ -245,8 +267,8 @@ class _SettingsScreenState extends State<SettingsScreen> {
                 icon: Row(
                   children: [
                     Text(t.contact_us, style: theme.textTheme.bodyLarge),
-                    Expanded(child: SizedBox()),
-                    Icon(Icons.arrow_forward_ios, size: 14)
+                    const Expanded(child: SizedBox()),
+                    const Icon(Icons.arrow_forward_ios, size: 14)
                   ],
                 ),
               ),

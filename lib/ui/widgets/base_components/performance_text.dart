@@ -9,7 +9,7 @@ class PerformanceText extends StatelessWidget {
   TextStyle? textStyle;
   TextAlign? textAlign;
 
-  PerformanceText({
+  PerformanceText({super.key, 
     required this.performance,
     required this.type,
     this.textStyle,

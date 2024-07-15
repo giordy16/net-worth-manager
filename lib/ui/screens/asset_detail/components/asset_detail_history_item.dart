@@ -19,7 +19,7 @@ class AssetDetailHistoryItem extends StatelessWidget {
   Asset asset;
   AssetTimeValue timeValue;
 
-  AssetDetailHistoryItem(this.asset, this.timeValue);
+  AssetDetailHistoryItem(this.asset, this.timeValue, {super.key});
 
   DateFormat df = DateFormat("dd/MM/yyyy");
 
@@ -92,7 +92,7 @@ class AssetDetailHistoryItem extends StatelessWidget {
           padding: const EdgeInsets.symmetric(vertical: Dimensions.m),
           child: Row(
             children: [
-              Text("${df.format(timeValue.date)}"),
+              Text(df.format(timeValue.date)),
               const Expanded(child: SizedBox()),
               Column(
                 crossAxisAlignment: CrossAxisAlignment.end,

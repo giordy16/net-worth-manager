@@ -42,7 +42,7 @@ class ScaffoldWithBottomNavigation extends StatefulWidget {
 class _ScaffoldWithBottomNavigationState
     extends State<ScaffoldWithBottomNavigation> {
   int _selectedIndex = 0;
-  final widgets = [HomePage(), InsightsScreen(), SettingsScreen()];
+  final widgets = [const HomePage(), const InsightsScreen(), const SettingsScreen()];
   final PageController _controller = PageController();
 
   @override
@@ -65,11 +65,11 @@ class _ScaffoldWithBottomNavigationState
       bottomNavigationBar: BottomNavigationBar(
         type: BottomNavigationBarType.fixed,
         items: [
-          BottomNavigationBarItem(icon: Icon(Icons.home), label: t.home),
+          BottomNavigationBarItem(icon: const Icon(Icons.home), label: t.home),
           BottomNavigationBarItem(
-              icon: Icon(Icons.insights), label: t.insights),
+              icon: const Icon(Icons.insights), label: t.insights),
           BottomNavigationBarItem(
-              icon: Icon(Icons.settings), label: t.settings),
+              icon: const Icon(Icons.settings), label: t.settings),
         ],
         currentIndex: _selectedIndex,
         onTap: (index) {
@@ -80,7 +80,7 @@ class _ScaffoldWithBottomNavigationState
         },
       ),
       body: PageView(
-          physics: NeverScrollableScrollPhysics(),
+          physics: const NeverScrollableScrollPhysics(),
           controller: _controller,
           children: widgets),
     );

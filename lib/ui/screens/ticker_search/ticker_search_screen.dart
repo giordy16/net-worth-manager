@@ -18,7 +18,7 @@ import 'components/ticker_list_item.dart';
 class TickerSearchScreen extends StatelessWidget {
   static const route = "/TickerSearchScreen";
 
-  TickerSearchScreen({super.key});
+  const TickerSearchScreen({super.key});
 
   void onItemClick(BuildContext context, MarketInfo info) {
     // if (info.exchangeNameShort != "NASDAQ" &&
@@ -53,7 +53,7 @@ class TickerSearchScreen extends StatelessWidget {
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 Text(t.ticker_search_subtitle),
-                                SizedBox(height: 16),
+                                const SizedBox(height: 16),
                                 AppTextField(
                                   title: t.ticker_or_name,
                                   initialValue: state.searchedName,
@@ -63,7 +63,7 @@ class TickerSearchScreen extends StatelessWidget {
                                         .searchAssetByName(name);
                                   },
                                 ),
-                                SizedBox(height: 16),
+                                const SizedBox(height: 16),
                                 AppTextField(
                                   title: "ISIN",
                                   initialValue: state.searchedISIN,

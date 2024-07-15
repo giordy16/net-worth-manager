@@ -33,19 +33,19 @@ extension DoubleHelper on double {
   }
 
   String toStringWithCurrency({String? currency}) {
-    Currency _currency;
+    Currency currency0;
 
     if (currency != null) {
-      _currency = GetIt.I<Store>()
+      currency0 = GetIt.I<Store>()
           .box<Currency>()
           .query(Currency_.name.equals(currency))
           .build()
           .findFirst()!;
     } else {
-      _currency = GetIt.I<Settings>().defaultCurrency.target!;
+      currency0 = GetIt.I<Settings>().defaultCurrency.target!;
     }
 
-    return "${toStringFormatted()} ${_currency.symbol}";
+    return "${toStringFormatted()} ${currency0.symbol}";
   }
 
   double atMainCurrency({required String fromCurrency, DateTime? dateTime}) {

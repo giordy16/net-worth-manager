@@ -22,6 +22,8 @@ class InsightsScreen extends StatefulWidget {
 
   static bool shouldUpdatePage = true;
 
+  const InsightsScreen({super.key});
+
   @override
   State<StatefulWidget> createState() => InsightsScreenState();
 }
@@ -56,8 +58,8 @@ class InsightsScreenState extends State<InsightsScreen>
     selections.addAll({
       Row(
         children: [
-          Icon(Icons.edit),
-          SizedBox(
+          const Icon(Icons.edit),
+          const SizedBox(
             width: 4,
           ),
           Text(t.edit_name)
@@ -71,8 +73,8 @@ class InsightsScreenState extends State<InsightsScreen>
     selections.addAll({
       Row(
         children: [
-          Icon(Icons.delete_outlined),
-          SizedBox(
+          const Icon(Icons.delete_outlined),
+          const SizedBox(
             width: 4,
           ),
           Text(t.delete)
@@ -163,7 +165,7 @@ class InsightsScreenState extends State<InsightsScreen>
                                     .read<InsightsCubit>()
                                     .initCustomAllocationChart();
                               },
-                              icon: Icon(Icons.add),
+                              icon: const Icon(Icons.add),
                             )
                           ],
                         ),
@@ -200,7 +202,7 @@ class InsightsScreenState extends State<InsightsScreen>
                                             element,
                                           );
                                         },
-                                        icon: Icon(Icons.more_vert),
+                                        icon: const Icon(Icons.more_vert),
                                       )
                                     ],
                                   ),

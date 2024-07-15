@@ -55,8 +55,8 @@ class _MarketAssetLineGraph extends State<LineGraph> {
               mainAxisSize: MainAxisSize.max,
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                CircularProgressIndicator(),
-                SizedBox(height: 8),
+                const CircularProgressIndicator(),
+                const SizedBox(height: 8),
                 Text(t.building_chart)
               ],
             ),

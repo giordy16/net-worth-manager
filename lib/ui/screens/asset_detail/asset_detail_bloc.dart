@@ -104,15 +104,15 @@ class AssetDetailBloc extends Bloc<AssetDetailEvent, AssetDetailState> {
         DateTime.now().keepOnlyYMD().difference(oldestDateTime).inDays;
 
     List<GraphData> graphData = await runInDifferentThread(() {
-      List<GraphData> _graphData = [];
+      List<GraphData> graphData0 = [];
 
       for (int i = 0; i < daysToLoop; i++) {
         DateTime date = oldestDateTime.add(Duration(days: i)).keepOnlyYMD();
-        _graphData.add(
+        graphData0.add(
             GraphData(date, AssetRepoImpl().getValueAtDateTime(asset, date)));
       }
 
-      return _graphData;
+      return graphData0;
     });
 
     // in case there is only 1 asset.timeValues and has the date of today,

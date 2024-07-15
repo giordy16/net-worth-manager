@@ -17,7 +17,7 @@ class CurrencySelectionScreen extends StatelessWidget {
 
   CurrencySelectionParams params;
 
-  CurrencySelectionScreen(this.params);
+  CurrencySelectionScreen(this.params, {super.key});
 
   @override
   Widget build(BuildContext context) {

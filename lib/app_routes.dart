@@ -25,6 +25,7 @@ import 'package:net_worth_manager/ui/screens/import_investments/import_investmen
 import 'package:net_worth_manager/ui/screens/full_asset_allocation/full_asset_allocation_screen.dart';
 import 'package:net_worth_manager/ui/screens/manage_categories/manage_categories.dart';
 import 'package:net_worth_manager/ui/screens/onboarding/onboarding_screen.dart';
+import 'package:net_worth_manager/ui/screens/push_notification/push_notification_screen.dart';
 import 'package:net_worth_manager/ui/screens/sell_position/sell_position_screen.dart';
 import 'package:net_worth_manager/ui/screens/soon_available/soon_available_screen.dart';
 import 'package:net_worth_manager/ui/screens/ticker_search/ticker_search_screen.dart';
@@ -36,7 +37,7 @@ final appRoutes = GoRouter(
       GoRoute(
         path: ScaffoldWithBottomNavigation.path,
         builder: (context, state) =>
-            LoadingOverlay(child: ScaffoldWithBottomNavigation()),
+            const LoadingOverlay(child: ScaffoldWithBottomNavigation()),
       ),
       GoRoute(
         path: AddAssetScreen.route,
@@ -77,7 +78,7 @@ final appRoutes = GoRouter(
       ),
       GoRoute(
         path: TickerSearchScreen.route,
-        builder: (context, state) => TickerSearchScreen(),
+        builder: (context, state) => const TickerSearchScreen(),
       ),
       GoRoute(
         path: AddMarketAssetScreen.route,
@@ -88,11 +89,11 @@ final appRoutes = GoRouter(
       GoRoute(
         path: ImportInvestmentsScreen.route,
         builder: (context, state) =>
-            LoadingOverlay(child: ImportInvestmentsScreen()),
+            const LoadingOverlay(child: ImportInvestmentsScreen()),
       ),
       GoRoute(
         path: FullAssetAllocationScreen.route,
-        builder: (context, state) => FullAssetAllocationScreen(),
+        builder: (context, state) => const FullAssetAllocationScreen(),
       ),
       GoRoute(
         path: AddCustomPieScreen.route,
@@ -102,15 +103,15 @@ final appRoutes = GoRouter(
       GoRoute(
         path: ImportExportScreen.path,
         builder: (context, state) =>
-            LoadingOverlay(child: ImportExportScreen()),
+            const LoadingOverlay(child: ImportExportScreen()),
       ),
       GoRoute(
         path: OnboardingScreen.path,
-        builder: (context, state) => OnboardingScreen(),
+        builder: (context, state) => const OnboardingScreen(),
       ),
       GoRoute(
         path: HiddenAssetScreen.path,
-        builder: (context, state) => HiddenAssetScreen(),
+        builder: (context, state) => const HiddenAssetScreen(),
       ),
       GoRoute(
           path: SellPositionScreen.path,
@@ -134,7 +135,10 @@ final appRoutes = GoRouter(
       ),
       GoRoute(
           path: SoonAvailableScreen.path,
-          builder: (context, state) => SoonAvailableScreen()),
+          builder: (context, state) => const SoonAvailableScreen()),
+      GoRoute(
+          path: PushNotificationScreen.route,
+          builder: (context, state) => PushNotificationScreen()),
     ],
     redirect: (context, state) {
       if (GetIt.I<Settings>().showTutorial == true &&

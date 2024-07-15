@@ -110,7 +110,7 @@ class _AddAssetPositionScreenState extends State<AddAssetPositionScreen> {
                                 extra: widget.params);
                           },
                         ),
-                        SizedBox(height: 8),
+                        const SizedBox(height: 8),
                       ],
                       AppBottomFab(
                         text: t.save,

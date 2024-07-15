@@ -6,6 +6,8 @@ import '../../../i18n/strings.g.dart';
 class ImportInvestmentsScreen extends StatefulWidget {
   static String route = "/ImportInvestmentsScreen";
 
+  const ImportInvestmentsScreen({super.key});
+
   @override
   State<StatefulWidget> createState() => _ImportInvestmentsScreenState();
 }
@@ -30,8 +32,8 @@ class _ImportInvestmentsScreenState extends State<ImportInvestmentsScreen> {
                 fontWeight: FontWeight.bold,
               ),
             ),
-            SizedBox(height: Dimensions.xs,),
-            Text("Choose from which platform you want to import data")
+            const SizedBox(height: Dimensions.xs,),
+            const Text("Choose from which platform you want to import data")
           ],
         ),
       ),

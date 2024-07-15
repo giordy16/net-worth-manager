@@ -82,7 +82,7 @@ class NetWorthRepoImpl extends NetWorthRepo {
         // until nwValues.first.date - 1
         //debugPrint("updateNetWorth 7.b");
         daysToBuffer = nwValues.first.date
-            .subtract(Duration(days: 1))
+            .subtract(const Duration(days: 1))
             .difference(oldestAssetDate)
             .inDays;
       }

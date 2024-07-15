@@ -59,11 +59,11 @@ class DefaultFirebaseOptions {
 
   static const FirebaseOptions ios = FirebaseOptions(
     apiKey: 'AIzaSyCjAgX1oqIJNS5o3cjoDLHKI6bc910B6T4',
-    appId: '1:290000045685:ios:662e6b573f9186b0d6da3c',
+    appId: '1:290000045685:ios:314b16d316c2fe96d6da3c',
     messagingSenderId: '290000045685',
     projectId: 'wealth-guard-fa252',
     storageBucket: 'wealth-guard-fa252.appspot.com',
-    iosBundleId: 'com.wealthguard.app',
+    iosBundleId: 'com.wealth.guard.app',
   );
 
 }

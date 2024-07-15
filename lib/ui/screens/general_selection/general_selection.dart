@@ -12,7 +12,7 @@ class GeneralSelection extends StatelessWidget {
 
   GeneralSelectionParams params;
 
-  GeneralSelection(this.params);
+  GeneralSelection(this.params, {super.key});
 
   @override
   Widget build(BuildContext context) {

@@ -42,8 +42,8 @@ class AssetDetailScreen extends StatelessWidget {
     selections.addAll({
       Row(
         children: [
-          Icon(Icons.swap_horiz),
-          SizedBox(width: 4),
+          const Icon(Icons.swap_horiz),
+          const SizedBox(width: 4),
           Text(t.change_category),
         ],
       ): () async {
@@ -64,8 +64,8 @@ class AssetDetailScreen extends StatelessWidget {
     selections.addAll({
       Row(
         children: [
-          Icon(Icons.delete_outline),
-          SizedBox(width: 4),
+          const Icon(Icons.delete_outline),
+          const SizedBox(width: 4),
           Text(t.delete),
         ],
       ): () async {
@@ -109,7 +109,7 @@ class AssetDetailScreen extends StatelessWidget {
                   actions: [
                     IconButton(
                         onPressed: () => showMore(context, asset),
-                        icon: Icon(Icons.more_vert))
+                        icon: const Icon(Icons.more_vert))
                   ],
                 ),
                 body: SafeArea(

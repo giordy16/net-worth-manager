@@ -7,7 +7,6 @@ import 'package:net_worth_manager/app_dimensions.dart';
 import 'package:net_worth_manager/domain/repository/asset/asset_repo_impl.dart';
 import 'package:net_worth_manager/domain/repository/net_worth/net_worth_repo_impl.dart';
 import 'package:net_worth_manager/models/obox/asset_category_obox.dart';
-import 'package:net_worth_manager/models/obox/settings_obox.dart';
 import 'package:net_worth_manager/ui/scaffold_with_bottom_navigation.dart';
 import 'package:net_worth_manager/ui/screens/add_asset/add_asset_screen.dart';
 import 'package:net_worth_manager/ui/screens/asset_detail/asset_detail_screen.dart';
@@ -16,13 +15,11 @@ import 'package:net_worth_manager/ui/screens/home/home_page_event.dart';
 import 'package:net_worth_manager/ui/screens/manage_categories/manage_categories.dart';
 import 'package:net_worth_manager/ui/widgets/base_components/performance_text.dart';
 import 'package:net_worth_manager/ui/widgets/modal/bottom_sheet.dart';
-import 'package:net_worth_manager/utils/enum/graph_data_gap_enum.dart';
 import 'package:net_worth_manager/utils/extensions/number_extension.dart';
 
 import '../../../app_images.dart';
 import '../../../i18n/strings.g.dart';
 import '../../../models/obox/asset_obox.dart';
-import '../../../objectbox.g.dart';
 import '../../widgets/graph/line_graph.dart';
 import '../add_category/add_category_screen.dart';
 import '../add_selection/add_selection_screen.dart';
@@ -68,8 +65,8 @@ class HomePageScreenState extends State<HomePage>
     selections.addAll({
       Row(
         children: [
-          Icon(Icons.edit),
-          SizedBox(
+          const Icon(Icons.edit),
+          const SizedBox(
             width: 4,
           ),
           Text(t.edit_name)
@@ -91,7 +88,8 @@ class HomePageScreenState extends State<HomePage>
           Text(t.reorder)
         ],
       ): () async {
-        await context.push(ManageCategories.path, extra: ManageCategoriesViewType.reorder);
+        await context.push(ManageCategories.path,
+            extra: ManageCategoriesViewType.reorder);
         context.read<HomePageBloc>().add(FetchHomePage());
         ScaffoldWithBottomNavigation.updateScreens();
       }
@@ -101,8 +99,8 @@ class HomePageScreenState extends State<HomePage>
       selections.addAll({
         Row(
           children: [
-            Icon(Icons.delete_outlined),
-            SizedBox(
+            const Icon(Icons.delete_outlined),
+            const SizedBox(
               width: 4,
             ),
             Text(t.delete)
@@ -133,8 +131,8 @@ class HomePageScreenState extends State<HomePage>
       selections.addAll({
         Row(
           children: [
-            Icon(Icons.edit),
-            SizedBox(
+            const Icon(Icons.edit),
+            const SizedBox(
               width: 4,
             ),
             Text(t.edit_name)
@@ -151,8 +149,8 @@ class HomePageScreenState extends State<HomePage>
     selections.addAll({
       Row(
         children: [
-          Icon(Icons.visibility_off),
-          SizedBox(
+          const Icon(Icons.visibility_off),
+          const SizedBox(
             width: 4,
           ),
           Text(t.hide)
@@ -167,8 +165,8 @@ class HomePageScreenState extends State<HomePage>
     selections.addAll({
       Row(
         children: [
-          Icon(Icons.delete_outlined),
-          SizedBox(
+          const Icon(Icons.delete_outlined),
+          const SizedBox(
             width: 4,
           ),
           Text(t.delete)

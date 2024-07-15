@@ -16,6 +16,8 @@ import '../../../objectbox.g.dart';
 class OnboardingScreen extends StatefulWidget {
   static String path = "/OnboardingScreen";
 
+  const OnboardingScreen({super.key});
+
   @override
   State<StatefulWidget> createState() => _OnboardingScreenState();
 }
@@ -83,8 +85,8 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
           children: [
             Expanded(
                 child: PageView(
-              children: pages,
               controller: controller,
+              children: pages,
             )),
             SmoothPageIndicator(
               controller: controller,
@@ -95,7 +97,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                   type: WormType.thinUnderground,
                   activeDotColor: Colors.white),
             ),
-            SizedBox(
+            const SizedBox(
               height: 32,
             ),
             Center(
@@ -106,7 +108,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                   } else {
                     controller.animateToPage(
                       (controller.page! + 1).toInt(),
-                      duration: Duration(milliseconds: 100),
+                      duration: const Duration(milliseconds: 100),
                       curve: Curves.ease,
                     );
                   }
@@ -114,7 +116,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                 style: ElevatedButton.styleFrom(
                     padding: EdgeInsets.zero,
                     backgroundColor: theme.colorScheme.onSurface),
-                child: Container(
+                child: SizedBox(
                     height: 60,
                     width: 60,
                     child: Icon(
@@ -123,7 +125,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                     )),
               ),
             ),
-            SizedBox(height: Dimensions.l)
+            const SizedBox(height: Dimensions.l)
           ],
         ),
       ),
@@ -136,7 +138,7 @@ class OnboardingPage extends StatelessWidget {
   String title;
   String subTitle;
 
-  OnboardingPage(this.imagePath, this.title, this.subTitle);
+  OnboardingPage(this.imagePath, this.title, this.subTitle, {super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -154,7 +156,7 @@ class OnboardingPage extends StatelessWidget {
               padding: const EdgeInsets.all(16),
               child: Image.asset(imagePath),
             )),
-            SizedBox(height: Dimensions.l),
+            const SizedBox(height: Dimensions.l),
             Text(
               title,
               textAlign: TextAlign.center,
@@ -162,13 +164,13 @@ class OnboardingPage extends StatelessWidget {
                 fontWeight: FontWeight.bold,
               ),
             ),
-            SizedBox(height: Dimensions.s),
+            const SizedBox(height: Dimensions.s),
             Text(
               subTitle,
               textAlign: TextAlign.center,
               style: theme.textTheme.bodyMedium,
             ),
-            SizedBox(height: Dimensions.l),
+            const SizedBox(height: Dimensions.l),
           ],
         ),
       ),

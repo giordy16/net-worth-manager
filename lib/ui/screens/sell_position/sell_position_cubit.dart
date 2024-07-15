@@ -1,8 +1,5 @@
 import 'package:bloc/bloc.dart';
-import 'package:decimal/decimal.dart';
-import 'package:go_router/go_router.dart';
 import 'package:net_worth_manager/models/obox/asset_time_value_obox.dart';
-import 'package:net_worth_manager/objectbox.g.dart';
 import 'package:net_worth_manager/ui/screens/sell_position/sell_position_state.dart';
 import 'package:net_worth_manager/utils/extensions/number_extension.dart';
 

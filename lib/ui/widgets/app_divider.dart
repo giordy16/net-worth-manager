@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 class AppDivider extends StatelessWidget {
   double? height;
 
-  AppDivider({this.height});
+  AppDivider({super.key, this.height});
 
   @override
   Widget build(BuildContext context) {

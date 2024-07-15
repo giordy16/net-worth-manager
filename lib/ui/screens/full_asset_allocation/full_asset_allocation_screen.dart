@@ -10,6 +10,8 @@ import '../../widgets/graph/allocation_pie_chart.dart';
 class FullAssetAllocationScreen extends StatelessWidget {
   static String route = "/FullAssetAllocationScreen";
 
+  const FullAssetAllocationScreen({super.key});
+
   @override
   Widget build(BuildContext context) {
     final categories = GetIt.I<Store>()
@@ -22,7 +24,7 @@ class FullAssetAllocationScreen extends StatelessWidget {
       appBar: AppBar(title: Text(t.asset_allocation),),
       body: SafeArea(
         child: Padding(
-          padding: EdgeInsets.symmetric(horizontal: Dimensions.screenMargin),
+          padding: const EdgeInsets.symmetric(horizontal: Dimensions.screenMargin),
           child: ListView(
               children: categories.map((cat) {
             final assets = cat.getAssets().where((a) => a.getCurrentValue() > 0).toList();
@@ -48,7 +50,7 @@ class FullAssetAllocationScreen extends StatelessWidget {
                             (asset.getCurrentValue() / cat.getValue() * 100)
                                 .toStringAsFixed(1))))
                     .toList()),
-                SizedBox(height: Dimensions.l),
+                const SizedBox(height: Dimensions.l),
               ],
             );
           }).toList()),

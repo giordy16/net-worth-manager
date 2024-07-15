@@ -20,7 +20,7 @@ class ManageCategories extends StatefulWidget {
 
   ManageCategoriesViewType? viewType;
 
-  ManageCategories(this.viewType);
+  ManageCategories(this.viewType, {super.key});
 
   @override
   State<StatefulWidget> createState() => _ManageCategoriesState();
@@ -53,8 +53,8 @@ class _ManageCategoriesState extends State<ManageCategories> {
     selections.addAll({
       Row(
         children: [
-          Icon(Icons.edit),
-          SizedBox(
+          const Icon(Icons.edit),
+          const SizedBox(
             width: 4,
           ),
           Text(t.edit_name)
@@ -70,8 +70,8 @@ class _ManageCategoriesState extends State<ManageCategories> {
       selections.addAll({
         Row(
           children: [
-            Icon(Icons.delete_outlined),
-            SizedBox(
+            const Icon(Icons.delete_outlined),
+            const SizedBox(
               width: 4,
             ),
             Text(t.delete)
@@ -113,7 +113,7 @@ class _ManageCategoriesState extends State<ManageCategories> {
                 }
                 setState(() {});
               },
-              icon: Icon(Icons.swap_vert)),
+              icon: const Icon(Icons.swap_vert)),
           if (viewType == ManageCategoriesViewType.normal)
             IconButton(
                 onPressed: () async {
@@ -122,7 +122,7 @@ class _ManageCategoriesState extends State<ManageCategories> {
                     loadCategories();
                   });
                 },
-                icon: Icon(Icons.add))
+                icon: const Icon(Icons.add))
         ],
       ),
       body: SafeArea(
@@ -140,7 +140,7 @@ class _ManageCategoriesState extends State<ManageCategories> {
         return IconButton(
             onPressed: () => onShowMoreCategory(categories[index]),
             icon: Padding(
-              padding: EdgeInsets.symmetric(
+              padding: const EdgeInsets.symmetric(
                 horizontal: Dimensions.screenMargin,
                 vertical: 8,
               ),
@@ -151,15 +151,15 @@ class _ManageCategoriesState extends State<ManageCategories> {
                     categories[index].name,
                     style: Theme.of(context).textTheme.bodyLarge,
                   )),
-                  SizedBox(width: Dimensions.s),
-                  Icon(Icons.more_vert)
+                  const SizedBox(width: Dimensions.s),
+                  const Icon(Icons.more_vert)
                 ],
               ),
             ));
       },
       separatorBuilder: (BuildContext context, int index) {
         return Padding(
-            padding: EdgeInsets.symmetric(horizontal: Dimensions.screenMargin),
+            padding: const EdgeInsets.symmetric(horizontal: Dimensions.screenMargin),
             child: AppDivider());
       },
       itemCount: categories.length,
@@ -174,13 +174,13 @@ class _ManageCategoriesState extends State<ManageCategories> {
               children: categories.map((c) {
                 return Padding(
                   key: Key(c.hashCode.toString()),
-                  padding: EdgeInsets.symmetric(
+                  padding: const EdgeInsets.symmetric(
                     horizontal: Dimensions.screenMargin,
                   ),
                   child: Column(
                     children: [
                       Padding(
-                        padding: EdgeInsets.symmetric(
+                        padding: const EdgeInsets.symmetric(
                           horizontal: 8.0,
                           vertical: 16,
                         ),
@@ -191,8 +191,8 @@ class _ManageCategoriesState extends State<ManageCategories> {
                               c.name,
                               style: Theme.of(context).textTheme.bodyLarge,
                             )),
-                            SizedBox(width: Dimensions.s),
-                            Icon(Icons.drag_handle)
+                            const SizedBox(width: Dimensions.s),
+                            const Icon(Icons.drag_handle)
                           ],
                         ),
                       ),

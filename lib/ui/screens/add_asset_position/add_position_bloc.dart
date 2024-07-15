@@ -3,7 +3,6 @@ import 'package:decimal/decimal.dart';
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
 import 'package:go_router/go_router.dart';
-import 'package:intl/intl.dart';
 import 'package:net_worth_manager/domain/repository/net_worth/net_worth_repo.dart';
 import 'package:net_worth_manager/domain/repository/stock/stock_api.dart';
 import 'package:net_worth_manager/ui/screens/add_asset_position/add_position_event.dart';

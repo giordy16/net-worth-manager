@@ -1,5 +1,4 @@
 import 'package:get_it/get_it.dart';
-import 'package:objectbox/objectbox.dart';
 
 import '../../objectbox.g.dart';
 import 'asset_obox.dart';
@@ -41,6 +40,7 @@ class AssetCategory {
     return name;
   }
 
+  @override
   bool operator ==(dynamic other) =>
       other != null &&
       other is AssetCategory &&

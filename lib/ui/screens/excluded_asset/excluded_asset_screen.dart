@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
-import 'package:go_router/go_router.dart';
 import 'package:net_worth_manager/app_dimensions.dart';
 import 'package:net_worth_manager/ui/scaffold_with_bottom_navigation.dart';
 import 'package:net_worth_manager/ui/widgets/app_divider.dart';
@@ -12,6 +11,8 @@ import '../../../objectbox.g.dart';
 
 class HiddenAssetScreen extends StatefulWidget {
   static String path = "/HiddenAssetScreen";
+
+  const HiddenAssetScreen({super.key});
 
   @override
   State<StatefulWidget> createState() => _HiddenAssetScreenState();
@@ -48,7 +49,7 @@ class _HiddenAssetScreenState extends State<HiddenAssetScreen> {
                   return IconButton(
                       onPressed: () => onItemClick(excludedAsset[index]),
                       icon: Padding(
-                        padding: EdgeInsets.symmetric(
+                        padding: const EdgeInsets.symmetric(
                           horizontal: Dimensions.screenMargin,
                           vertical: 8,
                         ),
@@ -59,8 +60,8 @@ class _HiddenAssetScreenState extends State<HiddenAssetScreen> {
                               excludedAsset[index].name,
                               style: Theme.of(context).textTheme.bodyMedium,
                             )),
-                            SizedBox(width: Dimensions.s),
-                            Icon(Icons.undo)
+                            const SizedBox(width: Dimensions.s),
+                            const Icon(Icons.undo)
                           ],
                         ),
                       ));

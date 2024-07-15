@@ -7,6 +7,7 @@ import 'package:net_worth_manager/models/obox/settings_obox.dart';
 import 'package:net_worth_manager/utils/enum/fetch_forex_type.dart';
 import 'package:net_worth_manager/utils/extensions/date_time_extension.dart';
 import 'package:net_worth_manager/utils/extensions/objectbox_extension.dart';
+import 'package:net_worth_manager/utils/fcm_notification.dart';
 import 'package:objectbox/objectbox.dart';
 import 'app_routes.dart';
 import 'domain/database/objectbox.dart';

@@ -154,5 +154,6 @@
   "confirm_order": "Confirm order",
   "reorder": "Reorder",
   "what_is_a_share_split": "What is a share split?",
-  "what_is_a_share_split_content": "A stock split increases the number of shares in a company. For example, after a 2-for-1 split, each investor will own double the number of shares, and each share will be worth half as much.\n\nA company may split its stock when the market price per share is so high that it becomes unwieldy when traded. One of the reasons is that a very high share price may deter small investors from buying the shares. Stock splits are usually initiated after a large run up in share price."
+  "what_is_a_share_split_content": "A stock split increases the number of shares in a company. For example, after a 2-for-1 split, each investor will own double the number of shares, and each share will be worth half as much.\n\nA company may split its stock when the market price per share is so high that it becomes unwieldy when traded. One of the reasons is that a very high share price may deter small investors from buying the shares. Stock splits are usually initiated after a large run up in share price.",
+  "push_notification": "Push notification"
 }

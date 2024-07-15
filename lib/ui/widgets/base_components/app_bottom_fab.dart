@@ -25,7 +25,7 @@ class AppBottomFab extends StatelessWidget {
       child: ElevatedButton(
         style: outlinedStyle
             ? ButtonStyle(
-                shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                shape: WidgetStateProperty.all<RoundedRectangleBorder>(
                     RoundedRectangleBorder(
                         side: BorderSide(
                             color: theme.colorScheme.primary, width: 2),
@@ -33,10 +33,10 @@ class AppBottomFab extends StatelessWidget {
                             BorderRadius.circular(Dimensions.cardCorner))),
               )
             : ButtonStyle(
-                backgroundColor: MaterialStateProperty.all(enable
+                backgroundColor: WidgetStateProperty.all(enable
                     ? theme.colorScheme.secondary
                     : theme.colorScheme.secondary.withOpacity(0.3)),
-                shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                shape: WidgetStateProperty.all<RoundedRectangleBorder>(
                     RoundedRectangleBorder(
                         borderRadius:
                             BorderRadius.circular(Dimensions.cardCorner))),

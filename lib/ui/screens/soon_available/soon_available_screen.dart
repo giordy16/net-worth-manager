@@ -9,6 +9,8 @@ import '../firebase_contacts/firebase_contacts_screen.dart';
 class SoonAvailableScreen extends StatelessWidget {
   static String path = "/SoonAvailableScreen";
 
+  const SoonAvailableScreen({super.key});
+
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
@@ -25,10 +27,10 @@ class SoonAvailableScreen extends StatelessWidget {
       ),
       body: SafeArea(
         child: Padding(
-          padding: EdgeInsets.symmetric(horizontal: Dimensions.screenMargin),
+          padding: const EdgeInsets.symmetric(horizontal: Dimensions.screenMargin),
           child: ListView(
             children: [
-              SizedBox(height: 8),
+              const SizedBox(height: 8),
               Text(
                 t.soon_available_message,
                 style: theme.textTheme.titleMedium
@@ -37,7 +39,7 @@ class SoonAvailableScreen extends StatelessWidget {
               ...t.soon_available_task.map((feature) => Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        SizedBox(height: 8),
+                        const SizedBox(height: 8),
                         Row(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [

@@ -9,7 +9,7 @@ class HomePageAsset extends StatelessWidget {
   Function(Asset) onItemClick;
   Function(Asset) onLongPress;
 
-  HomePageAsset(this.asset, this.onItemClick, this.onLongPress);
+  HomePageAsset(this.asset, this.onItemClick, this.onLongPress, {super.key});
 
   @override
   Widget build(BuildContext context) {

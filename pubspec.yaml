@@ -2,7 +2,7 @@ name: net_worth_manager
 description: The app for managing your net worth
 publish_to: 'none' # Remove this line if you wish to publish to pub.dev
 
-version: 0.4.0+5
+version: 0.4.1+6
 
 environment:
   sdk: '>=3.0.0 <3.19.6'
@@ -49,6 +49,8 @@ dependencies:
   decimal: ^3.0.2
   slang: ^3.31.1
   slang_flutter: ^3.31.0
+  permission_handler: ^11.3.1
+  firebase_messaging: ^15.0.3
 
 dev_dependencies:
   flutter_test:

@@ -14,7 +14,7 @@ class PieChartData {
 class AllocationPieChart extends StatelessWidget {
   List<PieChartData>? data;
 
-  AllocationPieChart(this.data);
+  AllocationPieChart(this.data, {super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -24,7 +24,7 @@ class AllocationPieChart extends StatelessWidget {
       return const Center(child: CircularProgressIndicator());
     }
 
-    return Container(
+    return SizedBox(
       height: 200,
       child: SfCircularChart(
           margin: EdgeInsets.zero,
