@@ -110,7 +110,7 @@ class AddMarketAssetBloc
     Map<AssetTimeValue, double> positionsInfluencedBySplit = {};
 
     for (var pos in positions) {
-      double qtX = 1;
+      double qtX = pos.quantity;
       for (var split in splitHistory) {
         if (pos.date.isBefore(split.dateFormatted)) {
           qtX = (qtX.toDecimal() *

@@ -98,7 +98,7 @@ class AddPositionBloc extends Bloc<AddPositionEvent, AddPositionState> {
     final splitHistory = await stockApi.getSplitHistorical(symbol);
     if (splitHistory.isEmpty) return null;
 
-    double qtX = 1;
+    double qtX = position.quantity;
     for (var split in splitHistory) {
       if (position.date.isBefore(split.dateFormatted)) {
         (qtX.toDecimal() *
