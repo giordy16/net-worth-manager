@@ -41,8 +41,8 @@ final appRoutes = GoRouter(
       ),
       GoRoute(
         path: AddAssetScreen.route,
-        builder: (context, state) => AddAssetScreen(
-          asset: state.extra as Asset?,
+        builder: (context, state) => LoadingOverlay(
+          child: AddAssetScreen(asset: state.extra as Asset?),
         ),
       ),
       GoRoute(
@@ -97,8 +97,8 @@ final appRoutes = GoRouter(
       ),
       GoRoute(
         path: AddCustomPieScreen.route,
-        builder: (context, state) =>
-            AddCustomPieScreen(state.extra as CustomPie?),
+        builder: (context, state) => LoadingOverlay(
+            child: AddCustomPieScreen(state.extra as CustomPie?)),
       ),
       GoRoute(
         path: ImportExportScreen.path,

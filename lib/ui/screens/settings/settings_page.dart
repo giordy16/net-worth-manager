@@ -294,6 +294,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                 textAlign: TextAlign.center,
               ),
             ),
+            const SizedBox(height: Dimensions.m),
           ],
         ),
       ),

@@ -1,5 +1,8 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
+import 'package:google_mobile_ads/google_mobile_ads.dart';
 import 'package:net_worth_manager/app_theme.dart';
 import 'package:net_worth_manager/domain/repository/net_worth/net_worth_repo_impl.dart';
 import 'package:net_worth_manager/i18n/strings.g.dart';
@@ -7,7 +10,6 @@ import 'package:net_worth_manager/models/obox/settings_obox.dart';
 import 'package:net_worth_manager/utils/enum/fetch_forex_type.dart';
 import 'package:net_worth_manager/utils/extensions/date_time_extension.dart';
 import 'package:net_worth_manager/utils/extensions/objectbox_extension.dart';
-import 'package:net_worth_manager/utils/fcm_notification.dart';
 import 'package:objectbox/objectbox.dart';
 import 'app_routes.dart';
 import 'domain/database/objectbox.dart';
@@ -17,6 +19,10 @@ import 'firebase_options.dart';
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   LocaleSettings.useDeviceLocale();
+  unawaited(MobileAds.instance.initialize());
+
+  MobileAds.instance.updateRequestConfiguration(
+      RequestConfiguration(testDeviceIds: ['a5ced5a8e45de39dd47d7543ed459720']));
 
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,

@@ -3,6 +3,7 @@ import 'package:decimal/decimal.dart';
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
 import 'package:go_router/go_router.dart';
+import 'package:google_mobile_ads/google_mobile_ads.dart';
 import 'package:intl/intl.dart';
 import 'package:net_worth_manager/domain/repository/net_worth/net_worth_repo.dart';
 import 'package:net_worth_manager/models/obox/market_info_obox.dart';
@@ -10,6 +11,7 @@ import 'package:net_worth_manager/ui/screens/add_market_asset/add_market_asset_e
 import 'package:net_worth_manager/ui/screens/add_market_asset/add_market_asset_state.dart';
 import 'package:net_worth_manager/ui/widgets/modal/bottom_sheet.dart';
 import 'package:net_worth_manager/ui/widgets/modal/loading_overlay.dart';
+import 'package:net_worth_manager/utils/ad_mob.dart';
 import 'package:net_worth_manager/utils/extensions/number_extension.dart';
 import 'package:net_worth_manager/utils/extensions/objectbox_extension.dart';
 
@@ -36,6 +38,8 @@ class AddMarketAssetBloc
     this.netWorthRepo,
   ) : super(AddMarketAssetState()) {
     on<SaveMarketAssetEvent>((event, emit) async {
+      loadAd();
+
       Asset asset = event.asset;
       MarketInfo marketInfo = asset.marketInfo.target!;
 
@@ -93,10 +97,6 @@ class AddMarketAssetBloc
               DateTime.now().copyWith(year: DateTime.now().year - 5),
         );
       }
-
-      UserMessage.showMessage(context, t.done);
-      LoadingOverlay.of(context).hide();
-      context.pop();
     });
   }
 
@@ -154,4 +154,45 @@ class AddMarketAssetBloc
     }
     return null;
   }
+
+  void loadAd() {
+    InterstitialAd.load(
+        adUnitId: ADMob.getPopUpAdId(),
+        request: const AdRequest(),
+        adLoadCallback: InterstitialAdLoadCallback(
+          onAdLoaded: (ad) {
+            ad.fullScreenContentCallback = FullScreenContentCallback(
+              // Called when the ad showed the full screen content.
+                onAdShowedFullScreenContent: (ad) {},
+                // Called when an impression occurs on the ad.
+                onAdImpression: (ad) {},
+                // Called when the ad failed to show full screen content.
+                onAdFailedToShowFullScreenContent: (ad, err) {
+                  // Dispose the ad here to free resources.
+                  ad.dispose();
+                },
+                // Called when the ad dismissed full screen content.
+                onAdDismissedFullScreenContent: (ad) {
+                  // Dispose the ad here to free resources.
+                  ad.dispose();
+                  goBack();
+                },
+                // Called when a click is recorded for an ad.
+                onAdClicked: (ad) {});
+            ad.show();
+          },
+          // Called when an ad request failed.
+          onAdFailedToLoad: (LoadAdError error) {
+            goBack();
+          },
+        ));
+  }
+
+
+  void goBack() {
+    UserMessage.showMessage(context, t.done);
+    LoadingOverlay.of(context).hide();
+    context.pop();
+  }
+
 }

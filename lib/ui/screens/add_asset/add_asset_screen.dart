@@ -41,7 +41,6 @@ class AddAssetScreen extends StatelessWidget {
     if (asset != null) {
       // edit asset
       context.read<AddAssetBloc>().add(SaveAssetEvent(asset: asset));
-      context.pop();
       return;
     }
 
@@ -53,7 +52,6 @@ class AddAssetScreen extends StatelessWidget {
       context.read<AddAssetBloc>().add(SaveAssetAndOpenPositionEvent());
     } else {
       context.read<AddAssetBloc>().add(SaveAssetEvent());
-      context.pop();
     }
   }
 

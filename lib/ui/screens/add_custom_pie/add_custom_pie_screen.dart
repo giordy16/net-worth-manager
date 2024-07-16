@@ -4,12 +4,14 @@ import 'package:go_router/go_router.dart';
 import 'package:net_worth_manager/app_dimensions.dart';
 import 'package:net_worth_manager/models/obox/custom_pie_obox.dart';
 import 'package:net_worth_manager/ui/widgets/base_components/app_text_field.dart';
+import 'package:net_worth_manager/utils/ad_mob.dart';
 
 import '../../../i18n/strings.g.dart';
 import '../../../models/obox/asset_category_obox.dart';
 import '../../../models/obox/asset_obox.dart';
 import '../../../objectbox.g.dart';
 import '../../widgets/base_components/app_bottom_fab.dart';
+import '../../widgets/modal/loading_overlay.dart';
 
 class AddCustomPieScreen extends StatefulWidget {
   static String route = "/AddCustomPieScreen";
@@ -35,6 +37,7 @@ class _AddCustomPieScreenState extends State<AddCustomPieScreen> {
   Set<Asset> selectedAsset = {};
 
   String allocationName = "";
+  final _formKey = GlobalKey<FormState>();
 
   @override
   void initState() {
@@ -48,23 +51,29 @@ class _AddCustomPieScreenState extends State<AddCustomPieScreen> {
   }
 
   void save() {
-    if (widget.customPie == null) {
-      CustomPie pie = CustomPie(allocationName);
-      pie.assets.addAll(selectedAsset);
-      pie.categories.addAll(selectedCat);
-      GetIt.I<Store>().box<CustomPie>().put(pie);
-    } else {
-      widget.customPie!.name = allocationName;
+    if (_formKey.currentState?.validate() == true) {
+      LoadingOverlay.of(context).show();
+      if (widget.customPie == null) {
+        CustomPie pie = CustomPie(allocationName);
+        pie.assets.addAll(selectedAsset);
+        pie.categories.addAll(selectedCat);
+        GetIt.I<Store>().box<CustomPie>().put(pie);
+      } else {
+        widget.customPie!.name = allocationName;
 
-      widget.customPie!.assets.removeWhere((_) => true);
-      widget.customPie!.categories.removeWhere((_) => true);
+        widget.customPie!.assets.removeWhere((_) => true);
+        widget.customPie!.categories.removeWhere((_) => true);
 
-      widget.customPie!.assets.addAll(selectedAsset);
-      widget.customPie!.categories.addAll(selectedCat);
-      GetIt.I<Store>().box<CustomPie>().put(widget.customPie!);
+        widget.customPie!.assets.addAll(selectedAsset);
+        widget.customPie!.categories.addAll(selectedCat);
+        GetIt.I<Store>().box<CustomPie>().put(widget.customPie!);
+      }
+
+      ADMob.showPopUpAd(onAdDismissed: () {
+        LoadingOverlay.of(context).hide();
+        context.pop();
+      });
     }
-
-    context.pop();
   }
 
   @override
@@ -85,74 +94,80 @@ class _AddCustomPieScreenState extends State<AddCustomPieScreen> {
       ),
       body: SafeArea(
         child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: Dimensions.screenMargin),
-          child: ListView(
-            children: [
-              const SizedBox(height: Dimensions.s),
-              Text(t.create_allocation_chart_name_message,
-                style: theme.textTheme.bodyMedium,
-              ),
-              const SizedBox(height: Dimensions.s),
-              AppTextField(
-                  isMandatory: true,
-                  title: t.name,
-                  initialValue: allocationName,
-                  onTextChange: (name) {
-                    allocationName = name;
-                  }),
-              const SizedBox(height: Dimensions.xl),
-              Text(t.create_allocation_chart_select,
-                style: theme.textTheme.bodyMedium,
-              ),
-              const SizedBox(height: Dimensions.s),
-              Text(t.categories,
-                  style: theme.textTheme.titleMedium
-                      ?.copyWith(fontWeight: FontWeight.bold)),
-              ...categories
-                  .map((cat) => Row(
-                        children: [
-                          Expanded(child: Text(cat.name)),
-                          const SizedBox(
-                            width: 4,
-                          ),
-                          Checkbox(
-                              value: selectedCat.contains(cat),
-                              onChanged: (value) {
-                                if (value == true) {
-                                  selectedCat.add(cat);
-                                } else if (value == false) {
-                                  selectedCat.remove(cat);
-                                }
-                                setState(() {});
-                              })
-                        ],
-                      ))
-                  .toList(),
-              const SizedBox(height: Dimensions.m),
-              Text(t.assets,
-                  style: theme.textTheme.titleMedium
-                      ?.copyWith(fontWeight: FontWeight.bold)),
-              ...assets
-                  .map((asset) => Row(
-                        children: [
-                          Expanded(child: Text(asset.name)),
-                          const SizedBox(
-                            width: 4,
-                          ),
-                          Checkbox(
-                              value: selectedAsset.contains(asset),
-                              onChanged: (value) {
-                                if (value == true) {
-                                  selectedAsset.add(asset);
-                                } else if (value == false) {
-                                  selectedAsset.remove(asset);
-                                }
-                                setState(() {});
-                              })
-                        ],
-                      ))
-                  .toList(),
-            ],
+          padding:
+              const EdgeInsets.symmetric(horizontal: Dimensions.screenMargin),
+          child: Form(
+            key: _formKey,
+            child: ListView(
+              children: [
+                const SizedBox(height: Dimensions.s),
+                Text(
+                  t.create_allocation_chart_name_message,
+                  style: theme.textTheme.bodyMedium,
+                ),
+                const SizedBox(height: Dimensions.s),
+                AppTextField(
+                    isMandatory: true,
+                    title: t.name,
+                    initialValue: allocationName,
+                    onTextChange: (name) {
+                      allocationName = name;
+                    }),
+                const SizedBox(height: Dimensions.xl),
+                Text(
+                  t.create_allocation_chart_select,
+                  style: theme.textTheme.bodyMedium,
+                ),
+                const SizedBox(height: Dimensions.s),
+                Text(t.categories,
+                    style: theme.textTheme.titleMedium
+                        ?.copyWith(fontWeight: FontWeight.bold)),
+                ...categories
+                    .map((cat) => Row(
+                          children: [
+                            Expanded(child: Text(cat.name)),
+                            const SizedBox(
+                              width: 4,
+                            ),
+                            Checkbox(
+                                value: selectedCat.contains(cat),
+                                onChanged: (value) {
+                                  if (value == true) {
+                                    selectedCat.add(cat);
+                                  } else if (value == false) {
+                                    selectedCat.remove(cat);
+                                  }
+                                  setState(() {});
+                                })
+                          ],
+                        ))
+                    .toList(),
+                const SizedBox(height: Dimensions.m),
+                Text(t.assets,
+                    style: theme.textTheme.titleMedium
+                        ?.copyWith(fontWeight: FontWeight.bold)),
+                ...assets
+                    .map((asset) => Row(
+                          children: [
+                            Expanded(child: Text(asset.name)),
+                            const SizedBox(
+                              width: 4,
+                            ),
+                            Checkbox(
+                                value: selectedAsset.contains(asset),
+                                onChanged: (value) {
+                                  if (value == true) {
+                                    selectedAsset.add(asset);
+                                  } else if (value == false) {
+                                    selectedAsset.remove(asset);
+                                  }
+                                  setState(() {});
+                                })
+                          ],
+                        ))
+                    .toList(),
+              ],
+            ),
           ),
         ),
       ),

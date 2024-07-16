@@ -7,7 +7,9 @@ import 'package:net_worth_manager/ui/screens/add_asset/add_asset_state.dart';
 import 'package:net_worth_manager/ui/screens/add_asset_position/add_asset_position_screen.dart';
 import 'package:net_worth_manager/ui/screens/add_asset_position/add_asset_position_screen_params.dart';
 import 'package:net_worth_manager/ui/widgets/modal/user_message.dart';
+import 'package:net_worth_manager/utils/ad_mob.dart';
 import '../../../i18n/strings.g.dart';
+import '../../widgets/modal/loading_overlay.dart';
 import 'add_asset_events.dart';
 
 class AddAssetBloc extends Bloc<AddAssetEvent, AddAssetState> {
@@ -27,6 +29,8 @@ class AddAssetBloc extends Bloc<AddAssetEvent, AddAssetState> {
     });
 
     on<SaveAssetEvent>((event, emit) {
+      LoadingOverlay.of(context).show();
+
       Asset asset;
       if (event.asset != null) {
         asset = event.asset!;
@@ -37,19 +41,30 @@ class AddAssetBloc extends Bloc<AddAssetEvent, AddAssetState> {
         asset.category.target = state.assetCategory;
       }
       assetRepo.saveAsset(asset);
-      UserMessage.showMessage(context, t.done);
+
+      ADMob.showPopUpAd(onAdDismissed: () {
+        LoadingOverlay.of(context).hide();
+        UserMessage.showMessage(context, t.done);
+        context.pop();
+      });
     });
 
     on<SaveAssetAndOpenPositionEvent>((event, emit) {
+      LoadingOverlay.of(context).show();
+
       Asset asset = Asset(state.assetName);
       asset.category.target = state.assetCategory;
 
       assetRepo.saveAsset(asset);
-      context.pushReplacement(AddAssetPositionScreen.route,
-          extra: AddAssetPositionScreenParams(
-            asset: asset,
-            mode: AddAssetPositionScreenMode.add,
-          ));
+
+      ADMob.showPopUpAd(onAdDismissed: () {
+        LoadingOverlay.of(context).hide();
+        context.pushReplacement(AddAssetPositionScreen.route,
+            extra: AddAssetPositionScreenParams(
+              asset: asset,
+              mode: AddAssetPositionScreenMode.add,
+            ));
+      });
     });
 
     on<FetchAddAssetData>((event, emit) {
