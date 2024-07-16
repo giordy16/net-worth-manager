@@ -69,12 +69,12 @@ class _PushNotificationScreenState extends State<PushNotificationScreen>
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                        "Monthly reminder",
+                        t.monthly_reminder_title,
                         style: theme.textTheme.titleMedium
                             ?.copyWith(fontWeight: FontWeight.bold),
                       ),
                       Text(
-                        "Receive a notification every end of the month to remember to updated your assets",
+                        t.monthly_reminder_subtitle,
                         style: theme.textTheme.bodyMedium,
                       ),
                     ],
