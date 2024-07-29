@@ -27,7 +27,8 @@ class FinancialModelingRepoImpl implements StockApi {
 
   FinancialModelingRepoImpl({this.context}) {
     _client = Dio(BaseOptions(
-        baseUrl: Constants.FMP_BASE_URL, connectTimeout: const Duration(seconds: 10)))
+        baseUrl: Constants.FMP_BASE_URL,
+        connectTimeout: const Duration(seconds: 10)))
       ..interceptors.add(InterceptorsWrapper(onRequest: (options, handler) {
         print(
             "= DioRequest ===================================================");
@@ -92,9 +93,10 @@ class FinancialModelingRepoImpl implements StockApi {
         .find();
 
     CurrencyForexChange? firstForex = forexChangeForCurrency.firstOrNull;
-    CurrencyForexChange? lastForex = forexChangeForCurrency.firstOrNull;
+    CurrencyForexChange? lastForex = forexChangeForCurrency.lastOrNull;
 
     switch (fetchType) {
+      /// in this case, I have to start from the last value until today
       case FMPFetchType.appStart:
         if (NetWorthRepoImpl().getDateFirstNWValue() == null) {
           // no fetch is necessary since nw is empty
@@ -107,12 +109,17 @@ class FinancialModelingRepoImpl implements StockApi {
           return;
         }
 
-        DateTime start = lastForex.date;
-        start = start.copyWith(day: start.day + 1);
+        DateTime start = lastForex.date.copyWith(day: lastForex.date.day + 1);
         DateTime end = start.copyWith(year: start.year + 5);
 
-        while (end.isBefore(DateTime.now().keepOnlyYMD()) ||
-            end.isAtSameMomentAs(DateTime.now().keepOnlyYMD())) {
+        bool limitReached = false;
+
+        while (!limitReached) {
+          if (end.isAfter(DateTime.now().keepOnlyYMD()) ||
+              end.isAtSameMomentAs(DateTime.now().keepOnlyYMD())) {
+            limitReached = true;
+          }
+
           try {
             Map<String, String> queryData = {
               "apikey": Constants.FMP_KEY,
@@ -145,6 +152,7 @@ class FinancialModelingRepoImpl implements StockApi {
         }
         break;
 
+      /// in this case, I have to start from the first value until today
       case FMPFetchType.mainCurrencyChange:
         var firstNWDate = NetWorthRepoImpl().getDateFirstNWValue();
 
@@ -156,8 +164,14 @@ class FinancialModelingRepoImpl implements StockApi {
         DateTime start = firstNWDate.copyWith(day: firstNWDate.day - 7);
         DateTime end = start.copyWith(year: start.year + 5);
 
-        while (start.isBefore(DateTime.now().keepOnlyYMD()) ||
-            start.isAtSameMomentAs(DateTime.now().keepOnlyYMD())) {
+        bool limitReached = false;
+
+        while (!limitReached) {
+          if (end.isAfter(DateTime.now().keepOnlyYMD()) ||
+              end.isAtSameMomentAs(DateTime.now().keepOnlyYMD())) {
+            limitReached = true;
+          }
+
           try {
             Map<String, String> queryData = {
               "apikey": Constants.FMP_KEY,
@@ -190,6 +204,7 @@ class FinancialModelingRepoImpl implements StockApi {
         }
         break;
 
+      /// in this case, I have to start from the date of the new position until today
       case FMPFetchType.addPosition:
         if (firstForex != null &&
             (firstForex.date.isBefore(startFetchDate!) ||
@@ -198,21 +213,14 @@ class FinancialModelingRepoImpl implements StockApi {
           return;
         }
 
-        DateTime endLimit;
-        bool limitReached = false;
-
-        if (lastForex != null) {
-          endLimit = lastForex.date.copyWith(day: lastForex.date.day - 1);
-        } else {
-          endLimit = DateTime.now().keepOnlyYMD();
-        }
-
         DateTime start = startFetchDate!.copyWith(day: startFetchDate.day - 7);
         DateTime end = start.copyWith(year: start.year + 5);
 
+        bool limitReached = false;
+
         while (!limitReached) {
-          if (end.isAfter(endLimit) || end.isAtSameMomentAs(endLimit)) {
-            end = endLimit;
+          if (end.isAfter(DateTime.now().keepOnlyYMD()) ||
+              end.isAtSameMomentAs(DateTime.now().keepOnlyYMD())) {
             limitReached = true;
           }
 
@@ -261,6 +269,7 @@ class FinancialModelingRepoImpl implements StockApi {
     final df = DateFormat("yyyy-MM-dd HH:mm:ss");
 
     switch (fetchType) {
+      /// in this case, I have to start from the last value until today
       case FMPFetchType.appStart:
         DateTime? dateLastValue = historyBox
             .query(AssetHistoryTimeValue_.assetSymbol.equals(marketInfo.symbol))
@@ -269,79 +278,20 @@ class FinancialModelingRepoImpl implements StockApi {
             .findFirst()
             ?.date;
 
-        if (dateLastValue == null) {
+        if (dateLastValue == null ||
+            dateLastValue.isAtSameMomentAs(DateTime.now().keepOnlyYMD())) {
+          // date null or db up to date
           return;
         }
 
         DateTime start = dateLastValue.copyWith(day: dateLastValue.day + 1);
         DateTime end = start.copyWith(year: start.year + 5);
 
-        while (end.isBefore(DateTime.now().keepOnlyYMD()) ||
-            end.isAtSameMomentAs(DateTime.now().keepOnlyYMD())) {
-          try {
-            Map<String, String> queryData = {
-              "apikey": Constants.FMP_KEY,
-              "from": dfQuery.format(start),
-              "to": dfQuery.format(end),
-            };
-
-            var response = await _client.get(
-                "api/v3/historical-chart/1day/${marketInfo.symbol}",
-                queryParameters: queryData);
-
-            List<AssetHistoryTimeValue> assetHistory =
-                (response.data as List<dynamic>)
-                    .map((e) => FMPForex.fromJson(e as Map<String, dynamic>))
-                    .map((e) => AssetHistoryTimeValue(
-                          df.parse(e.date),
-                          e.close,
-                          marketInfo.symbol,
-                        ))
-                    .toList();
-
-            // save to db
-            historyBox.putMany(assetHistory);
-          } catch (e) {
-            print("fetchForexChange error: $e");
-          }
-
-          start = end.copyWith(day: end.day + 1);
-          end = end.copyWith(year: end.year + 5);
-        }
-
-        break;
-      case FMPFetchType.addPosition:
-        var historicalAssetValues = historyBox
-            .query(AssetHistoryTimeValue_.assetSymbol.equals(marketInfo.symbol))
-            .order(AssetHistoryTimeValue_.date)
-            .build()
-            .find();
-
-        DateTime? dateFirstValue = historicalAssetValues.firstOrNull?.date;
-        DateTime? dateLastValue = historicalAssetValues.firstOrNull?.date;
-
-        if (dateFirstValue != null &&
-            (dateFirstValue.isAtSameMomentAs(startFetchDate!) ||
-                dateFirstValue.isBefore(startFetchDate))) {
-          // db is updated
-          return;
-        }
-
-        DateTime endLimit;
         bool limitReached = false;
 
-        if (dateLastValue != null) {
-          endLimit = dateLastValue.copyWith(day: dateLastValue.day - 1);
-        } else {
-          endLimit = DateTime.now().keepOnlyYMD();
-        }
-
-        DateTime start = startFetchDate!.copyWith(day: startFetchDate.day - 7);
-        DateTime end = start.copyWith(year: start.year + 5);
-
         while (!limitReached) {
-          if (end.isAfter(endLimit) || end.isAtSameMomentAs(endLimit)) {
-            end = endLimit;
+          if (end.isAfter(DateTime.now().keepOnlyYMD()) ||
+              end.isAtSameMomentAs(DateTime.now().keepOnlyYMD())) {
             limitReached = true;
           }
 
@@ -374,10 +324,68 @@ class FinancialModelingRepoImpl implements StockApi {
 
           start = end.copyWith(day: end.day + 1);
           end = end.copyWith(year: end.year + 5);
+        }
 
-          if (end.isAfter(endLimit)) {
-            end = endLimit;
+        break;
+
+      /// in this case, I have to start from the date of the new position until today
+
+      case FMPFetchType.addPosition:
+        var historicalAssetValues = historyBox
+            .query(AssetHistoryTimeValue_.assetSymbol.equals(marketInfo.symbol))
+            .order(AssetHistoryTimeValue_.date)
+            .build()
+            .find();
+
+        DateTime? dateFirstValue = historicalAssetValues.firstOrNull?.date;
+
+        if (dateFirstValue != null &&
+            (dateFirstValue.isAtSameMomentAs(startFetchDate!) ||
+                dateFirstValue.isBefore(startFetchDate))) {
+          // db is updated
+          return;
+        }
+
+        DateTime start = startFetchDate!.copyWith(day: startFetchDate.day - 7);
+        DateTime end = start.copyWith(year: start.year + 5);
+
+        bool limitReached = false;
+
+        while (!limitReached) {
+          if (end.isAfter(DateTime.now().keepOnlyYMD()) ||
+              end.isAtSameMomentAs(DateTime.now().keepOnlyYMD())) {
+            limitReached = true;
           }
+
+          try {
+            Map<String, String> queryData = {
+              "apikey": Constants.FMP_KEY,
+              "from": dfQuery.format(start),
+              "to": dfQuery.format(end),
+            };
+
+            var response = await _client.get(
+                "api/v3/historical-chart/1day/${marketInfo.symbol}",
+                queryParameters: queryData);
+
+            List<AssetHistoryTimeValue> assetHistory =
+                (response.data as List<dynamic>)
+                    .map((e) => FMPForex.fromJson(e as Map<String, dynamic>))
+                    .map((e) => AssetHistoryTimeValue(
+                          df.parse(e.date),
+                          e.close,
+                          marketInfo.symbol,
+                        ))
+                    .toList();
+
+            // save to db
+            historyBox.putMany(assetHistory);
+          } catch (e) {
+            print("fetchForexChange error: $e");
+          }
+
+          start = end.copyWith(day: end.day + 1);
+          end = end.copyWith(year: end.year + 5);
         }
 
         break;
@@ -401,7 +409,8 @@ class FinancialModelingRepoImpl implements StockApi {
 
       return (response.data as List<dynamic>)
           .map((e) => FMPTickerSearch.fromJson(e as Map<String, dynamic>))
-          .where((e) => e.currency != null).toList()
+          .where((e) => e.currency != null)
+          .toList()
           .map((e) => MarketInfo(
                 symbol: e.symbol,
                 name: e.name,
@@ -426,7 +435,8 @@ class FinancialModelingRepoImpl implements StockApi {
 
       return (response.data as List<dynamic>)
           .map((e) => FMPISINSearch.fromJson(e as Map<String, dynamic>))
-          .where((e) => e.currency != null).toList()
+          .where((e) => e.currency != null)
+          .toList()
           .map((e) => MarketInfo(
                 symbol: e.symbol,
                 name: e.companyName,
