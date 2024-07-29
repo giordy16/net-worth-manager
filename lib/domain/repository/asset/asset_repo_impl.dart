@@ -1,15 +1,26 @@
+import 'package:decimal/decimal.dart';
+import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
+import 'package:intl/intl.dart';
+import 'package:net_worth_manager/domain/repository/stock/stock_api.dart';
 import 'package:net_worth_manager/models/obox/asset_category_obox.dart';
 import 'package:net_worth_manager/models/obox/asset_time_value_obox.dart';
 import 'package:net_worth_manager/models/obox/market_info_obox.dart';
 import 'package:net_worth_manager/utils/extensions/number_extension.dart';
 
+import '../../../i18n/strings.g.dart';
 import '../../../models/obox/asset_history_time_value.dart';
 import '../../../models/obox/asset_obox.dart';
 import '../../../objectbox.g.dart';
+import '../../../ui/widgets/modal/bottom_sheet.dart';
 import 'asset_repo.dart';
 
 class AssetRepoImpl implements AssetRepo {
+
+  final StockApi? stockApi;
+
+  AssetRepoImpl({this.stockApi});
+
   @override
   void saveAsset(Asset asset) {
     GetIt.I<Store>().box<Asset>().put(asset);
@@ -148,5 +159,99 @@ class AssetRepoImpl implements AssetRepo {
         .order(AssetHistoryTimeValue_.date)
         .build()
         .find();
+  }
+
+  @override
+  Future<double?> checkShareSplit(
+    BuildContext context,
+    String symbol,
+    AssetTimeValue position,
+  ) async {
+    final splitHistory = await stockApi!.getSplitHistorical(symbol);
+    if (splitHistory.isEmpty) return null;
+
+    double qtX = position.quantity;
+    for (var split in splitHistory) {
+      if (position.date.isBefore(split.dateFormatted)) {
+        qtX = (qtX.toDecimal() *
+            split.numerator.toDecimal() /
+            split.denominator.toDecimal()).toDouble();
+      }
+    }
+    if (qtX == 1) {
+      return null;
+    }
+
+    bool? yes = await showYesNoBottomSheet(
+      context,
+      t.stock_split_message_position.replaceAll(
+          "<qt>", position.quantity.toStringFormatted()).replaceAll(
+          "<qtSplit>", qtX.toStringFormatted()),
+      isDismissible: false,
+    );
+
+    if (yes == true) {
+      return qtX;
+    }
+    return null;
+  }
+
+  @override
+  Future<Map<AssetTimeValue, double>?> checkShareSplitMultiPositions(
+    BuildContext context,
+    String symbol,
+    List<AssetTimeValue> positions,
+  ) async {
+    if (positions.isEmpty) return null;
+
+    final splitHistory = await stockApi!.getSplitHistorical(symbol);
+    if (splitHistory.isEmpty) return null;
+
+    Map<AssetTimeValue, double> positionsInfluencedBySplit = {};
+
+    for (var pos in positions) {
+      double qtX = pos.quantity;
+      for (var split in splitHistory) {
+        if (pos.date.isBefore(split.dateFormatted)) {
+          qtX = (qtX.toDecimal() *
+              split.numerator.toDecimal() /
+              split.denominator.toDecimal())
+              .toDouble();
+        }
+      }
+      if (qtX != 1) {
+        positionsInfluencedBySplit.addAll({pos: qtX});
+      }
+    }
+
+    if (positionsInfluencedBySplit.isNotEmpty) {
+      var message = positionsInfluencedBySplit.entries
+          .map((entry) => t.stock_split_message_single
+          .replaceAll(
+          "<date>", DateFormat("dd/MM/yyyy").format(entry.key.date))
+          .replaceAll("<qt>", entry.key.quantity.toStringFormatted())
+          .replaceAll("<qtSplit>", entry.value.toStringFormatted()))
+          .join("\n");
+
+      bool? yes = await showYesNoBottomSheet(context,
+          t.stock_split_message_positions.replaceAll("<message>", message),
+          isDismissible: false,
+          widgetAboveSelection: IconButton(
+              onPressed: () {
+                showOkOnlyBottomSheet(context, t.what_is_a_share_split_content);
+              },
+              icon: Text(
+                t.what_is_a_share_split,
+                style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                    fontWeight: FontWeight.bold,
+                    decoration: TextDecoration.underline,
+                    decorationColor: Colors.white),
+              )));
+
+      if (yes == true) {
+        return positionsInfluencedBySplit;
+      }
+    }
+    return null;
   }
 }

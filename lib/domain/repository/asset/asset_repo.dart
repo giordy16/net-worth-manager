@@ -1,3 +1,4 @@
+import 'package:flutter/material.dart';
 import 'package:net_worth_manager/models/obox/asset_history_time_value.dart';
 import 'package:net_worth_manager/models/obox/asset_time_value_obox.dart';
 import 'package:net_worth_manager/models/obox/market_info_obox.dart';
@@ -33,4 +34,10 @@ abstract class AssetRepo {
 
   List<AssetHistoryTimeValue> getValueHistoryBySymbol(
       MarketInfo marketInfo, DateTime startDate);
+
+  Future<double?> checkShareSplit(
+      BuildContext context, String symbol, AssetTimeValue position);
+
+  Future<Map<AssetTimeValue, double>?> checkShareSplitMultiPositions(
+      BuildContext context, String symbol, List<AssetTimeValue> positions);
 }

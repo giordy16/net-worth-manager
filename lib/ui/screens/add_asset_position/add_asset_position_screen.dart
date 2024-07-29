@@ -64,12 +64,13 @@ class _AddAssetPositionScreenState extends State<AddAssetPositionScreen> {
   Widget build(BuildContext context) {
     return MultiRepositoryProvider(
         providers: [
-          RepositoryProvider<AssetRepoImpl>(
-              create: (context) => AssetRepoImpl()),
           RepositoryProvider<NetWorthRepoImpl>(
               create: (context) => NetWorthRepoImpl()),
           RepositoryProvider<FinancialModelingRepoImpl>(
               create: (context) => FinancialModelingRepoImpl()),
+          RepositoryProvider<AssetRepoImpl>(
+              create: (context) => AssetRepoImpl(
+                  stockApi: context.read<FinancialModelingRepoImpl>())),
         ],
         child: BlocProvider(
             create: (context) => AddPositionBloc(

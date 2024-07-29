@@ -65,11 +65,13 @@ class _AddMarketAssetScreenState extends State<AddMarketAssetScreen> {
 
     return MultiRepositoryProvider(
       providers: [
-        RepositoryProvider<AssetRepoImpl>(create: (context) => AssetRepoImpl()),
         RepositoryProvider<NetWorthRepoImpl>(
             create: (context) => NetWorthRepoImpl()),
         RepositoryProvider<FinancialModelingRepoImpl>(
             create: (context) => FinancialModelingRepoImpl(context: context)),
+        RepositoryProvider<AssetRepoImpl>(
+            create: (context) => AssetRepoImpl(
+                stockApi: context.read<FinancialModelingRepoImpl>())),
       ],
       child: BlocProvider(
           create: (context) => AddMarketAssetBloc(
@@ -223,10 +225,9 @@ class _AddMarketAssetScreenState extends State<AddMarketAssetScreen> {
                               AssetTimeValue? position = await context.push(
                                   AddAssetPositionScreen.route,
                                   extra: AddAssetPositionScreenParams(
-                                    asset: widget.params.asset,
-                                    justPopBack: true,
-                                    mode: AddAssetPositionScreenMode.add
-                                  ));
+                                      asset: widget.params.asset,
+                                      justPopBack: true,
+                                      mode: AddAssetPositionScreenMode.add));
                               if (position != null) {
                                 widget.params.asset.timeValues.add(position);
                                 setState(() {});
