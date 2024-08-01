@@ -21,13 +21,18 @@ class FullAssetAllocationScreen extends StatelessWidget {
         .toList();
 
     return Scaffold(
-      appBar: AppBar(title: Text(t.asset_allocation),),
+      appBar: AppBar(
+        title: Text(t.asset_allocation),
+        surfaceTintColor: Theme.of(context).colorScheme.surface,
+      ),
       body: SafeArea(
         child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: Dimensions.screenMargin),
+          padding:
+              const EdgeInsets.symmetric(horizontal: Dimensions.screenMargin),
           child: ListView(
               children: categories.map((cat) {
-            final assets = cat.getAssets().where((a) => a.getCurrentValue() > 0).toList();
+            final assets =
+                cat.getAssets().where((a) => a.getCurrentValue() > 0).toList();
 
             assets.sort(
                 (a, b) => b.getCurrentValue().compareTo(a.getCurrentValue()));

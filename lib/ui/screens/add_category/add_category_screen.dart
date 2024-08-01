@@ -35,6 +35,7 @@ class AddAssetCategory extends StatelessWidget {
     return Scaffold(
         appBar: AppBar(
           title: Text(t.add_category),
+          surfaceTintColor: Theme.of(context).colorScheme.surface,
         ),
         floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
         floatingActionButton: AppBottomFab(

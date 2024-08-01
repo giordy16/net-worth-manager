@@ -19,6 +19,7 @@ class AddSelectionScreen extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         title: Text(t.add),
+        surfaceTintColor: Theme.of(context).colorScheme.surface,
       ),
       body: SafeArea(
         child: Padding(

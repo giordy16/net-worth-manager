@@ -6,6 +6,7 @@ import 'package:net_worth_manager/models/obox/asset_time_value_obox.dart';
 import 'package:net_worth_manager/models/obox/market_info_obox.dart';
 import 'package:net_worth_manager/utils/extensions/number_extension.dart';
 import '../../objectbox.g.dart';
+import 'package:objectbox/objectbox.dart';
 import 'asset_category_obox.dart';
 
 @Entity()

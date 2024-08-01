@@ -6,10 +6,13 @@ import 'package:net_worth_manager/models/obox/settings_obox.dart';
 import 'package:net_worth_manager/ui/scaffold_with_bottom_navigation.dart';
 import 'package:net_worth_manager/ui/screens/currency_selection/currency_selection_params.dart';
 import 'package:net_worth_manager/ui/screens/firebase_contacts/firebase_contacts_screen.dart';
+import 'package:net_worth_manager/ui/screens/general_selection/general_selection.dart';
+import 'package:net_worth_manager/ui/screens/general_selection/general_selection_params.dart';
 import 'package:net_worth_manager/ui/screens/manage_categories/manage_categories.dart';
 import 'package:net_worth_manager/ui/screens/push_notification/push_notification_screen.dart';
 import 'package:net_worth_manager/ui/screens/soon_available/soon_available_screen.dart';
 import 'package:net_worth_manager/ui/widgets/app_divider.dart';
+import 'package:net_worth_manager/utils/enum/app_theme.dart';
 import 'package:net_worth_manager/utils/extensions/objectbox_extension.dart';
 import 'package:net_worth_manager/utils/fcm_notification.dart';
 import 'package:package_info_plus/package_info_plus.dart';
@@ -17,6 +20,7 @@ import 'package:permission_handler/permission_handler.dart';
 
 import '../../../app_dimensions.dart';
 import '../../../i18n/strings.g.dart';
+import '../../../main.dart';
 import '../../../models/obox/currency_obox.dart';
 import '../../../objectbox.g.dart';
 import '../../../utils/enum/fetch_forex_type.dart';
@@ -77,6 +81,8 @@ class _SettingsScreenState extends State<SettingsScreen> {
   @override
   Widget build(BuildContext context) {
     ThemeData theme = Theme.of(context);
+    final settings = GetIt.I<Settings>();
+
     return Scaffold(
       body: SafeArea(
         child: ListView(
@@ -143,6 +149,36 @@ class _SettingsScreenState extends State<SettingsScreen> {
                 icon: Row(
                   children: [
                     Text(t.push_notification, style: theme.textTheme.bodyLarge),
+                    const Expanded(child: SizedBox()),
+                    const Icon(Icons.arrow_forward_ios, size: 14)
+                  ],
+                ),
+              ),
+            ),
+            Padding(
+              padding: const EdgeInsets.symmetric(
+                  horizontal: Dimensions.screenMargin),
+              child: AppDivider(),
+            ),
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: Dimensions.xxs),
+              child: IconButton(
+                onPressed: () async {
+                  AppTheme? selectedTheme = await context.push(GeneralSelection.path,
+                      extra: GeneralSelectionParams(
+                        settings.appTheme,
+                        AppTheme.values,
+                      ));
+
+                  if (selectedTheme != null) {
+                    settings.appThemeEnumIndex = AppTheme.values.indexOf(selectedTheme);
+                    GetIt.I<Store>().box<Settings>().put(settings);
+                    App.of(context).changeTheme();
+                  }
+                },
+                icon: Row(
+                  children: [
+                    Text(t.app_theme, style: theme.textTheme.bodyLarge),
                     const Expanded(child: SizedBox()),
                     const Icon(Icons.arrow_forward_ios, size: 14)
                   ],

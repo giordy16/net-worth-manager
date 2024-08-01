@@ -4,9 +4,9 @@
 /// To regenerate, run: `dart run slang`
 ///
 /// Locales: 2
-/// Strings: 314 (157 per locale)
+/// Strings: 316 (158 per locale)
 ///
-/// Built on 2024-07-15 at 20:07 UTC
+/// Built on 2024-07-31 at 16:15 UTC
 
 // coverage:ignore-file
 // ignore_for_file: type=lint
@@ -302,11 +302,12 @@ class Translations implements BaseTranslations<AppLocale, Translations> {
 	String get no_result_found => 'No result found';
 	String get confirm_order => 'Confirm order';
 	String get reorder => 'Reorder';
-	String get what_is_a_share_split => 'What is a share split?';
+	String get what_is_a_share_split => 'What is a stock split?';
 	String get what_is_a_share_split_content => 'A stock split increases the number of shares in a company. For example, after a 2-for-1 split, each investor will own double the number of shares, and each share will be worth half as much.\n\nA company may split its stock when the market price per share is so high that it becomes unwieldy when traded. One of the reasons is that a very high share price may deter small investors from buying the shares. Stock splits are usually initiated after a large run up in share price.';
 	String get push_notification => 'Push notification';
 	String get monthly_reminder_title => 'Monthly reminder';
 	String get monthly_reminder_subtitle => 'Receive a notification every end of the month to remember to update your assets';
+	String get app_theme => 'App theme';
 }
 
 // Path: <root>
@@ -488,10 +489,11 @@ class _StringsIt implements Translations {
 	@override String get confirm_order => 'Conferma ordine';
 	@override String get reorder => 'Riordina';
 	@override String get what_is_a_share_split => 'Che cos\'è uno split azionario?';
-	@override String get what_is_a_share_split_content => 'Un frazionamento azionario aumenta il numero di azioni di una società. Ad esempio, dopo un frazionamento 2 a 1, ogni investitore possiederà un numero doppio di azioni e ogni azione varrà la metà.\n\nUn\'azienda può dividere le proprie azioni quando il prezzo di mercato per azione è così alto che diventa ingombrante quando viene scambiato. Una delle ragioni è che un prezzo molto alto può scoraggiare i piccoli investitori dall\'acquistare le azioni. I frazionamenti azionari vengono solitamente avviati dopo una forte crescita del prezzo delle azioni.';
+	@override String get what_is_a_share_split_content => 'Un split azionario aumenta il numero di azioni di una società. Ad esempio, dopo un frazionamento 2 a 1, ogni investitore possiederà un numero doppio di azioni e ogni azione varrà la metà.\n\nUn\'azienda può dividere le proprie azioni quando il prezzo di mercato per azione è così alto che diventa ingombrante quando viene scambiato. Una delle ragioni è che un prezzo molto alto può scoraggiare i piccoli investitori dall\'acquistare le azioni. I frazionamenti azionari vengono solitamente avviati dopo una forte crescita del prezzo delle azioni.';
 	@override String get push_notification => 'Notifiche push';
 	@override String get monthly_reminder_title => 'Promemoria mensile';
 	@override String get monthly_reminder_subtitle => 'Ricevi una notifica ogni fine mese per ricordarti di aggiornare i tuoi asset';
+	@override String get app_theme => 'Tema app';
 }
 
 /// Flat map(s) containing all translations.
@@ -652,11 +654,12 @@ extension on Translations {
 			case 'no_result_found': return 'No result found';
 			case 'confirm_order': return 'Confirm order';
 			case 'reorder': return 'Reorder';
-			case 'what_is_a_share_split': return 'What is a share split?';
+			case 'what_is_a_share_split': return 'What is a stock split?';
 			case 'what_is_a_share_split_content': return 'A stock split increases the number of shares in a company. For example, after a 2-for-1 split, each investor will own double the number of shares, and each share will be worth half as much.\n\nA company may split its stock when the market price per share is so high that it becomes unwieldy when traded. One of the reasons is that a very high share price may deter small investors from buying the shares. Stock splits are usually initiated after a large run up in share price.';
 			case 'push_notification': return 'Push notification';
 			case 'monthly_reminder_title': return 'Monthly reminder';
 			case 'monthly_reminder_subtitle': return 'Receive a notification every end of the month to remember to update your assets';
+			case 'app_theme': return 'App theme';
 			default: return null;
 		}
 	}
@@ -818,10 +821,11 @@ extension on _StringsIt {
 			case 'confirm_order': return 'Conferma ordine';
 			case 'reorder': return 'Riordina';
 			case 'what_is_a_share_split': return 'Che cos\'è uno split azionario?';
-			case 'what_is_a_share_split_content': return 'Un frazionamento azionario aumenta il numero di azioni di una società. Ad esempio, dopo un frazionamento 2 a 1, ogni investitore possiederà un numero doppio di azioni e ogni azione varrà la metà.\n\nUn\'azienda può dividere le proprie azioni quando il prezzo di mercato per azione è così alto che diventa ingombrante quando viene scambiato. Una delle ragioni è che un prezzo molto alto può scoraggiare i piccoli investitori dall\'acquistare le azioni. I frazionamenti azionari vengono solitamente avviati dopo una forte crescita del prezzo delle azioni.';
+			case 'what_is_a_share_split_content': return 'Un split azionario aumenta il numero di azioni di una società. Ad esempio, dopo un frazionamento 2 a 1, ogni investitore possiederà un numero doppio di azioni e ogni azione varrà la metà.\n\nUn\'azienda può dividere le proprie azioni quando il prezzo di mercato per azione è così alto che diventa ingombrante quando viene scambiato. Una delle ragioni è che un prezzo molto alto può scoraggiare i piccoli investitori dall\'acquistare le azioni. I frazionamenti azionari vengono solitamente avviati dopo una forte crescita del prezzo delle azioni.';
 			case 'push_notification': return 'Notifiche push';
 			case 'monthly_reminder_title': return 'Promemoria mensile';
 			case 'monthly_reminder_subtitle': return 'Ricevi una notifica ogni fine mese per ricordarti di aggiornare i tuoi asset';
+			case 'app_theme': return 'Tema app';
 			default: return null;
 		}
 	}

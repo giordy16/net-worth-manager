@@ -18,6 +18,7 @@ class SoonAvailableScreen extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         title: Text(t.soon_available),
+        surfaceTintColor: Theme.of(context).colorScheme.surface,
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
       floatingActionButton: AppBottomFab(

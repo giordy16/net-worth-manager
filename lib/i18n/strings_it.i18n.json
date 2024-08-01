@@ -157,5 +157,6 @@
   "what_is_a_share_split_content": "Un split azionario aumenta il numero di azioni di una società. Ad esempio, dopo un frazionamento 2 a 1, ogni investitore possiederà un numero doppio di azioni e ogni azione varrà la metà.\n\nUn'azienda può dividere le proprie azioni quando il prezzo di mercato per azione è così alto che diventa ingombrante quando viene scambiato. Una delle ragioni è che un prezzo molto alto può scoraggiare i piccoli investitori dall'acquistare le azioni. I frazionamenti azionari vengono solitamente avviati dopo una forte crescita del prezzo delle azioni.",
   "push_notification": "Notifiche push",
   "monthly_reminder_title": "Promemoria mensile",
-  "monthly_reminder_subtitle": "Ricevi una notifica ogni fine mese per ricordarti di aggiornare i tuoi asset"
+  "monthly_reminder_subtitle": "Ricevi una notifica ogni fine mese per ricordarti di aggiornare i tuoi asset",
+  "app_theme": "Tema app"
 }

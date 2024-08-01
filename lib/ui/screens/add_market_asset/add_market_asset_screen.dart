@@ -85,6 +85,7 @@ class _AddMarketAssetScreenState extends State<AddMarketAssetScreen> {
             return Scaffold(
               appBar: AppBar(
                 title: Text(t.market_asset),
+                surfaceTintColor: Theme.of(context).colorScheme.surface,
                 actions: const [
                   // IconButton(
                   //     onPressed: () {
@@ -236,10 +237,10 @@ class _AddMarketAssetScreenState extends State<AddMarketAssetScreen> {
                             style: ElevatedButton.styleFrom(
                                 shape: const CircleBorder(),
                                 fixedSize: const Size(24, 24),
-                                backgroundColor: theme.colorScheme.secondary),
-                            icon: const Icon(
+                                backgroundColor: theme.colorScheme.primary),
+                            icon: Icon(
                               Icons.add,
-                              color: Colors.black,
+                              color: theme.colorScheme.onPrimary,
                             ),
                           )
                         ],

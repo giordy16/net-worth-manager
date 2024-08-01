@@ -106,6 +106,7 @@ class AssetDetailScreen extends StatelessWidget {
               return Scaffold(
                 appBar: AppBar(
                   title: Text(state.asset.name),
+                  surfaceTintColor: Theme.of(context).colorScheme.surface,
                   actions: [
                     IconButton(
                         onPressed: () => showMore(context, asset),

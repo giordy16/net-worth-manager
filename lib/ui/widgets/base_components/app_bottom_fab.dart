@@ -28,14 +28,14 @@ class AppBottomFab extends StatelessWidget {
                 shape: WidgetStateProperty.all<RoundedRectangleBorder>(
                     RoundedRectangleBorder(
                         side: BorderSide(
-                            color: theme.colorScheme.primary, width: 2),
+                            color: theme.colorScheme.onSurface, width: 2),
                         borderRadius:
                             BorderRadius.circular(Dimensions.cardCorner))),
               )
             : ButtonStyle(
                 backgroundColor: WidgetStateProperty.all(enable
-                    ? theme.colorScheme.secondary
-                    : theme.colorScheme.secondary.withOpacity(0.3)),
+                    ? theme.colorScheme.onSurface
+                    : theme.colorScheme.onSurface.withOpacity(0.3)),
                 shape: WidgetStateProperty.all<RoundedRectangleBorder>(
                     RoundedRectangleBorder(
                         borderRadius:
@@ -47,7 +47,7 @@ class AppBottomFab extends StatelessWidget {
             text,
             style: theme.textTheme.bodyLarge?.copyWith(
                 color: outlinedStyle
-                    ? theme.colorScheme.primary
+                    ? theme.colorScheme.onSurface
                     : theme.colorScheme.onSecondary),
           ),
         ),

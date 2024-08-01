@@ -20,8 +20,8 @@ class HiddenAssetScreen extends StatefulWidget {
 
 class _HiddenAssetScreenState extends State<HiddenAssetScreen> {
   Future<void> onItemClick(Asset asset) async {
-    bool? yes = await showYesNoBottomSheet(
-        context, t.asset_visible_again_message.replaceAll("<asset>", asset.name));
+    bool? yes = await showYesNoBottomSheet(context,
+        t.asset_visible_again_message.replaceAll("<asset>", asset.name));
 
     if (yes == true) {
       asset.excludeFromNW = false;
@@ -40,7 +40,10 @@ class _HiddenAssetScreenState extends State<HiddenAssetScreen> {
         .find();
 
     return Scaffold(
-      appBar: AppBar(title: Text(t.hidde_asset)),
+      appBar: AppBar(
+        title: Text(t.hidde_asset),
+        surfaceTintColor: Theme.of(context).colorScheme.surface,
+      ),
       body: SafeArea(
         child: excludedAsset.isEmpty
             ? Center(child: Text(t.hidde_asset_empty))

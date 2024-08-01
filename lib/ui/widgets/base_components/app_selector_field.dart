@@ -46,7 +46,7 @@ class AppSelectorField<T> extends StatelessWidget {
         },
         decoration: InputDecoration(
           label: Text(title),
-          labelStyle: TextStyle(color: theme.colorScheme.secondary),
+          labelStyle: TextStyle(color: theme.colorScheme.primary),
           errorBorder: formErrorBorder(context),
           focusedBorder: formFocusedBorder(context),
           enabledBorder: formEnabledBorder(context),
@@ -65,9 +65,9 @@ class AppSelectorField<T> extends StatelessWidget {
             children: <Widget>[
               Text(
                 (initialValue ?? "").toString(),
-                style: const TextStyle(color: Colors.white),
+                style: TextStyle(color: theme.colorScheme.primary),
               ),
-              const Icon(Icons.arrow_drop_down, color: Colors.white),
+              Icon(Icons.arrow_drop_down, color: theme.colorScheme.primary),
             ],
           ),
         ));

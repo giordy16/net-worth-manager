@@ -57,7 +57,10 @@ class _PushNotificationScreenState extends State<PushNotificationScreen>
     final theme = Theme.of(context);
 
     return Scaffold(
-      appBar: AppBar(title: Text(t.push_notification)),
+      appBar: AppBar(
+        title: Text(t.push_notification),
+        surfaceTintColor: Theme.of(context).colorScheme.surface,
+      ),
       body: Padding(
         padding: EdgeInsets.symmetric(horizontal: Dimensions.screenMargin),
         child: ListView(

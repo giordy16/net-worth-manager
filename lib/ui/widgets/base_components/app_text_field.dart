@@ -46,7 +46,7 @@ class AppTextField extends StatelessWidget {
         label: Text(title),
         alignLabelWithHint: true,
         prefixIcon: prefixIcon != null ? Icon(prefixIcon) : null,
-        labelStyle: TextStyle(color: theme.colorScheme.secondary),
+        labelStyle: TextStyle(color: theme.colorScheme.primary),
         errorBorder: formErrorBorder(context),
         focusedBorder: formFocusedBorder(context),
         enabledBorder: formEnabledBorder(context),

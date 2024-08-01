@@ -7,7 +7,6 @@ import 'package:net_worth_manager/models/obox/settings_obox.dart';
 import 'package:net_worth_manager/utils/enum/fetch_forex_type.dart';
 import 'package:net_worth_manager/utils/extensions/date_time_extension.dart';
 import 'package:net_worth_manager/utils/extensions/objectbox_extension.dart';
-import 'package:net_worth_manager/utils/fcm_notification.dart';
 import 'package:objectbox/objectbox.dart';
 import 'app_routes.dart';
 import 'domain/database/objectbox.dart';
@@ -25,7 +24,7 @@ Future<void> main() async {
   await ObjectBox.create();
   await initApp();
 
-  runApp(const App());
+  runApp(App());
 }
 
 Future<void> initApp() async {
@@ -41,15 +40,27 @@ Future<void> initApp() async {
       .updateNetWorth(updateStartingDate: DateTime.now().keepOnlyYMD());
 }
 
-class App extends StatelessWidget {
-  const App({super.key});
+class App extends StatefulWidget {
+  @override
+  State<StatefulWidget> createState() => _AppState();
+
+  static _AppState of(BuildContext context) =>
+      context.findAncestorStateOfType<_AppState>()!;
+}
+
+class _AppState extends State<App> {
+  void changeTheme() {
+    setState(() {});
+  }
 
   @override
   Widget build(BuildContext context) {
     var theme = MaterialTheme(Theme.of(context).textTheme);
 
+    Settings settings = GetIt.I<Settings>();
+
     return MaterialApp.router(
-        theme: theme.dark(),
+        theme: settings.isDarkMode() ? theme.dark() : theme.light(),
         title: 'Net Worth Manager',
         debugShowCheckedModeBanner: false,
         routerConfig: appRoutes);

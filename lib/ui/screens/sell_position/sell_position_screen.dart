@@ -65,6 +65,7 @@ class SellPositionScreen extends StatelessWidget {
               return Scaffold(
                   appBar: AppBar(
                     title: Text(t.sell_position),
+                    surfaceTintColor: Theme.of(context).colorScheme.surface,
                   ),
                   floatingActionButtonLocation:
                       FloatingActionButtonLocation.centerFloat,

@@ -74,6 +74,7 @@ class _AddCustomPieScreenState extends State<AddCustomPieScreen> {
     return Scaffold(
       appBar: AppBar(
         title: Text(t.create_allocation_chart),
+        surfaceTintColor: Theme.of(context).colorScheme.surface,
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
       floatingActionButton: Visibility(

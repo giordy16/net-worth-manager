@@ -72,7 +72,7 @@ class _AppDateFieldState extends State<AppDateField> {
       },
       decoration: InputDecoration(
         label: Text(widget.title),
-        labelStyle: TextStyle(color: theme.colorScheme.secondary),
+        labelStyle: TextStyle(color: theme.colorScheme.primary),
         errorBorder: formErrorBorder(context),
         focusedBorder: formFocusedBorder(context),
         enabledBorder: formEnabledBorder(context),

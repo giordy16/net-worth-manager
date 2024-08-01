@@ -214,7 +214,7 @@ class HomePageScreenState extends State<HomePage>
               },
               child: Icon(
                 Icons.add,
-                color: theme.colorScheme.secondary,
+                color: theme.colorScheme.onTertiaryContainer,
               ),
             ),
             body: state.assets == null

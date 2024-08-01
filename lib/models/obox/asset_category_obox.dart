@@ -1,6 +1,6 @@
 import 'package:get_it/get_it.dart';
-
 import '../../objectbox.g.dart';
+import 'package:objectbox/objectbox.dart';
 import 'asset_obox.dart';
 
 enum MarketAssetCategory { stocks, etfs, crypto, commodities }

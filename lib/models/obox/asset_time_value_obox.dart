@@ -5,6 +5,7 @@ import 'package:net_worth_manager/models/obox/market_info_obox.dart';
 import 'package:net_worth_manager/models/obox/settings_obox.dart';
 import 'package:net_worth_manager/utils/extensions/date_time_extension.dart';
 import 'package:net_worth_manager/utils/extensions/number_extension.dart';
+import 'package:objectbox/objectbox.dart';
 
 import '../../objectbox.g.dart';
 

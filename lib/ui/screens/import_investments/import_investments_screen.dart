@@ -20,6 +20,7 @@ class _ImportInvestmentsScreenState extends State<ImportInvestmentsScreen> {
     return Scaffold(
       appBar: AppBar(
         title: Text(t.import_title),
+        surfaceTintColor: Theme.of(context).colorScheme.surface,
       ),
       body: Padding(
         padding: const EdgeInsets.all(Dimensions.screenMargin),

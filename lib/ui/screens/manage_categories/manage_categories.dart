@@ -103,6 +103,7 @@ class _ManageCategoriesState extends State<ManageCategories> {
     return Scaffold(
       appBar: AppBar(
         title: Text(t.categories),
+        surfaceTintColor: Theme.of(context).colorScheme.surface,
         actions: [
           IconButton(
               onPressed: () {

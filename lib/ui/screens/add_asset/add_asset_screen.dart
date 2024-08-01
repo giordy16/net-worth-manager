@@ -73,6 +73,7 @@ class AddAssetScreen extends StatelessWidget {
             return Scaffold(
                 appBar: AppBar(
                   title: Text(t.asset_liability),
+                  surfaceTintColor: Theme.of(context).colorScheme.surface,
                 ),
                 floatingActionButtonLocation:
                     FloatingActionButtonLocation.centerFloat,

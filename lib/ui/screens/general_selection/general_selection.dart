@@ -19,6 +19,7 @@ class GeneralSelection extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         title: Text(t.select),
+        surfaceTintColor: Theme.of(context).colorScheme.surface,
       ),
       body: SafeArea(
         child: ListView.separated(

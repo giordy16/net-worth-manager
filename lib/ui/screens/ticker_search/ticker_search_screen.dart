@@ -44,6 +44,7 @@ class TickerSearchScreen extends StatelessWidget {
               return Scaffold(
                   appBar: AppBar(
                     title: Text(t.search),
+                    surfaceTintColor: Theme.of(context).colorScheme.surface,
                   ),
                   body: SafeArea(
                       child: Padding(

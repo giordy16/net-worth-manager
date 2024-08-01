@@ -56,8 +56,7 @@ class FirebaseContactsScreen extends StatelessWidget {
       final db = FirebaseFirestore.instance;
       db.collection(type.firebaseCollection).add(firebaseModel);
 
-      UserMessage.showMessage(
-          context, t.firebase_feedback_message);
+      UserMessage.showMessage(context, t.firebase_feedback_message);
       context.pop();
     }
   }
@@ -65,7 +64,10 @@ class FirebaseContactsScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: AppBar(title: Text(type.title)),
+        appBar: AppBar(
+          title: Text(type.title),
+          surfaceTintColor: Theme.of(context).colorScheme.surface,
+        ),
         floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
         floatingActionButton:
             AppBottomFab(text: t.send, onTap: () => sendMessage(context)),

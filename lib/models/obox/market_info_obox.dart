@@ -1,5 +1,6 @@
 import 'package:get_it/get_it.dart';
 import 'package:net_worth_manager/models/obox/asset_history_time_value.dart';
+import 'package:objectbox/objectbox.dart';
 
 import '../../objectbox.g.dart';
 

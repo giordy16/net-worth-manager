@@ -151,7 +151,7 @@
     },
     {
       "id": "6:2549230891191389848",
-      "lastPropertyId": "6:8785216237688213096",
+      "lastPropertyId": "7:3343999144674692840",
       "name": "Settings",
       "properties": [
         {
@@ -187,6 +187,11 @@
           "id": "6:8785216237688213096",
           "name": "showTutorial",
           "type": 1
+        },
+        {
+          "id": "7:3343999144674692840",
+          "name": "appThemeEnumIndex",
+          "type": 6
         }
       ],
       "relations": []

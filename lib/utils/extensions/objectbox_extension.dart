@@ -7,6 +7,7 @@ import 'package:net_worth_manager/models/obox/currency_obox.dart';
 import 'package:net_worth_manager/models/obox/market_info_obox.dart';
 import 'package:net_worth_manager/models/obox/settings_obox.dart';
 import 'package:net_worth_manager/objectbox.g.dart';
+import 'package:net_worth_manager/utils/enum/app_theme.dart';
 
 import '../../domain/repository/stock/financial_modeling_repo.dart';
 import '../../i18n/strings.g.dart';
@@ -77,7 +78,8 @@ extension ObjectBoxExtension on Store {
     if (categories
         .where((e) => e.marketAssetCategory == MarketAssetCategory.commodities)
         .isEmpty) {
-      final category = AssetCategory(t.commodities, userCanSelect: false, order: 2);
+      final category =
+          AssetCategory(t.commodities, userCanSelect: false, order: 2);
       category.setMarketAssetCategory(MarketAssetCategory.commodities);
       box<AssetCategory>().put(category);
     }

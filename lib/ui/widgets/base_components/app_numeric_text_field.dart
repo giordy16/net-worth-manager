@@ -132,7 +132,7 @@ class _AppNumericTextFieldState extends State<AppNumericTextField> {
                 : null,
           ),
         ),
-        labelStyle: TextStyle(color: theme.colorScheme.secondary),
+        labelStyle: TextStyle(color: theme.colorScheme.primary),
         errorBorder: formErrorBorder(context),
         focusedBorder: formFocusedBorder(context),
         enabledBorder: formEnabledBorder(context),

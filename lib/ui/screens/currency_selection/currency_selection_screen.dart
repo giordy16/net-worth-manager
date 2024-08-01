@@ -32,7 +32,10 @@ class CurrencySelectionScreen extends StatelessWidget {
         child: BlocBuilder<CurrencySelectionBloc, CurrencySelectionState>(
           builder: (context, state) {
             return Scaffold(
-              appBar: AppBar(title: Text(t.select_currency)),
+              appBar: AppBar(
+                title: Text(t.select_currency),
+                surfaceTintColor: Theme.of(context).colorScheme.surface,
+              ),
               body: Column(
                 children: [
                   Padding(

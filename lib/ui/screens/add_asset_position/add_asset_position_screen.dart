@@ -86,6 +86,7 @@ class _AddAssetPositionScreenState extends State<AddAssetPositionScreen> {
                   resizeToAvoidBottomInset: false,
                   appBar: AppBar(
                     title: Text(t.position),
+                    surfaceTintColor: Theme.of(context).colorScheme.surface,
                     actions: [
                       if (params.timeValue != null)
                         IconButton(

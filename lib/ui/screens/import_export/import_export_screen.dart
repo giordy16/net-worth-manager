@@ -83,6 +83,7 @@ class ImportExportScreen extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         title: Text(t.import_export),
+        surfaceTintColor: Theme.of(context).colorScheme.surface,
       ),
       body: SafeArea(
         child: Padding(

@@ -41,7 +41,7 @@ Future<bool?> showOkOnlyBottomSheet(BuildContext context, String message,
                 child: ElevatedButton(
                   style: ButtonStyle(
                     backgroundColor:
-                        WidgetStateProperty.all(theme.colorScheme.secondary),
+                        WidgetStateProperty.all(theme.colorScheme.onSurface),
                     shape: WidgetStateProperty.all<RoundedRectangleBorder>(
                         RoundedRectangleBorder(
                             borderRadius:
@@ -123,7 +123,7 @@ Future<bool?> showYesNoBottomSheet(
                     child: ElevatedButton(
                       style: ButtonStyle(
                         backgroundColor: WidgetStateProperty.all(
-                            theme.colorScheme.secondary),
+                            theme.colorScheme.onSurface),
                         shape:
                             WidgetStateProperty.all<RoundedRectangleBorder>(
                                 RoundedRectangleBorder(
