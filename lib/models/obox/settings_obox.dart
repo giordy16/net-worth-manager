@@ -1,4 +1,4 @@
-import 'package:net_worth_manager/utils/enum/app_theme.dart';
+import 'package:net_worth_manager/utils/enum/app_theme_enum.dart';
 import 'package:objectbox/objectbox.dart';
 import 'currency_obox.dart';
 
@@ -23,11 +23,11 @@ class Settings {
 
   Settings({required this.showTutorial});
 
-  AppTheme get appTheme {
-    return AppTheme.values[appThemeEnumIndex ?? 1];
+  AppThemeEnum get appTheme {
+    return AppThemeEnum.values[appThemeEnumIndex ?? 1];
   }
 
   bool isDarkMode() {
-    return appTheme == AppTheme.dark;
+    return appTheme == AppThemeEnum.dark;
   }
 }

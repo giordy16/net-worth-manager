@@ -158,5 +158,8 @@
   "push_notification": "Push notification",
   "monthly_reminder_title": "Monthly reminder",
   "monthly_reminder_subtitle": "Receive a notification every end of the month to remember to update your assets",
-  "app_theme": "App theme"
+  "app_theme": "App theme",
+  "app_theme_dark": "Dark mode",
+  "app_theme_light": "Light mode"
+
 }

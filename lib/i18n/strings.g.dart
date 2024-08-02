@@ -4,9 +4,9 @@
 /// To regenerate, run: `dart run slang`
 ///
 /// Locales: 2
-/// Strings: 316 (158 per locale)
+/// Strings: 320 (160 per locale)
 ///
-/// Built on 2024-07-31 at 16:15 UTC
+/// Built on 2024-08-02 at 07:08 UTC
 
 // coverage:ignore-file
 // ignore_for_file: type=lint
@@ -308,6 +308,8 @@ class Translations implements BaseTranslations<AppLocale, Translations> {
 	String get monthly_reminder_title => 'Monthly reminder';
 	String get monthly_reminder_subtitle => 'Receive a notification every end of the month to remember to update your assets';
 	String get app_theme => 'App theme';
+	String get app_theme_dark => 'Dark mode';
+	String get app_theme_light => 'Light mode';
 }
 
 // Path: <root>
@@ -494,6 +496,8 @@ class _StringsIt implements Translations {
 	@override String get monthly_reminder_title => 'Promemoria mensile';
 	@override String get monthly_reminder_subtitle => 'Ricevi una notifica ogni fine mese per ricordarti di aggiornare i tuoi asset';
 	@override String get app_theme => 'Tema app';
+	@override String get app_theme_dark => 'Tema scuro';
+	@override String get app_theme_light => 'Tema chiaro';
 }
 
 /// Flat map(s) containing all translations.
@@ -660,6 +664,8 @@ extension on Translations {
 			case 'monthly_reminder_title': return 'Monthly reminder';
 			case 'monthly_reminder_subtitle': return 'Receive a notification every end of the month to remember to update your assets';
 			case 'app_theme': return 'App theme';
+			case 'app_theme_dark': return 'Dark mode';
+			case 'app_theme_light': return 'Light mode';
 			default: return null;
 		}
 	}
@@ -826,6 +832,8 @@ extension on _StringsIt {
 			case 'monthly_reminder_title': return 'Promemoria mensile';
 			case 'monthly_reminder_subtitle': return 'Ricevi una notifica ogni fine mese per ricordarti di aggiornare i tuoi asset';
 			case 'app_theme': return 'Tema app';
+			case 'app_theme_dark': return 'Tema scuro';
+			case 'app_theme_light': return 'Tema chiaro';
 			default: return null;
 		}
 	}

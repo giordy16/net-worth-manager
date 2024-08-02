@@ -12,7 +12,7 @@ import 'package:net_worth_manager/ui/screens/manage_categories/manage_categories
 import 'package:net_worth_manager/ui/screens/push_notification/push_notification_screen.dart';
 import 'package:net_worth_manager/ui/screens/soon_available/soon_available_screen.dart';
 import 'package:net_worth_manager/ui/widgets/app_divider.dart';
-import 'package:net_worth_manager/utils/enum/app_theme.dart';
+import 'package:net_worth_manager/utils/enum/app_theme_enum.dart';
 import 'package:net_worth_manager/utils/extensions/objectbox_extension.dart';
 import 'package:net_worth_manager/utils/fcm_notification.dart';
 import 'package:package_info_plus/package_info_plus.dart';
@@ -164,14 +164,14 @@ class _SettingsScreenState extends State<SettingsScreen> {
               padding: const EdgeInsets.symmetric(horizontal: Dimensions.xxs),
               child: IconButton(
                 onPressed: () async {
-                  AppTheme? selectedTheme = await context.push(GeneralSelection.path,
+                  AppThemeEnum? selectedTheme = await context.push(GeneralSelection.path,
                       extra: GeneralSelectionParams(
                         settings.appTheme,
-                        AppTheme.values,
+                        AppThemeEnum.values,
                       ));
 
                   if (selectedTheme != null) {
-                    settings.appThemeEnumIndex = AppTheme.values.indexOf(selectedTheme);
+                    settings.appThemeEnumIndex = AppThemeEnum.values.indexOf(selectedTheme);
                     GetIt.I<Store>().box<Settings>().put(settings);
                     App.of(context).changeTheme();
                   }

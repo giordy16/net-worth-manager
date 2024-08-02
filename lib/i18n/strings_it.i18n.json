@@ -158,5 +158,7 @@
   "push_notification": "Notifiche push",
   "monthly_reminder_title": "Promemoria mensile",
   "monthly_reminder_subtitle": "Ricevi una notifica ogni fine mese per ricordarti di aggiornare i tuoi asset",
-  "app_theme": "Tema app"
+  "app_theme": "Tema app",
+  "app_theme_dark": "Tema scuro",
+  "app_theme_light": "Tema chiaro"
 }

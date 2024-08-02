@@ -7,7 +7,7 @@ import 'package:net_worth_manager/models/obox/currency_obox.dart';
 import 'package:net_worth_manager/models/obox/market_info_obox.dart';
 import 'package:net_worth_manager/models/obox/settings_obox.dart';
 import 'package:net_worth_manager/objectbox.g.dart';
-import 'package:net_worth_manager/utils/enum/app_theme.dart';
+import 'package:net_worth_manager/utils/enum/app_theme_enum.dart';
 
 import '../../domain/repository/stock/financial_modeling_repo.dart';
 import '../../i18n/strings.g.dart';
