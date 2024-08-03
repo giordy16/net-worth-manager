@@ -6,14 +6,17 @@ class AppBottomFab extends StatelessWidget {
   Function() onTap;
   bool outlinedStyle;
   bool enable;
+  double? horizontalMargin;
+  double? cornerRadius;
 
-  AppBottomFab({
-    super.key,
-    required this.text,
-    required this.onTap,
-    this.outlinedStyle = false,
-    this.enable = true,
-  });
+  AppBottomFab(
+      {super.key,
+      required this.text,
+      required this.onTap,
+      this.outlinedStyle = false,
+      this.enable = true,
+      this.horizontalMargin,
+      this.cornerRadius});
 
   @override
   Widget build(BuildContext context) {
@@ -21,7 +24,8 @@ class AppBottomFab extends StatelessWidget {
 
     return Container(
       height: 60,
-      margin: const EdgeInsets.symmetric(horizontal: Dimensions.m),
+      margin:
+          EdgeInsets.symmetric(horizontal: horizontalMargin ?? Dimensions.s),
       child: ElevatedButton(
         style: outlinedStyle
             ? ButtonStyle(
@@ -29,8 +33,8 @@ class AppBottomFab extends StatelessWidget {
                     RoundedRectangleBorder(
                         side: BorderSide(
                             color: theme.colorScheme.onSurface, width: 2),
-                        borderRadius:
-                            BorderRadius.circular(Dimensions.cardCorner))),
+                        borderRadius: BorderRadius.circular(
+                            cornerRadius ?? Dimensions.cardCorner))),
               )
             : ButtonStyle(
                 backgroundColor: WidgetStateProperty.all(enable
@@ -38,8 +42,8 @@ class AppBottomFab extends StatelessWidget {
                     : theme.colorScheme.onSurface.withOpacity(0.3)),
                 shape: WidgetStateProperty.all<RoundedRectangleBorder>(
                     RoundedRectangleBorder(
-                        borderRadius:
-                            BorderRadius.circular(Dimensions.cardCorner))),
+                        borderRadius: BorderRadius.circular(
+                            cornerRadius ?? Dimensions.cardCorner))),
               ),
         onPressed: onTap,
         child: Center(

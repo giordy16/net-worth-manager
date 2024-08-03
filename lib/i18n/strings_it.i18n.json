@@ -58,7 +58,7 @@
   "hide_message": "Sei sicuro di voler nascondere questo elemento?\nPuoi ripristinarlo dalla pagina Impostazioni.",
   "home_empty": "Non hai ancora registrato alcun asset.\n\nAggiungi i tuoi assets con il pulsante in basso o importa un file di backup.",
   "your_net_worth": "Il tuo patrimonio",
-  "home_disclaimer": "I prezzi sono aggiornati al valore di chiusura del giorno precedente.\nPotrebbe esserci una differenza tra il valore effettivo e quello visualizzato nell'app.",
+  "home_disclaimer": "I prezzi sono aggiornati al valore di chiusura del giorno precedente. Potrebbe esserci una differenza tra il valore effettivo e quello visualizzato nell'app.",
   "import_dialog_title": "Seleziona un file di output:",
   "import_successful": "Il file è stato salvato con successo!",
   "import_disclaimer": "Sei sicuro di voler importare questo file?\nTutti i dati attuali saranno sovrascritti",
@@ -160,5 +160,8 @@
   "monthly_reminder_subtitle": "Ricevi una notifica ogni fine mese per ricordarti di aggiornare i tuoi asset",
   "app_theme": "Tema app",
   "app_theme_dark": "Tema scuro",
-  "app_theme_light": "Tema chiaro"
+  "app_theme_light": "Tema chiaro",
+  "update_asset_values": "Aggiorna valori asset",
+  "update_asset_empty": "Non hai nessun asset da aggiornare.\n\nGli investimenti non hanno bisogno di essere aggiornati in quanto sono aggiornati automaticamente.",
+  "add_asset": "Aggiungi nuovo asset"
 }

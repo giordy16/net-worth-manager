@@ -58,7 +58,7 @@
   "hide_message": "Are you sure you want to hide this element?\nYou can restore it from Settings page.",
   "home_empty": "You have not registered any assets yet.\n\nAdd your assets with the button below or import a backup file.",
   "your_net_worth": "Your net worth",
-  "home_disclaimer": "Prices are updated to the closing value of the previous day.\nThere may be a difference between the actual value and the one displayed in the app.",
+  "home_disclaimer": "Prices are updated to the closing value of the previous day. There may be a difference between the actual value and the one displayed in the app.",
   "import_dialog_title": "Please select an output file:",
   "import_successful": "The file has been saved successfully!",
   "import_disclaimer": "Are you sure you want to import this file?\nAll current data will be overwritten",
@@ -160,6 +160,8 @@
   "monthly_reminder_subtitle": "Receive a notification every end of the month to remember to update your assets",
   "app_theme": "App theme",
   "app_theme_dark": "Dark mode",
-  "app_theme_light": "Light mode"
-
+  "app_theme_light": "Light mode",
+  "update_asset_values": "Update asset values",
+  "update_asset_empty": "You don't have any asset to update.\n\nMarket investment don't need to be updated since they are automatically updated.",
+  "add_asset": "Add new asset"
 }

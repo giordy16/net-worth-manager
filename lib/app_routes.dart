@@ -29,6 +29,7 @@ import 'package:net_worth_manager/ui/screens/push_notification/push_notification
 import 'package:net_worth_manager/ui/screens/sell_position/sell_position_screen.dart';
 import 'package:net_worth_manager/ui/screens/soon_available/soon_available_screen.dart';
 import 'package:net_worth_manager/ui/screens/ticker_search/ticker_search_screen.dart';
+import 'package:net_worth_manager/ui/screens/update_asset_value/update_asset_value_screen.dart';
 import 'package:net_worth_manager/ui/widgets/modal/loading_overlay.dart';
 
 final appRoutes = GoRouter(
@@ -139,6 +140,10 @@ final appRoutes = GoRouter(
       GoRoute(
           path: PushNotificationScreen.route,
           builder: (context, state) => PushNotificationScreen()),
+      GoRoute(
+          path: UpdateAssetValueScreen.path,
+          builder: (context, state) =>
+              LoadingOverlay(child: UpdateAssetValueScreen())),
     ],
     redirect: (context, state) {
       if (GetIt.I<Settings>().showTutorial == true &&

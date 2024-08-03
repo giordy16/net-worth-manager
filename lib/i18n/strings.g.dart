@@ -4,9 +4,9 @@
 /// To regenerate, run: `dart run slang`
 ///
 /// Locales: 2
-/// Strings: 320 (160 per locale)
+/// Strings: 326 (163 per locale)
 ///
-/// Built on 2024-08-02 at 07:08 UTC
+/// Built on 2024-08-03 at 10:11 UTC
 
 // coverage:ignore-file
 // ignore_for_file: type=lint
@@ -207,7 +207,7 @@ class Translations implements BaseTranslations<AppLocale, Translations> {
 	String get hide_message => 'Are you sure you want to hide this element?\nYou can restore it from Settings page.';
 	String get home_empty => 'You have not registered any assets yet.\n\nAdd your assets with the button below or import a backup file.';
 	String get your_net_worth => 'Your net worth';
-	String get home_disclaimer => 'Prices are updated to the closing value of the previous day.\nThere may be a difference between the actual value and the one displayed in the app.';
+	String get home_disclaimer => 'Prices are updated to the closing value of the previous day. There may be a difference between the actual value and the one displayed in the app.';
 	String get import_dialog_title => 'Please select an output file:';
 	String get import_successful => 'The file has been saved successfully!';
 	String get import_disclaimer => 'Are you sure you want to import this file?\nAll current data will be overwritten';
@@ -310,6 +310,9 @@ class Translations implements BaseTranslations<AppLocale, Translations> {
 	String get app_theme => 'App theme';
 	String get app_theme_dark => 'Dark mode';
 	String get app_theme_light => 'Light mode';
+	String get update_asset_values => 'Update asset values';
+	String get update_asset_empty => 'You don\'t have any asset to update.\n\nMarket investment don\'t need to be updated since they are automatically updated.';
+	String get add_asset => 'Add new asset';
 }
 
 // Path: <root>
@@ -395,7 +398,7 @@ class _StringsIt implements Translations {
 	@override String get hide_message => 'Sei sicuro di voler nascondere questo elemento?\nPuoi ripristinarlo dalla pagina Impostazioni.';
 	@override String get home_empty => 'Non hai ancora registrato alcun asset.\n\nAggiungi i tuoi assets con il pulsante in basso o importa un file di backup.';
 	@override String get your_net_worth => 'Il tuo patrimonio';
-	@override String get home_disclaimer => 'I prezzi sono aggiornati al valore di chiusura del giorno precedente.\nPotrebbe esserci una differenza tra il valore effettivo e quello visualizzato nell\'app.';
+	@override String get home_disclaimer => 'I prezzi sono aggiornati al valore di chiusura del giorno precedente. Potrebbe esserci una differenza tra il valore effettivo e quello visualizzato nell\'app.';
 	@override String get import_dialog_title => 'Seleziona un file di output:';
 	@override String get import_successful => 'Il file è stato salvato con successo!';
 	@override String get import_disclaimer => 'Sei sicuro di voler importare questo file?\nTutti i dati attuali saranno sovrascritti';
@@ -498,6 +501,9 @@ class _StringsIt implements Translations {
 	@override String get app_theme => 'Tema app';
 	@override String get app_theme_dark => 'Tema scuro';
 	@override String get app_theme_light => 'Tema chiaro';
+	@override String get update_asset_values => 'Aggiorna valori asset';
+	@override String get update_asset_empty => 'Non hai nessun asset da aggiornare.\n\nGli investimenti non hanno bisogno di essere aggiornati in quanto sono aggiornati automaticamente.';
+	@override String get add_asset => 'Aggiungi nuovo asset';
 }
 
 /// Flat map(s) containing all translations.
@@ -565,7 +571,7 @@ extension on Translations {
 			case 'hide_message': return 'Are you sure you want to hide this element?\nYou can restore it from Settings page.';
 			case 'home_empty': return 'You have not registered any assets yet.\n\nAdd your assets with the button below or import a backup file.';
 			case 'your_net_worth': return 'Your net worth';
-			case 'home_disclaimer': return 'Prices are updated to the closing value of the previous day.\nThere may be a difference between the actual value and the one displayed in the app.';
+			case 'home_disclaimer': return 'Prices are updated to the closing value of the previous day. There may be a difference between the actual value and the one displayed in the app.';
 			case 'import_dialog_title': return 'Please select an output file:';
 			case 'import_successful': return 'The file has been saved successfully!';
 			case 'import_disclaimer': return 'Are you sure you want to import this file?\nAll current data will be overwritten';
@@ -666,6 +672,9 @@ extension on Translations {
 			case 'app_theme': return 'App theme';
 			case 'app_theme_dark': return 'Dark mode';
 			case 'app_theme_light': return 'Light mode';
+			case 'update_asset_values': return 'Update asset values';
+			case 'update_asset_empty': return 'You don\'t have any asset to update.\n\nMarket investment don\'t need to be updated since they are automatically updated.';
+			case 'add_asset': return 'Add new asset';
 			default: return null;
 		}
 	}
@@ -733,7 +742,7 @@ extension on _StringsIt {
 			case 'hide_message': return 'Sei sicuro di voler nascondere questo elemento?\nPuoi ripristinarlo dalla pagina Impostazioni.';
 			case 'home_empty': return 'Non hai ancora registrato alcun asset.\n\nAggiungi i tuoi assets con il pulsante in basso o importa un file di backup.';
 			case 'your_net_worth': return 'Il tuo patrimonio';
-			case 'home_disclaimer': return 'I prezzi sono aggiornati al valore di chiusura del giorno precedente.\nPotrebbe esserci una differenza tra il valore effettivo e quello visualizzato nell\'app.';
+			case 'home_disclaimer': return 'I prezzi sono aggiornati al valore di chiusura del giorno precedente. Potrebbe esserci una differenza tra il valore effettivo e quello visualizzato nell\'app.';
 			case 'import_dialog_title': return 'Seleziona un file di output:';
 			case 'import_successful': return 'Il file è stato salvato con successo!';
 			case 'import_disclaimer': return 'Sei sicuro di voler importare questo file?\nTutti i dati attuali saranno sovrascritti';
@@ -834,6 +843,9 @@ extension on _StringsIt {
 			case 'app_theme': return 'Tema app';
 			case 'app_theme_dark': return 'Tema scuro';
 			case 'app_theme_light': return 'Tema chiaro';
+			case 'update_asset_values': return 'Aggiorna valori asset';
+			case 'update_asset_empty': return 'Non hai nessun asset da aggiornare.\n\nGli investimenti non hanno bisogno di essere aggiornati in quanto sono aggiornati automaticamente.';
+			case 'add_asset': return 'Aggiungi nuovo asset';
 			default: return null;
 		}
 	}

@@ -23,6 +23,7 @@ import '../../../models/obox/asset_obox.dart';
 import '../../widgets/graph/line_graph.dart';
 import '../add_category/add_category_screen.dart';
 import '../add_selection/add_selection_screen.dart';
+import '../update_asset_value/update_asset_value_screen.dart';
 import 'components/home_page_category.dart';
 import 'home_page_state.dart';
 
@@ -185,6 +186,48 @@ class HomePageScreenState extends State<HomePage>
     selections[selectedOption]?.call();
   }
 
+  Future<void> onPlusClick(
+    BuildContext context,
+  ) async {
+    Map<Widget, Function> selections = {};
+
+    selections.addAll({
+      Row(
+        children: [
+          const Icon(Icons.add),
+          const SizedBox(
+            width: 4,
+          ),
+          Text(t.add_asset)
+        ],
+      ): () async {
+        await context.push(AddSelectionScreen.route);
+        if (!context.mounted) return;
+        context.read<HomePageBloc>().add(FetchHomePage());
+      }
+    });
+
+    selections.addAll({
+      Row(
+        children: [
+          const Icon(Icons.show_chart),
+          const SizedBox(
+            width: 4,
+          ),
+          Text(t.update_asset_values)
+        ],
+      ): () async {
+        await context.push(UpdateAssetValueScreen.path);
+        if (!context.mounted) return;
+        context.read<HomePageBloc>().add(FetchHomePage());
+      }
+    });
+
+    var selectedOption =
+        await showSelectionSheet(context, selections.keys.toList());
+    selections[selectedOption]?.call();
+  }
+
   @override
   Widget build(BuildContext context) {
     super.build(context);
@@ -207,10 +250,8 @@ class HomePageScreenState extends State<HomePage>
           return Scaffold(
             floatingActionButton: FloatingActionButton(
               backgroundColor: theme.colorScheme.tertiaryContainer,
-              onPressed: () async {
-                await context.push(AddSelectionScreen.route);
-                if (!context.mounted) return;
-                context.read<HomePageBloc>().add(FetchHomePage());
+              onPressed: () {
+                onPlusClick(context);
               },
               child: Icon(
                 Icons.add,
@@ -365,7 +406,7 @@ class HomePageScreenState extends State<HomePage>
                 return const SizedBox(height: Dimensions.m);
               },
             ),
-            const SizedBox(height: 56),
+            const SizedBox(height: Dimensions.xl),
             Padding(
               padding: const EdgeInsets.symmetric(
                   horizontal: Dimensions.screenMargin),

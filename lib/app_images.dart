@@ -7,4 +7,5 @@ class AppImages {
   static String tutorial_2 = "assets/images/tutorial_2.png";
   static String tutorial_3 = "assets/images/tutorial_3.png";
   static String tutorial_4 = "assets/images/tutorial_4.png";
+  static String pig_white = "assets/app/piggy-bank.png";
 }
